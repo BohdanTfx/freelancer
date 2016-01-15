@@ -9,6 +9,10 @@ public final class ApplicationContext {
 	private ApplicationContext() {
 	}
 
+    public static ApplicationContext getInstance() {
+        return ApplicationContextHolder.INSTANCE;
+    }
+
 	private void initContext() {
 		initDAO();
 
@@ -17,23 +21,20 @@ public final class ApplicationContext {
 	private void initDAO() {
 	}
 
-	private static final class ApplicationContextHolder {
-		private static final ApplicationContext INSTANCE = new ApplicationContext();
-		static {
-			INSTANCE.initContext();
-		}
-	}
-
-	public static ApplicationContext getInstance() {
-		return ApplicationContextHolder.INSTANCE;
-	}
-
 	public Object getBean(String key) {
 		return beans.get(key);
 	}
 
 	public Object addBean(String key, Object bean) {
 		return beans.put(key, bean);
-	}
+    }
+
+    private static final class ApplicationContextHolder {
+        private static final ApplicationContext INSTANCE = new ApplicationContext();
+
+        static {
+            INSTANCE.initContext();
+        }
+    }
 
 }

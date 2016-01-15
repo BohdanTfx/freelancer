@@ -1,10 +1,9 @@
 package com.epam.freelancer.dao;
 
-import java.util.List;
+import com.epam.freelancer.model.BaseEntity;
 
 import javax.sql.DataSource;
-
-import com.epam.freelancer.model.BaseEntity;
+import java.util.List;
 
 public interface GenericManyToManyDao<F extends BaseEntity<ID>, S extends BaseEntity<ID>, ID>
 {
@@ -14,5 +13,5 @@ public interface GenericManyToManyDao<F extends BaseEntity<ID>, S extends BaseEn
 
 	void saveContact(ID firstId, ID secondId);
 
-	public void setDataSource(DataSource dataSource);
+    void setDataSource(DataSource dataSource);
 }
