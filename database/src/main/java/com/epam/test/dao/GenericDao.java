@@ -1,4 +1,4 @@
-package com.epam.freelancer.dao;
+package com.epam.test.dao;
 
 import javax.sql.DataSource;
 import java.util.List;
