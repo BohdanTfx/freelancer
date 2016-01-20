@@ -11,7 +11,7 @@ import java.util.Locale;
 /**
  * Created by ������ on 15.01.2016.
  */
-@Table(name = "table")
+@Table(name = "developer")
 public class Developer implements UserEntity {
     @Id
     private Integer id;
@@ -27,7 +27,6 @@ public class Developer implements UserEntity {
     private Double hourly;
     @Column
     private Timestamp zone;
-    @Column
     private Locale locale;
     @Column
     private String lang;
@@ -36,7 +35,7 @@ public class Developer implements UserEntity {
     @Column(name = "reg_url")
     private String regUrl;
     @Column(name = "reg_date")
-    private Date regDate;
+    private Timestamp regDate;
     @Column(name = "is_deleted")
     private Boolean isDeleted;
     @Column
@@ -89,11 +88,11 @@ public class Developer implements UserEntity {
         this.regUrl = regUrl;
     }
 
-    public Date getRegDate() {
+    public Timestamp getRegDate() {
         return regDate;
     }
 
-    public void setRegDate(Date regDate) {
+    public void setRegDate(Timestamp regDate) {
         this.regDate = regDate;
     }
 

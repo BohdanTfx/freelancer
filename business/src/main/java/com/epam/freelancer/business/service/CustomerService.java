@@ -4,11 +4,13 @@ import com.epam.freelancer.business.util.ValidationParametersBuilder;
 import com.epam.freelancer.database.dao.ContactDao;
 import com.epam.freelancer.database.dao.CustomerDao;
 import com.epam.freelancer.database.dao.GenericDao;
+import com.epam.freelancer.database.dao.jdbc.ContactJdbcDao;
 import com.epam.freelancer.database.dao.jdbc.DAOManager;
 import com.epam.freelancer.database.model.Contact;
 import com.epam.freelancer.database.model.Customer;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +26,12 @@ public class CustomerService extends UserService<Customer> {
         super(DAOManager.getInstance().getDAO(CustomerDao.class.getSimpleName()));
         DAOManager daoManager = DAOManager.getInstance();
         genericDao.setConnectionPool(daoManager.getConnectionPool());
+//        try {
+//			contactDao = new ContactJdbcDao();
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
     }
 
     @Override
@@ -44,7 +52,7 @@ public class CustomerService extends UserService<Customer> {
         entity.setUuid(value != null ? value[0] : null);
         value = data.get("reg_url");
         entity.setRegUrl(value != null ? value[0] : null);
-        entity.setRegDate(new Date(new java.util.Date().getTime()));
+        entity.setRegDate(new Timestamp(new java.util.Date().getTime()));
         value = data.get("password");
         entity.setPassword(value != null ? value[0] : null);
 

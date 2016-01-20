@@ -104,5 +104,13 @@ public class Answer implements BaseEntity<Integer> {
         return result;
     }
 
+	@Override
+	public String toString() {
+		return "Answer [questionId=" + questionId + ", correct=" + correct + ", name=" + name + ", isDeleted="
+				+ isDeleted + ", version=" + version + "]";
+	}
+    
+    
+
 
 }

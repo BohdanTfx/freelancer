@@ -32,8 +32,7 @@ public class DataTransformer<T> {
 	private void configTransformer() throws Exception {
 		Annotation annotation = clazz.getDeclaredAnnotation(Table.class);
 		Method name = annotation.getClass().getDeclaredMethod("name");
-		Method type = annotation.getClass().getDeclaredMethod(
-				"getValuesByField");
+		Method type = annotation.getClass().getDeclaredMethod("getValuesByField");
 		tableName = (String) name.invoke(annotation);
 		fieldType = (boolean) type.invoke(annotation);
 	}
@@ -84,8 +83,7 @@ public class DataTransformer<T> {
 	private String getNameFromGetter(String getter) {
 		if (getter == null || !getter.startsWith("get"))
 			return null;
-		return Character.toString(getter.charAt(3)).toLowerCase()
-				+ getter.substring(4);
+		return Character.toString(getter.charAt(3)).toLowerCase() + getter.substring(4);
 	}
 
 	private void getColumnByFields() throws Exception {
@@ -111,10 +109,8 @@ public class DataTransformer<T> {
 			if (annotation != null) {
 				ColumnItem columnValue = new ColumnItem();
 				Method name = annotation.getClass().getDeclaredMethod("name");
-				Method incremenetId = annotation.getClass().getDeclaredMethod(
-						"autoIncrement");
-				columnValue.setAutoIncrementedId((Boolean) incremenetId
-						.invoke(annotation));
+				Method incremenetId = annotation.getClass().getDeclaredMethod("autoIncrement");
+				columnValue.setAutoIncrementedId((Boolean) incremenetId.invoke(annotation));
 				String itemName = (String) name.invoke(annotation);
 				if ("".equals(itemName))
 					itemName = field.getName();
@@ -142,15 +138,13 @@ public class DataTransformer<T> {
 
 	private void setBySetters(T obj, ResultSet set) throws Exception {
 		for (ColumnItem columnItem : columns) {
-			Method method = clazz.getDeclaredMethod(
-					"s" + columnItem.getAttributeName(), columnItem.getType());
+			Method method = clazz.getDeclaredMethod("s" + columnItem.getAttributeName(), columnItem.getType());
 			method.setAccessible(true);
 			method.invoke(obj, set.getObject(columnItem.getColumnName()));
 		}
 
 		for (ColumnItem columnItem : ids) {
-			Method method = clazz.getDeclaredMethod(
-					"s" + columnItem.getAttributeName(), columnItem.getType());
+			Method method = clazz.getDeclaredMethod("s" + columnItem.getAttributeName(), columnItem.getType());
 			method.setAccessible(true);
 			method.invoke(obj, set.getObject(columnItem.getColumnName()));
 		}
@@ -175,8 +169,7 @@ public class DataTransformer<T> {
 	}
 
 	public String getUpdateStatement() {
-		return statementManager
-				.getUpdateStatement(columns, ids, getTableName());
+		return statementManager.getUpdateStatement(columns, ids, getTableName());
 	}
 
 	public String getDeleteStatement() {
@@ -192,20 +185,17 @@ public class DataTransformer<T> {
 		statementManager.fillSave(statement, columns, ids);
 	}
 
-	public void fillUpdate(PreparedStatement statement, T obj) throws Exception
-	{
+	public void fillUpdate(PreparedStatement statement, T obj) throws Exception {
 		fillAttributes(obj, false);
 		statementManager.fillUpdate(statement, columns, ids);
 	}
 
-	public void fillDelete(PreparedStatement statement, T obj) throws Exception
-	{
+	public void fillDelete(PreparedStatement statement, T obj) throws Exception {
 		fillAttributes(obj, true);
 		statementManager.fillDelete(statement, ids);
 	}
 
-	public void fillSelect(PreparedStatement statement, T obj) throws Exception
-	{
+	public void fillSelect(PreparedStatement statement, T obj) throws Exception {
 		fillAttributes(obj, true);
 		statementManager.fillSelect(statement, ids);
 	}
@@ -235,15 +225,13 @@ public class DataTransformer<T> {
 	private void fillByGetter(T obj, boolean idOnly) throws Exception {
 		if (!idOnly)
 			for (ColumnItem item : columns) {
-				Method method = clazz.getDeclaredMethod("g"
-						+ item.getAttributeName());
+				Method method = clazz.getDeclaredMethod("g" + item.getAttributeName());
 				method.setAccessible(true);
 				item.setValue(method.invoke(obj));
 			}
 
 		for (ColumnItem item : ids) {
-			Method method = clazz.getDeclaredMethod("g"
-					+ item.getAttributeName());
+			Method method = clazz.getDeclaredMethod("g" + item.getAttributeName());
 			method.setAccessible(true);
 			item.setValue(method.invoke(obj));
 		}

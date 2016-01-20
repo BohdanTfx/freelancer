@@ -48,6 +48,7 @@ public abstract class GenericJdbcDao<T extends BaseEntity<ID>, ID> implements
 
 	@Override
 	public T update(T entity) {
+		System.out.println("Connection POOL: "+connectionPool);
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection
 						.prepareStatement(transformer.getUpdateStatement())) {
@@ -95,6 +96,7 @@ public abstract class GenericJdbcDao<T extends BaseEntity<ID>, ID> implements
 	public List<T> getAll() {
 		List<T> entities = new ArrayList<>();
 		String query = "SELECT * FROM " + table;
+		System.out.println("CONNECTION POOL: "+connectionPool);
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection
 						.prepareStatement(query);

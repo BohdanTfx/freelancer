@@ -33,7 +33,7 @@ public class Customer implements UserEntity {
     @Column(name = "reg_url")
     private String regUrl;
     @Column(name = "reg_date")
-    private Date regDate;
+    private Timestamp regDate;
     @Column(name = "is_deleted")
     private Boolean isDeleted;
     @Column
@@ -94,11 +94,11 @@ public class Customer implements UserEntity {
         this.regUrl = regUrl;
     }
 
-    public Date getRegDate() {
+    public Timestamp getRegDate() {
         return regDate;
     }
 
-    public void setRegDate(Date regDate) {
+    public void setRegDate(Timestamp regDate) {
         this.regDate = regDate;
     }
 
