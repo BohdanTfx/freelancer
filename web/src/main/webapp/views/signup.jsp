@@ -62,6 +62,22 @@
                             <p>This email has been already used</p>
                         </div>
                     </c:if>
+                    <c:if test="${error_message != null}">
+                        <div
+                                class="alert alert-message alert-message-danger animated fadeInUp">
+                            <a href="#" class="close"> &times; </a>
+                            <h4>Error</h4>
+                            <p>${error_message}</p>
+                        </div>
+                    </c:if>
+                    <c:if test="${notEqualsPasswords != null}">
+                        <div
+                                class="alert alert-message alert-message-danger animated fadeInUp">
+                            <a href="#" class="close"> &times; </a>
+                            <h4>Error</h4>
+                            <p>Passwords are not equals</p>
+                        </div>
+                    </c:if>
                     <c:if test="${notCorrectData != null}">
                         <div
                                 class="alert alert-message alert-message-danger animated fadeInUp">

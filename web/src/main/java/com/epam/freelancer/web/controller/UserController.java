@@ -40,7 +40,6 @@ public class UserController extends HttpServlet {
                 case "user/create":
                     create(request, response);
                     return;
-
                 default:
             }
         } catch (Exception e) {
@@ -49,7 +48,7 @@ public class UserController extends HttpServlet {
         }
     }
 
-    public void create(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void create(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String role = request.getParameter("role");
         if (role == null || role.isEmpty()) {
             response.sendRedirect("/chooserole");
@@ -58,17 +57,33 @@ public class UserController extends HttpServlet {
         String email = request.getParameter("email");
         if (!isAvailable(email)) {
             request.setAttribute("notAvailableEmail", true);
-            request.getRequestDispatcher(FrontController.getPath(request));
+            request.setAttribute("role",role);
+            request.getRequestDispatcher("/views/signup.jsp").forward(request, response);
+            return;
+        }
+
+        if(!request.getParameter("password").equals(request.getParameter("password_confirmation"))){
+            request.setAttribute("notEqualsPasswords", true);
+            request.setAttribute("role",role);
+            request.getRequestDispatcher("/views/signup.jsp").forward(request, response);
+            return;
         }
 
         request.getParameterMap().put("uuid", new String[]{UUID.randomUUID().toString()});
 
-        if (role.equals("developer")) {
-            DeveloperService developerService = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
-            developerService.create(request.getParameterMap());
-        } else if (role.equals("customer")) {
-            CustomerService customerService = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
-            customerService.create(request.getParameterMap());
+        try {
+            if (role.equals("developer")) {
+                DeveloperService developerService = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
+                developerService.create(request.getParameterMap());
+            } else if (role.equals("customer")) {
+                CustomerService customerService = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
+                customerService.create(request.getParameterMap());
+            }
+        }catch (Exception e){
+            request.setAttribute("error_message","Not correct data");
+            request.setAttribute("role",role);
+            request.getRequestDispatcher("/views/signup.jsp").forward(request, response);
+            return;
         }
         request.setAttribute("confirm_email", true);
         response.sendRedirect("/signin");

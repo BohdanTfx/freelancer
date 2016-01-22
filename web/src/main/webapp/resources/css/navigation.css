@@ -294,3 +294,7 @@ html { height: 100%;}
     background-color: rgba(250,250,250,.8);
     z-index: 1;
 }
+
+.top_offset{
+    top:70px;
+}

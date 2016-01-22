@@ -1,19 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-    <link rel="stylesheet" href="navigation.css">
-    <link rel="stylesheet" href="jquery.fullpage.min.css">
-    
-</head>
-<body>
-    
-    <div id="wrapper">
+<div id="wrapper">
   <div class="overlay"></div>
 
   <!-- Sidebar -->
-  <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
+  <nav class="navbar navbar-inverse navbar-fixed-top top_offset" id="sidebar-wrapper" role="navigation">
     <ul class="nav sidebar-nav">
       <li class="sidebar-brand">
         <a href="#">
@@ -23,35 +12,26 @@
       <li>
         <a href="#">Home</a>
       </li>
-      <li>
-        <a href="#">About</a>
-      </li>
-      <li>
-        <a href="#">Events</a>
-      </li>
-      <li>
-        <a href="#">Team</a>
-      </li>
+
       <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Works <span class="caret"></span></a>
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Profile <span class="caret"></span></a>
         <ul class="dropdown-menu" role="menu">
-          <li class="dropdown-header">Dropdown heading</li>
-          <li><a href="#">Action</a></li>
-          <li><a href="#">Another action</a></li>
-          <li><a href="#">Something else here</a></li>
-          <li><a href="#">Separated link</a></li>
-          <li><a href="#">One more separated link</a></li>
+          <li class="dropdown-header">Information about me</li>
+          <li><a href="#">Personal</a></li>
+          <li><a href="#">My Works</a></li>
+          <li><a href="#">My Tests</a></li>
+          <li><a href="#">Feedbacks</a></li>
+          <li><a href="#">Contacts</a></li>
         </ul>
       </li>
-      <li>
-        <a href="#">Services</a>
+
+       <li>
+        <a href="#">Statistics</a>
       </li>
       <li>
-        <a href="#">Contact</a>
+        <a href="#">Settings</a>
       </li>
-      <li>
-        <a href="https://twitter.com/maridlcrmn">Follow me</a>
-      </li>
+
     </ul>
   </nav>
   <!-- /#sidebar-wrapper -->
@@ -76,10 +56,3 @@
 </div>
 <!-- /#wrapper -->
 
-
-   <script src="navigation.js"></script>
-   <script src="jquery2.2.0.min.js"></script>
-   <script src="jquery2.2.0.min.js"></script>
-    
-</body>
-</html>
