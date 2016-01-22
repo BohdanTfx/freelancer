@@ -57,8 +57,7 @@ public class FrontController extends HttpServlet {
 		}
 		orderingService = (OrderingService) ApplicationContext.getInstance()
 				.getBean("orderingService");
-		ApplicationContext.getInstance().addBean("authenticationProvider",
-				new AuthenticationProvider());
+
 		userManager = (UserManager) ApplicationContext.getInstance().getBean(
 				"userManager");
 		super.init(config);
@@ -90,6 +89,7 @@ public class FrontController extends HttpServlet {
 					fillOrdering(request, response);
 					break;
 				case "signup":
+					request.setAttribute("role",request.getParameter("role"));
 					fillSignup(request, response);
 					break;
 				case "language/bundle":

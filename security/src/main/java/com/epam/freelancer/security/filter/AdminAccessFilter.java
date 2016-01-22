@@ -26,8 +26,9 @@ public class AdminAccessFilter implements Filter {
 	private String userName;
 
 	public void init(FilterConfig config) throws ServletException {
-		authenticationProvider = (AuthenticationProvider) ApplicationContext
-				.getInstance().getBean("authenticationProvider");
+		authenticationProvider = new AuthenticationProvider();
+		ApplicationContext.getInstance().addBean("authenticationProvider",
+				authenticationProvider);
 		adminService = (AdminService) ApplicationContext.getInstance()
 				.getBean("adminService");
 		EnvironmentVariablesManager manager = EnvironmentVariablesManager

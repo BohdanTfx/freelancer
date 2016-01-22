@@ -27,8 +27,7 @@ public class DeveloperAccessFilter implements Filter {
 	private String userName;
 
 	public void init(FilterConfig config) throws ServletException {
-		authenticationProvider = (AuthenticationProvider) ApplicationContext
-				.getInstance().getBean("authenticationProvider");
+		authenticationProvider = new AuthenticationProvider();
 		developerService = (DeveloperService) ApplicationContext.getInstance()
 				.getBean("developerService");
 		EnvironmentVariablesManager manager = EnvironmentVariablesManager
@@ -44,9 +43,9 @@ public class DeveloperAccessFilter implements Filter {
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
-		if (authenticationProvider.provideAccess(cookieAutoAuthName, userName,
-				"login", developerService, httpServletRequest,
-				httpServletResponse))
+//		if (authenticationProvider.provideAccess(cookieAutoAuthName, userName,
+//				"login", developerService, httpServletRequest,
+//				httpServletResponse))
 			chain.doFilter(request, response);
 	}
 

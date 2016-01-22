@@ -27,8 +27,7 @@ public class CustomerAccessFilter implements Filter {
 	private String userName;
 
 	public void init(FilterConfig config) throws ServletException {
-		authenticationProvider = (AuthenticationProvider) ApplicationContext
-				.getInstance().getBean("authenticationProvider");
+		authenticationProvider = new AuthenticationProvider();
 		customerService = (CustomerService) ApplicationContext.getInstance()
 				.getBean("customerService");
 		EnvironmentVariablesManager manager = EnvironmentVariablesManager

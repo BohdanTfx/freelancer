@@ -1,7 +1,7 @@
 ﻿--
 -- Скрипт сгенерирован Devart dbForge Studio for MySQL, Версия 6.3.358.0
 -- Домашняя страница продукта: http://www.devart.com/ru/dbforge/mysql/studio
--- Дата скрипта: 21.01.2016 21:47:50
+-- Дата скрипта: 22.01.2016 12:15:10
 -- Версия сервера: 5.6.28-log
 -- Версия клиента: 4.1
 --
@@ -80,8 +80,8 @@ CREATE TABLE customer (
   UNIQUE INDEX uuid (uuid)
 )
 ENGINE = INNODB
-AUTO_INCREMENT = 8
-AVG_ROW_LENGTH = 2340
+AUTO_INCREMENT = 9
+AVG_ROW_LENGTH = 2048
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -110,8 +110,8 @@ CREATE TABLE developer (
   UNIQUE INDEX uuid (uuid)
 )
 ENGINE = INNODB
-AUTO_INCREMENT = 17
-AVG_ROW_LENGTH = 1092
+AUTO_INCREMENT = 18
+AVG_ROW_LENGTH = 1024
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -153,26 +153,6 @@ CREATE TABLE contact (
 ENGINE = INNODB
 AUTO_INCREMENT = 16
 AVG_ROW_LENGTH = 1092
-CHARACTER SET utf8
-COLLATE utf8_general_ci;
-
---
--- Описание для таблицы dev_tech
---
-DROP TABLE IF EXISTS dev_tech;
-CREATE TABLE dev_tech (
-  id INT(11) NOT NULL AUTO_INCREMENT,
-  dev_id INT(11) DEFAULT NULL,
-  tech_id INT(11) DEFAULT NULL,
-  PRIMARY KEY (id),
-  CONSTRAINT FK_dev_tech_developer_id FOREIGN KEY (dev_id)
-    REFERENCES developer(id) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  CONSTRAINT FK_dev_tech_technology_id FOREIGN KEY (tech_id)
-    REFERENCES technology(id) ON DELETE RESTRICT ON UPDATE RESTRICT
-)
-ENGINE = INNODB
-AUTO_INCREMENT = 20
-AVG_ROW_LENGTH = 862
 CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
@@ -323,6 +303,25 @@ CHARACTER SET utf8
 COLLATE utf8_general_ci;
 
 --
+-- Описание для таблицы dev_test
+--
+DROP TABLE IF EXISTS dev_test;
+CREATE TABLE dev_test (
+  id INT(11) NOT NULL AUTO_INCREMENT,
+  dev_id INT(11) DEFAULT NULL,
+  test_id INT(11) DEFAULT NULL,
+  PRIMARY KEY (id),
+  CONSTRAINT FK_dev_test_developer_id FOREIGN KEY (dev_id)
+    REFERENCES developer(id) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  CONSTRAINT FK_dev_test_test_id FOREIGN KEY (test_id)
+    REFERENCES test(id) ON DELETE RESTRICT ON UPDATE RESTRICT
+)
+ENGINE = INNODB
+AUTO_INCREMENT = 1
+CHARACTER SET utf8
+COLLATE utf8_general_ci;
+
+--
 -- Описание для таблицы follower
 --
 DROP TABLE IF EXISTS follower;
@@ -424,7 +423,8 @@ INSERT INTO customer VALUES
 (4, 'belousov@gmail.com', 'Belousov', 'Nikolai', 'Belousov', '2009-11-28 22:26:01', 'en', NULL, NULL, '2009-06-13 00:00:00', 0, False, 'Belousov', NULL),
 (5, 'mungki@gmail.com', 'Laulau', 'MungKi', 'Lau', '2008-01-01 00:00:01', 'en', NULL, NULL, '2013-10-11 00:00:00', 0, False, 'Lau', NULL),
 (6, 'sadamaza@gmail.com', '6e4938ca228ebe9b6d54b1989940fe5e2c714d93711f4cf8e79f8689f59dc3c8', 'sada', 'maza', NULL, NULL, '7131b214-c305-4dcc-93da-a73f6bab5ba4', NULL, '2016-01-21 00:00:00', NULL, NULL, 'UTQZNuHYMAVzabbGSGfTFTUzHbgsUALugVoggepYNlLfrzYQoq', NULL),
-(7, 'fff@mail.ru', '79e5b9fe1d8a68d3f5eea4affe27348fb199a364bd10b261b50bc61eefdf6fd8', 'fff', 'fff', NULL, NULL, '95edc503-e7f1-46d1-9606-2332429d62d1', NULL, '2016-01-21 18:30:32', NULL, NULL, 'eWmRkNIsAYIZiiKtibBwDxBbbRfOerkUibGUgZoTjKmfjITwxA', NULL);
+(7, 'fff@mail.ru', '79e5b9fe1d8a68d3f5eea4affe27348fb199a364bd10b261b50bc61eefdf6fd8', 'fff', 'fff', NULL, NULL, '95edc503-e7f1-46d1-9606-2332429d62d1', NULL, '2016-01-21 18:30:32', NULL, NULL, 'eWmRkNIsAYIZiiKtibBwDxBbbRfOerkUibGUgZoTjKmfjITwxA', NULL),
+(8, 'uuu@gmaill.com', '8047f0a51abd294545fb064a697dfe6389cc7923258dd227e03d0d5936252402', 'uuu', 'uuu', NULL, NULL, NULL, NULL, '2016-01-21 21:52:58', NULL, NULL, 'dgtFJmXAPTWuGcoqQmgCkznPjzTdrudnxbFcBJNDFKyJnnHMAH', NULL);
 
 -- 
 -- Вывод данных для таблицы developer
@@ -444,7 +444,8 @@ INSERT INTO developer VALUES
 (13, 'max@gmail.com', '51c8b23f801d375fe1b413e8f24badd709d515e472f07bef76972a9951773df4', 'max', 'max', NULL, NULL, NULL, 'c2b9eeef-e708-480f-8af0-4726715fc5df', NULL, '2016-01-21 17:24:15', NULL, NULL, 'UVbQmQVjUPcRuUfXvbWpmznANlpZnczSIvadbaEGqdLYyKyVAF', NULL),
 (14, 'zxc@gmail.com', '9aa7f549a95fa796bced1068a3438918c11963c7159d0d46094ef1a067847684', 'zxc', 'zxc', NULL, NULL, NULL, NULL, NULL, '2016-01-21 17:39:37', NULL, NULL, 'ipQjYmSvcrxQJHKALnhzApkKDmYSCsLmLMGGIMEnOjoMZQtZxJ', NULL),
 (15, 'zxc@gmail.com', 'e6aee8f3372a168d13a3f063f3e6129b7372547f86aedbfd3181679758191c04', 'sad', 'das', NULL, NULL, NULL, 'edcd518c-73de-4906-a65e-564687f7653c', NULL, '2016-01-21 17:58:55', NULL, NULL, 'zyrCCyReaICZcxWukFnxYgBUmqsJJFvlfDqWucrKEfUFVWNJFK', NULL),
-(16, 'user@gmail.com', '3dc2bbbbe9f2936e42f0db60b7f753b8c2f83394f794a60c8d847a4e1eb0f790', 'user', 'user', NULL, NULL, NULL, '6a477ccb-7b0e-4446-9845-7b77a5bdb71e', NULL, '2016-01-21 19:08:18', NULL, NULL, 'eRzTFKhvFvkxPdEIJKrfNpSQDOdDxNfrEKwLsaYHHyGAtyWlnL', NULL);
+(16, 'user@gmail.com', '3dc2bbbbe9f2936e42f0db60b7f753b8c2f83394f794a60c8d847a4e1eb0f790', 'user', 'user', NULL, NULL, NULL, '6a477ccb-7b0e-4446-9845-7b77a5bdb71e', NULL, '2016-01-21 19:08:18', NULL, NULL, 'eRzTFKhvFvkxPdEIJKrfNpSQDOdDxNfrEKwLsaYHHyGAtyWlnL', NULL),
+(17, 'test@gmail.com', 'd1f6fb3965bf1484579f8fbd10632f17b757fe065ea5f2e221f6124df14b9b79', 'test', 'test', NULL, NULL, NULL, '3429bdba-8547-420d-8a45-cd5ae94de5b8', NULL, '2016-01-21 23:43:22', NULL, NULL, 'jHvBPpeGtpUaBUlmeJlVpfghiiLuqLVEzFSjgCtxZuWYXQqtgH', NULL);
 
 -- 
 -- Вывод данных для таблицы technology
@@ -481,30 +482,6 @@ INSERT INTO contact VALUES
 (13, NULL, 8, '65784878362', 'lamine_pflf', 0, False),
 (14, NULL, 9, '15467485902', 'stefan4444', 0, False),
 (15, NULL, 10, '98057869462', 'llgogd334', 0, False);
-
--- 
--- Вывод данных для таблицы dev_tech
---
-INSERT INTO dev_tech VALUES
-(1, 1, 2),
-(2, 1, 5),
-(3, 2, 2),
-(4, 2, 1),
-(5, 3, 5),
-(6, 3, 8),
-(7, 4, 2),
-(8, 4, 1),
-(9, 5, 6),
-(10, 6, 3),
-(11, 6, 4),
-(12, 7, 2),
-(13, 7, 6),
-(14, 7, 7),
-(15, 8, 8),
-(16, 8, 5),
-(17, 9, 10),
-(18, 9, 11),
-(19, 10, 11);
 
 -- 
 -- Вывод данных для таблицы developer_qa
@@ -558,6 +535,12 @@ INSERT INTO question VALUES
 --
 
 -- Таблица freelancerdb.answer не содержит данных
+
+-- 
+-- Вывод данных для таблицы dev_test
+--
+
+-- Таблица freelancerdb.dev_test не содержит данных
 
 -- 
 -- Вывод данных для таблицы follower
