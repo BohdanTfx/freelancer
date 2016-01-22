@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 public class UserController extends HttpServlet {
-	public static final Logger LOG = Logger.getLogger(UserController.class);
+    public static final Logger LOG = Logger.getLogger(UserController.class);
     private static final long serialVersionUID = -2356506023594947745L;
 
     @Override
@@ -57,14 +57,14 @@ public class UserController extends HttpServlet {
         String email = request.getParameter("email");
         if (!isAvailable(email)) {
             request.setAttribute("notAvailableEmail", true);
-            request.setAttribute("role",role);
+            request.setAttribute("role", role);
             request.getRequestDispatcher("/views/signup.jsp").forward(request, response);
             return;
         }
 
-        if(!request.getParameter("password").equals(request.getParameter("password_confirmation"))){
+        if (!request.getParameter("password").equals(request.getParameter("password_confirmation"))) {
             request.setAttribute("notEqualsPasswords", true);
-            request.setAttribute("role",role);
+            request.setAttribute("role", role);
             request.getRequestDispatcher("/views/signup.jsp").forward(request, response);
             return;
         }
@@ -79,9 +79,9 @@ public class UserController extends HttpServlet {
                 CustomerService customerService = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
                 customerService.create(request.getParameterMap());
             }
-        }catch (Exception e){
-            request.setAttribute("error_message","Not correct data");
-            request.setAttribute("role",role);
+        } catch (Exception e) {
+            request.setAttribute("error_message", "Not correct data");
+            request.setAttribute("role", role);
             request.getRequestDispatcher("/views/signup.jsp").forward(request, response);
             return;
         }
@@ -109,7 +109,6 @@ public class UserController extends HttpServlet {
             request.getRequestDispatcher("/views/signin.jsp").forward(request, response);
             return;
         }
-
 
         if (password == null || "".equals(password)) {
             request.setAttribute("notCorrectData", "Invalid credentials");
