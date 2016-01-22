@@ -63,16 +63,24 @@
 
 			<div class="panel-group" id="accordion">
 				<div class="pagination dark">
+					<a href="?firstPage=yes" class="page dark gradient">
+						<i class="fa fa-chevron-left"></i> <i class="fa fa-chevron-left"></i>
+						<span>First </span>
+					</a>
 					<c:forEach items="${pagedItems}" var="page" varStatus="loop">
 						<c:choose>
-							<c:when test="${loop.index == currentPage}">
-								<span class="page dark active">Current</span>
+							<c:when test="${page.first eq 'current'}">
+								<span class="page dark active">${page.second + 1}</span>
 							</c:when>
 							<c:otherwise>
-								<a href="${page.first}" class="page dark gradient">${page.second}</a>
+								<a href="${page.first}" class="page dark gradient">${page.second + 1}</a>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>
+					<a href="?lastPage=yes" class="page dark gradient">
+						<span>Last </span>
+						<i class="fa fa-chevron-right"></i> <i class="fa fa-chevron-right"></i>
+					</a>
 				</div>
 				<c:forEach items="${orders}" var="order">
 					<div class="panel panel-info">
@@ -99,106 +107,26 @@
 						</div>
 					</div>
 				</c:forEach>
-				<c:forEach items="${orders}" var="order">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="panel-title">
-								<a data-toggle="collapse" data-parent="#accordion"
-									href="#order_${order.id}">
-									<c:out value="${order.title}" />
-								</a>
-								<div class="badge pull-right">
-									<c:out value="${order.payType}" />
-								</div>
-							</div>
-						</div>
-						<div id="order_${order.id}" class="panel-collapse collapse">
-							<div class="panel-body">
-								<div class="row">
-									<div class="col-xs-10">
-										<c:out value="${order.descr}" />
-									</div>
-									<div class="col-xs-2"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</c:forEach>
-				<c:forEach items="${orders}" var="order">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="panel-title">
-								<a data-toggle="collapse" data-parent="#accordion"
-									href="#order_${order.id}">
-									<c:out value="${order.title}" />
-								</a>
-								<div class="badge pull-right">
-									<c:out value="${order.payType}" />
-								</div>
-							</div>
-						</div>
-						<div id="order_${order.id}" class="panel-collapse collapse">
-							<div class="panel-body">
-								<div class="row">
-									<div class="col-xs-10">
-										<c:out value="${order.descr}" />
-									</div>
-									<div class="col-xs-2"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</c:forEach>
-				<c:forEach items="${orders}" var="order">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="panel-title">
-								<a data-toggle="collapse" data-parent="#accordion"
-									href="#order_${order.id}">
-									<c:out value="${order.title}" />
-								</a>
-								<div class="badge pull-right">
-									<c:out value="${order.payType}" />
-								</div>
-							</div>
-						</div>
-						<div id="order_${order.id}" class="panel-collapse collapse">
-							<div class="panel-body">
-								<div class="row">
-									<div class="col-xs-10">
-										<c:out value="${order.descr}" />
-									</div>
-									<div class="col-xs-2"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</c:forEach>
-				<c:forEach items="${orders}" var="order">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="panel-title">
-								<a data-toggle="collapse" data-parent="#accordion"
-									href="#order_${order.id}">
-									<c:out value="${order.title}" />
-								</a>
-								<div class="badge pull-right">
-									<c:out value="${order.payType}" />
-								</div>
-							</div>
-						</div>
-						<div id="order_${order.id}" class="panel-collapse collapse">
-							<div class="panel-body">
-								<div class="row">
-									<div class="col-xs-10">
-										<c:out value="${order.descr}" />
-									</div>
-									<div class="col-xs-2"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</c:forEach>
+				<div class="pagination dark">
+					<a href="?firstPage=yes" class="page dark gradient">
+						<i class="fa fa-chevron-left"></i> <i class="fa fa-chevron-left"></i>
+						<span>First </span>
+					</a>
+					<c:forEach items="${pagedItems}" var="page" varStatus="loop">
+						<c:choose>
+							<c:when test="${page.first eq 'current'}">
+								<span class="page dark active">${page.second + 1}</span>
+							</c:when>
+							<c:otherwise>
+								<a href="${page.first}" class="page dark gradient">${page.second + 1}</a>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+					<a href="?lastPage=yes" class="page dark gradient">
+						<span>Last </span>
+						<i class="fa fa-chevron-right"></i> <i class="fa fa-chevron-right"></i>
+					</a>
+				</div>
 			</div>
 		</div>
 	</div>

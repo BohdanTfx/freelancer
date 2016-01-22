@@ -3,11 +3,13 @@
 .pagination {
 	background: #f2f2f2;
 	padding: 5px 10px;
+	width: 100%;
+	margin: 0 auto;
 }
 
 .page {
 	display: inline-block;
-	padding: 0px 9px;
+	padding: 3px 11px;
 	margin-right: 4px;
 	border-radius: 3px;
 	border: solid 1px #c0c0c0;
@@ -16,12 +18,12 @@
 		rgba(0, 0, 0, .1);
 	font-size: .875em;
 	font-weight: bold;
-	text-decoration: none;
 	color: #717171;
 	text-shadow: 0px 1px 0px rgba(255, 255, 255, 1);
 }
 
 .page:hover, .page.gradient:hover {
+	text-decoration: none;
 	background: #fefefe;
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#FEFEFE),
 		to(#f0f0f0));
@@ -44,7 +46,7 @@
 }
 
 .pagination.dark {
-	background: #414449;
+	background: #273039;
 	color: #feffff;
 }
 
@@ -73,6 +75,6 @@
 
 .page.dark.gradient {
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#565b5f),
-		to(#3e4347));
-	background: -moz-linear-gradient(0% 0% 270deg, #565b5f, #3e4347);
+		to(#273039));
+	background: -moz-linear-gradient(0% 0% 270deg, #565b5f, #273039);
 }
