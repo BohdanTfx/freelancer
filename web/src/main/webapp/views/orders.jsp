@@ -12,6 +12,8 @@
 	href="${pageContext.request.contextPath}/resources/css/orders.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/pagination.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/lib/hover.min.css">
 </head>
 <body>
 	<jsp:include page="/template/header.jsp" />
@@ -23,7 +25,7 @@
 					<div class="panel-title">
 						<a data-toggle="collapse" href="#order_filter"> Filter </a>
 						<div class="pull-right">
-							<a class="btn btn-warning order-open-filter-btn"
+							<a class="btn btn-warning order-open-filter-btn animated slideInUp"
 								data-tooltip="yes" data-toggle="collapse" title="Open filter"
 								data-placement="left" href="#order_filter">
 								<i class="fa fa-angle-double-down fa-2x"></i>
@@ -61,8 +63,8 @@
 				</div>
 			</div>
 
-			<div class="panel-group" id="accordion">
-				<div class="pagination dark">
+			<div class="panel-group">
+				<div class="pagination dark animated fadeIn">
 					<a href="?firstPage=yes" class="page dark gradient">
 						<i class="fa fa-chevron-left"></i> <i class="fa fa-chevron-left"></i>
 						<span>First </span>
@@ -86,23 +88,26 @@
 					<div class="panel panel-info">
 						<div class="panel-heading">
 							<div class="panel-title">
-								<a data-toggle="collapse" data-parent="#accordion"
-									href="#order_${order.id}">
-									<c:out value="${order.title}" />
-								</a>
+								<c:out value="${order.title}" />
 								<div class="badge pull-right">
 									<c:out value="${order.payType}" />
 								</div>
 							</div>
 						</div>
-						<div id="order_${order.id}" class="panel-collapse collapse">
-							<div class="panel-body">
-								<div class="row">
-									<div class="col-xs-10">
-										<c:out value="${order.descr}" />
-									</div>
-									<div class="col-xs-2"></div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-xs-10">
+									<c:out value="${order.descr}" />
 								</div>
+								<div class="col-xs-2"></div>
+							</div>
+						</div>
+						<div class="panel-footer">
+							<div class="row">
+								<ul class="tags animated zoomIn">
+									<li><a href="#" class="hvr-grow">Java</a></li>
+									<li><a href="#" class="hvr-grow">C#</a></li>
+								</ul>
 							</div>
 						</div>
 					</div>
