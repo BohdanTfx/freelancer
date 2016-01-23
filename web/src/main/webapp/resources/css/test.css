@@ -3,56 +3,32 @@ body {
     font-family: 'Roboto';
     font-size: 14px;
 }
-
-.nav-tabs>li>a {
-    background-color: rgba(39, 48, 57, 1);
-    border: 1px solid rgba(39, 48, 57, 1);
-    color: #6f8fa8;
+.green-color {
+    color: green;
 }
 
-/* active tab color */
-.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
-    color: #6f8fa8;
-    background-color: rgba(39, 48, 57, 1);
-    border: 1px solid rgba(39, 48, 57, 1);
-    -webkit-filter: drop-shadow(0px 0px 5px #11C3F0)
-    drop-shadow(0px 0px 21px #11C3F0);
-    filter: drop-shadow(0px 0px 5px #11C3F0)
-    drop-shadow(0px 0px 21px #11C3F0);
+.red-color{
+    color: red;
 }
 
-/* hover tab color */
-.nav-tabs>li>a:hover {
-    color: #6f8fa8;
-    background-color: rgba(39, 48, 57, 1);
-    border: 1px solid rgba(39, 48, 57, 1);
-    -webkit-filter: drop-shadow(0px 0px 5px #11C3F0)
-    drop-shadow(0px 0px 21px #11C3F0);
-    filter: drop-shadow(0px 0px 5px #11C3F0)
-    drop-shadow(0px 0px 21px #11C3F0);
+#nav-tabs {
+    border: none;
+}
+
+#tab-content {
+    padding: 20px;
 }
 
 .nav-tabs > li, .nav-pills > li {
-    float:none;
-    display:inline-block;
-    *display:inline; /* ie7 fix */
-    zoom:1; /* hasLayout ie7 trigger */
-}
-
-/* center tabs */
-.nav-tabs, .nav-pills {
-    text-align:center;
-}
-
-/* line below tabs */
-.nav-tabs {
-    padding-bottom: 5px;
-    border-bottom: 1px solid #11C3F0;
+    float: none;
+    display: inline-block;
+    *display: inline; /* ie7 fix */
+    zoom: 1; /* hasLayout ie7 trigger */
 }
 
 /* center logo */
 .img-center {
-    margin:0 auto;
+    margin: 0 auto;
     padding: 15px;
 }
 

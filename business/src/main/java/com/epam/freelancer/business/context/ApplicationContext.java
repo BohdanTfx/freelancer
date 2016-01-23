@@ -42,6 +42,7 @@ import com.epam.freelancer.database.dao.jdbc.TechnologyJdbcDao;
 import com.epam.freelancer.database.dao.jdbc.TestJdbcDao;
 import com.epam.freelancer.database.dao.jdbc.WorkerJdbcDao;
 import com.epam.freelancer.database.dao.jdbc.WorkerManyToManyJdbcDao;
+import com.epam.freelancer.database.model.DeveloperQA;
 
 public final class ApplicationContext {
 	private Map<String, Object> beans = new ConcurrentHashMap<>();
@@ -72,11 +73,15 @@ public final class ApplicationContext {
         customerService.setContactDao(daoManager.getDAO(ContactDao.class
                 .getSimpleName()));
         addBean("customerService", customerService);
-        addBean("developerQAService", new DeveloperQAService());
         addBean("feedbackService", new FeedbackService());
         addBean("orderingService", new OrderingService());
 		addBean("questionService", new QuestionService());
 		addBean("testService", new TestService());
+
+		DeveloperQAService developerQAService = new DeveloperQAService();
+		developerQAService.setTechnologyDao(daoManager.getDAO(TechnologyDao.class.getSimpleName()));
+		developerQAService.setTestDao(daoManager.getDAO(TestDao.class.getSimpleName()));
+		addBean("developerQAService", developerQAService);
 
 		UserManager userManager = new UserManager();
 		userManager.setCustomerService(customerService);

@@ -59,6 +59,8 @@ public class FrontController extends HttpServlet {
 
 	private void configControllers() {
 		controllers.put("user/", new UserController());
+		controllers.put("dev/", new DeveloperController());
+
 	}
 
 	protected void doGet(HttpServletRequest request,
@@ -109,7 +111,6 @@ public class FrontController extends HttpServlet {
 						request.getRequestDispatcher("/views/signup.jsp").forward(request,response);
 						return;
 					}
-
 				}
 				request.getRequestDispatcher("/views/" + path + ".jsp")
 						.forward(request, response);
