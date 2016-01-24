@@ -1,58 +1,26 @@
-<div id="wrapper">
-  <div class="overlay"></div>
+<ul id="myiconmenu" class="iconmenu">
+  <li>
+    <a class="fa fa-home" href="#" rel="[title]" title="Home"></a>
+  </li>
+  <li>
+    <a class="fa fa-user" href="#" rel="profile" title="Profile"></a>
+  </li>
+  <li>
+    <a class="fa fa-bar-chart" href="#" rel="[title]" title="Statistics"></a>
+  </li>
+  <li>
+    <a class="fa fa-cogs" href="#" rel="[title]" title="Settings"></a>
+  </li>
+</ul>
 
-  <!-- Sidebar -->
-  <nav class="navbar navbar-inverse navbar-fixed-top top_offset" id="sidebar-wrapper" role="navigation">
-    <ul class="nav sidebar-nav">
-      <li class="sidebar-brand">
-        <a href="#">
-          Brand
-        </a>
-      </li>
-      <li>
-        <a href="#">Home</a>
-      </li>
+<!- CSS Library sub menu -->
 
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Profile <span class="caret"></span></a>
-        <ul class="dropdown-menu" role="menu">
-          <li class="dropdown-header">Information about me</li>
-          <li><a href="#">Personal</a></li>
-          <li><a href="#">My Works</a></li>
-          <li><a href="#">My Tests</a></li>
-          <li><a href="#">Feedbacks</a></li>
-          <li><a href="#">Contacts</a></li>
-        </ul>
-      </li>
-
-       <li>
-        <a href="#">Statistics</a>
-      </li>
-      <li>
-        <a href="#">Settings</a>
-      </li>
-
-    </ul>
-  </nav>
-  <!-- /#sidebar-wrapper -->
-
-  <!-- Page Content -->
-  <div id="page-content-wrapper">
-    <button type="button" class="hamburger is-closed cabinet-top" data-toggle="offcanvas">
-      <span class="hamb-top"></span>
-      <span class="hamb-middle"></span>
-      <span class="hamb-bottom"></span>
-    </button>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-lg-offset-2">
-
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- /#page-content-wrapper -->
-
+<div id="profile" class="iconsubmenu dropdownmenu">
+  <ul class="ulmenu">
+    <li><a href="#">Personal</a></li>
+    <li><a href="#">My Works</a></li>
+    <li><a href="#">Tests</a></li>
+    <li><a href="#">Feedbacks</a></li>
+  </ul>
 </div>
-<!-- /#wrapper -->
 

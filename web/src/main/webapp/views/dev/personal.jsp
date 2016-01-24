@@ -114,10 +114,17 @@
 		<!--/row-->
 	</div>
 
-	<jsp:include page="/template/footImport.jsp" />
-	<script type="text/javascript"
-		src="${pageContext.request.contextPath}/resources/js/navigation.js"></script>
-	<script type="text/javascript"
-		src="${pageContext.request.contextPath}/resources/js/lib/jquery.fullpage.min.js"></script>
+     <jsp:include page="/template/footImport.jsp"/>
+    <script src="${pageContext.request.contextPath}/resources/js/lib/jquery.fullpage.min.js"></script>
+    <script src="${pageContext.request.contextPath}/resources/js/navigation.js"></script>
+    <script>
+        ddiconmenu.docinit({ // initialize an Icon Menu
+        menuid: 'myiconmenu', //main menu ID
+        easing: "easeInOutCirc",
+        dur: 500 //<--no comma after last setting
+        })
+    </script>
+
+
 </body>
 </html>
