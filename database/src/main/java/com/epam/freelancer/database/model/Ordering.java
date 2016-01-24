@@ -40,9 +40,6 @@ public class Ordering implements BaseEntity<Integer> {
     @Column
     private Integer version;
 
-    public Ordering() {
-    }
-
     public String getTitle() {
         return title;
     }
