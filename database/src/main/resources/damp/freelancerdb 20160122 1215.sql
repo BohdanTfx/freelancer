@@ -501,6 +501,7 @@ INSERT INTO feedback VALUES
 -- 
 -- Вывод данных для таблицы ordering
 --
+
 INSERT INTO ordering VALUES
 (1, 'SMM Instagram', 'hourly', 'I need my instagram services sold, good rates for resale on my panel.', 1, '2009-06-13 00:00:00', 20.399999618530273, False, NULL, False, NULL, False, 0, False),
 (2, 'mt5 stuff for Stonev', 'hourly', 'will send details of project. Fairly simple EA.', 2, '2015-09-23 00:00:00', 18.899999618530273, False, NULL, False, NULL, False, 0, False),
@@ -517,9 +518,8 @@ INSERT INTO ordering VALUES
   (13, 'Recover data from TSM (Tivoli) archive without database', 'hourly', 'I have some old backup tapes that were created using an old version of Tivoli TSM in 2004. I do not have the database anymore but am looking to recover the data.', 1, '2015-06-13 19:36:00', 16.3999996173, False, NULL, False, NULL, False, 0, False),
   (14, 'Building A Website', 'hourly', 'I want to make a cs go jackpot site. I would like to know how much it would cost to make and if anyone could do it for me', 1, '2015-06-13 05:26:00', 23.393353453, True, '2015-12-13 00:00:00', False, NULL, True, 0, False),
   (15, 'Get an apk file', 'hourly', 'We need you to help us download an app and give us a short review about it', 1, '2014-06-13 07:28:00', 40.3999434273, True, '2015-07-01 00:00:00', True, '2014-08-04 00:00:00', False, 0, False),
-  (16, 'Submit articles for me', 'hourly', 'I need someone to wright a grant or grants for wildland fire fighters,equipment.', 1, '20014-06-13 19:47:00', 33.3999333424230273, True, '2015-12-13 00:00:00', False, NULL, True, 0, False);;
+  (16, 'Submit articles for me', 'hourly', 'I need someone to wright a grant or grants for wildland fire fighters,equipment.', 1, '20014-06-13 19:47:00', 33.3999333424230273, True, '2015-12-13 00:00:00', False, NULL, True, 0, False);
 
--- 
 -- Вывод данных для таблицы question
 --
 INSERT INTO question VALUES
