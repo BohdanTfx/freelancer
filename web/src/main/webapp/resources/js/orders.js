@@ -35,4 +35,7 @@ $(document).ready(function() {
 			filterOpen = true;
 		}
 	});
+
+	$("#hourlySortInput").bootstrapSwitch();
+	$("#dateSortInput").bootstrapSwitch();
 });

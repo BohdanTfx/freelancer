@@ -18,6 +18,8 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/lib/bootstrap-slider.min.css">
 <link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/lib/bootstrap-switch.min.css">
+<link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/lib/awesome-bootstrap-checkbox.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/lib/select2.min.css">
@@ -127,27 +129,41 @@
 
 			<div class="panel-group">
 				<div class="pagination dark animated fadeIn">
-					<a href="?firstPage=yes" class="page dark gradient">
-						<i class="fa fa-chevron-left"></i> <i class="fa fa-chevron-left"></i>
-						<span>First </span>
-					</a>
-					<c:forEach items="${pagedItems}" var="page" varStatus="loop">
-						<c:choose>
-							<c:when test="${page.first eq 'current'}">
-								<span class="page dark active">${page.second + 1}</span>
-							</c:when>
-							<c:otherwise>
-								<a href="${page.first}" class="page dark gradient">${page.second + 1}</a>
-							</c:otherwise>
-						</c:choose>
-					</c:forEach>
-					<a href="?lastPage=yes" class="page dark gradient">
-						<span>Last </span>
-						<i class="fa fa-chevron-right"></i> <i class="fa fa-chevron-right"></i>
-					</a>
-					<div class="pull-right">
-						<div class="col-sm-2 hidden-xs">sdgsdg</div>
-						<div class="col-sm-2">asgasg</div>
+					<div class="col-sm-8">
+						<a href="?firstPage=yes" class="page dark gradient">
+							<i class="fa fa-chevron-left"></i> <i class="fa fa-chevron-left"></i>
+							<span>First</span>
+						</a>
+						<c:forEach items="${pagedItems}" var="page" varStatus="loop">
+							<c:choose>
+								<c:when test="${page.first eq 'current'}">
+									<span class="page dark active"> ${page.second + 1} </span>
+								</c:when>
+								<c:otherwise>
+									<a href="${page.first}" class="page dark gradient">
+										${page.second + 1} </a>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+						<a href="?lastPage=yes" class="page dark gradient">
+							<span>Last</span>
+							<i class="fa fa-chevron-right"></i> <i
+								class="fa fa-chevron-right"></i>
+						</a>
+					</div>
+					<div class="pull-right col-sm-4">
+						<div class="hidden-xs col-sm-6">
+							<input id="dateSortInput" type="checkbox" checked
+								data-label-text="Date" data-on-color="info"
+								data-off-color="warning" data-size="mini" data-on-text="Asc"
+								data-off-text="Desc">
+						</div>
+						<div class="pull-right col-sm-6">
+							<input id="hourlySortInput" type="checkbox" checked
+								data-label-text="Payment" data-on-color="info"
+								data-off-color="warning" data-size="mini" data-on-text="Asc"
+								data-off-text="Desc">
+						</div>
 					</div>
 				</div>
 				<c:forEach items="${orders}" var="order">
@@ -220,6 +236,8 @@
 	<script src="${pageContext.request.contextPath}/resources/js/orders.js"></script>
 	<script
 		src="${pageContext.request.contextPath}/resources/js/lib/bootstrap-slider.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/resources/js/lib/bootstrap-switch.min.js"></script>
 	<script
 		src="${pageContext.request.contextPath}/resources/js/lib/select2.min.js"></script>
 </body>
