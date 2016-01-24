@@ -3,6 +3,7 @@ package com.epam.freelancer.web.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -21,9 +22,11 @@ import org.codehaus.jackson.map.ObjectMapper;
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.manager.UserManager;
 import com.epam.freelancer.business.service.OrderingService;
+import com.epam.freelancer.database.model.Ordering;
 import com.epam.freelancer.database.model.UserEntity;
 import com.epam.freelancer.security.provider.AuthenticationProvider;
 import com.epam.freelancer.web.social.Linkedin;
+import com.epam.freelancer.web.util.Paginator;
 
 public class FrontController extends HttpServlet {
 	private final static Logger LOG = Logger.getLogger(FrontController.class);
@@ -32,6 +35,7 @@ public class FrontController extends HttpServlet {
 	private OrderingService orderingService;
 	private UserManager userManager;
 	private Linkedin linkedin;
+	private Paginator paginator;
 
 	public static String getPath(HttpServletRequest request) {
 		return request.getRequestURI()
@@ -43,6 +47,9 @@ public class FrontController extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		LOG.info(getClass().getSimpleName() + " - " + "front controller loaded");
 		linkedin = new Linkedin();
+
+		paginator = new Paginator("pagedItems", "start", "firstPage",
+				"lastPage", "currentPage");
 		try {
 			linkedin.initKeys("/social.properties");
 		} catch (IOException e) {
@@ -90,8 +97,8 @@ public class FrontController extends HttpServlet {
 					return;
 				case "logout":
 					logout(request, response);
-                    return;
-                    default:
+					return;
+				default:
 					if (path.startsWith("admin/")) {
 						controllers.get("admin/").service(request, response);
 						return;
@@ -105,8 +112,10 @@ public class FrontController extends HttpServlet {
 						return;
 					}
 					if (path.startsWith("signup")) {
-						request.setAttribute("role",request.getParameter("role"));
-						request.getRequestDispatcher("/views/signup.jsp").forward(request,response);
+						request.setAttribute("role",
+								request.getParameter("role"));
+						request.getRequestDispatcher("/views/signup.jsp")
+								.forward(request, response);
 						return;
 					}
 
@@ -137,7 +146,9 @@ public class FrontController extends HttpServlet {
 	private void fillOrdering(HttpServletRequest request,
 			HttpServletResponse response)
 	{
-		request.setAttribute("orders", orderingService.findAll());
+		List<Ordering> orderings = orderingService.findAll();
+		request.setAttribute("orders", orderings);
+		paginator.next(request, orderings);
 
 	}
 
@@ -211,16 +222,17 @@ public class FrontController extends HttpServlet {
 	}
 
 	public void logout(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-        LOG.info(getClass().getSimpleName() + " - " + "logout");
+			throws IOException
+	{
+		LOG.info(getClass().getSimpleName() + " - " + "logout");
 		UserEntity userEntity = (UserEntity) request.getSession().getAttribute(
 				"user");
 		AuthenticationProvider authenticationProvider = (AuthenticationProvider) ApplicationContext
 				.getInstance().getBean("authenticationProvider");
 		authenticationProvider.invalidateUserCookie(response,
-                "freelancerRememberMeCookie", userEntity);
-        userManager.modifyUser(userEntity);
-        request.getSession().removeAttribute("user");
+				"freelancerRememberMeCookie", userEntity);
+		userManager.modifyUser(userEntity);
+		request.getSession().removeAttribute("user");
 		response.sendRedirect(request.getContextPath() + "/");
 	}
 }

@@ -10,6 +10,8 @@
 <jsp:include page="/template/headImport.jsp" />
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/orders.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/pagination.css">
 </head>
 <body>
 	<jsp:include page="/template/header.jsp" />
@@ -60,6 +62,18 @@
 			</div>
 
 			<div class="panel-group" id="accordion">
+				<div class="pagination dark">
+					<c:forEach items="${pagedItems}" var="page" varStatus="loop">
+						<c:choose>
+							<c:when test="${loop.index == currentPage}">
+								<span class="page dark active">Current</span>
+							</c:when>
+							<c:otherwise>
+								<a href="${page.first}" class="page dark gradient">${page.second}</a>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+				</div>
 				<c:forEach items="${orders}" var="order">
 					<div class="panel panel-info">
 						<div class="panel-heading">
