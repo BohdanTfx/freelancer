@@ -69,3 +69,15 @@
 .tags a:hover:before {
 	border-color: transparent #273039 transparent transparent;
 }
+
+.slider .slider-selection {
+	background: #273039;
+}
+
+.slider {
+	width: 95% !important;
+}
+
+#timeZoneSelect+.select2-container {
+	width: 100% !important;
+}
