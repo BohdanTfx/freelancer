@@ -501,13 +501,14 @@ INSERT INTO feedback VALUES
 -- 
 -- Вывод данных для таблицы ordering
 --
+
 INSERT INTO ordering VALUES
 (1, 'SMM Instagram', 'hourly', 'I need my instagram services sold, good rates for resale on my panel.', 1, '2009-06-13 00:00:00', 20.399999618530273, False, NULL, False, NULL, False, 0, False),
 (2, 'mt5 stuff for Stonev', 'hourly', 'will send details of project. Fairly simple EA.', 2, '2015-09-23 00:00:00', 18.899999618530273, False, NULL, False, NULL, False, 0, False),
 (3, 'True Mobile Website Design', 'fixed', 'This project is for a web design and development team that can build out True Mobile site for a website which is already responsive. Experienced design and development team candidates only. For this task you would do the following: 1) Using a mockup tool we will provide. Create a full integrated mockup for the current site for about 10 key pages. Once client approves the mockup, you would then design the entire site. Site has approximately 82 pages but would be condensed heavily, we would follow a theme based on a specific theme design pages such as (home, main category page (content), sub category page ( content), dinning menu page and photo gallery), all other pages would adjust to these specific page design. Mock would be done using https://www.fluidui.com/ or other design mockup tools that lets us preview the functionality. Site would view able in various devices (tablets and phones). If this meets the standards, development begins. ', 3, '2009-06-13 00:00:00', 1700, True, '2015-12-13 00:00:00', False, NULL, True, 0, False),
 (4, 'Write some Software', 'hourly', 'customized software development project', 4, '2015-06-13 00:00:00', 14.5, True, '2015-07-01 00:00:00', True, '2015-08-21 00:00:00', False, 0, False),
 (5, 'Malware/Redirect correction on Website', 'hourly', 'I am having a malware/redirect issue on my website that is causing it to redirect to random other websites. Also, there is not a specific page or product that causes the issue. It happens randomly throughout the site.', 5, '2015-11-03 00:00:00', 21.799999237060547, True, '2015-11-11 00:00:00', False, NULL, False, 0, False),
-(6, 'GA Consulting', 'hourly', 'I am searching about a consulence on Google analytics.', 5, '2015-09-23 00:00:00', 13.899999618530273, False, NULL, False, NULL, False, 0, False);
+(6, 'GA Consulting', 'hourly', 'I am searching about a consulence on Google analytics.', 5, '2015-09-23 00:00:00', 13.899999618530273, False, NULL, False, NULL, False, 0, False),
 (7, 'Design a Logo', 'hourly', 'i want clean and fresh in eyes', 1, '2009-06-13 00:00:00', 11.39112220273, False, NULL, False, NULL, False, 0, False),
   (8, 'Design Work For multi-ventures', 'hourly', 'sssss', 1, '2009-06-13 00:00:00', 16.342342423, False, NULL, False, NULL, False, 0, False),
   (9, 'Develop a small gift-card app for iPad', 'hourly', 'We want a small front end app for a .csv file with only 4 fields; a (unique) code, value (in NOK), expiry date and if used a order number (or else blank). See attachment. The app must be able generate reports and do queries.', 1, '2009-06-13 15:23:00', 20.399999618530273, False, NULL, False, NULL, False, 0, False),
@@ -518,7 +519,9 @@ INSERT INTO ordering VALUES
   (14, 'Building A Website', 'hourly', 'I want to make a cs go jackpot site. I would like to know how much it would cost to make and if anyone could do it for me', 1, '2015-06-13 05:26:00', 23.393353453, True, '2015-12-13 00:00:00', False, NULL, True, 0, False),
   (15, 'Get an apk file', 'hourly', 'We need you to help us download an app and give us a short review about it', 1, '2014-06-13 07:28:00', 40.3999434273, True, '2015-07-01 00:00:00', True, '2014-08-04 00:00:00', False, 0, False),
   (16, 'Submit articles for me', 'hourly', 'I need someone to wright a grant or grants for wildland fire fighters,equipment.', 1, '20014-06-13 19:47:00', 33.3999333424230273, True, '2015-12-13 00:00:00', False, NULL, True, 0, False);
--- 
+
+
+
 -- Вывод данных для таблицы question
 --
 INSERT INTO question VALUES
