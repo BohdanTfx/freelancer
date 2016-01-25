@@ -49,7 +49,7 @@ public class FrontController extends HttpServlet {
 		linkedin = new Linkedin();
 
 		paginator = new Paginator("pagedItems", "start", "firstPage",
-				"lastPage", "currentPage");
+				"lastPage", "currentPage", "orders");
 		try {
 			linkedin.initKeys("/social.properties");
 		} catch (IOException e) {
@@ -66,10 +66,12 @@ public class FrontController extends HttpServlet {
 
 	private void configControllers() {
 		controllers.put("user/", new UserController());
+		controllers.put("dev/", new DeveloperController());
+
 	}
 
 	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException
+						 HttpServletResponse response) throws ServletException, IOException
 	{
 		LOG.info(getClass().getSimpleName() + " - " + "doGet");
 		try {
@@ -82,44 +84,43 @@ public class FrontController extends HttpServlet {
 			if (path.startsWith("/front/")) {
 				path = path.substring("/front/".length());
 				switch (path) {
-				case "":
-					path = "home";
-					break;
-				case "orders":
-					fillOrdering(request, response);
-					break;
-				case "signup":
-					request.setAttribute("role",request.getParameter("role"));
-					fillSignup(request, response);
-					break;
-				case "language/bundle":
-					sendBundle(request, response);
-					return;
-				case "logout":
-					logout(request, response);
-					return;
-				default:
-					if (path.startsWith("admin/")) {
-						controllers.get("admin/").service(request, response);
+					case "":
+						path = "home";
+						break;
+					case "orders":
+						fillOrdering(request, response);
+						break;
+					case "signup":
+						request.setAttribute("role", request.getParameter("role"));
+						fillSignup(request, response);
+						break;
+					case "language/bundle":
+						sendBundle(request, response);
 						return;
-					}
-					if (path.startsWith("dev/")) {
-						controllers.get("dev/").service(request, response);
+					case "logout":
+						logout(request, response);
 						return;
-					}
-					if (path.startsWith("cust/")) {
-						controllers.get("cust/").service(request, response);
-						return;
-					}
-					if (path.startsWith("signup")) {
-						request.setAttribute("role",
-								request.getParameter("role"));
-						request.getRequestDispatcher("/views/signup.jsp")
-								.forward(request, response);
-						return;
-					}
-
-			}
+					default:
+						if (path.startsWith("admin/")) {
+							controllers.get("admin/").service(request, response);
+							return;
+						}
+						if (path.startsWith("dev/")) {
+							controllers.get("dev/").service(request, response);
+							return;
+						}
+						if (path.startsWith("cust/")) {
+							controllers.get("cust/").service(request, response);
+							return;
+						}
+						if (path.startsWith("signup")) {
+							request.setAttribute("role",
+									request.getParameter("role"));
+							request.getRequestDispatcher("/views/signup.jsp")
+									.forward(request, response);
+							return;
+						}
+				}
 				request.getRequestDispatcher("/views/" + path + ".jsp")
 						.forward(request, response);
 			}
@@ -130,7 +131,7 @@ public class FrontController extends HttpServlet {
 	}
 
 	private void fillSignup(HttpServletRequest request,
-			HttpServletResponse response)
+							HttpServletResponse response)
 	{
 		request.setAttribute("linkedinurl",
 				linkedin.getAuthentificationUrl("http://localhost:8081/signin"));
@@ -144,16 +145,15 @@ public class FrontController extends HttpServlet {
 	}
 
 	private void fillOrdering(HttpServletRequest request,
-			HttpServletResponse response)
+							  HttpServletResponse response)
 	{
 		List<Ordering> orderings = orderingService.findAll();
-		request.setAttribute("orders", orderings);
 		paginator.next(request, orderings);
 
 	}
 
 	private void sendBundle(HttpServletRequest request,
-			HttpServletResponse response)
+							HttpServletResponse response)
 	{
 		LOG.info(getClass().getSimpleName() + " - " + "sendBundle");
 		Locale locale = ((Locale) request.getSession().getAttribute("language"));
@@ -193,7 +193,7 @@ public class FrontController extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException
+						  HttpServletResponse response) throws ServletException, IOException
 	{
 		LOG.info(getClass().getSimpleName() + " - " + "doPost");
 		try {
