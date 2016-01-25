@@ -166,48 +166,55 @@
 						</div>
 					</div>
 				</div>
-				<c:forEach items="${orders}" var="order">
-					<div class="panel panel-info">
-						<div class="panel-heading">
-							<div class="panel-title">
-								<c:out value="${order.title}" />
-								<div class="pull-right col-xs-3 col-sm-4">
-									<div class="hidden-xs label label-warning col-sm-7">Added</div>
-									<div class="label label-info col-sm-5 pull-right">
-										<c:out value="${order.payType}" />
+				<div id="ordersProccessingAnimation"
+					class="col-sm-offset-4 col-sm-4 col-xs-offset-3 col-xs-6">
+					<jsp:include
+						page="${pageContext.request.contextPath}/resources/svg/loading.html" />
+				</div>
+				<div id="ordersArea">
+					<c:forEach items="${orders}" var="order">
+						<div class="panel panel-info">
+							<div class="panel-heading">
+								<div class="panel-title">
+									<c:out value="${order.title}" />
+									<div class="pull-right col-xs-3 col-sm-4">
+										<div class="hidden-xs label label-warning col-sm-7">Added</div>
+										<div class="label label-info col-sm-5 pull-right">
+											<c:out value="${order.payType}" />
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-xs-10 col-sm-10">
-									<c:out value="${order.descr}" />
-								</div>
-								<div class="pull-right col-xs-3 col-sm-4">
-									<div class="hidden-xs label label-warning col-sm-7">
-										<fmt:formatDate value="${order.date}" var="formattedDate"
-											type="date" pattern="HH-mm MM-dd-yyyy" />
-										<c:out value="${formattedDate}" />
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-xs-10 col-sm-10">
+										<c:out value="${order.descr}" />
 									</div>
-									<div class="label label-info col-sm-5 pull-right">
-										<fmt:formatNumber value="${order.payment}" var="number"
-											currencySymbol="$" type="currency" />
-										<c:out value="${number}" />
+									<div class="pull-right col-xs-3 col-sm-4">
+										<div class="hidden-xs label label-warning col-sm-7">
+											<fmt:formatDate value="${order.date}" var="formattedDate"
+												type="date" pattern="HH-mm MM-dd-yyyy" />
+											<c:out value="${formattedDate}" />
+										</div>
+										<div class="label label-info col-sm-5 pull-right">
+											<fmt:formatNumber value="${order.payment}" var="number"
+												currencySymbol="$" type="currency" />
+											<c:out value="${number}" />
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class="panel-footer">
-							<div class="row">
-								<ul class="tags animated zoomIn">
-									<li><a href="#" class="hvr-grow">Java</a></li>
-									<li><a href="#" class="hvr-grow">C#</a></li>
-								</ul>
+							<div class="panel-footer">
+								<div class="row">
+									<ul class="tags animated zoomIn">
+										<li><a href="#" class="hvr-grow">Java</a></li>
+										<li><a href="#" class="hvr-grow">C#</a></li>
+									</ul>
+								</div>
 							</div>
 						</div>
-					</div>
-				</c:forEach>
+					</c:forEach>
+				</div>
 				<div class="pagination dark">
 					<a href="?firstPage=yes" class="page dark gradient">
 						<i class="fa fa-chevron-left"></i> <i class="fa fa-chevron-left"></i>
