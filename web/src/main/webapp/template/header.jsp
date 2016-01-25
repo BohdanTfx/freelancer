@@ -28,22 +28,23 @@
 								<li><a href="${pageContext.request.contextPath}/signin">
 										<i class="fa fa-sign-in"></i>Sign In
 									</a></li>
-                                <li><a href="${pageContext.request.contextPath}/chooserole">
+								<li><a href="${pageContext.request.contextPath}/chooserole">
 										<i class="fa fa-user-plus"></i>Sign Up
 									</a></li>
 							</ul>
 						</sec:access>
-						<%-- 						<sec:access role="user"> --%>
-						<ul class="navigation">
-							<li><a
-									href="${pageContext.request.contextPath}/cabinet/main">
-									<i class="fa fa-home"></i>Cabinet
-								</a></li>
-                            <li id="logout"><a href="${pageContext.request.contextPath}/logout">
-									<i class="fa fa-sign-out"></i>Logout
-								</a></li>
-						</ul>
-						<%-- 						</sec:access> --%>
+						<sec:access role="user">
+							<ul class="navigation">
+								<li><a
+										href="${pageContext.request.contextPath}/cabinet/main">
+										<i class="fa fa-home"></i>Cabinet
+									</a></li>
+								<li id="logout"><a
+										href="${pageContext.request.contextPath}/logout">
+										<i class="fa fa-sign-out"></i>Logout
+									</a></li>
+							</ul>
+						</sec:access>
 					</div>
 				</nav>
 

@@ -9,21 +9,24 @@ import javax.servlet.http.HttpServletRequest;
 import com.epam.freelancer.database.model.ObjectHolder;
 
 public class Paginator {
-	private static final Integer STEP = 1;
-	private final String ITEMS_NAME;
+	private static final Integer STEP = 10;
+	private final String PAGER_ITEMS_NAME;
 	private final String URL_START_NAME;
 	private final String URL_FIRST_NAME;
 	private final String URL_LAST_NAME;
 	private final String CURRENT_POSITION;
+	private final String ITEMS_NAME;
 
-	public Paginator(String iTEMS_NAME, String uRL_START_NAME,
-			String uRL_FIRST_NAME, String uRL_LAST_NAME, String cURRENT_POSITION)
+	public Paginator(String pAGER_ITEMS_NAME, String uRL_START_NAME,
+			String uRL_FIRST_NAME, String uRL_LAST_NAME,
+			String cURRENT_POSITION, String iTEMS_NAME)
 	{
-		ITEMS_NAME = iTEMS_NAME;
+		PAGER_ITEMS_NAME = pAGER_ITEMS_NAME;
 		URL_START_NAME = uRL_START_NAME;
 		URL_FIRST_NAME = uRL_FIRST_NAME;
 		URL_LAST_NAME = uRL_LAST_NAME;
 		CURRENT_POSITION = cURRENT_POSITION;
+		ITEMS_NAME = iTEMS_NAME;
 	}
 
 	public void next(HttpServletRequest request, List<?> items) {
@@ -32,12 +35,12 @@ public class Paginator {
 
 		Integer start = Integer.valueOf(request.getParameter(URL_START_NAME));
 		start = start > items.size() ? 0 : start;
-		request.setAttribute(
-				ITEMS_NAME,
-				items.subList(start,
-						(start + STEP) > items.size() ? items.size() : start
-								+ STEP));
-		fillPaginationElement(request, items, start % STEP);
+
+		List<?> list = items.subList(start,
+				(start + STEP) > items.size() ? items.size() : start + STEP);
+		request.setAttribute(PAGER_ITEMS_NAME, list);
+		request.setAttribute(ITEMS_NAME, list);
+		fillPaginationElement(request, items, start);
 	}
 
 	private boolean isLast(HttpServletRequest request, List<?> items) {
@@ -45,11 +48,14 @@ public class Paginator {
 		if (last == null || !"yes".equals(last))
 			return false;
 
-		fillPaginationElement(request, items, items.size() % STEP);
 		Integer size = items.size();
-		Integer offset = STEP > size ? 0 : size % STEP;
-		request.setAttribute(ITEMS_NAME, items.subList(offset, size));
+		Integer offset = size / STEP * STEP > size ? 0 : size / STEP * STEP;
 
+		List<?> list = items.subList(offset, size);
+		request.setAttribute(PAGER_ITEMS_NAME, list);
+		request.setAttribute(ITEMS_NAME, list);
+
+		fillPaginationElement(request, items, offset);
 		return true;
 	}
 
@@ -58,10 +64,12 @@ public class Paginator {
 		if (first == null || !"yes".equals(first))
 			return false;
 
-		fillPaginationElement(request, items, 0);
-		request.setAttribute(ITEMS_NAME,
-				items.subList(0, STEP > items.size() ? items.size() : STEP));
+		List<?> list = items.subList(0, STEP > items.size() ? items.size()
+				: STEP);
+		request.setAttribute(PAGER_ITEMS_NAME, list);
+		request.setAttribute(ITEMS_NAME, list);
 
+		fillPaginationElement(request, items, 0);
 		return true;
 	}
 
@@ -71,8 +79,8 @@ public class Paginator {
 		List<ObjectHolder<String, Integer>> pages = fillPrevBtn(iList,
 				currentPosition);
 		pages.addAll(fillNextBtn(iList, currentPosition));
-		request.setAttribute(CURRENT_POSITION, currentPosition % STEP);
-		request.setAttribute(ITEMS_NAME, pages);
+		request.setAttribute(CURRENT_POSITION, currentPosition);
+		request.setAttribute(PAGER_ITEMS_NAME, pages);
 	}
 
 	private List<ObjectHolder<String, Integer>> fillNextBtn(List<?> iList,
@@ -82,7 +90,7 @@ public class Paginator {
 		Integer limit = size / STEP;
 		Integer current = currentPosition / STEP + 1;
 		List<ObjectHolder<String, Integer>> pages = new ArrayList<>();
-		for (int i = current; i < limit && i - current < 3; i++) {
+		for (int i = current; i <= limit && i - current < 3; i++) {
 			pages.add(new ObjectHolder<String, Integer>("?start=" + (i * STEP),
 					i));
 		}
@@ -95,10 +103,12 @@ public class Paginator {
 	{
 		Integer current = currentPosition / STEP - 1;
 		LinkedList<ObjectHolder<String, Integer>> pages = new LinkedList<>();
-		for (int i = current; i >= 0 && current - i < 3; i--) {
+		int i = current;
+		for (; i >= 0 && current - i < 3; i--) {
 			pages.addFirst(new ObjectHolder<String, Integer>("?start="
 					+ (i * STEP), i));
 		}
+		pages.add(new ObjectHolder<String, Integer>("current", current + 1));
 
 		return pages;
 	}

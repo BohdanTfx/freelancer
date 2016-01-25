@@ -520,8 +520,6 @@ INSERT INTO ordering VALUES
   (15, 'Get an apk file', 'hourly', 'We need you to help us download an app and give us a short review about it', 1, '2014-06-13 07:28:00', 40.3999434273, True, '2015-07-01 00:00:00', True, '2014-08-04 00:00:00', False, 0, False),
   (16, 'Submit articles for me', 'hourly', 'I need someone to wright a grant or grants for wildland fire fighters,equipment.', 1, '20014-06-13 19:47:00', 33.3999333424230273, True, '2015-12-13 00:00:00', False, NULL, True, 0, False);
 
-
-
 -- Вывод данных для таблицы question
 --
 INSERT INTO question VALUES

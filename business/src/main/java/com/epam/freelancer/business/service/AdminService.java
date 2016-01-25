@@ -21,7 +21,6 @@ public class AdminService extends UserService<Admin> {
 
     @Override
     public Admin create(Map<String, String[]> data) {
-        Map map = new HashMap<>();
         if (!isDataValid(prepareData(data)))
             throw new RuntimeException("Validation exception");
 

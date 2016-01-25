@@ -49,7 +49,7 @@ public class FrontController extends HttpServlet {
 		linkedin = new Linkedin();
 
 		paginator = new Paginator("pagedItems", "start", "firstPage",
-				"lastPage", "currentPage");
+				"lastPage", "currentPage", "orders");
 		try {
 			linkedin.initKeys("/social.properties");
 		} catch (IOException e) {
@@ -89,7 +89,7 @@ public class FrontController extends HttpServlet {
 					fillOrdering(request, response);
 					break;
 				case "signup":
-					request.setAttribute("role",request.getParameter("role"));
+					request.setAttribute("role", request.getParameter("role"));
 					fillSignup(request, response);
 					break;
 				case "language/bundle":
@@ -147,7 +147,6 @@ public class FrontController extends HttpServlet {
 			HttpServletResponse response)
 	{
 		List<Ordering> orderings = orderingService.findAll();
-		request.setAttribute("orders", orderings);
 		paginator.next(request, orderings);
 
 	}
