@@ -35,6 +35,7 @@ public class FrontController extends HttpServlet {
 
 	private void configControllers() {
 		controllers.put("user/", new UserController());
+		controllers.put("dev/", new DeveloperController());
 		controllers.put("unreg/", new UnregisteredController());
 	}
 
