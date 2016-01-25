@@ -1,14 +1,54 @@
 /* tab color */
 body {
     font-family: 'Roboto';
-    font-size: 14px;
+    font-size: 16px;
 }
+
+.history-title {
+    font-family: Arial;
+    font-size: 20px;
+}
+
+.progress-text{
+    text-shadow: 1px 1px 2px black, 0 0 1em black;
+    color: white;
+    position: absolute;
+    left: 0px;
+    right: 0px;;
+}
+
+.progress{
+    min-width: 100px;
+    border: solid 1px #bebebe;
+    text-align: center;
+    position: relative;
+}
+
+#tests {
+    padding: 5px;
+}
+
+.filter {
+    padding-right: 0;
+
+}
+
+.btn-pass-test {
+    margin-bottom: 5px;
+    padding: 0px 15px 0px 15px;
+    text-shadow: 1px 1px 2px black, 0 0 1em black;
+    color: white;
+    float: left;
+}
+
 .green-color {
-    color: green;
+    color: #449d44;
+    text-shadow: none;
 }
 
 .red-color{
     color: red;
+    text-shadow: none;
 }
 
 #nav-tabs {

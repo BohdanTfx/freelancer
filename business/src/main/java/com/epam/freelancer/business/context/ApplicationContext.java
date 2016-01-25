@@ -4,14 +4,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.epam.freelancer.business.manager.UserManager;
-import com.epam.freelancer.business.service.AdminService;
-import com.epam.freelancer.business.service.CustomerService;
-import com.epam.freelancer.business.service.DeveloperQAService;
-import com.epam.freelancer.business.service.DeveloperService;
-import com.epam.freelancer.business.service.FeedbackService;
-import com.epam.freelancer.business.service.OrderingService;
-import com.epam.freelancer.business.service.QuestionService;
-import com.epam.freelancer.business.service.TestService;
+import com.epam.freelancer.business.service.*;
 import com.epam.freelancer.business.util.CookieManager;
 import com.epam.freelancer.database.dao.AdminDao;
 import com.epam.freelancer.database.dao.AnswerDao;
@@ -82,6 +75,9 @@ public final class ApplicationContext {
 		developerQAService.setTechnologyDao(daoManager.getDAO(TechnologyDao.class.getSimpleName()));
 		developerQAService.setTestDao(daoManager.getDAO(TestDao.class.getSimpleName()));
 		addBean("developerQAService", developerQAService);
+
+		TechnologyService technologyService = new TechnologyService();
+		addBean("technologyService", technologyService);
 
 		UserManager userManager = new UserManager();
 		userManager.setCustomerService(customerService);

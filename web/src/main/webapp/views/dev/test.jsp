@@ -44,21 +44,134 @@
             <div id="history" class="tab-pane fade in active">
 
                 <%--start header--%>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <div class="row">
-                            <div class="panel-title col-md-12">
-                                <div class="col-md-4 col-sm-5 col-xs-9">
-                                    <c:out value="Test"/>
+                <div class="history-title">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="panel-title col-md-12">
+                                    <div class="col-md-4 col-sm-5 col-xs-9">
+                                        <a id="history_title_test"><i class="fa fa-tasks"><c:out value=" Test"/></i></a>
+                                    </div>
+                                    <div class="col-md-4 col-sm-5 hidden-xs">
+                                        <a id="history_title_technology"><i class="fa fa-tv"><c:out
+                                                value=" Technology"/></i></a>
+                                    </div>
+                                    <div class="col-md-2 hidden-sm hidden-xs">
+                                        <i class="fa fa-calendar-o"><c:out value=" Expire date"/></i>
+                                    </div>
+                                    <div class="col-md-2 col-sm-2 col-xs-3 text-center">
+                                        <i class="fa fa-bar-chart"><c:out value=" Your Rate"/></i>
+                                    </div>
                                 </div>
-                                <div class="col-md-4 col-sm-5 hidden-xs">
-                                    <c:out value="Technology"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <%--end header--%>
+                <div id="history_list">
+                    <c:forEach items="${devQAs}" var="devQA">
+                        <div class="panel panel-default">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="panel-heading">
+                                        <div class="col-md-4 col-sm-5 col-xs-9">
+                                            <c:out value="${devQA.test.name}"/>
+                                        </div>
+                                        <div class="col-md-4 col-sm-5 hidden-xs">
+                                            <c:out value="${devQA.test.technology.name}"/>
+                                        </div>
+                                        <c:choose>
+                                            <c:when test="${devQA.isExpire==true}">
+                                                <div class="col-md-2 hidden-sm hidden-xs">
+                                                    <i class="fa fa-calendar-times-o">
+                                                    <span class="red-color">
+                                                        <c:out value="${devQA.expire}"/>
+                                                    </span>
+                                                    </i>
+                                                </div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="col-md-2 hidden-sm hidden-xs">
+                                                    <i class="fa fa-calendar-check-o">
+                                                        <span class="green-color"><c:out
+                                                                value="${devQA.expire}"/></span>
+                                                    </i>
+                                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
+
+                                        <c:choose>
+                                            <c:when test="${devQA.rate < devQA.test.passScore}">
+                                                <div class="col-md-2 col-sm-2 hidden-xs">
+                                                    <div class="progress">
+                                                        <span class="progress-text"><c:out
+                                                                value="${devQA.rate}%"/></span>
+
+                                                        <div class="progress-bar progress-bar-danger" role="progressbar"
+                                                             aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
+                                                             style="width:${devQA.rate}%">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-3 hidden-sm hidden-md hidden-lg">
+                                                <span class="text-center progress-text red-color"><c:out
+                                                        value="${devQA.rate}%"/></span>
+                                                </div>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <div class="col-md-2 col-sm-2 hidden-xs">
+                                                    <div class="progress">
+                                                        <span class="progress-text"><c:out
+                                                                value="${devQA.rate}%"/></span>
+
+                                                        <div class="progress-bar progress-bar-success"
+                                                             role="progressbar"
+                                                             aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"
+                                                             style="width:${devQA.rate}%">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-3 hidden-sm hidden-md hidden-lg">
+                                                <span class="text-center progress-text green-color"><c:out
+                                                        value="${devQA.rate}%"/></span>
+                                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </div>
                                 </div>
-                                <div class="col-md-2 hidden-sm hidden-xs">
-                                    <c:out value="Expire date"/>
-                                </div>
-                                <div class="badge col-md-2 col-sm-2 col-xs-3">
-                                    <c:out value="Your Rate"/>
+                            </div>
+                        </div>
+                    </c:forEach>
+                </div>
+            </div>
+
+            <div id="tests" class="tab-pane fade">
+                <div class="row filter">
+                    <div class="form-group col-xs-12">
+                        <label for="all">All:</label>
+                        <input type="text" ng-model="search.$" class="form-control" id="all">
+                    </div>
+                    <div class="form-group col-md-6 col-xs-12">
+                        <label for="tech">Technology:</label>
+                        <input type="text" ng-model="search.$" class="form-control" id="tech">
+                    </div>
+                </div>
+
+                <%--start header--%>
+                <div class="history-title">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="panel-title col-md-12">
+                                    <div class="col-md-4 col-sm-5 col-xs-5">
+                                        <i class="fa fa-tasks"><c:out value=" Test"/></i>
+                                    </div>
+                                    <div class="col-md-4 col-sm-5 col-xs-4">
+                                        <i class="fa fa-tv"><c:out value=" Technology"/></i>
+                                    </div>
+                                    <div class="col-md-2 hidden-sm hidden-xs">
+                                        <i class="fa fa-bar-chart"><c:out value=" Pass Score"/></i>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -66,84 +179,28 @@
                 </div>
                 <%--end header--%>
 
-                <c:forEach items="${devQAs}" var="devQA">
-
+                <c:forEach items="${tests}" var="test">
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="col-md-4 col-sm-5 col-xs-9">
-                                        <c:out value="${devQA.test.name}"/>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="panel-heading">
+                                    <div class="col-md-4 col-sm-5 col-xs-5">
+                                        <c:out value="${test.name}"/>
                                     </div>
-                                    <div class="col-md-4 col-sm-5 hidden-xs">
-                                        <c:out value="${devQA.test.technology.name}"/>
+                                    <div class="col-md-4 col-sm-5 col-xs-4">
+                                        <c:out value="${test.technology.name}"/>
                                     </div>
-                                    <c:choose>
-                                        <c:when test="${devQA.isExpire==true}">
-                                            <div class="col-md-2 hidden-sm hidden-xs">
-                                                <div class="red-color">
-                                                    <c:out value="${devQA.expire}"/>
-                                                </div>
-                                            </div>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <div class="col-md-2 hidden-sm hidden-xs">
-                                                <div class="green-color">
-                                                    <c:out value="${devQA.expire}"/>
-                                                </div>
-                                            </div>
-                                        </c:otherwise>
-                                    </c:choose>
-
-                                    <c:choose>
-                                        <c:when test="${devQA.rate}<${devQA.test.passScore}">
-                                            <div class="badge col-md-2 col-sm-2 col-xs-3">
-                                                <div class="red-color">
-                                                    <c:out value="${devQA.rate}"/>
-                                                </div>
-                                            </div>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <div class="badge col-md-2 col-sm-2 col-xs-2">
-                                                <div class="green-color">
-                                                    <c:out value="${devQA.rate}"/>
-                                                </div>
-                                            </div>
-                                        </c:otherwise>
-                                    </c:choose>
+                                    <div class="col-md-2 hidden-sm hidden-xs">
+                                        <c:out value="${test.passScore}%"/>
+                                    </div>
+                                    <div class="col-md-2 col-sm-2 col-xs-3">
+                                        <a class="btn btn-success btn-pass-test" href="test_${test.id}">Pass test</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </c:forEach>
-            </div>
-            <div id="tests" class="tab-pane fade">
-                <%--start test--%>
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <div class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion"
-                               href="#order_1">
-                                <c:out value="Order title"/>
-                            </a>
-
-                            <div class="badge pull-right">
-                                <c:out value="pay_type"/>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="order_2" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-xs-10">
-                                    <c:out value="Order description"/>
-                                </div>
-                                <div class="col-xs-2"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <%--end test--%>
             </div>
         </div>
     </div>
