@@ -15,8 +15,8 @@ public class DeveloperQA implements BaseEntity<Integer> {
     private Integer id;
     @Column(name = "dev_id")
     private Integer devId;
-    @Column(name = "tech_id")
-    private Integer techId;
+    @Column(name = "test_id")
+    private Integer testId;
     @Column
     private Double rate;
     @Column
@@ -27,6 +27,7 @@ public class DeveloperQA implements BaseEntity<Integer> {
     private Boolean isDeleted;
     @Column
     private Integer version;
+    private Test test;
 
     public DeveloperQA() {
     }
@@ -39,12 +40,12 @@ public class DeveloperQA implements BaseEntity<Integer> {
         this.devId = devId;
     }
 
-    public Integer getTechId() {
-        return techId;
+    public Integer getTestId() {
+        return testId;
     }
 
-    public void setTechId(Integer techId) {
-        this.techId = techId;
+    public void setTestId(Integer testId) {
+        this.testId = testId;
     }
 
     public Double getRate() {
@@ -109,16 +110,24 @@ public class DeveloperQA implements BaseEntity<Integer> {
         DeveloperQA that = (DeveloperQA) o;
 
         if (devId != null ? !devId.equals(that.devId) : that.devId != null) return false;
-        if (techId != null ? !techId.equals(that.techId) : that.techId != null) return false;
+        if (testId != null ? !testId.equals(that.testId) : that.testId != null) return false;
         if (expire != null ? !expire.equals(that.expire) : that.expire != null) return false;
         return !(isDeleted != null ? !isDeleted.equals(that.isDeleted) : that.isDeleted != null);
 
     }
 
+    public Test getTest() {
+        return test;
+    }
+
+    public void setTest(Test test) {
+        this.test = test;
+    }
+
     @Override
     public int hashCode() {
         int result = devId != null ? devId.hashCode() : 0;
-        result = 31 * result + (techId != null ? techId.hashCode() : 0);
+        result = 31 * result + (testId != null ? testId.hashCode() : 0);
         result = 31 * result + (expire != null ? expire.hashCode() : 0);
         result = 31 * result + (isDeleted != null ? isDeleted.hashCode() : 0);
         return result;
@@ -129,7 +138,7 @@ public class DeveloperQA implements BaseEntity<Integer> {
         return "DeveloperQA{" +
                 "id=" + id +
                 ", devId=" + devId +
-                ", techId=" + techId +
+                ", testId=" + testId +
                 ", rate=" + rate +
                 ", expire=" + expire +
                 ", isExpire=" + isExpire +
