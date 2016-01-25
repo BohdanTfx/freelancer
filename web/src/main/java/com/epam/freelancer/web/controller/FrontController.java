@@ -49,7 +49,7 @@ public class FrontController extends HttpServlet {
 		linkedin = new Linkedin();
 
 		paginator = new Paginator("pagedItems", "start", "firstPage",
-				"lastPage", "currentPage", "orders");
+				"lastPage", "currentPage");
 		try {
 			linkedin.initKeys("/social.properties");
 		} catch (IOException e) {
@@ -66,8 +66,6 @@ public class FrontController extends HttpServlet {
 
 	private void configControllers() {
 		controllers.put("user/", new UserController());
-		controllers.put("dev/", new DeveloperController());
-
 	}
 
 	protected void doGet(HttpServletRequest request,
@@ -91,7 +89,7 @@ public class FrontController extends HttpServlet {
 					fillOrdering(request, response);
 					break;
 				case "signup":
-					request.setAttribute("role", request.getParameter("role"));
+					request.setAttribute("role",request.getParameter("role"));
 					fillSignup(request, response);
 					break;
 				case "language/bundle":
@@ -120,6 +118,7 @@ public class FrontController extends HttpServlet {
 								.forward(request, response);
 						return;
 					}
+
 				}
 				request.getRequestDispatcher("/views/" + path + ".jsp")
 						.forward(request, response);
@@ -145,7 +144,7 @@ public class FrontController extends HttpServlet {
 	}
 
 	private void fillOrdering(HttpServletRequest request,
-			HttpServletResponse response)
+							  HttpServletResponse response)
 	{
 		List<Ordering> orderings = orderingService.findAll();
 		paginator.next(request, orderings);
@@ -153,7 +152,7 @@ public class FrontController extends HttpServlet {
 	}
 
 	private void sendBundle(HttpServletRequest request,
-			HttpServletResponse response)
+							HttpServletResponse response)
 	{
 		LOG.info(getClass().getSimpleName() + " - " + "sendBundle");
 		Locale locale = ((Locale) request.getSession().getAttribute("language"));
@@ -193,7 +192,7 @@ public class FrontController extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException
+						  HttpServletResponse response) throws ServletException, IOException
 	{
 		LOG.info(getClass().getSimpleName() + " - " + "doPost");
 		try {
