@@ -119,7 +119,7 @@ public class FrontController extends HttpServlet {
 						return;
 					}
 
-				}
+			}
 				request.getRequestDispatcher("/views/" + path + ".jsp")
 						.forward(request, response);
 			}
