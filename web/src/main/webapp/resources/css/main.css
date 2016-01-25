@@ -43,6 +43,10 @@ body {
 	border-color: #11C3F0;
 }
 
+.inline-block {
+	display: inline-block;;
+}
+
 .dev-agit {
 	background-color: rgba(255, 255, 255, 0.52);
 	padding: 10px;
@@ -86,7 +90,7 @@ body {
 }
 
 .screen-area {
-	width: 100%;
+	width: 100vw;
 	height: 100vh;
 }
 
@@ -124,7 +128,6 @@ body {
 	border-color: #1c8bc8;
 }
 
-}
 .background-img-cover {
 	background-repeat: no-repeat;
 	-webkit-background-size: cover;
@@ -165,17 +168,6 @@ body {
 		drop-shadow(0px 0px 21px #11C3F0);
 	filter: drop-shadow(0px 0px 5px #11C3F0)
 		drop-shadow(0px 0px 21px #11C3F0);
-}
-
-.navbar-collapse>ul.navigation>li {
-	border: 1px solid #11C3F0;
-	border-radius: 5px;
-}
-
-.navbar-collapse>ul.navigation>li:hover {
-	-webkit-box-shadow: inset 0px 0px 10px 5px rgba(17, 195, 240, 1);
-	-moz-box-shadow: inset 0px 0px 7px 3px rgba(17, 195, 240, 1);
-	box-shadow: inset 0px 0px 10px 5px rgba(17, 195, 240, 1);
 }
 
 .auto-container {

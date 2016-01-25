@@ -8,8 +8,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Sign in</title>
 <jsp:include page="/template/headImport.jsp" />
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/lib/hover.min.css">
 </head>
 <body>
 	<jsp:include page="/template/header.jsp" />

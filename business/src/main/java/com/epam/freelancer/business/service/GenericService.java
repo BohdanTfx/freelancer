@@ -45,6 +45,16 @@ public abstract class GenericService<T extends BaseEntity<ID>, ID> implements
 		return genericDao.getAll();
 	}
 
+	/*
+	 * This method should be overwritten if U need filtration
+	 */
+	@Override
+	public List<T> filterElements(Map<String, String> parameters,
+			Integer start, Integer step)
+	{
+		return genericDao.filterAll(parameters, start, step);
+	}
+
 	@Override
 	public boolean isDataValid(Map<Parameters, String> data) {
 		if (data == null || data.size() == 0)
@@ -58,14 +68,15 @@ public abstract class GenericService<T extends BaseEntity<ID>, ID> implements
 		return true;
 	}
 
-    @Override
-    public void encodePassword(UserEntity userEntity) {
-        String password = userEntity.getPassword();
-        if (password != null) {
-            String salt = SaltUtil.createSalt();
-            String hashPass = new Encryption(new SHA256Util()).crypt(password, salt);
-            userEntity.setPassword(hashPass);
-            userEntity.setSalt(salt);
-        }
-    }
+	@Override
+	public void encodePassword(UserEntity userEntity) {
+		String password = userEntity.getPassword();
+		if (password != null) {
+			String salt = SaltUtil.createSalt();
+			String hashPass = new Encryption(new SHA256Util()).crypt(password,
+					salt);
+			userEntity.setPassword(hashPass);
+			userEntity.setSalt(salt);
+		}
+	}
 }

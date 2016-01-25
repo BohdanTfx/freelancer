@@ -25,21 +25,23 @@
 					<div class="navbar-collapse collapse clearfix">
 						<sec:access role="none">
 							<ul class="navigation">
-								<li><a href="${pageContext.request.contextPath}/signin">
+								<li class="hvr-underline-from-center"><a
+										href="${pageContext.request.contextPath}/signin">
 										<i class="fa fa-sign-in"></i>Sign In
 									</a></li>
-								<li><a href="${pageContext.request.contextPath}/chooserole">
+								<li class="hvr-underline-from-center"><a
+										href="${pageContext.request.contextPath}/chooserole">
 										<i class="fa fa-user-plus"></i>Sign Up
 									</a></li>
 							</ul>
 						</sec:access>
 						<sec:access role="user">
 							<ul class="navigation">
-								<li><a
+								<li class="hvr-underline-from-center"><a
 										href="${pageContext.request.contextPath}/cabinet/main">
 										<i class="fa fa-home"></i>Cabinet
 									</a></li>
-								<li id="logout"><a
+								<li id="logout" class="hvr-underline-from-center"><a
 										href="${pageContext.request.contextPath}/logout">
 										<i class="fa fa-sign-out"></i>Logout
 									</a></li>

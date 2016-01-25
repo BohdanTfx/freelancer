@@ -34,3 +34,8 @@ $(document).ready(function() {
 	}
 
 });
+
+function getParameterURL() {
+	var url = location.pathname.substring(0, location.pathname.indexOf('/', 1));
+	return location.origin + url;
+}
