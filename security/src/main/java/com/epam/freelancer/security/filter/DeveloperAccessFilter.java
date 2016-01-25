@@ -43,9 +43,9 @@ public class DeveloperAccessFilter implements Filter {
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
-		if (authenticationProvider.provideAccess(cookieAutoAuthName, userName,
+		/*if (authenticationProvider.provideAccess(cookieAutoAuthName, userName,
 				"login", developerService, httpServletRequest,
-				httpServletResponse))
+				httpServletResponse))*/
 			chain.doFilter(request, response);
 	}
 
