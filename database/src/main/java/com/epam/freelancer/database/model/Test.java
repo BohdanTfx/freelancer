@@ -25,6 +25,15 @@ public class Test implements BaseEntity<Integer> {
     private Boolean isDeleted;
     @Column
     private Integer version;
+    private Technology technology;
+
+    public Technology getTechnology() {
+        return technology;
+    }
+
+    public void setTechnology(Technology technology) {
+        this.technology = technology;
+    }
 
     public Integer getTechId() {
         return techId;

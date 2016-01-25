@@ -1,58 +1,74 @@
 /* tab color */
 body {
     font-family: 'Roboto';
-    font-size: 14px;
+    font-size: 16px;
 }
 
-.nav-tabs>li>a {
-    background-color: rgba(39, 48, 57, 1);
-    border: 1px solid rgba(39, 48, 57, 1);
-    color: #6f8fa8;
+.history-title {
+    font-family: Arial;
+    font-size: 20px;
 }
 
-/* active tab color */
-.nav-tabs>li.active>a, .nav-tabs>li.active>a:hover, .nav-tabs>li.active>a:focus {
-    color: #6f8fa8;
-    background-color: rgba(39, 48, 57, 1);
-    border: 1px solid rgba(39, 48, 57, 1);
-    -webkit-filter: drop-shadow(0px 0px 5px #11C3F0)
-    drop-shadow(0px 0px 21px #11C3F0);
-    filter: drop-shadow(0px 0px 5px #11C3F0)
-    drop-shadow(0px 0px 21px #11C3F0);
+.progress-text{
+    text-shadow: 1px 1px 2px black, 0 0 1em black;
+    color: white;
+    position: absolute;
+    left: 0px;
+    right: 0px;;
 }
 
-/* hover tab color */
-.nav-tabs>li>a:hover {
-    color: #6f8fa8;
-    background-color: rgba(39, 48, 57, 1);
-    border: 1px solid rgba(39, 48, 57, 1);
-    -webkit-filter: drop-shadow(0px 0px 5px #11C3F0)
-    drop-shadow(0px 0px 21px #11C3F0);
-    filter: drop-shadow(0px 0px 5px #11C3F0)
-    drop-shadow(0px 0px 21px #11C3F0);
+.progress{
+    min-width: 100px;
+    border: solid 1px #bebebe;
+    text-align: center;
+    position: relative;
+}
+
+#tests {
+    padding: 5px;
+}
+
+.filter {
+    padding-right: 0;
+
+}
+
+.btn-pass-test {
+    margin-bottom: 5px;
+    padding: 0px 15px 0px 15px;
+    text-shadow: 1px 1px 2px black, 0 0 1em black;
+    color: white;
+    float: left;
+}
+
+.green-color {
+    color: #449d44;
+    text-shadow: none;
+}
+
+.red-color{
+    color: red;
+    text-shadow: none;
+}
+
+#nav-tabs {
+    border: none;
+}
+
+#tab-content {
+    padding: 20px;
 }
 
 .nav-tabs > li, .nav-pills > li {
-    float:none;
-    display:inline-block;
-    *display:inline; /* ie7 fix */
-    zoom:1; /* hasLayout ie7 trigger */
-}
-
-/* center tabs */
-.nav-tabs, .nav-pills {
-    text-align:center;
-}
-
-/* line below tabs */
-.nav-tabs {
-    padding-bottom: 5px;
-    border-bottom: 1px solid #11C3F0;
+    float: none;
+    display: inline-block;
+    *display: inline; /* ie7 fix */
+    zoom: 1; /* hasLayout ie7 trigger */
 }
 
 /* center logo */
 .img-center {
-    margin:0 auto;
+    margin: 0 auto;
     padding: 15px;
 }
 

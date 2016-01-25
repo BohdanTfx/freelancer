@@ -28,7 +28,7 @@
             <div class="panel panel-primary animated fadeIn cabinet-top">
                 <div class="panel-heading">
                     <div class="panel-title">
-                        <i class="fa fa-edit"></i> Sign up
+                        <i class="fa fa-edit"></i> Sign up as ${role}
                         <div class="pull-right animated bounceIn">
                             <div class="col-xs-6 col-sm-6 col-md-6">
                                 <div class="form-group">
@@ -38,7 +38,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class  ="col-xs-6 col-sm-6 col-md-6">
                                 <div class="form-group">
                                     <div class="social-btn google-plus">
                                         <img alt="Google_plus" class="social-img hvr-grow"

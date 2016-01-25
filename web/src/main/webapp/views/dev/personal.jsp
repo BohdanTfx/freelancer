@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html">
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -29,21 +29,11 @@
 									alt=""
 									class="center-block img-circle img-thumbnail img-responsive">
 								<ul class="list-inline ratings text-center" title="Ratings">
-									<li><a href="#">
-											<span class="fa fa-desktop fa-lg"></span>
-										</a></li>
-									<li><a href="#">
-											<span class="fa fa-desktop fa-lg"></span>
-										</a></li>
-									<li><a href="#">
-											<span class="fa fa-desktop fa-lg"></span>
-										</a></li>
-									<li><a href="#">
-											<span class="fa fa-desktop fa-lg"></span>
-										</a></li>
-									<li><a href="#">
-											<span class="fa fa-desktop fa-lg"></span>
-										</a></li>
+									<li><a href="#"><span class="fa fa-desktop fa-lg"></span></a></li>
+									<li><a href="#"><span class="fa fa-desktop fa-lg"></span></a></li>
+									<li><a href="#"><span class="fa fa-desktop fa-lg"></span></a></li>
+									<li><a href="#"><span class="fa fa-desktop fa-lg"></span></a></li>
+									<li><a href="#"><span class="fa fa-desktop fa-lg"></span></a></li>
 								</ul>
 							</div>
 							<!--/col-->
@@ -70,11 +60,10 @@
 							<div class="clearfix"></div>
 							<div class="col-xs-12 col-sm-12" style="padding-top: 10px;">
 								<p>
-									<strong>Skills: </strong>
-									<span class="label label-info tags">html5</span>
-									<span class="label label-info tags">css3</span>
-									<span class="label label-info tags">jquery</span>
-									<span class="label label-info tags">bootstrap3</span>
+									<strong>Skills: </strong> <span class="label label-info tags">html5</span>
+									<span class="label label-info tags">css3</span> <span
+										class="label label-info tags">jquery</span> <span
+										class="label label-info tags">bootstrap3</span>
 								</p>
 							</div>
 							<div class="col-xs-12 col-sm-4">
@@ -85,8 +74,7 @@
 									<small>Project</small>
 								</p>
 								<button class="btn btn-success btn-block">
-									<span class="fa fa-plus-circle"></span>
-									Follow
+									<span class="fa fa-plus-circle"></span> Follow
 								</button>
 							</div>
 							<!--/col-->
@@ -98,8 +86,7 @@
 									<small>Done</small>
 								</p>
 								<button class="btn btn-info btn-block">
-									<span class="fa fa-user"></span>
-									View Profile
+									<span class="fa fa-user"></span> View Profile
 								</button>
 							</div>
 							<!--/col-->
@@ -111,8 +98,7 @@
 									<small>Doing</small>
 								</p>
 								<button type="button" class="btn btn-primary btn-block">
-									<span class="fa fa-gear"></span>
-									Options
+									<span class="fa fa-gear"></span> Options
 								</button>
 							</div>
 							<!--/col-->
@@ -133,13 +119,5 @@
 		src="${pageContext.request.contextPath}/resources/js/navigation.js"></script>
 	<script type="text/javascript"
 		src="${pageContext.request.contextPath}/resources/js/lib/jquery.fullpage.min.js"></script>
-	<script>
-		ddiconmenu.docinit({ // initialize an Icon Menu
-			menuid : 'myiconmenu', //main menu ID
-			easing : "easeInOutCirc",
-			dur : 500
-		//<--no comma after last setting
-		})
-	</script>
 </body>
 </html>
