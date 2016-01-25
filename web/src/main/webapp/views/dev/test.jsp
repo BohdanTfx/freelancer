@@ -50,11 +50,12 @@
                             <div class="row">
                                 <div class="panel-title col-md-12">
                                     <div class="col-md-4 col-sm-5 col-xs-9">
-                                        <a id="history_title_test"><i class="fa fa-tasks"><c:out value=" Test"/></i></a>
+                                        <div rel="+" id="history_title_test"><i class="fa fa-tasks"><c:out
+                                                value=" Test "/><i class="fa fa-arrows-v"></i></i></div>
                                     </div>
                                     <div class="col-md-4 col-sm-5 hidden-xs">
-                                        <a id="history_title_technology"><i class="fa fa-tv"><c:out
-                                                value=" Technology"/></i></a>
+                                        <div rel="+" id="history_title_technology"><i class="fa fa-tv"><c:out
+                                                value=" Technology "/><i class="fa fa-arrows-v"></i></i></div>
                                     </div>
                                     <div class="col-md-2 hidden-sm hidden-xs">
                                         <i class="fa fa-calendar-o"><c:out value=" Expire date"/></i>
@@ -70,14 +71,14 @@
                 <%--end header--%>
                 <div id="history_list">
                     <c:forEach items="${devQAs}" var="devQA">
-                        <div class="panel panel-default">
+                        <div class="history-item panel panel-default">
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="panel-heading">
-                                        <div class="col-md-4 col-sm-5 col-xs-9">
+                                        <div class="hist_test_name col-md-4 col-sm-5 col-xs-9">
                                             <c:out value="${devQA.test.name}"/>
                                         </div>
-                                        <div class="col-md-4 col-sm-5 hidden-xs">
+                                        <div class="hist_tech_name col-md-4 col-sm-5 hidden-xs">
                                             <c:out value="${devQA.test.technology.name}"/>
                                         </div>
                                         <c:choose>
@@ -206,11 +207,16 @@
     </div>
 </div>
 
-
 <jsp:include page="/template/footImport.jsp"/>
-<script
-        src="${pageContext.request.contextPath}/resources/js/lib/jquery.fullpage.min.js"></script>
-<script
-        src="${pageContext.request.contextPath}/resources/js/navigation.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/navigation.js"></script>
+<script>
+    ddiconmenu.docinit({ // initialize an Icon Menu
+        menuid: 'myiconmenu', //main menu ID
+        easing: "easeInOutCirc",
+        dur: 500 //<--no comma after last setting
+    })
+</script>
+<script src="../../resources/js/test.js"></script>
+
 </body>
 </html>
