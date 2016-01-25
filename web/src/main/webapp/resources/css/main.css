@@ -43,6 +43,10 @@ body {
 	border-color: #11C3F0;
 }
 
+.inline-block {
+	display: inline-block;;
+}
+
 .dev-agit {
 	background-color: rgba(255, 255, 255, 0.52);
 	padding: 10px;
@@ -86,7 +90,7 @@ body {
 }
 
 .screen-area {
-	width: 100%;
+	width: 100vw;
 	height: 100vh;
 }
 
@@ -124,7 +128,6 @@ body {
 	border-color: #1c8bc8;
 }
 
-}
 .background-img-cover {
 	background-repeat: no-repeat;
 	-webkit-background-size: cover;

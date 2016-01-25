@@ -1,115 +1,137 @@
 package com.epam.freelancer.web.util;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.codehaus.jackson.map.ObjectMapper;
 
 import com.epam.freelancer.database.model.ObjectHolder;
 
 public class Paginator {
-	private static final Integer STEP = 10;
-	private final String PAGER_ITEMS_NAME;
-	private final String URL_START_NAME;
-	private final String URL_FIRST_NAME;
-	private final String URL_LAST_NAME;
-	private final String CURRENT_POSITION;
-	private final String ITEMS_NAME;
+	private ObjectMapper objectMapper;
+	private Map<String, Object> responseText;
 
-	public Paginator(String pAGER_ITEMS_NAME, String uRL_START_NAME,
-			String uRL_FIRST_NAME, String uRL_LAST_NAME,
-			String cURRENT_POSITION, String iTEMS_NAME)
-	{
-		PAGER_ITEMS_NAME = pAGER_ITEMS_NAME;
-		URL_START_NAME = uRL_START_NAME;
-		URL_FIRST_NAME = uRL_FIRST_NAME;
-		URL_LAST_NAME = uRL_LAST_NAME;
-		CURRENT_POSITION = cURRENT_POSITION;
-		ITEMS_NAME = iTEMS_NAME;
+	public Paginator() {
+		objectMapper = new ObjectMapper();
+		responseText = new HashMap<>();
 	}
 
-	public void next(HttpServletRequest request, List<?> items) {
-		if (isFirst(request, items) || isLast(request, items))
+	public void next(Map<String, Integer> page, List<?> items,
+			HttpServletResponse response)
+	{
+		responseText.clear();
+		if (isFirst(page, response, items) || isLast(page, response, items)) {
 			return;
+		}
 
-		Integer start = Integer.valueOf(request.getParameter(URL_START_NAME));
+		Integer start = page.get("start");
 		start = start > items.size() ? 0 : start;
+		Integer step = page.get("step") == null ? 10 : page.get("step");
 
 		List<?> list = items.subList(start,
-				(start + STEP) > items.size() ? items.size() : start + STEP);
-		request.setAttribute(PAGER_ITEMS_NAME, list);
-		request.setAttribute(ITEMS_NAME, list);
-		fillPaginationElement(request, items, start);
+				(start + step) > items.size() ? items.size() : start + step);
+
+		sendResponse(list, fillPaginationElement(page, list, start, response),
+				response);
 	}
 
-	private boolean isLast(HttpServletRequest request, List<?> items) {
-		String last = request.getParameter(URL_LAST_NAME);
-		if (last == null || !"yes".equals(last))
+	private void sendResponse(List<?> list,
+			ObjectHolder<Integer, List<ObjectHolder<String, Integer>>> result,
+			HttpServletResponse response)
+	{
+		responseText.put("currentPosition", result.getFirst());
+		responseText.put("pages", result.getSecond());
+		responseText.put("items", list);
+
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		try (PrintWriter out = response.getWriter()) {
+			out.print(objectMapper.writeValueAsString(responseText));
+			out.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private boolean isLast(Map<String, Integer> page,
+			HttpServletResponse response, List<?> items)
+	{
+		Integer last = page.get("last");
+		if (last == null || last != 0)
 			return false;
+		Integer step = page.get("step") == null ? 10 : page.get("step");
 
 		Integer size = items.size();
-		Integer offset = size / STEP * STEP > size ? 0 : size / STEP * STEP;
+		Integer offset = size / step * step > size ? 0 : size / step * step;
 
 		List<?> list = items.subList(offset, size);
-		request.setAttribute(PAGER_ITEMS_NAME, list);
-		request.setAttribute(ITEMS_NAME, list);
-
-		fillPaginationElement(request, items, offset);
+		sendResponse(list, fillPaginationElement(page, list, offset, response),
+				response);
 		return true;
 	}
 
-	private boolean isFirst(HttpServletRequest request, List<?> items) {
-		String first = request.getParameter(URL_FIRST_NAME);
-		if (first == null || !"yes".equals(first))
+	private boolean isFirst(Map<String, Integer> page,
+			HttpServletResponse response, List<?> items)
+	{
+		Integer last = page.get("first");
+		if (last == null || last != 0)
 			return false;
+		Integer step = page.get("step") == null ? 10 : page.get("step");
 
-		List<?> list = items.subList(0, STEP > items.size() ? items.size()
-				: STEP);
-		request.setAttribute(PAGER_ITEMS_NAME, list);
-		request.setAttribute(ITEMS_NAME, list);
-
-		fillPaginationElement(request, items, 0);
+		List<?> list = items.subList(0, step > items.size() ? items.size()
+				: step);
+		sendResponse(list, fillPaginationElement(page, list, 0, response),
+				response);
 		return true;
 	}
 
-	private void fillPaginationElement(HttpServletRequest request,
-			List<?> iList, Integer currentPosition)
+	private ObjectHolder<Integer, List<ObjectHolder<String, Integer>>> fillPaginationElement(
+			Map<String, Integer> page, List<?> iList, Integer currentPosition,
+			HttpServletResponse response)
 	{
-		List<ObjectHolder<String, Integer>> pages = fillPrevBtn(iList,
+		List<ObjectHolder<String, Integer>> pages = fillPrevBtn(page,
 				currentPosition);
-		pages.addAll(fillNextBtn(iList, currentPosition));
-		request.setAttribute(CURRENT_POSITION, currentPosition);
-		request.setAttribute(PAGER_ITEMS_NAME, pages);
+		pages.addAll(fillNextBtn(page, iList.size(), currentPosition));
+		return new ObjectHolder<Integer, List<ObjectHolder<String, Integer>>>(
+				currentPosition, pages);
 	}
 
-	private List<ObjectHolder<String, Integer>> fillNextBtn(List<?> iList,
-			Integer currentPosition)
+	private List<ObjectHolder<String, Integer>> fillNextBtn(
+			Map<String, Integer> page, Integer size, Integer currentPosition)
 	{
-		Integer size = iList.size();
-		Integer limit = size / STEP;
-		Integer current = currentPosition / STEP + 1;
+		Integer step = page.get("step") == null ? 10 : page.get("step");
+		Integer limit = size / step;
+		Integer current = currentPosition / step + 1;
 		List<ObjectHolder<String, Integer>> pages = new ArrayList<>();
 		for (int i = current; i <= limit && i - current < 3; i++) {
-			pages.add(new ObjectHolder<String, Integer>("?start=" + (i * STEP),
+			pages.add(new ObjectHolder<String, Integer>("?start=" + (i * step),
 					i));
 		}
 
 		return pages;
 	}
 
-	private List<ObjectHolder<String, Integer>> fillPrevBtn(List<?> iList,
-			Integer currentPosition)
+	private List<ObjectHolder<String, Integer>> fillPrevBtn(
+			Map<String, Integer> page, Integer currentPosition)
 	{
-		Integer current = currentPosition / STEP - 1;
+		Integer step = page.get("step") == null ? 10 : page.get("step");
+		Integer current = currentPosition / step - 1;
 		LinkedList<ObjectHolder<String, Integer>> pages = new LinkedList<>();
 		int i = current;
 		for (; i >= 0 && current - i < 3; i--) {
 			pages.addFirst(new ObjectHolder<String, Integer>("?start="
-					+ (i * STEP), i));
+					+ (i * step), i));
 		}
 		pages.add(new ObjectHolder<String, Integer>("current", current + 1));
 
 		return pages;
 	}
+
 }

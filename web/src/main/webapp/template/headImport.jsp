@@ -8,3 +8,5 @@
 	href="${pageContext.request.contextPath}/resources/css/lib/font-awesome.min.css">
 <link rel="shortcut icon"
 	href="${pageContext.request.contextPath}/resources/img/icon.png" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/resources/css/lib/hover.min.css">

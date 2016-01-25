@@ -18,6 +18,9 @@ public interface Service<T extends BaseEntity<ID>, ID> {
 
 	List<T> findAll();
 
+	List<T> filterElements(Map<String, String> parameters, Integer start,
+			Integer step);
+
 	void encodePassword(UserEntity userEntity);
 
 	boolean isDataValid(Map<Parameters, String> data);

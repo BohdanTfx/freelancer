@@ -9,10 +9,6 @@
     <title>Sign up</title>
 
     <jsp:include page="/template/headImport.jsp"/>
-
-    <link rel="stylesheet"
-          href="${pageContext.request.contextPath}/resources/css/lib/hover.min.css">
-
     <!-- x-editable (bootstrap version) -->
     <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.4.6/bootstrap-editable/css/bootstrap-editable.css"
           rel="stylesheet"/>

@@ -3,6 +3,7 @@ package com.epam.freelancer.database.dao;
 import com.epam.freelancer.database.persistence.ConnectionPool;
 
 import java.util.List;
+import java.util.Map;
 
 public interface GenericDao<T, ID> {
 
@@ -16,5 +17,8 @@ public interface GenericDao<T, ID> {
 
 	List<T> getAll();
 
-    void setConnectionPool(ConnectionPool connectionPool);
+	List<T> filterAll(Map<String, String> parameters, Integer start,
+			Integer step);
+
+	void setConnectionPool(ConnectionPool connectionPool);
 }

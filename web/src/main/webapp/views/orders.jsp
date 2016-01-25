@@ -14,8 +14,6 @@
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/pagination.css">
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/lib/hover.min.css">
-<link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/lib/bootstrap-slider.min.css">
 <link rel="stylesheet"
 	href="${pageContext.request.contextPath}/resources/css/lib/bootstrap-switch.min.css">
@@ -123,6 +121,11 @@
 								</select>
 							</div>
 						</div>
+						<div class="form-group">
+							<div class="col-xs-offset-2">
+								<button id="filterBtn" class="btn btn-info">Do filter</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -130,26 +133,28 @@
 			<div class="panel-group">
 				<div class="pagination dark animated fadeIn">
 					<div class="col-sm-8">
-						<a href="?firstPage=yes" class="page dark gradient">
+						<button data-page="first" class="page dark gradient">
 							<i class="fa fa-chevron-left"></i> <i class="fa fa-chevron-left"></i>
 							<span>First</span>
-						</a>
-						<c:forEach items="${pagedItems}" var="page" varStatus="loop">
-							<c:choose>
-								<c:when test="${page.first eq 'current'}">
-									<span class="page dark active"> ${page.second + 1} </span>
-								</c:when>
-								<c:otherwise>
-									<a href="${page.first}" class="page dark gradient">
-										${page.second + 1} </a>
-								</c:otherwise>
-							</c:choose>
-						</c:forEach>
-						<a href="?lastPage=yes" class="page dark gradient">
-							<span>Last</span>
+						</button>
+						<div data-pagination="yes" class="inline-block">
+							<c:forEach items="${pagedItems}" var="page" varStatus="loop">
+								<c:choose>
+									<c:when test="${page.first eq 'current'}">
+										<span class="page dark active"> ${page.second + 1} </span>
+									</c:when>
+									<c:otherwise>
+										<a href="${page.first}" class="page dark gradient">
+											${page.second + 1} </a>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+						</div>
+						<button data-page="last" class="page dark gradient">
+							<span>Last </span>
 							<i class="fa fa-chevron-right"></i> <i
 								class="fa fa-chevron-right"></i>
-						</a>
+						</button>
 					</div>
 					<div class="pull-right col-sm-4">
 						<div class="hidden-xs col-sm-6">
@@ -216,24 +221,27 @@
 					</c:forEach>
 				</div>
 				<div class="pagination dark">
-					<a href="?firstPage=yes" class="page dark gradient">
+					<button data-page="first" class="page dark gradient">
 						<i class="fa fa-chevron-left"></i> <i class="fa fa-chevron-left"></i>
-						<span>First </span>
-					</a>
-					<c:forEach items="${pagedItems}" var="page" varStatus="loop">
-						<c:choose>
-							<c:when test="${page.first eq 'current'}">
-								<span class="page dark active">${page.second + 1}</span>
-							</c:when>
-							<c:otherwise>
-								<a href="${page.first}" class="page dark gradient">${page.second + 1}</a>
-							</c:otherwise>
-						</c:choose>
-					</c:forEach>
-					<a href="?lastPage=yes" class="page dark gradient">
+						<span>First</span>
+					</button>
+					<div data-pagination="yes" class="inline-block">
+						<c:forEach items="${pagedItems}" var="page" varStatus="loop">
+							<c:choose>
+								<c:when test="${page.first eq 'current'}">
+									<span class="page dark active"> ${page.second + 1} </span>
+								</c:when>
+								<c:otherwise>
+									<a href="${page.first}" class="page dark gradient">
+										${page.second + 1} </a>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+					</div>
+					<button data-page="last" class="page dark gradient">
 						<span>Last </span>
 						<i class="fa fa-chevron-right"></i> <i class="fa fa-chevron-right"></i>
-					</a>
+					</button>
 				</div>
 			</div>
 		</div>

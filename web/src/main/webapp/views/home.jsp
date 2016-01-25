@@ -47,8 +47,7 @@
 		</div>
 	</div>
 	<jsp:include page="/template/footImport.jsp" />
-	<script
-			src="${pageContext.request.contextPath}/resources/js/home.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/home.js"></script>
 	<script
 		src="${pageContext.request.contextPath}/resources/js/lib/jquery.fullpage.min.js"></script>
 </body>
