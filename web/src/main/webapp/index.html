@@ -28,6 +28,9 @@
 		<!--&lt;!&ndash; build:css css/style.min.css &ndash;&gt;-->
 		<!--&lt;!&ndash; endbuild &ndash;&gt;-->
 
+		<!-- Angular Material style sheet -->
+		<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+
 		<!-- inject:css -->
 		<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
 		<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
@@ -35,6 +38,7 @@
 		<link rel="stylesheet" href="app/styles/Animate.css">
 		<link rel="stylesheet" href="app/styles/font-awesome.min.css">
 		<link rel="stylesheet" href="app/styles/hover.min.css">
+		<link rel="stylesheet" href="app/components/tests/tests.css">
 		<!-- endinject -->
 
 	</head>
@@ -107,7 +111,6 @@
 
 	</body>
 
-
 	<!-- inject:js -->
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="bower_components/angular-route/angular-route.min.js"></script>
@@ -120,6 +123,8 @@
     <script src="app/components/jobs/jobsCtrl.js"></script>
     <script src="app/components/jobs/jobsService.js"></script>
     <script src="app/components/personal/personalCtrl.js"></script>
+    <script src="app/components/tests/testsCtrl.js"></script>
+    <script src="app/components/tests/testsService.js"></script>
     <!-- endinject -->
 
 	<!-- endbuild -->
@@ -127,6 +132,15 @@
 	<!-- templates from $templateCache -->
 	<!-- build:templates -->
 	<!-- endbuild -->
+
+	<!-- Angular Material requires Angular.js Libraries -->
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+
+	<!-- Angular Material Library -->
+	<script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
 
 
 </html>
