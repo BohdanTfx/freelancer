@@ -12,6 +12,7 @@ import com.epam.freelancer.database.model.Developer;
 import com.epam.freelancer.database.model.DeveloperQA;
 import com.epam.freelancer.database.model.Technology;
 import com.epam.freelancer.database.model.Test;
+import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -66,7 +67,7 @@ public class DeveloperController extends HttpServlet {
 
     }
 
-    private void fillTestPage(HttpServletRequest request, HttpServletResponse response){
+    private void fillTestPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
         DeveloperQAService developerQAService = (DeveloperQAService) ApplicationContext.getInstance().getBean("developerQAService");
         HttpSession session = request.getSession();
         Developer dev = (Developer) session.getAttribute("user");
@@ -84,7 +85,14 @@ public class DeveloperController extends HttpServlet {
         for(DeveloperQA developerQA:devQAs){
             developerQA.setTest(testMap.get(developerQA.getTestId()));
         }
-        request.setAttribute("devQAs", devQAs);
-        request.setAttribute("tests", tests);
+
+//        request.setAttribute("devQAs", devQAs);
+//        request.setAttribute("tests", tests);
+
+        String json = new Gson().toJson(devQAs);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(json);
     }
 }

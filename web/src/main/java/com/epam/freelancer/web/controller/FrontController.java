@@ -39,7 +39,7 @@ public class FrontController extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException
+						 HttpServletResponse response) throws ServletException, IOException
 	{
 		LOG.info(getClass().getSimpleName() + " - " + "doGet");
 		try {
@@ -52,31 +52,26 @@ public class FrontController extends HttpServlet {
 			if (path.startsWith("/front/")) {
 				path = path.substring("/front/".length());
 				switch (path) {
-				/*case "":
-					path = "home";
-					break;*/
-				case "orders":
-				case "signup":
-				case "language/bundle":
-				case "logout":
-					controllers.get("unreg/").service(request, response);
-					return;
-				default:
-					if (path.startsWith("admin/")) {
-						controllers.get("admin/").service(request, response);
+					case "orders":
+					case "signup":
+					case "language/bundle":
+					case "logout":
+						controllers.get("unreg/").service(request, response);
 						return;
-					}
-					if (path.startsWith("dev/")) {
-						controllers.get("dev/").service(request, response);
-						return;
-					}
-					if (path.startsWith("cust/")) {
-						controllers.get("cust/").service(request, response);
-						return;
-					}
+					default:
+						if (path.startsWith("admin/")) {
+							controllers.get("admin/").service(request, response);
+							return;
+						}
+						if (path.startsWith("dev/")) {
+							controllers.get("dev/").service(request, response);
+							return;
+						}
+						if (path.startsWith("cust/")) {
+							controllers.get("cust/").service(request, response);
+							return;
+						}
 				}
-				/*request.getRequestDispatcher("/views/" + path + ".jsp")
-						.forward(request, response);*/
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -85,14 +80,14 @@ public class FrontController extends HttpServlet {
 	}
 
 	private void configAutoAuthentication(HttpSession session) {
-		/*
-		 * LOG.info(getClass().getSimpleName() + " - " +
-		 * "configAutoAuthentication"); EnvironmentVariablesManager manager =
-		 * EnvironmentVariablesManager .getInstance();
-		 * session.setAttribute(manager.getVar("session.dev.autoauth"), 1);
-		 * session.setAttribute(manager.getVar("session.admin.autoauth"), 1);
-		 * session.setAttribute(manager.getVar("session.cust.autoauth"), 1);
-		 */
+  /*
+   * LOG.info(getClass().getSimpleName() + " - " +
+   * "configAutoAuthentication"); EnvironmentVariablesManager manager =
+   * EnvironmentVariablesManager .getInstance();
+   * session.setAttribute(manager.getVar("session.dev.autoauth"), 1);
+   * session.setAttribute(manager.getVar("session.admin.autoauth"), 1);
+   * session.setAttribute(manager.getVar("session.cust.autoauth"), 1);
+   */
 	}
 
 	@Override
@@ -110,26 +105,26 @@ public class FrontController extends HttpServlet {
 			if (path.startsWith("/front/")) {
 				path = path.substring("/front/".length());
 				switch (path) {
-				case "orders/filter":
-					controllers.get("unreg/").service(request, response);
-					return;
-				default:
-					if (path.startsWith("admin/")) {
-						controllers.get("admin/").service(request, response);
+					case "orders/filter":
+						controllers.get("unreg/").service(request, response);
 						return;
-					}
-					if (path.startsWith("dev/")) {
-						controllers.get("dev/").service(request, response);
-						return;
-					}
-					if (path.startsWith("cust/")) {
-						controllers.get("cust/").service(request, response);
-						return;
-					}
-					if (path.startsWith("user/")) {
-						controllers.get("user/").service(request, response);
-						return;
-					}
+					default:
+						if (path.startsWith("admin/")) {
+							controllers.get("admin/").service(request, response);
+							return;
+						}
+						if (path.startsWith("dev/")) {
+							controllers.get("dev/").service(request, response);
+							return;
+						}
+						if (path.startsWith("cust/")) {
+							controllers.get("cust/").service(request, response);
+							return;
+						}
+						if (path.startsWith("user/")) {
+							controllers.get("user/").service(request, response);
+							return;
+						}
 				}
 			}
 		} catch (Exception e) {

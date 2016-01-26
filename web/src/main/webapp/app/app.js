@@ -5,6 +5,7 @@
     .module('FreelancerApp', [
       'ngRoute',
       'ui.router',
+      'ngMaterial'
     ])
     .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
 
