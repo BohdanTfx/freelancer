@@ -32,6 +32,9 @@
 		<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
 		<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
 		<link rel="stylesheet" href="app/styles/main.css">
+		<link rel="stylesheet" href="app/styles/Animate.css">
+		<link rel="stylesheet" href="app/styles/font-awesome.min.css">
+		<link rel="stylesheet" href="app/styles/hover.min.css">
 		<!-- endinject -->
 
 	</head>
@@ -42,13 +45,62 @@
 		    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 		<![endif]-->
 
-		<div class="navbar navbar-inverse">
-			<div class="container">
-				<a href="/" class="brand" title="">
-                    Freelancer
-				</a>
+		<header class="main-header">
+			<div class="header-lower">
+				<div class="auto-container clearfix">
+
+					<div class="outer-box">
+						<div class="logo">
+							<a href="#/home">
+								<img alt="Site logo" class="img-logo img-png animated rotateIn"
+									 data-tooltip="yes" title="Home" data-placement="right"
+									 src="/images/logo.png">
+							</a>
+						</div>
+
+						<nav class="main-menu">
+							<div class="navbar-header">
+								<button type="button" class="navbar-toggle" data-toggle="collapse"
+										data-target=".navbar-collapse">
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+								</button>
+							</div>
+
+							<div class="navbar-collapse collapse clearfix">
+								<!--<sec:access role="none">-->
+									<ul class="navigation">
+										<li class="hvr-underline-from-center"><a
+												href="#/personal">
+											<i class="fa fa-sign-in"></i>Sign In
+										</a></li>
+										<li class="hvr-underline-from-center"><a
+												href="#/chooserole">
+											<i class="fa fa-user-plus"></i>Sign Up
+										</a></li>
+									</ul>
+								<!--</sec:access>-->
+								<!--<sec:access role="user">-->
+									<ul class="navigation">
+										<li class="hvr-underline-from-center"><a
+												href="#/cabinet/main">
+											<i class="fa fa-home"></i>Cabinet
+										</a></li>
+										<li id="logout" class="hvr-underline-from-center"><a
+												href="#/logout">
+											<i class="fa fa-sign-out"></i>Logout
+										</a></li>
+									</ul>
+								<!--</sec:access>-->
+							</div>
+						</nav>
+
+					</div>
+				</div>
 			</div>
-		</div>
+		</header>
+
 
 		<!-- Main view for templates -->
 		<div ui-view class="container"></div>
@@ -67,6 +119,7 @@
     <script src="app/constants/config.js"></script>
     <script src="app/components/jobs/jobsCtrl.js"></script>
     <script src="app/components/jobs/jobsService.js"></script>
+    <script src="app/components/personal/personalCtrl.js"></script>
     <!-- endinject -->
 
 	<!-- endbuild -->
