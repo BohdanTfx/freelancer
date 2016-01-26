@@ -1,114 +1,121 @@
-<a href="/#/personal">Go to personal</a>
-<a href="/#/header">Go to personal</a>
 <div class="container col-xs-12 center">
-    <div class="row">
-        <div class="tests-tabs" ng-cloak="" style="margin-top: 100px">
-            <md-content>
-                <md-tabs md-dynamic-height md-border-bottom>
-                    <md-tab label="Test history">
-                        <div class="history-tab">
-                            <md-content class="md-padding">
-                                <!--start header-->
-                                <div class="history-title">
-                                    <div class="panel panel-default">
-                                        <div class="panel-heading">
-                                            <div class="row">
-                                                <div class="panel-title col-md-12">
-                                                    <div class="col-md-4 col-sm-5 col-xs-9">
-                                                        <a id="history_title_test"><i class="fa fa-tasks"> Test </i></a>
-                                                    </div>
-                                                    <div class="col-md-4 col-sm-5 hidden-xs">
-                                                        <a id="history_title_technology"><i class="fa fa-tv">
-                                                            Technology </i></a>
-                                                    </div>
-                                                    <div class="col-md-2 hidden-sm hidden-xs">
-                                                        <i class="fa fa-calendar-o"> Expire date </i>
-                                                    </div>
-                                                    <div class="col-md-2 col-sm-2 col-xs-3 text-center">
-                                                        <i class="fa fa-bar-chart"> Your Rate </i>
-                                                    </div>
-                                                </div>
-                                            </div>
+    <div class="tests-tabs">
+
+        <ul id="nav-tabs" class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#history">History</a></li>
+            <li><a data-toggle="tab" href="#tests">Tests</a></li>
+        </ul>
+        <div id="tab-content" class="panel panel-default">
+            <div class="tab-content">
+                <div id="history" class="tab-pane fade in active">
+
+                    <!--start header-->
+                    <div class="history-title">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="panel-title col-md-12">
+                                        <div class="col-md-4 col-sm-5 col-xs-9">
+                                            <a id="history_title_test"><i class="fa fa-tasks"> Test </i></a>
+                                        </div>
+                                        <div class="col-md-4 col-sm-5 hidden-xs">
+                                            <a id="history_title_technology"><i class="fa fa-tv">
+                                                Technology </i></a>
+                                        </div>
+                                        <div class="col-md-2 hidden-sm hidden-xs">
+                                            <i class="fa fa-calendar-o"> Expire date </i>
+                                        </div>
+                                        <div class="col-md-2 col-sm-2 col-xs-3 text-center">
+                                            <i class="fa fa-bar-chart"> Your Rate </i>
                                         </div>
                                     </div>
                                 </div>
-                                <!--end header-->
-
-                                <!--start body-->
-                                <div class="history-body">
-                                    <div class="history-item" ng-repeat="histItem in myData.histList">
-                                        <div class="panel panel-default">
-                                            <div class="row">
-                                                <div class="col-md-12">
-                                                    <div class="panel-heading">
-                                                        <div class="col-md-4 col-sm-5 col-xs-9">
-                                                            {{histItem.test.name}}
-                                                        </div>
-                                                        <div class="col-md-4 col-sm-5 hidden-xs">
-                                                            {{histItem.test.technology.name}}
-                                                        </div>
-                                                        <div ng-if="histItem.isExpire==true">
-                                                            <div class="col-md-2 hidden-sm hidden-xs">
-                                                                <i class="fa fa-calendar-times-o">
-                                                                    <span class="red-color">
-                                                                        {{histItem.expire}}
-                                                                    </span>
-                                                                </i>
-                                                            </div>
-                                                        </div>
-                                                        <div ng-if="histItem.isExpire!=true">
-                                                            <div class="col-md-2 hidden-sm hidden-xs">
-                                                                <i class="fa fa-calendar-check-o">
-                                                                    <span class="green-color">
-                                                                        {{histItem.expire}}
-                                                                    </span>
-                                                                </i>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!--end body-->
-
-                            </md-content>
+                            </div>
                         </div>
-                    </md-tab>
-                    <md-tab label="Tests list">
-                        <md-content class="md-padding">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue.
-                                Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In
-                                sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec,
-                                feugiat ultricies mi. Aliquam erat volutpat. Nam placerat, tortor in ultrices porttitor,
-                                orci enim rutrum enim, vel tempor sapien arcu a tellus. Vivamus convallis sodales ante
-                                varius gravida. Curabitur a purus vel augue ultrices ultricies id a nisl. Nullam
-                                malesuada consequat diam, a facilisis tortor volutpat et. Sed urna dolor, aliquet vitae
-                                posuere vulputate, euismod ac lorem. Sed felis risus, pulvinar at interdum quis,
-                                vehicula sed odio. Phasellus in enim venenatis, iaculis tortor eu, bibendum ante. Donec
-                                ac tellus dictum neque volutpat blandit. Praesent efficitur faucibus risus, ac auctor
-                                purus porttitor vitae. Phasellus ornare dui nec orci posuere, nec luctus mauris
-                                semper.</p>
+                    </div>
+                    <!--end header-->
 
-                            <p>Morbi viverra, ante vel aliquet tincidunt, leo dolor pharetra quam, at semper massa orci
-                                nec magna. Donec posuere nec sapien sed laoreet. Etiam cursus nunc in condimentum
-                                facilisis. Etiam in tempor tortor. Vivamus faucibus egestas enim, at convallis diam
-                                pulvinar vel. Cras ac orci eget nisi maximus cursus. Nunc urna libero, viverra sit amet
-                                nisl at, hendrerit tempor turpis. Maecenas facilisis convallis mi vel tempor. Nullam
-                                vitae nunc leo. Cras sed nisl consectetur, rhoncus sapien sit amet, tempus sapien.</p>
+                    <!--start body-->
+                    <div class="history-body">
+                        <div class="history-item" ng-repeat="histItem in myData.histList">
+                            <div class="panel panel-default">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="panel-heading">
+                                            <div class="col-md-4 col-sm-5 col-xs-9">
+                                                {{histItem.test.name}}
+                                            </div>
+                                            <div class="col-md-4 col-sm-5 hidden-xs">
+                                                {{histItem.test.technology.name}}
+                                            </div>
+                                            <div ng-if="histItem.isExpire==true">
+                                                <div class="col-md-2 hidden-sm hidden-xs">
+                                                    <i class="fa fa-calendar-times-o">
+                                                    <span class="red-color">
+                                                        {{histItem.expire}}
+                                                    </span>
+                                                    </i>
+                                                </div>
+                                            </div>
+                                            <div ng-if="histItem.isExpire!=true">
+                                                <div class="col-md-2 hidden-sm hidden-xs">
+                                                    <i class="fa fa-calendar-check-o">
+                                                    <span class="green-color">
+                                                        {{histItem.expire}}
+                                                    </span>
+                                                    </i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end body-->
 
-                            <p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur
-                                posuere molestie dictum. Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae
-                                hendrerit erat, at posuere mi. Cras eu fermentum nunc. Sed id ante eu orci commodo
-                                volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus commodo
-                                lectus.</p>
-                        </md-content>
-                    </md-tab>
-                </md-tabs>
-            </md-content>
+                </div>
+
+                <div id="tests" class="tab-pane fade">
+                    <div class="row filter">
+                        <div class="form-group col-xs-12">
+                            <label for="all">All:</label>
+                            <input type="text" ng-model="search.$" class="form-control" id="all">
+                        </div>
+                        <div class="form-group col-md-6 col-xs-12">
+                            <label for="tech">Technology:</label>
+                            <input type="text" ng-model="search.$" class="form-control" id="tech">
+                        </div>
+                    </div>
+
+                    <!--start header-->
+                    <div class="history-title">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="panel-title col-md-12">
+                                        <div class="col-md-4 col-sm-5 col-xs-5">
+                                            <i class="fa fa-tasks"> Test </i>
+                                        </div>
+                                        <div class="col-md-4 col-sm-5 col-xs-4">
+                                            <i class="fa fa-tv"> Technology </i>
+                                        </div>
+                                        <div class="col-md-2 hidden-sm hidden-xs">
+                                            <i class="fa fa-bar-chart"> Pass Score </i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end header-->
+                    <!--start body-->
+
+                    <!--end body-->
+                </div>
+            </div>
         </div>
 
-
     </div>
+
 </div>

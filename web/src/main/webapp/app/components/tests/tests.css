@@ -1,10 +1,15 @@
-.tests-tabs md-content {
-    background-color: transparent !important; }
-.tests-tabs md-content md-tabs {
-    background: #f6f6f6;
-    border: 1px solid #e1e1e1; }
-.tests-tabs md-content md-tabs md-tabs-wrapper {
-    background: white; }
-.tests-tabs md-content h1:first-child {
-    margin-top: 0; }
+/*.tests-tabs md-content {*/
+    /*background-color: transparent !important; }*/
+/*.tests-tabs md-content md-tabs {*/
+    /*background: #f6f6f6;*/
+    /*border: 1px solid #e1e1e1; }*/
+/*.tests-tabs md-content md-tabs md-tabs-wrapper {*/
+    /*background: white; }*/
+/*.tests-tabs md-content h1:first-child {*/
+    /*margin-top: 0; }*/
 
+
+.tests-tabs{
+    margin-top: 100px;
+    padding: 10px 0 10px 0;
+}
