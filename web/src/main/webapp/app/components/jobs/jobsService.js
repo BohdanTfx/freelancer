@@ -33,11 +33,22 @@ angular
 								});
 					}
 
+					this.loadTechnologies = function($scope, $http) {
+						$http.post("/orders/tech").success(
+								function(data, status, headers, config) {
+									$scope.tech = data;
+								}).error(
+								function(data, status, headers, config) {
+									alert(data);
+								});
+					}
+
 					this.loadOrders = function($scope, $http) {
 						var content = {};
 						var title = $scope.filter.title;
 						content.title = title === undefined
 								|| title.length == 0 ? undefined : title;
+						content.zone = [];
 						content.zone = [];
 						var zone = [];
 						angular.forEach($scope.selectedZones, function(value,
