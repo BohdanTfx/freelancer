@@ -25,6 +25,10 @@
                 url: '/tests',
                 templateUrl: 'app/components/tests/tests.html',
                 controller: 'testsCtrl'
+            }).state('auth', {
+                url: '/auth',
+                templateUrl: 'app/components/authentication/auth.html',
+                controller: 'authCtrl'
             });
 
             $locationProvider.html5Mode(false);

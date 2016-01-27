@@ -7,7 +7,9 @@ import com.epam.freelancer.business.service.DeveloperService;
 import com.epam.freelancer.database.model.Admin;
 import com.epam.freelancer.database.model.Customer;
 import com.epam.freelancer.database.model.Developer;
+import com.epam.freelancer.database.model.UserEntity;
 import com.epam.freelancer.security.provider.AuthenticationProvider;
+import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -100,19 +102,19 @@ public class UserController extends HttpServlet {
     }
 
     public void signIn(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String email = request.getParameter("email");
+        boolean remember = "true".equals(request.getParameter("remember"));
+        String email = request.getParameter("username");
         String password = request.getParameter("password");
-        boolean remember = "on".equals(request.getParameter("remember"));
 
         if (email == null || "".equals(email)) {
-            request.setAttribute("notCorrectData", "Invalid credentials");
-            request.getRequestDispatcher("/views/signin.jsp").forward(request, response);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "important_parameter needed");
+            response.flushBuffer();
             return;
         }
-        
-        if (password == null || "".equals(password)) {
-            request.setAttribute("notCorrectData", "Invalid credentials");
-            request.getRequestDispatcher("/views/signin.jsp").forward(request, response);
+
+        if (email == null || "".equals(email)) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "important_parameter needed");
+            response.flushBuffer();
             return;
         }
 
@@ -124,24 +126,26 @@ public class UserController extends HttpServlet {
         DeveloperService ds = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
         Developer developer = ds.findByEmail(email);
 
+
         boolean authorized = false;
 
         if (developer != null) {
             if (ds.validCredentials(email, password, developer)) {
                 session.setAttribute("user", developer);
+                developer.setRole("developer");
                 authorized = true;
                 if (remember) {
                     authenticationProvider.loginAndRemember(response, "freelancerRememberMeCookie", developer);
-                    request.getRequestDispatcher("/views/home.jsp").forward(request, response);
+                    sendResp(developer, response);
                     return;
                 } else {
                     authenticationProvider.invalidateUserCookie(response, "freelancerRememberMeCookie", developer);
-                    request.getRequestDispatcher("/views/home.jsp").forward(request, response);
+                    sendResp(developer, response);
                     return;
                 }
             } else {
-                request.setAttribute("notCorrectData", "Invalid credentials");
-                request.getRequestDispatcher("/views/signin.jsp").forward(request, response);
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid credentials");
+                response.flushBuffer();
                 return;
             }
         }
@@ -152,19 +156,20 @@ public class UserController extends HttpServlet {
         if (customer != null) {
             if (cs.validCredentials(email, password, customer)) {
                 session.setAttribute("user", customer);
+                customer.setRole("customer");
                 authorized = true;
                 if (remember) {
                     authenticationProvider.loginAndRemember(response, "freelancerRememberMeCookie", customer);
-                    request.getRequestDispatcher("/views/home.jsp").forward(request, response);
+                    sendResp(customer, response);
                     return;
                 } else {
                     authenticationProvider.invalidateUserCookie(response, "freelancerRememberMeCookie", customer);
-                    request.getRequestDispatcher("/views/home.jsp").forward(request, response);
+                    sendResp(customer, response);
                     return;
                 }
             } else {
-                request.setAttribute("notCorrectData", "Invalid credentials");
-                request.getRequestDispatcher("/views/signin.jsp").forward(request, response);
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid credentials");
+                response.flushBuffer();
                 return;
             }
         }
@@ -175,22 +180,38 @@ public class UserController extends HttpServlet {
         if (admin != null) {
             if (as.validCredentials(email, password, admin)) {
                 session.setAttribute("user", admin);
+                admin.setRole("admin");
                 authorized = true;
                 if (remember) {
                     authenticationProvider.loginAndRemember(response, "freelancerRememberMeCookie", admin);
-                    request.getRequestDispatcher("/views/home.jsp").forward(request, response);
+                    sendResp(admin, response);
                 } else {
                     authenticationProvider.invalidateUserCookie(response, "freelancerRememberMeCookie", admin);
-                    request.getRequestDispatcher("/views/home.jsp").forward(request, response);
+                    sendResp(admin, response);
                 }
             } else {
-                request.setAttribute("notCorrectData", "Invalid credentials");
-                request.getRequestDispatcher("/views/signin.jsp").forward(request, response);
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid credentials");
+                response.flushBuffer();
             }
         } else if (!authorized) {
-            request.setAttribute("notCorrectData", "Invalid credentials");
-            request.getRequestDispatcher("/views/signin.jsp").forward(request, response);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid credentials");
+            response.flushBuffer();
             return;
         }
     }
+
+
+
+    private void sendResp(UserEntity ue, HttpServletResponse response) throws IOException {
+        ue.setPassword(null);
+        String json = new Gson().toJson(ue);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.getWriter().write(json);
+        response.getWriter().flush();
+        response.getWriter().close();
+    }
+
 }

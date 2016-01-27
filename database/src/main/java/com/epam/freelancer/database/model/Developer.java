@@ -42,6 +42,15 @@ public class Developer implements UserEntity {
     private String salt;
     @Column(name="img_url")
     private String imgUrl;
+    private String role;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
     @Override
     public String getSalt() {
