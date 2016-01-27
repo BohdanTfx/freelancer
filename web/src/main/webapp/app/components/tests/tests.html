@@ -1,0 +1,233 @@
+<div class="container col-xs-12 center">
+
+    <div id="tab-content" class="panel panel-default">
+        <div class="tests-tabs" ng-cloak="">
+            <md-content>
+                <md-tabs md-dynamic-height md-border-bottom>
+                    <md-tab label="Test history">
+                        <div class="history-tab">
+                            <md-content class="md-padding">
+                                <!--start header-->
+                                <div class="history-title">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <div class="row">
+                                                <div class="panel-title col-md-12">
+                                                    <div class="col-md-4 col-sm-5 col-xs-9">
+                                                        <a ng-click="sort('name')">
+                                                            <i class="fa fa-tasks"> Test name
+                                                                <i class="glyphicon"
+                                                                   ng-class="{'glyphicons-arrow-up' : isSortUp('name'),
+                                                                          'glyphicon-arrow-down' : isSortDown('name')}">
+                                                                </i>
+                                                            </i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-5 hidden-xs">
+                                                        <a ng-click="sort('technology')">
+                                                            <i class="fa fa-tv"> Technology
+                                                                <i class="glyphicon"
+                                                                   ng-class="{'glyphicon-arrow-up' : isSortUp('technology'),
+                                                                          'glyphicon-arrow-down' : isSortDown('technology')}">
+                                                                </i>
+                                                            </i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-md-3 hidden-sm hidden-xs">
+                                                        <i class="fa fa-calendar-o"> Expire date </i>
+                                                    </div>
+                                                    <div class="col-md-2 col-sm-2 col-xs-3 text-center">
+                                                        <a ng-click="sort('rate')">
+                                                            <i class="fa fa-bar-chart"> Your Rate
+                                                                <i class="glyphicon"
+                                                                   ng-class="{'glyphicon-arrow-up' : isSortUp('rate'),
+                                                                          'glyphicon-arrow-down' : isSortDown('rate')}">
+                                                                </i>
+                                                            </i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end header-->
+
+                                <!--start body-->
+                                <div class="history-body" ng-repeat="devQA in devQAs | orderBy:sortField:reverse">
+                                    <div class="panel panel-default">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="panel-heading">
+                                                    <div class="col-md-4 col-sm-5 col-xs-9">
+                                                        {{devQA.test.name}}
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-5 hidden-xs">
+                                                        {{devQA.test.technology.name}}
+                                                    </div>
+                                                    <div ng-if="devQA.isExpire==true">
+                                                        <div class="col-md-3 hidden-sm hidden-xs">
+                                                            <i class="fa fa-calendar-times-o">
+                                                                <span class="red-color">
+                                                                    {{devQA.expire | date:'dd/MM/yyyy'}}
+                                                                </span>
+                                                            </i>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="devQA.isExpire!=true">
+                                                        <div class="col-md-3 hidden-sm hidden-xs">
+                                                            <i class="fa fa-calendar-check-o">
+                                                                <span class="green-color">
+                                                                    {{devQA.expire | date:'dd/MM/yyyy'}}
+                                                                </span>
+                                                            </i>
+                                                        </div>
+                                                    </div>
+
+                                                    <div ng-if="devQA.rate < devQA.test.passScore">
+                                                        <div class="col-md-2 col-sm-2 hidden-xs">
+                                                            <div class="progress">
+                                                                <span class="progress-text">
+                                                                    {{devQA.rate}}%
+                                                                </span>
+
+                                                                <div class="progress-bar progress-bar-danger"
+                                                                     role="progressbar"
+                                                                     aria-valuenow="40" aria-valuemin="0"
+                                                                     aria-valuemax="100"
+                                                                     style="width:{{devQA.rate}}%">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xs-3 hidden-sm hidden-md hidden-lg">
+                                                            <span class="text-center progress-text red-color">
+                                                                {{devQA.rate}}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div ng-if="devQA.rate >= devQA.test.passScore">
+                                                        <div class="col-md-2 col-sm-2 hidden-xs">
+                                                            <div class="progress">
+                                                                <span class="progress-text">
+                                                                    {{devQA.rate}}%
+                                                                </span>
+
+                                                                <div class="progress-bar progress-bar-success"
+                                                                     role="progressbar"
+                                                                     aria-valuenow="40" aria-valuemin="0"
+                                                                     aria-valuemax="100"
+                                                                     style="width:{{devQA.rate}}%">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xs-3 hidden-sm hidden-md hidden-lg">
+                                                            <span class="text-center progress-text green-color">
+                                                                {{devQA.rate}}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end body-->
+
+                            </md-content>
+                        </div>
+                    </md-tab>
+                    <md-tab label="Tests list">
+                        <md-content class="md-padding">
+                            <div class="row filter">
+                                <div class="form-group col-md-6 col-xs-12">
+                                    <label for="test_name">Search by test name:</label>
+                                    <input type="text" ng-model="search.name" class="form-control" id="test_name">
+                                </div>
+                                <div class="form-group col-md-6 col-xs-12">
+                                    <label for="tech_name">Search by technology:</label>
+                                    <input type="text" ng-model="search.technology.name" class="form-control" id="tech_name">
+                                </div>
+                            </div>
+                            <div class="tests-tab">
+
+                                <!--start header-->
+                                <div class="tests-title">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading">
+                                            <div class="row">
+                                                <div class="panel-title col-md-12">
+                                                    <div class="col-md-4 col-sm-5 col-xs-5">
+                                                        <a ng-click="sort('name')">
+                                                            <i class="fa fa-tasks"> Test name
+                                                                <i class="glyphicon"
+                                                                   ng-class="{'glyphicons-arrow-up' : isSortUp('name'),
+                                                                          'glyphicon-arrow-down' : isSortDown('name')}">
+                                                                </i>
+                                                            </i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-5 col-xs-4">
+                                                        <a ng-click="sort('technology')">
+                                                            <i class="fa fa-tv"> Technology
+                                                                <i class="glyphicon"
+                                                                   ng-class="{'glyphicon-arrow-up' : isSortUp('technology'),
+                                                                          'glyphicon-arrow-down' : isSortDown('technology')}">
+                                                                </i>
+                                                            </i>
+                                                        </a>                                              </div>
+                                                    <div class="col-md-3 hidden-sm hidden-xs text-center">
+                                                        <a ng-click="sort('passScore')">
+                                                            <i class="fa fa-bar-chart"> Min Pass Score
+                                                                <i class="glyphicon"
+                                                                   ng-class="{'glyphicon-arrow-up' : isSortUp('passScore'),
+                                                                          'glyphicon-arrow-down' : isSortDown('passScore')}">
+                                                                </i>
+                                                            </i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end header-->
+
+                                <!--start body-->
+                                <div class="tests-body" ng-repeat="test in tests | orderBy:sortField:reverse
+                                            | filter:search">
+                                    <div class="panel panel-default">
+                                        <div class="row">
+                                            <div class="testItem">
+                                                <div class="col-md-4 col-sm-5 col-xs-5">
+                                                    {{test.name}}
+                                                </div>
+                                                <div class="col-md-3 col-sm-5 col-xs-4">
+                                                    {{test.technology.name}}
+                                                </div>
+                                                <div class="col-md-3 hidden-sm hidden-xs text-center">
+                                                    {{test.passScore}} %
+                                                </div>
+                                                <div class="col-md-2 col-sm-2 col-xs-3">
+                                                    <a class="btn btn-primary btn-pass-test vertical-align-center"
+                                                       href="test_{{test.id}}">Pass test</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end body-->
+                            </div>
+
+
+                        </md-content>
+                    </md-tab>
+                </md-tabs>
+            </md-content>
+        </div>
+
+
+    </div>
+
+</div>
