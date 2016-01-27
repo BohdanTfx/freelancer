@@ -2,18 +2,23 @@ package com.epam.freelancer.business.service;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.epam.freelancer.business.util.ValidationParametersBuilder;
+import com.epam.freelancer.database.dao.GenericManyToManyDao;
 import com.epam.freelancer.database.dao.OrderingDao;
 import com.epam.freelancer.database.dao.jdbc.DAOManager;
 import com.epam.freelancer.database.model.ObjectHolder;
 import com.epam.freelancer.database.model.Ordering;
+import com.epam.freelancer.database.model.Technology;
+import com.epam.freelancer.database.model.Worker;
 
 /**
  * Created by Максим on 19.01.2016.
  */
 public class OrderingService extends GenericService<Ordering, Integer> {
+	private GenericManyToManyDao<Ordering, Technology, Worker, Integer> orderingTechnoloyManyToManyDao;
 
 	public OrderingService() {
 		super(DAOManager.getInstance()
@@ -89,9 +94,21 @@ public class OrderingService extends GenericService<Ordering, Integer> {
 		ObjectHolder<Double, Double> hourly = new ObjectHolder<Double, Double>(
 				orderingDao.getPayment("hourly", "min"),
 				orderingDao.getPayment("hourly", "max"));
-		
+
 		map.put("hourly", hourly);
 		map.put("fixed", fixed);
 		return map;
+	}
+
+	public void setOrderingTechnoloyManyToManyDao(
+			GenericManyToManyDao<Ordering, Technology, Worker, Integer> orderingTechnoloyManyToManyDao)
+	{
+		this.orderingTechnoloyManyToManyDao = orderingTechnoloyManyToManyDao;
+		this.orderingTechnoloyManyToManyDao.setConnectionPool(DAOManager
+				.getInstance().getConnectionPool());
+	}
+
+	public List<Technology> findOrderingTechnologies(Integer orderId) {
+		return orderingTechnoloyManyToManyDao.getBasedOnFirst(orderId);
 	}
 }

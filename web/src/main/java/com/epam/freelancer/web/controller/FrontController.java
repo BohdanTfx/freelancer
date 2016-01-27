@@ -107,6 +107,7 @@ public class FrontController extends HttpServlet {
 				switch (path) {
 				case "orders/filter":
 				case "orders/limits":
+				case "orders/tech":
 					controllers.get("unreg/").service(request, response);
 					return;
 				default:

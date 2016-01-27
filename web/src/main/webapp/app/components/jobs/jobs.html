@@ -30,8 +30,9 @@
 						<label class="control-label col-sm-2" for="order_technologies">
 							Techologies </label>
 						<div class="col-sm-7">
-							<input class="form-control" id="order_technologies"
-								name="order_technologies" placeholder="Select technologies">
+							<div isteven-multi-select input-model="tech"
+								output-model="selectedTechs" button-label="name"
+								item-label="name" tick-property="ticked"></div>
 						</div>
 					</div>
 					<div class="form-group">
@@ -136,8 +137,8 @@
 				<div class="panel-footer">
 					<div class="row">
 						<ul class="tags animated zoomIn">
-							<li><a href="#" class="hvr-grow">Java</a></li>
-							<li><a href="#" class="hvr-grow">C#</a></li>
+							<li ng-repeat="tech in order.technologies"><a href="#"
+									class="hvr-grow">{{tech.name}}</a></li>
 						</ul>
 					</div>
 				</div>

@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 
 import com.epam.freelancer.database.dao.GenericDao;
 import com.epam.freelancer.database.model.BaseEntity;
+import com.epam.freelancer.database.model.ObjectHolder;
 import com.epam.freelancer.database.persistence.ConnectionPool;
 import com.epam.freelancer.database.transformer.DataTransformer;
 
@@ -111,12 +112,17 @@ public abstract class GenericJdbcDao<T extends BaseEntity<ID>, ID> implements
 	}
 
 	@Override
-	public List<T> filterAll(Map<String, String> parameters, Integer start,
+	public List<T> filterAll(Map<String, Object> parameters, Integer start,
 			Integer step)
 	{
 		List<T> entities = new ArrayList<>();
-		String query = fillFilterQuery(parameters, "SELECT * FROM " + table,
-				start, step);
+		String query = null;
+		if (parameters == null || parameters.isEmpty())
+			query = "SELECT * FROM " + table + " Limit " + start + ", " + step;
+		else
+			query = fillFilterQuery(parameters, "SELECT * FROM " + table,
+					start, step);
+
 		try (Connection connection = connectionPool.getConnection();
 				PreparedStatement statement = connection
 						.prepareStatement(query);
@@ -131,31 +137,66 @@ public abstract class GenericJdbcDao<T extends BaseEntity<ID>, ID> implements
 		return entities;
 	}
 
-	private String fillFilterQuery(Map<String, String> parameters,
+	private String fillFilterQuery(Map<String, Object> parameters,
 			String query, Integer start, Integer step)
 	{
 		StringBuilder builder = new StringBuilder(query);
 		boolean hasFilter = false;
-		for (Entry<String, String> entry : parameters.entrySet()) {
+		for (Entry<String, Object> entry : parameters.entrySet()) {
 			String key = entry.getKey();
 
-			if (!hasFilter) {
-				hasFilter = true;
+			if (!hasFilter)
 				builder.append(" WHERE ");
+			else
+				builder.append("and ");
+
+			if (entry.getValue() instanceof List<?>) {
+				builder.append(key);
+				List<?> items = (List<?>) entry.getValue();
+
+				if (items.size() > 0) {
+					builder.append(" in (");
+					for (Object object : items) {
+						builder.append(object);
+						builder.append(",");
+					}
+					builder.deleteCharAt(builder.toString().length() - 1);
+					builder.append(") ");
+
+				}
 			}
 
-			builder.append(key);
-			String value = entry.getValue();
-			if (value.matches("[0-9]*")) {
-				builder.append(" = ");
-				builder.append(value);
-				builder.append(" ");
+			if (entry.getValue() instanceof String) {
+				builder.append(key);
+				String string = (String) entry.getValue();
 
-			} else {
-				builder.append(" LIKE '%");
-				builder.append(value);
-				builder.append("%' ");
+				if (string.matches("[0-9]*")) {
+					builder.append(" = ");
+					builder.append(string);
+					builder.append(" ");
+
+				} else {
+					builder.append(" LIKE '%");
+					builder.append(string);
+					builder.append("%' ");
+				}
 			}
+
+			if (entry.getValue() instanceof ObjectHolder) {
+				@SuppressWarnings("unchecked")
+				ObjectHolder<Double, Double> holder = (ObjectHolder<Double, Double>) entry
+						.getValue();
+
+				builder.append(key);
+				builder.append(" >= ");
+				builder.append(holder.getFirst());
+				builder.append(" and ");
+				builder.append(key);
+				builder.append(" <= ");
+				builder.append(holder.getSecond());
+			}
+
+			hasFilter = true;
 		}
 
 		builder.append(" LIMIT ");

@@ -49,7 +49,7 @@ public abstract class GenericService<T extends BaseEntity<ID>, ID> implements
 	 * This method should be overwritten if U need filtration
 	 */
 	@Override
-	public List<T> filterElements(Map<String, String> parameters,
+	public List<T> filterElements(Map<String, Object> parameters,
 			Integer start, Integer step)
 	{
 		return genericDao.filterAll(parameters, start, step);

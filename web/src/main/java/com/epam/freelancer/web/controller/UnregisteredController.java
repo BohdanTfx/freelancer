@@ -141,6 +141,9 @@ public class UnregisteredController extends HttpServlet {
 			case "orders/limits":
 				sendLimits(response);
 				break;
+			case "orders/tech":
+				sendTechnologies(response);
+				break;
 			default:
 			}
 		} catch (Exception e) {
@@ -148,6 +151,28 @@ public class UnregisteredController extends HttpServlet {
 			LOG.fatal(getClass().getSimpleName() + " - " + "doPost");
 		}
 	}
+
+	private void sendTechnologies(HttpServletResponse response) {
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		try (PrintWriter out = response.getWriter()) {
+			out.print(mapper.writeValueAsString(technologyService.findAll()));
+			out.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+/*	private Technology findTechnology(Map<Integer, Technology> technologies,
+			Integer id)
+	{
+		Technology technology = technologies.get(id);
+		if (technology == null)
+			technology = technologyService.findById(id);
+
+		technologies.put(id, technology);
+		return technology;
+	}*/
 
 	private void sendLimits(HttpServletResponse response) {
 		response.setContentType("application/json");
@@ -170,6 +195,12 @@ public class UnregisteredController extends HttpServlet {
 			List<Ordering> orderings = orderingService.filterElements(result
 					.getContent(), result.getPage().getStart(), result
 					.getPage().getStep());
+
+			for (Ordering ordering : orderings) {
+				ordering.setTechnologies(orderingService
+						.findOrderingTechnologies(ordering.getId()));
+			}
+
 			paginator.next(result.getPage(), orderings, response);
 		} catch (IOException e) {
 			e.printStackTrace();

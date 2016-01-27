@@ -63,51 +63,63 @@ angular
 								zone : "-4",
 								title : "-4 Venezuela, Bolivia, Brazil,	Barbados",
 								ticked : false
-							}, {
+							},
+							{
 								zone : "-3",
 								title : "-3 Newfoundland, Argentina, Chile",
 								ticked : false
-							}, {
+							},
+							{
 								zone : "-2",
 								title : "-2 South Georgia",
 								ticked : false
-							}, {
+							},
+							{
 								zone : "-1",
 								title : "-1 Capa Verde",
 								ticked : false
-							}, {
+							},
+							{
 								zone : "0",
 								title : "0 Ghana, Iceland, Senegal",
 								ticked : false
-							}, {
+							},
+							{
 								zone : "1",
 								title : "+1 Algeria, Nigeria, Tunisia",
 								ticked : false
-							}, {
+							},
+							{
 								zone : "2",
 								title : "+2 Ukraine, Zambia, Egypt",
 								ticked : false
-							}, {
+							},
+							{
 								zone : "3",
 								title : "+3 Belarus, Iraq, Iran",
 								ticked : false
-							}, {
+							},
+							{
 								zone : "4",
 								title : "+4 Armenia, Georgia, Oman",
 								ticked : false
-							}, {
+							},
+							{
 								zone : "5",
 								title : "+5 Kazakhstan, Pakistan, India",
 								ticked : false
-							}, {
+							},
+							{
 								zone : "6",
 								title : "+6 Ural, Bangladesh",
 								ticked : false
-							}, {
+							},
+							{
 								zone : "7",
 								title : "+7 Western Indonesai, Thailand",
 								ticked : false
-							}, {
+							},
+							{
 								zone : "8",
 								title : "+8 Hong Kong, China, Taiwan, Australia",
 								ticked : false
@@ -135,4 +147,5 @@ angular
 
 					jobsAPI.loadOrders($scope, $http);
 					jobsAPI.loadLimits($scope, $http);
+					jobsAPI.loadTechnologies($scope, $http);
 				});
