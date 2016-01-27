@@ -4,6 +4,7 @@
     angular
         .module('FreelancerApp', [
             'ngRoute',
+            'ngCookies',
             'ui.router',
             'ngMaterial'
         ])
