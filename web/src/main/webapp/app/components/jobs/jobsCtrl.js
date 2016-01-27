@@ -3,6 +3,7 @@ var filterOpen = false;
 angular.module('FreelancerApp').controller('jobsCtrl',
 		function($scope, jobsAPI, $log, $http) {
 			$scope.filter = {}
+			$scope.hourly = {};
 
 			$scope.filterToggle = function() {
 				if (filterOpen) {
@@ -42,44 +43,4 @@ angular.module('FreelancerApp').controller('jobsCtrl',
 
 			jobsAPI.loadOrders($scope, $http);
 			jobsAPI.loadLimits($scope, $http);
-
-			$scope.rangeArray = [ {
-				value : 0.2,
-				name : 'Clock In'
-			}, {
-				value : 0.4,
-				name : 'Start Break'
-			}, {
-				value : 0.6,
-				name : 'End Break'
-			}, {
-				value : 0.8,
-				name : 'Clock Out'
-			} ]
-			$scope.views = [ {
-				zoom : 0.9,
-				step : 1 / 40,
-				// visible units for this view, first entry being the major unit
-				units : [ {
-					value : 1 / 10,
-					// function to transform your value into labels | true:
-					// value itself | false: none
-					labeller : function(n) {
-						return n * 10
-					}
-				}, {
-					value : 1 / 20,
-				} ]
-			}, {
-				zoom : 1.5,
-				step : 1 / 80,
-				units : [ {
-					value : 1 / 20,
-					labeller : function(n) {
-						return n * 10
-					}
-				}, {
-					value : 1 / 40,
-				} ]
-			} ];
 		});

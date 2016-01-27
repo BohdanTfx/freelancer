@@ -25,6 +25,22 @@ angular
 						$http.post("/orders/limits").success(
 								function(data, status, headers, config) {
 									$scope.payment = data;
+									$scope.payment.hourly.options = {
+										floor : $scope.payment.hourly.first,
+										ceil : $scope.payment.hourly.second,
+										disabled : true,
+										translate : function(value) {
+											return '$' + value;
+										}
+									};
+									$scope.payment.fixed.options = {
+										floor : $scope.payment.fixed.first,
+										ceil : $scope.payment.fixed.second,
+										disabled : true,
+										translate : function(value) {
+											return '$' + value;
+										}
+									};
 								}).error(
 								function(data, status, headers, config) {
 									alert(data);

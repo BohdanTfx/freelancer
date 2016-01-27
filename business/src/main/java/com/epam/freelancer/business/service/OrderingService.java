@@ -7,6 +7,7 @@ import java.util.Map;
 import com.epam.freelancer.business.util.ValidationParametersBuilder;
 import com.epam.freelancer.database.dao.OrderingDao;
 import com.epam.freelancer.database.dao.jdbc.DAOManager;
+import com.epam.freelancer.database.model.ObjectHolder;
 import com.epam.freelancer.database.model.Ordering;
 
 /**
@@ -78,4 +79,19 @@ public class OrderingService extends GenericService<Ordering, Integer> {
 		return map;
 	}
 
+	public Map<String, ObjectHolder<Double, Double>> findPaymentLimits() {
+		Map<String, ObjectHolder<Double, Double>> map = new HashMap<>();
+		OrderingDao orderingDao = (OrderingDao) genericDao;
+
+		ObjectHolder<Double, Double> fixed = new ObjectHolder<Double, Double>(
+				orderingDao.getPayment("fixed", "min"), orderingDao.getPayment(
+						"fixed", "max"));
+		ObjectHolder<Double, Double> hourly = new ObjectHolder<Double, Double>(
+				orderingDao.getPayment("hourly", "min"),
+				orderingDao.getPayment("hourly", "max"));
+		
+		map.put("hourly", hourly);
+		map.put("fixed", fixed);
+		return map;
+	}
 }

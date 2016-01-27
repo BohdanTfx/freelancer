@@ -4,7 +4,7 @@
 	angular.module(
 			'FreelancerApp',
 			[ 'ngRoute', 'ui.router', 'ngMaterial', 'isteven-multi-select',
-					'vds.multirange' ]).config(
+					'rzModule' ]).config(
 			function($stateProvider, $urlRouterProvider, $locationProvider) {
 				// ,'vds.multirange'
 				$urlRouterProvider.otherwise('/orders');

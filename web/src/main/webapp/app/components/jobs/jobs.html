@@ -40,24 +40,20 @@
 						<div class="col-sm-10">
 							<div class="row">
 								<div class="col-sm-5">
-									<md-checkbox md-no-ink ng-model="filtert.hourly"
-										class="md-warn"> Hourly </md-checkbox>
-									<md-slider flex class="md-primary" md-discrete
-										ng-model="hourlySlider" step="1"
-										min="{{payment.hourly.first| number:2}}"
-										max="{{payment.hourly.second | number:2}}" aria-label="rating">
-									</md-slider>
-									<vds-multirange ng-model="rangeArray" view="viewIndex"
-										views="views"></vds-multirange>
+									<md-checkbox md-no-ink
+										ng-model="payment.hourly.options.disabled" class="md-warn">
+									Hourly </md-checkbox>
+									<rzslider rz-slider-model="payment.hourly.first"
+										rz-slider-high="payment.hourly.second"
+										rz-slider-options="payment.hourly.options"></rzslider>
 								</div>
 								<div class="col-sm-5">
-									<md-checkbox md-no-ink ng-model="filter.fixed" class="md-warn">
+									<md-checkbox md-no-ink
+										ng-model="payment.fixed.options.disabled" class="md-warn">
 									Fixed </md-checkbox>
-									<md-slider flex class="md-primary" md-discrete
-										ng-model="fixedSlider" step="1"
-										min="{{payment.fixed.first| number:2}}"
-										max="{{payment.fixed.second| number:2}}" aria-label="rating">
-									</md-slider>
+									<rzslider rz-slider-model="payment.fixed.first"
+										rz-slider-high="payment.fixed.second"
+										rz-slider-options="payment.fixed.options"></rzslider>
 								</div>
 							</div>
 						</div>
