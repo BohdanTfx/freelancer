@@ -1,11 +1,13 @@
 angular.module('FreelancerApp')
     .controller('testsCtrl', function ($scope, testsAPI, $log) {
 
-     testsAPI.getAllTests().success(function(data){
-      $log.log(data);
-      $scope.devQAs = data.devQAs;
-      $scope.tests= data.tests;
-     });
+        testsAPI.getAllTests().success(function(data){
+            $log.log(data);
+            $scope.devQAs = data.devQAs;
+            $scope.tests= data.tests;
+        }).error(function () {
+            alert(404);
+        });
 
         $scope.sortField = undefined;
         $scope.reverse = false;
