@@ -3,14 +3,14 @@ package com.epam.freelancer.web.json.model;
 import java.util.Map;
 
 public class JsonPaginator {
-	private Map<String, String> content;
+	private Map<String, Object> content;
 	private Page page;
 
-	public Map<String, String> getContent() {
+	public Map<String, Object> getContent() {
 		return content;
 	}
 
-	public void setContent(Map<String, String> content) {
+	public void setContent(Map<String, Object> content) {
 		this.content = content;
 	}
 

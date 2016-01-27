@@ -19,6 +19,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.manager.UserManager;
 import com.epam.freelancer.business.service.OrderingService;
+import com.epam.freelancer.business.service.TechnologyService;
 import com.epam.freelancer.database.model.Ordering;
 import com.epam.freelancer.database.model.UserEntity;
 import com.epam.freelancer.security.provider.AuthenticationProvider;
@@ -31,6 +32,7 @@ public class UnregisteredController extends HttpServlet {
 			.getLogger(UnregisteredController.class);
 	private static final long serialVersionUID = 1L;
 	private OrderingService orderingService;
+	private TechnologyService technologyService;
 	private UserManager userManager;
 	private Linkedin linkedin;
 	private ObjectMapper mapper;
@@ -53,6 +55,8 @@ public class UnregisteredController extends HttpServlet {
 		}
 		orderingService = (OrderingService) ApplicationContext.getInstance()
 				.getBean("orderingService");
+		technologyService = (TechnologyService) ApplicationContext
+				.getInstance().getBean("technologyService");
 
 		userManager = (UserManager) ApplicationContext.getInstance().getBean(
 				"userManager");

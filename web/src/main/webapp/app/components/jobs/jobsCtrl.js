@@ -18,28 +18,6 @@ angular
 						}
 					}
 
-					// $scope.modernBrowsers = [ {
-					// name : "Opera",
-					// maker : "Opera Software",
-					// ticked : false
-					// }, {
-					// name : "Internet Explorer",
-					// maker : "Microsoft",
-					// ticked : true
-					// }, {
-					// name : "Firefox",
-					// maker : "Mozilla Foundation",
-					// ticked : false
-					// }, {
-					// name : "Safari",
-					// maker : "Apple",
-					// ticked : true
-					// }, {
-					// name : "Chrome",
-					// maker : "Google",
-					// ticked : true
-					// } ];
-
 					$scope.timeZones = [
 							{
 								zone : "-12",

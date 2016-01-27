@@ -1,19 +1,5 @@
 'use strict';
 
-// angular.module('FreelancerApp')
-// .factory('jobsAPI', function ($http, config) {
-// var urlBase = '/getall',
-// dataFactory = {};
-//
-// dataFactory.getAllJobs = function () {
-// return $http.get(urlBase);
-// };
-//
-//
-//
-// return dataFactory;
-// });
-
 angular
 		.module('FreelancerApp')
 		.service(
@@ -49,18 +35,31 @@ angular
 
 					this.loadOrders = function($scope, $http) {
 						var content = {};
-						content.title = $scope.filter.title;
+						var title = $scope.filter.title;
+						content.title = title === undefined
+								|| title.length == 0 ? undefined : title;
+						content.zone = [];
+						var zone = [];
+						angular.forEach($scope.selectedZones, function(value,
+								key) {
+							zone.push(value.zone);
+						});
+						content.zone = zone === undefined || zone.length == 0 ? undefined
+								: zone;
+
 						var pagination = {};
 						pagination.start = 0;
 						pagination.step = 5;
 
+						var data = {};
+						if (isNotEmpty(content))
+							data.content = content;
+						if (isNotEmpty(pagination))
+							data.page = pagination;
 						$http
 								.post(
 										"/orders/filter",
-										{
-											content : content,
-											page : pagination
-										},
+										data,
 										{
 											headers : {
 												'Content-Type' : 'application/x-www-form-urlencoded;charset=utf-8;'
@@ -85,3 +84,10 @@ angular
 						$scope.orders = data;
 					}
 				});
+
+function isNotEmpty(obj) {
+	for ( var prop in obj)
+		if (obj.hasOwnProperty(prop) && obj[prop] !== undefined)
+			return true;
+	return false;
+}
