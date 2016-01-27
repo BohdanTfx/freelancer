@@ -40,7 +40,8 @@
 						<div class="col-sm-10">
 							<div class="row">
 								<div class="col-sm-5">
-									<md-checkbox md-no-ink
+									<md-checkbox md-no-ink ng-true-value="false"
+										ng-false-value="true"
 										ng-model="payment.hourly.options.disabled" class="md-warn">
 									Hourly </md-checkbox>
 									<rzslider rz-slider-model="payment.hourly.first"
@@ -48,7 +49,8 @@
 										rz-slider-options="payment.hourly.options"></rzslider>
 								</div>
 								<div class="col-sm-5">
-									<md-checkbox md-no-ink
+									<md-checkbox md-no-ink ng-true-value="false"
+										ng-false-value="true"
 										ng-model="payment.fixed.options.disabled" class="md-warn">
 									Fixed </md-checkbox>
 									<rzslider rz-slider-model="payment.fixed.first"
@@ -61,9 +63,11 @@
 					<div class="form-group">
 						<label class="control-label col-sm-2" for="timeZoneSelect">
 							Time zones </label>
-						<div isteven-multi-select input-model="modernBrowsers"
-							output-model="outputBrowsers" button-label="name"
-							item-label="name maker" tick-property="ticked"></div>
+						<div class="col-sm-7">
+							<div isteven-multi-select input-model="timeZones"
+								output-model="selectedZones" button-label="title"
+								item-label="title" tick-property="ticked"></div>
+						</div>
 						<div class="col-sm-7">
 							<select multiple="multiple">
 								<option value="-12">-12 Baker island, Howland island</option>
