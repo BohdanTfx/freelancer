@@ -33,6 +33,7 @@ public class UnregisteredController extends HttpServlet {
 	private OrderingService orderingService;
 	private UserManager userManager;
 	private Linkedin linkedin;
+	private ObjectMapper mapper;
 	private Paginator paginator;
 
 	public UnregisteredController() {
@@ -43,7 +44,7 @@ public class UnregisteredController extends HttpServlet {
 	public void init() {
 		LOG.info(getClass().getSimpleName() + " - " + " loaded");
 		linkedin = new Linkedin();
-
+		mapper = new ObjectMapper();
 		paginator = new Paginator();
 		try {
 			linkedin.initKeys("/social.properties");
@@ -66,9 +67,6 @@ public class UnregisteredController extends HttpServlet {
 			case "signup":
 				request.setAttribute("role", request.getParameter("role"));
 				fillSignup(request, response);
-				break;
-			case "orders":
-				request.setAttribute("orders", orderingService.findAll());
 				break;
 			case "language/bundle":
 				sendBundle(request, response);
@@ -136,6 +134,9 @@ public class UnregisteredController extends HttpServlet {
 			case "orders/filter":
 				filterOrders(request, response);
 				break;
+			case "orders/limits":
+				sendLimits(response);
+				break;
 			default:
 			}
 		} catch (Exception e) {
@@ -144,14 +145,24 @@ public class UnregisteredController extends HttpServlet {
 		}
 	}
 
+	private void sendLimits(HttpServletResponse response) {
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		try (PrintWriter out = response.getWriter()) {
+			out.print(mapper.writeValueAsString(orderingService
+					.findPaymentLimits()));
+			out.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	private void filterOrders(HttpServletRequest request,
 			HttpServletResponse response)
 	{
-		ObjectMapper mapper = new ObjectMapper();
 		try {
 			JsonPaginator result = mapper.readValue(request.getReader()
 					.readLine(), JsonPaginator.class);
-			System.out.println("");
 			List<Ordering> orderings = orderingService.filterElements(result
 					.getContent(), result.getPage().getStart(), result
 					.getPage().getStep());

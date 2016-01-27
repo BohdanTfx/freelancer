@@ -92,7 +92,7 @@ public class FrontController extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest request,
-						  HttpServletResponse response) throws ServletException, IOException
+			HttpServletResponse response) throws ServletException, IOException
 	{
 		LOG.info(getClass().getSimpleName() + " - " + "doPost");
 		try {
@@ -106,6 +106,7 @@ public class FrontController extends HttpServlet {
 				path = path.substring("/front/".length());
 				switch (path) {
 				case "orders/filter":
+				case "orders/limits":
 					controllers.get("unreg/").service(request, response);
 					return;
 				default:

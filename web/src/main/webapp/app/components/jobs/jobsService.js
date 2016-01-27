@@ -21,9 +21,19 @@ angular
 				function() {
 					var that = this;
 
+					this.loadLimits = function($scope, $http) {
+						$http.post("/orders/limits").success(
+								function(data, status, headers, config) {
+									$scope.payment = data;
+								}).error(
+								function(data, status, headers, config) {
+									alert(data);
+								});
+					}
+
 					this.loadOrders = function($scope, $http) {
 						var content = {};
-						content.title = $scope.orderTitle;
+						content.title = $scope.filter.title;
 						var pagination = {};
 						pagination.start = 0;
 						pagination.step = 5;
