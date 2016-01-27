@@ -100,7 +100,7 @@
                                     href="#/cabinet/main">
                                 <i class="fa fa-home"></i>Cabinet
                             </a></li>
-                            <li id="logout" class="hvr-underline-from-center"><a
+                            <li id="logout" ng-controller="authCtrl" ng-click="logout()" class="hvr-underline-from-center"><a
                                     href="#/logout">
                                 <i class="fa fa-sign-out"></i>Logout
                             </a></li>
@@ -243,6 +243,7 @@
 <script src="app/components/tests/testsService.js"></script>
 <script src="app/components/authentication/authCtrl.js"></script>
 <script src="app/components/authentication/authService.js"></script>
+<script src="app/components/header/headerCtrl.js"></script>
 <!-- endinject -->
 
 

@@ -29,6 +29,8 @@
                 url: '/auth',
                 templateUrl: 'app/components/authentication/auth.html',
                 controller: 'authCtrl'
+            }).state('header', {
+                controller: 'headerCtrl'
             });
 
             $locationProvider.html5Mode(false);

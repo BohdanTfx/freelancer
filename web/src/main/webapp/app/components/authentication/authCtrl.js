@@ -22,4 +22,10 @@ angular.module('FreelancerApp')
                     $scope.error = 'Invalid credentials';
                 })
             };
+
+            $scope.logout = function () {
+                // reset login status
+                AuthenticationService.ClearCredentials();
+
+            }
         }]);
