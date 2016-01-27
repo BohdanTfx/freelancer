@@ -46,9 +46,9 @@ public class DeveloperController extends HttpServlet {
 
             String path = FrontController.getPath(request);
 
-                switch (path) {
+            switch (path) {
                 case "dev/getalltests":
-                    fillTestPage(request,response);
+                    fillTestPage(request, response);
                     break;
                 default:
 
@@ -75,19 +75,26 @@ public class DeveloperController extends HttpServlet {
         List<Test> tests = testService.findAll();
         List<Technology> techs = technologyService.findAll();
         Map<Integer, Technology> technologyMap = new HashMap<>();
-        techs.forEach(technology -> technologyMap.put(technology.getId(),technology));
+        techs.forEach(technology -> technologyMap.put(technology.getId(), technology));
         Map<Integer, Test> testMap = new HashMap<>();
         tests.forEach(test -> {
             test.setTechnology(technologyMap.get(test.getTechId()));
-            testMap.put(test.getId(),test);
+            testMap.put(test.getId(), test);
         });
-        for(DeveloperQA developerQA:devQAs){
+        for (DeveloperQA developerQA : devQAs) {
             developerQA.setTest(testMap.get(developerQA.getTestId()));
         }
-
+        for (int i = 0; i < tests.size(); i++) {
+            for (DeveloperQA developerQA : devQAs) {
+                if (developerQA.getTest().equals(tests.get(i)) && developerQA.getIsExpire()) {
+                    tests.remove(i);
+                    break;
+                }
+            }
+        }
         String devQAsJson = new Gson().toJson(devQAs);
         String testsJson = new Gson().toJson(tests);
-        String resultJson = "{\"devQAs\":"+devQAsJson+",\"tests\":"+testsJson+"}";
+        String resultJson = "{\"devQAs\":" + devQAsJson + ",\"tests\":" + testsJson + "}";
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(resultJson);
