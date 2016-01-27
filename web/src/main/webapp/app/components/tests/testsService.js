@@ -2,7 +2,7 @@
 
 angular.module('FreelancerApp')
     .factory('testsAPI', function ($http, config) {
-        var urlBase = '/getalltests',
+        var urlBase = '/dev/getalltests',
             dataFactory = {};
 
         dataFactory.getAllTests = function () {

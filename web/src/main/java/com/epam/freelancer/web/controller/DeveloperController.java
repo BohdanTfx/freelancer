@@ -47,14 +47,12 @@ public class DeveloperController extends HttpServlet {
             String path = FrontController.getPath(request);
 
                 switch (path) {
-                case "dev/test":
+                case "dev/getalltests":
                     fillTestPage(request,response);
                     break;
                 default:
 
             }
-            request.getRequestDispatcher("/views/" + path + ".jsp")
-                    .forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,7 +69,8 @@ public class DeveloperController extends HttpServlet {
         DeveloperQAService developerQAService = (DeveloperQAService) ApplicationContext.getInstance().getBean("developerQAService");
         HttpSession session = request.getSession();
         Developer dev = (Developer) session.getAttribute("user");
-        List<DeveloperQA> devQAs = developerQAService.findAllByDevId(dev.getId());
+//        List<DeveloperQA> devQAs = developerQAService.findAllByDevId(dev.getId());
+        List<DeveloperQA> devQAs = developerQAService.findAllByDevId(1);
 
         List<Test> tests = testService.findAll();
         List<Technology> techs = technologyService.findAll();
@@ -86,13 +85,11 @@ public class DeveloperController extends HttpServlet {
             developerQA.setTest(testMap.get(developerQA.getTestId()));
         }
 
-//        request.setAttribute("devQAs", devQAs);
-//        request.setAttribute("tests", tests);
-
-        String json = new Gson().toJson(devQAs);
-
+        String devQAsJson = new Gson().toJson(devQAs);
+        String testsJson = new Gson().toJson(tests);
+        String resultJson = "{\"devQAs\":"+devQAsJson+",\"tests\":"+testsJson+"}";
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(json);
+        response.getWriter().write(resultJson);
     }
 }
