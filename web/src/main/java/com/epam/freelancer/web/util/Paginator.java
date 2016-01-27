@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.epam.freelancer.database.model.ObjectHolder;
+import com.epam.freelancer.web.json.model.Page;
 
 public class Paginator {
 	private ObjectMapper objectMapper;
@@ -21,6 +22,15 @@ public class Paginator {
 	public Paginator() {
 		objectMapper = new ObjectMapper();
 		responseText = new HashMap<>();
+	}
+
+	public void next(Page page, List<?> items, HttpServletResponse response) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("start", page.getStart());
+		map.put("step", page.getStep());
+		map.put("first", page.getFirst());
+		map.put("last", page.getLast());
+		next(map, items, response);
 	}
 
 	public void next(Map<String, Integer> page, List<?> items,
@@ -111,8 +121,7 @@ public class Paginator {
 		Integer current = currentPosition / step + 1;
 		List<ObjectHolder<String, Integer>> pages = new ArrayList<>();
 		for (int i = current; i <= limit && i - current < 3; i++) {
-			pages.add(new ObjectHolder<String, Integer>("?start=" + (i * step),
-					i));
+			pages.add(new ObjectHolder<String, Integer>("start", (i * step)));
 		}
 
 		return pages;
@@ -126,8 +135,8 @@ public class Paginator {
 		LinkedList<ObjectHolder<String, Integer>> pages = new LinkedList<>();
 		int i = current;
 		for (; i >= 0 && current - i < 3; i--) {
-			pages.addFirst(new ObjectHolder<String, Integer>("?start="
-					+ (i * step), i));
+			pages.addFirst(new ObjectHolder<String, Integer>("start",
+					(i * step)));
 		}
 		pages.add(new ObjectHolder<String, Integer>("current", current + 1));
 

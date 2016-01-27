@@ -1,29 +1,39 @@
-angular.module('FreelancerApp')
-	.controller('jobsCtrl', function ($scope, jobsAPI, $log) {
+var filterOpen = false;
 
-    /*    jobsAPI.getAllJobs().success(function(data){
-            $log.log(data);
-            $scope.orders = data;
-                    });
+angular.module('FreelancerApp').controller('jobsCtrl',
+		function($scope, jobsAPI, $log, $http) {
 
-        $scope.typeIncludes = [];
+			$scope.filterToggle = function() {
+				if (filterOpen) {
+					$scope.filterState = '';
+					filterOpen = false;
+				} else {
+					$scope.filterState = 'in';
+					filterOpen = true;
+				}
+			}
 
-        $scope.includeType = function(type) {
-            var i = $.inArray(type, $scope.typeIncludes);
-            if (i > -1) {
-                $scope.typeIncludes.splice(i, 1);
-            } else {
-                $scope.typeIncludes.push(type);
-            }
-        }
+			$scope.modernBrowsers = [ {
+				name : "Opera",
+				maker : "Opera Software",
+				ticked : false
+			}, {
+				name : "Internet Explorer",
+				maker : "Microsoft",
+				ticked : true
+			}, {
+				name : "Firefox",
+				maker : "Mozilla Foundation",
+				ticked : false
+			}, {
+				name : "Safari",
+				maker : "Apple",
+				ticked : true
+			}, {
+				name : "Chrome",
+				maker : "Google",
+				ticked : true
+			} ];
 
-        $scope.orderFilter = function(order) {
-            if ($scope.typeIncludes.length > 0) {
-                if ($.inArray(order.payType, $scope.typeIncludes) < 0)
-                    return;
-            }
-
-            return order;
-        }
-*/
-	});
+			jobsAPI.loadOrders($scope, $http);
+		});

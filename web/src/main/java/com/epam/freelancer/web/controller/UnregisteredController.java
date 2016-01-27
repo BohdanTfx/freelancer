@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.manager.UserManager;
@@ -23,6 +22,7 @@ import com.epam.freelancer.business.service.OrderingService;
 import com.epam.freelancer.database.model.Ordering;
 import com.epam.freelancer.database.model.UserEntity;
 import com.epam.freelancer.security.provider.AuthenticationProvider;
+import com.epam.freelancer.web.json.model.JsonPaginator;
 import com.epam.freelancer.web.social.Linkedin;
 import com.epam.freelancer.web.util.Paginator;
 
@@ -78,9 +78,6 @@ public class UnregisteredController extends HttpServlet {
 				return;
 			default:
 			}
-			request.getRequestDispatcher(
-					"/views/" + FrontController.getPath(request) + ".jsp")
-					.forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOG.fatal(getClass().getSimpleName() + " - " + "doGet");
@@ -152,18 +149,13 @@ public class UnregisteredController extends HttpServlet {
 	{
 		ObjectMapper mapper = new ObjectMapper();
 		try {
-			Map<String, String> content = mapper.readValue(
-					request.getParameter("content"),
-					new TypeReference<Map<String, String>>() {
-					});
-			Map<String, Integer> pagination = mapper.readValue(
-					request.getParameter("page"),
-					new TypeReference<Map<String, Integer>>() {
-					});
-
-			List<Ordering> orderings = orderingService.filterElements(content,
-					pagination.get("start"), pagination.get("step"));
-			paginator.next(pagination, orderings, response);
+			JsonPaginator result = mapper.readValue(request.getReader()
+					.readLine(), JsonPaginator.class);
+			System.out.println("");
+			List<Ordering> orderings = orderingService.filterElements(result
+					.getContent(), result.getPage().getStart(), result
+					.getPage().getStep());
+			paginator.next(result.getPage(), orderings, response);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

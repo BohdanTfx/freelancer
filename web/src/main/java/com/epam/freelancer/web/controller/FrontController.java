@@ -52,9 +52,6 @@ public class FrontController extends HttpServlet {
 			if (path.startsWith("/front/")) {
 				path = path.substring("/front/".length());
 				switch (path) {
-				/*case "":
-					path = "home";
-					break;*/
 				case "orders":
 				case "signup":
 				case "language/bundle":
@@ -75,8 +72,6 @@ public class FrontController extends HttpServlet {
 						return;
 					}
 				}
-				/*request.getRequestDispatcher("/views/" + path + ".jsp")
-						.forward(request, response);*/
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
