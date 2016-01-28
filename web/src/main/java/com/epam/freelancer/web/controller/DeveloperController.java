@@ -1,29 +1,27 @@
 package com.epam.freelancer.web.controller;
 
-import com.epam.freelancer.business.context.ApplicationContext;
-import com.epam.freelancer.business.service.DeveloperQAService;
-import com.epam.freelancer.business.service.GenericService;
-import com.epam.freelancer.business.service.TechnologyService;
-import com.epam.freelancer.business.service.TestService;
-import com.epam.freelancer.database.dao.GenericDao;
-import com.epam.freelancer.database.dao.TechnologyDao;
-import com.epam.freelancer.database.dao.TestDao;
-import com.epam.freelancer.database.model.Developer;
-import com.epam.freelancer.database.model.DeveloperQA;
-import com.epam.freelancer.database.model.Technology;
-import com.epam.freelancer.database.model.Test;
-import com.google.gson.Gson;
-import org.apache.log4j.Logger;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import org.apache.log4j.Logger;
+
+import com.epam.freelancer.business.context.ApplicationContext;
+import com.epam.freelancer.business.service.DeveloperQAService;
+import com.epam.freelancer.business.service.TechnologyService;
+import com.epam.freelancer.business.service.TestService;
+import com.epam.freelancer.database.model.Developer;
+import com.epam.freelancer.database.model.DeveloperQA;
+import com.epam.freelancer.database.model.Technology;
+import com.epam.freelancer.database.model.Test;
+import com.google.gson.Gson;
 
 /**
  * Created by Максим on 22.01.2016.
