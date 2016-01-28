@@ -12,6 +12,7 @@ import com.epam.freelancer.database.model.Developer;
 import com.epam.freelancer.database.model.DeveloperQA;
 import com.epam.freelancer.database.model.Technology;
 import com.epam.freelancer.database.model.Test;
+import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -45,15 +46,13 @@ public class DeveloperController extends HttpServlet {
 
             String path = FrontController.getPath(request);
 
-                switch (path) {
-                case "dev/test":
-                    fillTestPage(request,response);
+            switch (path) {
+                case "dev/getalltests":
+                    fillTestPage(request, response);
                     break;
                 default:
 
             }
-            request.getRequestDispatcher("/views/" + path + ".jsp")
-                    .forward(request, response);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,25 +65,38 @@ public class DeveloperController extends HttpServlet {
 
     }
 
-    private void fillTestPage(HttpServletRequest request, HttpServletResponse response){
+    private void fillTestPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
         DeveloperQAService developerQAService = (DeveloperQAService) ApplicationContext.getInstance().getBean("developerQAService");
         HttpSession session = request.getSession();
         Developer dev = (Developer) session.getAttribute("user");
-        List<DeveloperQA> devQAs = developerQAService.findAllByDevId(dev.getId());
+//        List<DeveloperQA> devQAs = developerQAService.findAllByDevId(dev.getId());
+        List<DeveloperQA> devQAs = developerQAService.findAllByDevId(1);
 
         List<Test> tests = testService.findAll();
         List<Technology> techs = technologyService.findAll();
         Map<Integer, Technology> technologyMap = new HashMap<>();
-        techs.forEach(technology -> technologyMap.put(technology.getId(),technology));
+        techs.forEach(technology -> technologyMap.put(technology.getId(), technology));
         Map<Integer, Test> testMap = new HashMap<>();
         tests.forEach(test -> {
             test.setTechnology(technologyMap.get(test.getTechId()));
-            testMap.put(test.getId(),test);
+            testMap.put(test.getId(), test);
         });
-        for(DeveloperQA developerQA:devQAs){
+        for (DeveloperQA developerQA : devQAs) {
             developerQA.setTest(testMap.get(developerQA.getTestId()));
         }
-        request.setAttribute("devQAs", devQAs);
-        request.setAttribute("tests", tests);
+        for (int i = 0; i < tests.size(); i++) {
+            for (DeveloperQA developerQA : devQAs) {
+                if (developerQA.getTest().equals(tests.get(i)) && developerQA.getIsExpire()) {
+                    tests.remove(i);
+                    break;
+                }
+            }
+        }
+        String devQAsJson = new Gson().toJson(devQAs);
+        String testsJson = new Gson().toJson(tests);
+        String resultJson = "{\"devQAs\":" + devQAsJson + ",\"tests\":" + testsJson + "}";
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(resultJson);
     }
 }

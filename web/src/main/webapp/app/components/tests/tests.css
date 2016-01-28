@@ -1,0 +1,139 @@
+.tests-tabs md-content {
+    background-color: transparent !important; }
+.tests-tabs md-content md-tabs {
+    background: #f6f6f6;
+    border: 1px solid #e1e1e1; }
+.tests-tabs md-content md-tabs md-tabs-wrapper {
+    background: white; }
+.tests-tabs md-content h1:first-child {
+    margin-top: 0; }
+
+.md-tabs .md-tab .md-ripple-container {
+    color: #2591ff;
+}
+
+md-tabs .md-ink-bar {
+    color: #2591ff;
+    background: #2591ff none repeat scroll 0% 0%;
+}
+
+md-tabs md-ink-bar {
+    color: #2591ff;
+    background: #2591ff none repeat scroll 0% 0%;
+    height: 5px;
+}
+
+md-tabs .md-tab .md-ripple-container {
+    color: #2591ff;
+
+}
+
+.tests-tabs md-tabs .md-tab.md-active{
+    color: #222222;
+    font-weight: bold;
+}
+
+.tests-tabs md-pagination-wrapper {
+    width: auto !important;
+}
+
+.vertical-align-center {
+    vertical-align: middle;
+    display: inline-block;
+    float: none;
+}
+
+.testItem {
+    padding: 5px 20px;
+}
+
+.testItem div{
+    line-height: 24px;
+    padding: 5px 15px;
+}
+
+.testItem .btn {
+    padding: 5px 10px;
+    line-height: 16px;
+    float: right;
+}
+
+.tests-tabs{
+    margin-top: 100px;
+    padding: 10px 0 10px 0;
+}
+
+.history-title a, .tests-title a{
+    style:none;
+    color: #000000;
+}
+
+.history-title, .tests-title {
+    font-family: Arial;
+}
+
+.history-title .fa, .tests-title .fa{
+    font-size: 18px;
+    font-family: Arial;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    vertical-align: middle;
+}
+
+.history-body, .tests-body {
+    font-size: 16px;
+    font-family: Verdana;
+}
+
+.progress{
+    min-width: 100px;
+    border: solid 1px #bebebe;
+    text-align: center;
+    position: relative;
+    line-height: normal;
+}
+
+.progress-text{
+    text-shadow: 1px 1px 2px black, 0 0 1em black;
+    color: white;
+    position: absolute;
+    left: 0px;
+    right: 0px;;
+}
+
+
+#tests {
+    padding: 5px;
+}
+
+.progress-text{
+    text-shadow: 1px 1px 2px black, 0 0 1em black;
+    color: white;
+    position: absolute;
+    left: 0px;
+    right: 0px;;
+}
+
+.progress{
+    min-width: 100px;
+    border: solid 1px #bebebe;
+    text-align: center;
+    position: relative;
+}
+
+.green-color {
+    font-size: 18px;
+    color: #449d44;
+}
+
+.red-color{
+    font-size: 18px;
+    color: brown;
+}
+
+/* center logo */
+.img-center {
+    margin: 0 auto;
+    padding: 15px;
+}

@@ -1,0 +1,37 @@
+.menuIcons{
+    position: fixed;
+    top:70px;
+    width: 2.5em;
+    padding-left: 0;
+    padding-right: 0;
+    margin: auto;
+    text-align: center;
+    background-color: #273039;
+/*    ba ckground-color: #27408B;*/
+    height: 100%;
+ }
+
+.menuIconBtn{
+    padding:0;
+    margin-top: 5px;
+    height: 1em;
+    font-size: 1.5em;
+    color:#11C3F0;
+    width: 1.6em;
+}
+
+.menuContent{
+/*    height: 99vh;*/
+    background-color: #11C3F0;
+}
+
+
+ md-menu-bar.md-default-theme md-menu.md-open > button, md-menu-bar md-menu.md-open > button, md-menu-bar.md-default-theme md-menu > button:focus, md-menu-bar md-menu > button:focus{
+    background: #11C3F0;
+     color: #273039;
+}
+
+.md-open-menu-container.md-active
+/*    height:100vh;*/
+    margin-top: 460px;
+}
