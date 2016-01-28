@@ -58,10 +58,23 @@ angular
 						content.zone = zone === undefined || zone.length == 0 ? undefined
 								: zone;
 
+						if ($scope.payment) {
+							if (!$scope.payment.hourly.options.disabled) {
+								content.hourly = true;
+								content.hmin = $scope.payment.hourly.first;
+								content.hmax = $scope.payment.hourly.second;
+							}
+							if (!$scope.payment.fixed.options.disabled) {
+								content.fixed = true;
+								content.fmin = $scope.payment.fixed.first;
+								content.fmax = $scope.payment.fixed.second;
+							}
+						}
+
 						var technology = [];
 						angular.forEach($scope.selectedTechs, function(value,
 								key) {
-							technology.push(value.name);
+							technology.push(value.id);
 						});
 						content.technology = technology === undefined
 								|| technology.length == 0 ? undefined

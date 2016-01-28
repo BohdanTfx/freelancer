@@ -11,7 +11,6 @@ import java.util.Map.Entry;
 
 import com.epam.freelancer.database.dao.GenericDao;
 import com.epam.freelancer.database.model.BaseEntity;
-import com.epam.freelancer.database.model.ObjectHolder;
 import com.epam.freelancer.database.persistence.ConnectionPool;
 import com.epam.freelancer.database.transformer.DataTransformer;
 
@@ -137,7 +136,7 @@ public abstract class GenericJdbcDao<T extends BaseEntity<ID>, ID> implements
 		return entities;
 	}
 
-	private String fillFilterQuery(Map<String, Object> parameters,
+	protected String fillFilterQuery(Map<String, Object> parameters,
 			String query, Integer start, Integer step)
 	{
 		StringBuilder builder = new StringBuilder(query);
@@ -148,14 +147,14 @@ public abstract class GenericJdbcDao<T extends BaseEntity<ID>, ID> implements
 			if (!hasFilter)
 				builder.append(" WHERE ");
 			else
-				builder.append("and ");
+				builder.append("AND ");
 
 			if (entry.getValue() instanceof List<?>) {
 				builder.append(key);
 				List<?> items = (List<?>) entry.getValue();
 
 				if (items.size() > 0) {
-					builder.append(" in (");
+					builder.append(" IN (");
 					for (Object object : items) {
 						builder.append(object);
 						builder.append(",");
@@ -180,20 +179,6 @@ public abstract class GenericJdbcDao<T extends BaseEntity<ID>, ID> implements
 					builder.append(string);
 					builder.append("%' ");
 				}
-			}
-
-			if (entry.getValue() instanceof ObjectHolder) {
-				@SuppressWarnings("unchecked")
-				ObjectHolder<Double, Double> holder = (ObjectHolder<Double, Double>) entry
-						.getValue();
-
-				builder.append(key);
-				builder.append(" >= ");
-				builder.append(holder.getFirst());
-				builder.append(" and ");
-				builder.append(key);
-				builder.append(" <= ");
-				builder.append(holder.getSecond());
 			}
 
 			hasFilter = true;

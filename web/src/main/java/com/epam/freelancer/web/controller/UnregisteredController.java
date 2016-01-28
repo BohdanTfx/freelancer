@@ -198,8 +198,8 @@ public class UnregisteredController extends HttpServlet {
 						.findOrderingTechnologies(ordering.getId()));
 			}
 
-			paginator.next(result.getPage(), response,
-					orderingService.getObjectAmount(), orderings);
+			paginator.next(result.getPage(), response, orderingService
+					.getFilteredObjectNumber(result.getContent()), orderings);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

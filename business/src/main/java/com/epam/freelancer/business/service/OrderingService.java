@@ -100,6 +100,10 @@ public class OrderingService extends GenericService<Ordering, Integer> {
 		return map;
 	}
 
+	public Integer getFilteredObjectNumber(Map<String, Object> parameters) {
+		return ((OrderingDao) genericDao).getFilteredObjectNumber(parameters);
+	}
+
 	public void setOrderingTechnoloyManyToManyDao(
 			GenericManyToManyDao<Ordering, Technology, Worker, Integer> orderingTechnoloyManyToManyDao)
 	{

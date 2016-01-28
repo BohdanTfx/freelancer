@@ -166,7 +166,7 @@ angular
 						}
 					}
 
-					jobsAPI.loadOrders($scope, $http);
 					jobsAPI.loadLimits($scope, $http);
+					jobsAPI.loadOrders($scope, $http);
 					jobsAPI.loadTechnologies($scope, $http);
 				});

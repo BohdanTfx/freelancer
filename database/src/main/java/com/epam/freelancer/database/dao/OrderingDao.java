@@ -1,5 +1,7 @@
 package com.epam.freelancer.database.dao;
 
+import java.util.Map;
+
 import com.epam.freelancer.database.model.Ordering;
 
 /**
@@ -8,4 +10,6 @@ import com.epam.freelancer.database.model.Ordering;
 public interface OrderingDao extends GenericDao<Ordering, Integer> {
 
 	public Double getPayment(String paymentType, String limit);
+
+	Integer getFilteredObjectNumber(Map<String, Object> parameters);
 }
