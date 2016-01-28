@@ -39,8 +39,17 @@ public class Admin implements UserEntity {
 	private String salt;
 	@Column(name="img_url")
 	private String imgUrl;
+    private String role;
 
-	@Override
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    @Override
 	public String getSalt() {
 		return salt;
 	}

@@ -233,9 +233,9 @@ gulp.task('index', function () {
   var target = gulp.src('./index.html');
   // It's not necessary to read the files (will speed up things), we're only after their paths:
   var paths  = {
-    javascript:['./bower_components/**/*min.js', './app/**/*.js'],
+    javascript:['./bower_components/*/*min.js', './bower_components/*/release/*min.js', './app/**/*.js'],
     less: ['./app/**/*.less'],
-    css: ['./bower_components/**/*.min.css', './app/styles/*.css']
+    css: ['./bower_components/*/*min.css', './app/styles/*.css']
   }
 
   return gulp.src('./index.html')
@@ -293,7 +293,7 @@ gulp.task('reload-styles', function(file) {
 // default task to be run with `gulp` command
 // this default task will run BrowserSync & then use Gulp to watch files.
 // when a file is changed, an event is emitted to BrowserSync with the filepath.
-gulp.task('default', ['browser-sync', 'less', 'minify-css', 'index'], function() {
+gulp.task('default', ['browser-sync', 'less', 'minify-css'], function() {
   // gulp.watch('styles/*.css', function(file) {
   //   if (file.type === "changed") {
   //     reload(file.path);

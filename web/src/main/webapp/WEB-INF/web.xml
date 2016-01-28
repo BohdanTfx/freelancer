@@ -5,20 +5,19 @@
 	id="WebApp_ID" version="3.1">
 	<display-name>freelancer</display-name>
 
- 	<servlet>
- 		<servlet-name>FrontController</servlet-name>
- 		<servlet-class>com.epam.freelancer.web.controller.FrontController</servlet-class>
- 		<init-param>
- 			<param-name>requestEncoding</param-name>
- 			<param-value>UTF-8</param-value>
- 		</init-param>
- 		<load-on-startup>1</load-on-startup>
- 	</servlet>
- 	<servlet-mapping>
- 		<servlet-name>FrontController</servlet-name>
- 		<url-pattern>/front/*</url-pattern>
-  	</servlet-mapping>
-
+	<servlet>
+		<servlet-name>FrontController</servlet-name>
+		<servlet-class>com.epam.freelancer.web.controller.FrontController</servlet-class>
+		<init-param>
+			<param-name>requestEncoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>FrontController</servlet-name>
+		<url-pattern>/front/*</url-pattern>
+	</servlet-mapping>
 	<filter>
 		<filter-name>AdminAccessFilter</filter-name>
 		<filter-class>com.epam.freelancer.security.filter.AdminAccessFilter</filter-class>
@@ -28,25 +27,24 @@
 		<url-pattern>/admin/*</url-pattern>
 		<url-pattern>/front/admin/*</url-pattern>
 	</filter-mapping>
-	<!--	<filter>
-            <filter-name>DeveloperAccessFilter</filter-name>
-            <filter-class>com.epam.freelancer.security.filter.DeveloperAccessFilter</filter-class>
-        </filter>
-        <filter-mapping>
-            <filter-name>DeveloperAccessFilter</filter-name>
-            <url-pattern>/dev/*</url-pattern>
-            <url-pattern>/front/dev/*</url-pattern>
-        </filter-mapping>
-        <filter>
-            <filter-name>CustomerAccessFilter</filter-name>
-            <filter-class>com.epam.freelancer.security.filter.CustomerAccessFilter</filter-class>
-        </filter>
-        <filter-mapping>
-            <filter-name>CustomerAccessFilter</filter-name>
-            <url-pattern>/cust/*</url-pattern>
-            <url-pattern>/front/cust/*</url-pattern>
-        </filter-mapping>-->
-
+	<filter>
+		<filter-name>DeveloperAccessFilter</filter-name>
+		<filter-class>com.epam.freelancer.security.filter.DeveloperAccessFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>DeveloperAccessFilter</filter-name>
+		<url-pattern>/dev/*</url-pattern>
+		<url-pattern>/front/dev/*</url-pattern>
+	</filter-mapping>
+	<filter>
+		<filter-name>CustomerAccessFilter</filter-name>
+		<filter-class>com.epam.freelancer.security.filter.CustomerAccessFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>CustomerAccessFilter</filter-name>
+		<url-pattern>/cust/*</url-pattern>
+		<url-pattern>/front/cust/*</url-pattern>
+	</filter-mapping>
 	<filter>
 		<filter-name>UtilFilter</filter-name>
 		<filter-class>com.epam.freelancer.security.filter.UtilFilter</filter-class>
@@ -55,15 +53,4 @@
 		<filter-name>UtilFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-
-<!--	<jsp-config>
-		<taglib>
-			<taglib-uri>http://testsystem.fx/jsp/tlds/security</taglib-uri>
-			<taglib-location>tags/security.tld</taglib-location>
-		</taglib>
-		<jsp-property-group>
-			<url-pattern>*.jsp</url-pattern>
-			<page-encoding>UTF-8</page-encoding>
-		</jsp-property-group>
-	</jsp-config>-->
 </web-app>
