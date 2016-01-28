@@ -15,14 +15,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.manager.UserManager;
 import com.epam.freelancer.business.service.OrderingService;
+import com.epam.freelancer.business.service.TechnologyService;
 import com.epam.freelancer.database.model.Ordering;
 import com.epam.freelancer.database.model.UserEntity;
 import com.epam.freelancer.security.provider.AuthenticationProvider;
+import com.epam.freelancer.web.json.model.JsonPaginator;
 import com.epam.freelancer.web.social.Linkedin;
 import com.epam.freelancer.web.util.Paginator;
 
@@ -31,8 +32,10 @@ public class UnregisteredController extends HttpServlet {
 			.getLogger(UnregisteredController.class);
 	private static final long serialVersionUID = 1L;
 	private OrderingService orderingService;
+	private TechnologyService technologyService;
 	private UserManager userManager;
 	private Linkedin linkedin;
+	private ObjectMapper mapper;
 	private Paginator paginator;
 
 	public UnregisteredController() {
@@ -43,7 +46,7 @@ public class UnregisteredController extends HttpServlet {
 	public void init() {
 		LOG.info(getClass().getSimpleName() + " - " + " loaded");
 		linkedin = new Linkedin();
-
+		mapper = new ObjectMapper();
 		paginator = new Paginator();
 		try {
 			linkedin.initKeys("/social.properties");
@@ -52,6 +55,8 @@ public class UnregisteredController extends HttpServlet {
 		}
 		orderingService = (OrderingService) ApplicationContext.getInstance()
 				.getBean("orderingService");
+		technologyService = (TechnologyService) ApplicationContext
+				.getInstance().getBean("technologyService");
 
 		userManager = (UserManager) ApplicationContext.getInstance().getBean(
 				"userManager");
@@ -67,9 +72,6 @@ public class UnregisteredController extends HttpServlet {
 				request.setAttribute("role", request.getParameter("role"));
 				fillSignup(request, response);
 				break;
-			case "orders":
-				request.setAttribute("orders", orderingService.findAll());
-				break;
 			case "language/bundle":
 				sendBundle(request, response);
 				return;
@@ -78,9 +80,6 @@ public class UnregisteredController extends HttpServlet {
 				return;
 			default:
 			}
-			request.getRequestDispatcher(
-					"/views/" + FrontController.getPath(request) + ".jsp")
-					.forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOG.fatal(getClass().getSimpleName() + " - " + "doGet");
@@ -139,6 +138,12 @@ public class UnregisteredController extends HttpServlet {
 			case "orders/filter":
 				filterOrders(request, response);
 				break;
+			case "orders/limits":
+				sendLimits(response);
+				break;
+			case "orders/tech":
+				sendTechnologies(response);
+				break;
 			default:
 			}
 		} catch (Exception e) {
@@ -147,23 +152,54 @@ public class UnregisteredController extends HttpServlet {
 		}
 	}
 
+	private void sendTechnologies(HttpServletResponse response) {
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		try (PrintWriter out = response.getWriter()) {
+			out.print(mapper.writeValueAsString(technologyService.findAll()));
+			out.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	/*
+	 * private Technology findTechnology(Map<Integer, Technology> technologies,
+	 * Integer id) { Technology technology = technologies.get(id); if
+	 * (technology == null) technology = technologyService.findById(id);
+	 * 
+	 * technologies.put(id, technology); return technology; }
+	 */
+
+	private void sendLimits(HttpServletResponse response) {
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		try (PrintWriter out = response.getWriter()) {
+			out.print(mapper.writeValueAsString(orderingService
+					.findPaymentLimits()));
+			out.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	private void filterOrders(HttpServletRequest request,
 			HttpServletResponse response)
 	{
-		ObjectMapper mapper = new ObjectMapper();
 		try {
-			Map<String, String> content = mapper.readValue(
-					request.getParameter("content"),
-					new TypeReference<Map<String, String>>() {
-					});
-			Map<String, Integer> pagination = mapper.readValue(
-					request.getParameter("page"),
-					new TypeReference<Map<String, Integer>>() {
-					});
+			JsonPaginator result = mapper.readValue(request.getReader()
+					.readLine(), JsonPaginator.class);
+			List<Ordering> orderings = orderingService.filterElements(result
+					.getContent(), result.getPage().getStart()
+					* result.getPage().getStep(), result.getPage().getStep());
 
-			List<Ordering> orderings = orderingService.filterElements(content,
-					pagination.get("start"), pagination.get("step"));
-			paginator.next(pagination, orderings, response);
+			for (Ordering ordering : orderings) {
+				ordering.setTechnologies(orderingService
+						.findOrderingTechnologies(ordering.getId()));
+			}
+
+			paginator.next(result.getPage(), response, orderingService
+					.getFilteredObjectNumber(result.getContent()), orderings);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

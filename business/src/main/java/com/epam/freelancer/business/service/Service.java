@@ -18,7 +18,7 @@ public interface Service<T extends BaseEntity<ID>, ID> {
 
 	List<T> findAll();
 
-	List<T> filterElements(Map<String, String> parameters, Integer start,
+	List<T> filterElements(Map<String, Object> parameters, Integer start,
 			Integer step);
 
 	void encodePassword(UserEntity userEntity);

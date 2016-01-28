@@ -24,7 +24,12 @@
     "angular-ui-router": "~0.2.15",
     "bootstrap": "~3.3.6",
     "underscore": "~1.8.3",
+<<<<<<< HEAD
+    "angular-material": "~1.0.3",
+    "multirange": "val-samonte/angular-multirange"
+=======
     "angular-cookies": "~1.4.9"
+>>>>>>> branch 'angular_master' of https://github.com/BohdanTfx/freelancer.git
   },
   "resolutions": {
     "angular": "1.4.9",

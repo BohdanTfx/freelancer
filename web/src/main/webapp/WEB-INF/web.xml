@@ -5,10 +5,6 @@
 	id="WebApp_ID" version="3.1">
 	<display-name>freelancer</display-name>
 
-	<!--<welcome-file-list>
-		<welcome-file>index.jsp</welcome-file>
-	</welcome-file-list>-->
-
 	<servlet>
 		<servlet-name>FrontController</servlet-name>
 		<servlet-class>com.epam.freelancer.web.controller.FrontController</servlet-class>
@@ -22,7 +18,6 @@
 		<servlet-name>FrontController</servlet-name>
 		<url-pattern>/front/*</url-pattern>
 	</servlet-mapping>
-<!--
 	<filter>
 		<filter-name>AdminAccessFilter</filter-name>
 		<filter-class>com.epam.freelancer.security.filter.AdminAccessFilter</filter-class>
@@ -50,7 +45,6 @@
 		<url-pattern>/cust/*</url-pattern>
 		<url-pattern>/front/cust/*</url-pattern>
 	</filter-mapping>
--->
 	<filter>
 		<filter-name>UtilFilter</filter-name>
 		<filter-class>com.epam.freelancer.security.filter.UtilFilter</filter-class>
@@ -59,15 +53,4 @@
 		<filter-name>UtilFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-<!--
-	<jsp-config>
-		<taglib>
-			<taglib-uri>http://testsystem.fx/jsp/tlds/security</taglib-uri>
-			<taglib-location>tags/security.tld</taglib-location>
-		</taglib>
-		<jsp-property-group>
-			<url-pattern>*.jsp</url-pattern>
-			<page-encoding>UTF-8</page-encoding>
-		</jsp-property-group>
-	</jsp-config>-->
 </web-app>
