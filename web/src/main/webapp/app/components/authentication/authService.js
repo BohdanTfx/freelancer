@@ -32,7 +32,7 @@ angular.module('FreelancerApp')
             service.ClearCredentials = function () {
                 $http({
                     url: '/logout',
-                    method: "GET",
+                    method: "GET"
                 }).success(function () {
                 }).error(function () {
                 });

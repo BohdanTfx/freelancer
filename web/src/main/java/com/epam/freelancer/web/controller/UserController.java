@@ -203,7 +203,6 @@ public class UserController extends HttpServlet {
 
 
     private void sendResp(UserEntity ue, HttpServletResponse response) throws IOException {
-        ue.setPassword(null);
         String json = new Gson().toJson(ue);
 
         response.setContentType("application/json");
