@@ -42,6 +42,8 @@ public class UserController extends HttpServlet {
                 case "user/create":
                     create(request, response);
                     return;
+                case "user/test":
+                    test(request, response);
                 default:
             }
         } catch (Exception e) {
@@ -211,6 +213,10 @@ public class UserController extends HttpServlet {
         response.getWriter().write(json);
         response.getWriter().flush();
         response.getWriter().close();
+    }
+
+    public void test(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("TEST");
     }
 
 }

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.epam.freelancer.database.dao.jdbc.DAOManager;
 import org.apache.log4j.Logger;
 
 public class FrontController extends HttpServlet {
@@ -53,6 +54,7 @@ public class FrontController extends HttpServlet {
 			if (path.startsWith("/front/")) {
 				path = path.substring("/front/".length());
 				switch (path) {
+                    case "test":
 				case "orders":
 				case "signup":
 				case "language/bundle":

@@ -16,7 +16,7 @@ public final class DAOManager {
     private ConnectionPool connectionPool;
     private Map<String, Object> daos = new HashMap<>();
 
-    private DAOManager() {
+    DAOManager() {
     }
 
     public static DAOManager getInstance() {
