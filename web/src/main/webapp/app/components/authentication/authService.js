@@ -14,22 +14,30 @@ angular.module('FreelancerApp')
                 return $http.post('/user/signin', data);
             };
 
-            service.SetCredentials = function (username, password, role) {
-                var authdata = Base64.encode(username + ':' + password);
+            service.SetCredentials = function (fname, lname, role) {
+                //var authdata = Base64.encode(username + ':' + password);
                 $rootScope.globals = {
                     currentUser: {
-                        username: username,
-                        authdata: authdata,
+                        fname: fname,
+                        lname: lname,
                         role: role
                     }
                 };
 
 
-                $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line
+                //$http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line
                 $cookieStore.put('freelancerRememberMeCookieAng', $rootScope.globals);
             };
 
             service.ClearCredentials = function () {
+                $http({
+                    url: '/logout',
+                    method: "GET",
+                }).success(function () {
+                    alert('suc');
+                }).error(function () {
+                    alert('err');
+                });
                 $rootScope.globals = {};
                 $cookieStore.remove('freelancerRememberMeCookieAng');
                 $http.defaults.headers.common.Authorization = 'Basic ';

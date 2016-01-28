@@ -12,20 +12,18 @@ angular.module('FreelancerApp')
             AuthenticationService.ClearCredentials();
 
             $scope.login = function () {
-                $scope.dataLoading = true;
                 AuthenticationService.Login($scope.username, $scope.password, $scope.remember).success(function (response) {
-                    AuthenticationService.SetCredentials($scope.username, $scope.password, response.role);
+                    AuthenticationService.SetCredentials(response.fname, response.lname, response.role);
                     $location.path('/');
 
                 }).error(function (response) {
-                    $scope.dataLoading = false;
                     $scope.error = 'Invalid credentials';
                 })
             };
 
-            $scope.logout = function () {
+            $rootScope.logout = function () {
                 // reset login status
                 AuthenticationService.ClearCredentials();
 
-            }
+            };
         }]);

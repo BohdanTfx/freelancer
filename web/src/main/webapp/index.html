@@ -83,24 +83,26 @@
 
                     <div class="navbar-collapse collapse clearfix">
                         <!--<sec:access role="none">-->
-                        <ul class="navigation">
-                            <li class="hvr-underline-from-center"><a
+                        <ul class="navigation"  ng-switch on="logged">
+                            <li class="hvr-underline-from-center" ng-switch-when="false"><a
                                     href="#/auth">
                                 <i class="fa fa-sign-in"></i>Sign In
                             </a></li>
-                            <li class="hvr-underline-from-center"><a
+                            <li class="hvr-underline-from-center" ng-switch-when="false"><a
                                     href="#/chooserole">
                                 <i class="fa fa-user-plus"></i>Sign Up
                             </a></li>
+
+
                         </ul>
                         <!--</sec:access>-->
                         <!--<sec:access role="user">-->
-                        <ul class="navigation">
-                            <li class="hvr-underline-from-center"><a
+                        <ul class="navigation" ng-switch on="logged">
+                            <li class="hvr-underline-from-center" ng-switch-when="true"><a
                                     href="#/cabinet/main">
-                                <i class="fa fa-home"></i>Cabinet
+                                <i class="fa fa-home"></i>{{name}} {{lastName}}
                             </a></li>
-                            <li id="logout" ng-controller="authCtrl" ng-click="logout()" class="hvr-underline-from-center"><a
+                            <li id="logout" ng-click="logout()" class="hvr-underline-from-center" ng-switch-when="true"><a
                                     href="#/logout">
                                 <i class="fa fa-sign-out"></i>Logout
                             </a></li>

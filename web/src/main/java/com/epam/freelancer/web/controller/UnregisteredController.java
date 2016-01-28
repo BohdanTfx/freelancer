@@ -181,7 +181,7 @@ public class UnregisteredController extends HttpServlet {
 				"freelancerRememberMeCookie", userEntity);
 		userManager.modifyUser(userEntity);
 		request.getSession().removeAttribute("user");
-		response.sendRedirect(request.getContextPath() + "/");
+//		response.sendRedirect(request.getContextPath() + "/");
 	}
 
 }

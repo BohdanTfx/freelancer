@@ -29,15 +29,36 @@
                 url: '/auth',
                 templateUrl: 'app/components/authentication/auth.html',
                 controller: 'authCtrl'
-            }).state('header', {
-                controller: 'headerCtrl'
             });
 
             $locationProvider.html5Mode(false);
 
-        })
-        .run(function () {
-        });
+        }).run(['$rootScope', '$location', '$cookieStore', '$http',
+            function ($rootScope, $location, $cookieStore, $http) {
+                // keep user logged in after page refresh
+                /*$rootScope.globals = $cookieStore.get('freelancerRememberMeCookieAng') || {};
+                if ($rootScope.globals.currentUser) {
+                    $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.username;
+                }*/
+                $rootScope.$on('$locationChangeStart', function (event, next, current) {
+                    // redirect to login page if not logged in
+                   /* if (typeof $rootScope.globals.currentUser == 'undefined')
+                        if ($location.path() !== '/auth') {
+                            $location.path('/auth');
+                        }*/
+
+                    $rootScope.globals = $cookieStore.get('freelancerRememberMeCookieAng') || {};
+                    if($rootScope.globals.currentUser) {
+                        $rootScope.name = $rootScope.globals.currentUser.fname;
+                        $rootScope.lastName = $rootScope.globals.currentUser.lname;
+                        $rootScope.role = $rootScope.globals.currentUser.role;
+
+                        $rootScope.logged = true;
+                    }else {
+                        $rootScope.logged = false;
+                    }
+                });
+            }]);
 
 
 })();
