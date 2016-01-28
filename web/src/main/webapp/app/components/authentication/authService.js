@@ -34,9 +34,7 @@ angular.module('FreelancerApp')
                     url: '/logout',
                     method: "GET",
                 }).success(function () {
-                    alert('suc');
                 }).error(function () {
-                    alert('err');
                 });
                 $rootScope.globals = {};
                 $cookieStore.remove('freelancerRememberMeCookieAng');
