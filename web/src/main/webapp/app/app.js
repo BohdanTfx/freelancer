@@ -1,31 +1,28 @@
+;
+(function() {
 
-;(function() {
+	angular.module(
+			'FreelancerApp',
+			[ 'ngRoute', 'ui.router', 'ngMaterial', 'isteven-multi-select',
+					'rzModule' ]).config(
+			function($stateProvider, $urlRouterProvider, $locationProvider) {
+				// ,'vds.multirange'
+				$urlRouterProvider.otherwise('/orders');
 
-  angular
-    .module('FreelancerApp', [
-      'ngRoute',
-      'ui.router',
-    ])
-    .config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
+				// routes
+				$stateProvider.state('orders', {
+					url : '/orders',
+					templateUrl : 'app/components/jobs/jobs.html',
+					controller : 'jobsCtrl'
+				}).state('personal', {
+					url : '/personal',
+					templateUrl : 'app/components/personal/personal.html',
+					controller : 'personalCtrl'
+				});
 
-      $urlRouterProvider.otherwise('/jobs');
+				$locationProvider.html5Mode(false);
 
-      // routes
-      $stateProvider.state('jobs', {
-        url: '/jobs',
-        templateUrl: 'app/components/jobs/jobs.html',
-        controller: 'jobsCtrl'
-      }).state('personal', {
-          url: '/personal',
-          templateUrl: 'app/components/personal/personal.html',
-          controller: 'personalCtrl'
-      });
-
-      $locationProvider.html5Mode(false);
-
-  })
-  .run(function () {
-  });
-
+			}).run(function() {
+	});
 
 })();

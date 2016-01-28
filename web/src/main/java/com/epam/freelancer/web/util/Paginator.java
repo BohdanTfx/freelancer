@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.epam.freelancer.database.model.ObjectHolder;
+import com.epam.freelancer.web.json.model.Page;
 
 public class Paginator {
 	private ObjectMapper objectMapper;
@@ -23,22 +24,36 @@ public class Paginator {
 		responseText = new HashMap<>();
 	}
 
-	public void next(Map<String, Integer> page, List<?> items,
-			HttpServletResponse response)
+	public void next(Page page, HttpServletResponse response,
+			Integer totalSize, List<?> list)
+	{
+		Map<String, Integer> map = new HashMap<>();
+		map.put("start", page.getStart());
+		map.put("step", page.getStep());
+		map.put("first", page.getFirst());
+		map.put("last", page.getLast());
+		next(map, response, totalSize, list);
+	}
+
+	public void next(Map<String, Integer> page, HttpServletResponse response,
+			Integer totalSize, List<?> list)
 	{
 		responseText.clear();
-		if (isFirst(page, response, items) || isLast(page, response, items)) {
-			return;
-		}
-
-		Integer start = page.get("start");
-		start = start > items.size() ? 0 : start;
 		Integer step = page.get("step") == null ? 10 : page.get("step");
 
-		List<?> list = items.subList(start,
-				(start + step) > items.size() ? items.size() : start + step);
+		Integer begin = 0;
 
-		sendResponse(list, fillPaginationElement(page, list, start, response),
+		if (isLast(page)) {
+			begin = totalSize / step * step > totalSize ? 0 : totalSize / step
+					* step;
+		} else {
+			begin = page.get("start");
+			begin = begin > totalSize ? 0 : begin;
+			begin *= step;
+		}
+
+		sendResponse(list,
+				fillPaginationElement(totalSize, page, begin, response),
 				response);
 	}
 
@@ -60,45 +75,20 @@ public class Paginator {
 		}
 	}
 
-	private boolean isLast(Map<String, Integer> page,
-			HttpServletResponse response, List<?> items)
-	{
+	private boolean isLast(Map<String, Integer> page) {
 		Integer last = page.get("last");
-		if (last == null || last != 0)
+		if (last == null || last == 0)
 			return false;
-		Integer step = page.get("step") == null ? 10 : page.get("step");
-
-		Integer size = items.size();
-		Integer offset = size / step * step > size ? 0 : size / step * step;
-
-		List<?> list = items.subList(offset, size);
-		sendResponse(list, fillPaginationElement(page, list, offset, response),
-				response);
-		return true;
-	}
-
-	private boolean isFirst(Map<String, Integer> page,
-			HttpServletResponse response, List<?> items)
-	{
-		Integer last = page.get("first");
-		if (last == null || last != 0)
-			return false;
-		Integer step = page.get("step") == null ? 10 : page.get("step");
-
-		List<?> list = items.subList(0, step > items.size() ? items.size()
-				: step);
-		sendResponse(list, fillPaginationElement(page, list, 0, response),
-				response);
 		return true;
 	}
 
 	private ObjectHolder<Integer, List<ObjectHolder<String, Integer>>> fillPaginationElement(
-			Map<String, Integer> page, List<?> iList, Integer currentPosition,
-			HttpServletResponse response)
+			Integer totalSize, Map<String, Integer> page,
+			Integer currentPosition, HttpServletResponse response)
 	{
 		List<ObjectHolder<String, Integer>> pages = fillPrevBtn(page,
 				currentPosition);
-		pages.addAll(fillNextBtn(page, iList.size(), currentPosition));
+		pages.addAll(fillNextBtn(page, totalSize, currentPosition));
 		return new ObjectHolder<Integer, List<ObjectHolder<String, Integer>>>(
 				currentPosition, pages);
 	}
@@ -111,8 +101,7 @@ public class Paginator {
 		Integer current = currentPosition / step + 1;
 		List<ObjectHolder<String, Integer>> pages = new ArrayList<>();
 		for (int i = current; i <= limit && i - current < 3; i++) {
-			pages.add(new ObjectHolder<String, Integer>("?start=" + (i * step),
-					i));
+			pages.add(new ObjectHolder<String, Integer>("start", i));
 		}
 
 		return pages;
@@ -126,8 +115,7 @@ public class Paginator {
 		LinkedList<ObjectHolder<String, Integer>> pages = new LinkedList<>();
 		int i = current;
 		for (; i >= 0 && current - i < 3; i--) {
-			pages.addFirst(new ObjectHolder<String, Integer>("?start="
-					+ (i * step), i));
+			pages.addFirst(new ObjectHolder<String, Integer>("start", i));
 		}
 		pages.add(new ObjectHolder<String, Integer>("current", current + 1));
 

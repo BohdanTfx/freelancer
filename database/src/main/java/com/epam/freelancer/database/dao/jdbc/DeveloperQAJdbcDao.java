@@ -1,15 +1,14 @@
 package com.epam.freelancer.database.dao.jdbc;
 
 
-import com.epam.freelancer.database.dao.DeveloperQADao;
-import com.epam.freelancer.database.model.Developer;
-import com.epam.freelancer.database.model.DeveloperQA;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.epam.freelancer.database.dao.DeveloperQADao;
+import com.epam.freelancer.database.model.DeveloperQA;
 
 /**
  * Created by ������ on 17.01.2016.
