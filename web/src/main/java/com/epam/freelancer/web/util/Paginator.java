@@ -41,22 +41,19 @@ public class Paginator {
 		responseText.clear();
 		Integer step = page.get("step") == null ? 10 : page.get("step");
 
+		Integer begin = 0;
+
 		if (isLast(page)) {
-
-			Integer offset = totalSize / step * step > totalSize ? 0
-					: totalSize / step * step;
-
-			sendResponse(list,
-					fillPaginationElement(totalSize, page, offset, response),
-					response);
-			return;
+			begin = totalSize / step * step > totalSize ? 0 : totalSize / step
+					* step;
+		} else {
+			begin = page.get("start");
+			begin = begin > totalSize ? 0 : begin;
+			begin *= step;
 		}
 
-		Integer start = page.get("start");
-		start = start > totalSize ? 0 : start;
-
 		sendResponse(list,
-				fillPaginationElement(totalSize, page, start, response),
+				fillPaginationElement(totalSize, page, begin, response),
 				response);
 	}
 
@@ -101,7 +98,7 @@ public class Paginator {
 	{
 		Integer step = page.get("step") == null ? 10 : page.get("step");
 		Integer limit = size / step;
-		Integer current = currentPosition / step;
+		Integer current = currentPosition / step + 1;
 		List<ObjectHolder<String, Integer>> pages = new ArrayList<>();
 		for (int i = current; i <= limit && i - current < 3; i++) {
 			pages.add(new ObjectHolder<String, Integer>("start", i));
@@ -114,13 +111,13 @@ public class Paginator {
 			Map<String, Integer> page, Integer currentPosition)
 	{
 		Integer step = page.get("step") == null ? 10 : page.get("step");
-		Integer current = currentPosition / step;
+		Integer current = currentPosition / step - 1;
 		LinkedList<ObjectHolder<String, Integer>> pages = new LinkedList<>();
 		int i = current;
 		for (; i >= 0 && current - i < 3; i--) {
 			pages.addFirst(new ObjectHolder<String, Integer>("start", i));
 		}
-		pages.add(new ObjectHolder<String, Integer>("current", current));
+		pages.add(new ObjectHolder<String, Integer>("current", current + 1));
 
 		return pages;
 	}

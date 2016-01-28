@@ -19,13 +19,13 @@ angular
 					}
 
 					$scope.itemsPerPage = [ {
-						number : 1,
+						number : 5,
 						text : "Show 5 items on page"
 					}, {
-						number : 2,
+						number : 10,
 						text : "Show 10 items on page"
 					}, {
-						number : 3,
+						number : 15,
 						text : "Show 15 items on page"
 					} ];
 					$scope.itesStep = $scope.itemsPerPage[1];

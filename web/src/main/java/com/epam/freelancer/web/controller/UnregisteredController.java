@@ -163,16 +163,13 @@ public class UnregisteredController extends HttpServlet {
 		}
 	}
 
-/*	private Technology findTechnology(Map<Integer, Technology> technologies,
-			Integer id)
-	{
-		Technology technology = technologies.get(id);
-		if (technology == null)
-			technology = technologyService.findById(id);
-
-		technologies.put(id, technology);
-		return technology;
-	}*/
+	/*
+	 * private Technology findTechnology(Map<Integer, Technology> technologies,
+	 * Integer id) { Technology technology = technologies.get(id); if
+	 * (technology == null) technology = technologyService.findById(id);
+	 * 
+	 * technologies.put(id, technology); return technology; }
+	 */
 
 	private void sendLimits(HttpServletResponse response) {
 		response.setContentType("application/json");
@@ -193,15 +190,16 @@ public class UnregisteredController extends HttpServlet {
 			JsonPaginator result = mapper.readValue(request.getReader()
 					.readLine(), JsonPaginator.class);
 			List<Ordering> orderings = orderingService.filterElements(result
-					.getContent(), result.getPage().getStart(), result
-					.getPage().getStep());
+					.getContent(), result.getPage().getStart()
+					* result.getPage().getStep(), result.getPage().getStep());
 
 			for (Ordering ordering : orderings) {
 				ordering.setTechnologies(orderingService
 						.findOrderingTechnologies(ordering.getId()));
 			}
 
-			paginator.next(result.getPage(), orderings, response);
+			paginator.next(result.getPage(), response,
+					orderingService.getObjectAmount(), orderings);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
