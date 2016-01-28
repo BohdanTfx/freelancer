@@ -39,6 +39,13 @@
 											url : '/auth',
 											templateUrl : 'app/components/authentication/auth.html',
 											controller : 'authCtrl'
+                                        })
+                            .state(
+                            'pubdev',
+                            {
+                                url: '/pubdev',
+                                templateUrl: 'app/components/pubdev/pubdev.html',
+                                controller: 'pubdevCtrl'
 										});
 
 						$locationProvider.html5Mode(false);
