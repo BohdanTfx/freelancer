@@ -18,6 +18,18 @@ angular
 						}
 					}
 
+					$scope.itemsPerPage = [ {
+						number : 1,
+						text : "Show 5 items on page"
+					}, {
+						number : 2,
+						text : "Show 10 items on page"
+					}, {
+						number : 3,
+						text : "Show 15 items on page"
+					} ];
+					$scope.itesStep = $scope.itemsPerPage[1];
+
 					$scope.timeZones = [
 							{
 								zone : "-12",
@@ -143,6 +155,15 @@ angular
 
 					$scope.doFilter = function() {
 						jobsAPI.loadOrders($scope, $http);
+					}
+
+					$scope.openPage = function(page) {
+						if (page == 'last')
+							jobsAPI.loadOrders($scope, $http, 1);
+						else {
+							$scope.itemListStart = page;
+							jobsAPI.loadOrders($scope, $http);
+						}
 					}
 
 					jobsAPI.loadOrders($scope, $http);

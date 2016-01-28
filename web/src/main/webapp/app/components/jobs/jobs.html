@@ -82,55 +82,51 @@
 	</div>
 	<div class="row">
 		<div class="pagination dark animated fadeIn">
-			<div class="col-sm-8">
-				<button ng-click="page.click()" class="page dark gradient">
+			<div class="col-xs-6">
+				<button ng-click="openPage(0)" class="page dark gradient">
 					<i class="fa fa-chevron-left"></i> <i class="fa fa-chevron-left"></i>
 					<span>First</span>
 				</button>
 				<div data-pagination="yes" class="inline-block">
-					<button ng-repeat="page in pages" href="{{page.first}}"
+					<button ng-repeat="page in pages"
+						ng-click="page.first == 'current' ? '' : openPage(page.second)"
 						ng-class="page.first == 'current' ? 'page dark active' : 'page dark gradient'">{{page.second}}</button>
 				</div>
-				<button data-page="last" class="page dark gradient">
+				<button class="page dark gradient" ng-click="openPage('last')">
 					<span>Last </span>
 					<i class="fa fa-chevron-right"></i> <i class="fa fa-chevron-right"></i>
 				</button>
 			</div>
-			<div class="pull-right col-sm-4">
-				<div class="hidden-xs col-sm-6">
-					<input id="dateSortInput" type="checkbox" checked
-						data-label-text="Date" data-on-color="info"
-						data-off-color="warning" data-size="mini" data-on-text="Asc"
-						data-off-text="Desc">
-				</div>
-				<div class="pull-right col-sm-6">
-					<input id="hourlySortInput" type="checkbox" checked
-						data-label-text="Payment" data-on-color="info"
-						data-off-color="warning" data-size="mini" data-on-text="Asc"
-						data-off-text="Desc">
-				</div>
-			</div>
+			<md-input-container class="pull-right box-none">
+			<label>Order per page</label> <md-select ng-model="itesStep"
+				class="inner-elements-color-blue-light"> <md-option
+				ng-repeat="step in itemsPerPage" ng-value="step">
+			{{step.text}} </md-option> </md-select> </md-input-container>
 		</div>
 		<div id="ordersArea">
 			<div class="panel panel-info" ng-repeat="order in orders">
 				<div class="panel-heading">
-					<div class="panel-title">
-						{{order.title}}
-						<div class="pull-right col-xs-3 col-sm-4">
-							<div class="hidden-xs label label-warning col-sm-7">Added</div>
-							<div class="label label-info col-sm-5 pull-right">
-								{{order.payType}}</div>
-						</div>
-					</div>
+					<div class="panel-title">{{order.title}}</div>
 				</div>
 				<div class="panel-body">
 					<div class="row">
-						<div class="col-xs-10 col-sm-10">{{order.descr}}</div>
-						<div class="pull-right col-xs-3 col-sm-4">
-							<div class="hidden-xs label label-warning col-sm-7">
-								{{order.date}}</div>
-							<div class="label label-info col-sm-5 pull-right">
-								{{order.payment}}</div>
+						<div class="col-xs-8 col-sm-10">{{order.descr}}</div>
+						<div class="col-xs-4 col-sm-2">
+							<div class="form-group">
+								<label for="name" class="control-label">Date</label>
+								<div class="col-xs-12">
+									<div class="label label-warning form-control">
+										{{order.date | date:'MMMM dd, yyyy'}}</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="name" class="control-label">Payment:
+									{{order.payType}}</label>
+								<div class="col-xs-12">
+									<div class="label label-info form-control">
+										{{order.payment | number:2}} $</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

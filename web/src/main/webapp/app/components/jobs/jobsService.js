@@ -43,13 +43,13 @@ angular
 								});
 					}
 
-					this.loadOrders = function($scope, $http) {
+					this.loadOrders = function($scope, $http, last) {
 						var content = {};
 						var title = $scope.filter.title;
 						content.title = title === undefined
 								|| title.length == 0 ? undefined : title;
 						content.zone = [];
-						content.zone = [];
+						content.technology = [];
 						var zone = [];
 						angular.forEach($scope.selectedZones, function(value,
 								key) {
@@ -58,9 +58,19 @@ angular
 						content.zone = zone === undefined || zone.length == 0 ? undefined
 								: zone;
 
+						var technology = [];
+						angular.forEach($scope.selectedTechs, function(value,
+								key) {
+							technology.push(value.name);
+						});
+						content.technology = technology === undefined
+								|| technology.length == 0 ? undefined
+								: technology;
+
 						var pagination = {};
-						pagination.start = 0;
-						pagination.step = 5;
+						pagination.start = $scope.itemListStart | 0;
+						pagination.last = last;
+						pagination.step = $scope.itesStep.number;
 
 						var data = {};
 						if (isNotEmpty(content))

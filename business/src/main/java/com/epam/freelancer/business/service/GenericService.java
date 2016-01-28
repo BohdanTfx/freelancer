@@ -45,6 +45,10 @@ public abstract class GenericService<T extends BaseEntity<ID>, ID> implements
 		return genericDao.getAll();
 	}
 
+	public Integer getObjectAmount() {
+		return genericDao.getObjectNumber();
+	}
+
 	/*
 	 * This method should be overwritten if U need filtration
 	 */
