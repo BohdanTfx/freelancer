@@ -1,12 +1,5 @@
 package com.epam.freelancer.security.provider;
 
-import java.io.IOException;
-import java.util.UUID;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.service.UserService;
 import com.epam.freelancer.business.util.CookieManager;
@@ -15,6 +8,12 @@ import com.epam.freelancer.database.model.Admin;
 import com.epam.freelancer.database.model.Customer;
 import com.epam.freelancer.database.model.Developer;
 import com.epam.freelancer.database.model.UserEntity;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.UUID;
 
 public class AuthenticationProvider {
 	private CookieManager cookieManager;
@@ -107,6 +106,7 @@ public class AuthenticationProvider {
 			String cookieName, UserEntity entity)
 	{
 		cookieManager.removeCookie(response, cookieName);
-		entity.setUuid(null);
-	}
+        if (entity != null)
+            entity.setUuid(null);
+    }
 }
