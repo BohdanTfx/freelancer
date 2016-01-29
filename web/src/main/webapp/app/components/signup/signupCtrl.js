@@ -155,4 +155,31 @@ angular
 								title : "+12 New zealand, Kamchatka, Kiribati",
 								ticked : false
 							} ];
+				})
+		.directive(
+				'emailAvailable',
+				function() {
+					return {
+						restrict : "A",
+						require : "ngModel",
+						link : function($scope, element, attrs, ngModel) {
+							element
+									.bind(
+											"keyup",
+											function() {
+												clearInterval($scope.emailValidationTimeout);
+												var email = $scope.signupForm.email.$viewValue;
+												if (email.match(/^.+@.+\..+$/)) {
+													$scope.emailValidationTimeout = setTimeout(
+															function() {
+																var valid = email == 'dsfsdgs@sdgfdg.sdg';
+																ngModel
+																		.$setValidity(
+																				'emailAvailable',
+																				valid);
+															}, 1000);
+												}
+											});
+						}
+					}
 				});
