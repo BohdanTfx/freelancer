@@ -1,0 +1,67 @@
+<div class="col-md-10 col-md-offset-1">
+
+    <div class="panel panel-default test_page">
+
+        <md-content>
+
+            <h2 class="text-center"><i class="fa fa-building"></i> Test name: {{test.name}}</h2>
+
+            <h3 ng-show="testFinished"
+                class="text-center">Results:</h3>
+
+            <div ng-hide="testFinished">
+                <md-progress-linear md-mode="determinate" value="{{vm.determinateValue}}"></md-progress-linear>
+            </div>
+
+            <md-content style="margin-top: 30px" layout='column' layout-fill ng-switch on="testFinished">
+
+                <md-list class="test_questions" ng-switch-when="false">
+                    <md-list-item ng-repeat="question in test.questions">
+
+                        <md-list ng-cloak="">
+
+                            <h4 class="md-no-sticky">{{$index+1}}. {{question.name}}</h4>
+                            <md-list-item ng-repeat="answer in question.answers">
+                                <md-checkbox ng-model="answer.check"></md-checkbox>
+                                <p> {{answer.name}} </p>
+                            </md-list-item>
+                            <md-divider></md-divider>
+
+                        </md-list>
+
+                    </md-list-item>
+                </md-list>
+
+                <div class="test-result" ng-switch-when="true">
+                    <table class="col-md-8 col-md-offset-2 text-center">
+                        <tr>
+                            <td class="col-md-6"><i class="fa fa-line-chart"></i> Your score</td>
+                            <td class="col-md-6">{{result.rate}} %</td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-6"><i class="fa fa-bar-chart"></i> Min pass score</td>
+                            <td class="col-md-6">{{test.passScore}} %</td>
+                        </tr>
+                        <tr>
+                            <td class="col-md-6"><i class="fa fa-minus-square"></i> Mistakes</td>
+                            <td class="col-md-6">{{result.errors}}</td>
+                        </tr>
+                    </table>
+                </div>
+
+            </md-content>
+
+            <div class="text-center">
+                <md-button ng-hide="testFinished" ng-click="submitAnswers()"
+                           class="md-raised md-warn btn-pass-test vertical-align-center">Send answers
+                </md-button>
+                <md-button ng-show="testFinished" ng-click="redirect()"
+                           class="md-raised md-warn btn-pass-test vertical-align-center">Rotate to tests history
+                </md-button>
+            </div>
+
+        </md-content>
+
+    </div>
+
+</div>

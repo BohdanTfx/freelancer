@@ -24,6 +24,10 @@
                 url: '/tests',
                 templateUrl: 'app/components/tests/tests.html',
                 controller: 'testsCtrl'
+            }).state('test', {
+                url: '/tests/:testId',
+                templateUrl: 'app/components/test/test.html',
+                controller: 'testCtrl'
             });
 
             $locationProvider.html5Mode(false);

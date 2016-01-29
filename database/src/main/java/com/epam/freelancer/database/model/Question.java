@@ -3,10 +3,14 @@ package com.epam.freelancer.database.model;
 import com.epam.freelancer.database.transformer.annotation.Column;
 import com.epam.freelancer.database.transformer.annotation.Id;
 import com.epam.freelancer.database.transformer.annotation.Table;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+import java.util.List;
 
 /**
  * Created by ������ on 16.01.2016.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "question")
 public class Question implements BaseEntity<Integer> {
     @Id
@@ -23,6 +27,16 @@ public class Question implements BaseEntity<Integer> {
     private Boolean isDeleted;
     @Column
     private Integer version;
+
+    private List<Answer> answers;
+
+    public List<Answer> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<Answer> answers) {
+        this.answers = answers;
+    }
 
     public String getName() {
         return name;
@@ -59,6 +73,10 @@ public class Question implements BaseEntity<Integer> {
     @Override
     public Integer getId() {
         return id;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
     @Override
