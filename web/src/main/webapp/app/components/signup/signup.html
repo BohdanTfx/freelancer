@@ -1,0 +1,117 @@
+<div class="row">
+	<div ng-if="signup === true">
+		<div class="col-sm-offset-3 col-sm-6 cabinet-top animated slideInDown">
+			<md-content layout-padding>
+			<form name="projectForm">
+				<h3>Become a new {{role}}</h3>
+				<md-input-container class="md-block col-sm-6">
+				<label>First name</label> <input md-maxlength="50" required
+					ng-model="user.firstname">
+				<div ng-messages="user.firstname.$error">
+					<div ng-message="required">This is required.</div>
+					<div ng-message="md-maxlength">The name has to be less than
+						50 characters long.</div>
+				</div>
+				</md-input-container>
+				<md-input-container class="md-block col-sm-6">
+				<label>Last name</label> <input md-maxlength="50" required
+					ng-model="user.lastname">
+				<div ng-messages="user.lastname.$error">
+					<div ng-message="required">This is required.</div>
+					<div ng-message="md-maxlength">The name has to be less than
+						50 characters long.</div>
+				</div>
+				</md-input-container>
+				<md-input-container class="md-block col-xs-12">
+				<label>Email</label> <input required type="email"
+					ng-model="user.email" md-minlength="10" md-maxlength="100"
+					ng-pattern="/^.+@.+\..+$/" />
+				<div ng-messages="user.email.$error">
+					<div
+						ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']">
+						Your email must be between 10 and 100 characters long and look
+						like an e-mail address.</div>
+				</div>
+				</md-input-container>
+				<md-input-container class="md-block col-xs-12">
+				<label>Time zone</label> <md-select
+					ng-init="user.zone = getCurrentZone()" ng-model="user.zone">
+				<md-option ng-repeat="zone in timeZones" value="{{zone.zone}}">
+				{{zone.title}} </md-option> </md-select> </md-input-container>
+
+				<md-input-container class="md-block col-sm-6">
+				<label>Password</label> <input md-maxlength="50" md-minlength="8"
+					type="password" required ng-model="user.password">
+				<div ng-messages="user.password.$error">
+					<div ng-message="required">This is required.</div>
+					<div ng-message="md-maxlength">The name has to be less than
+						50 characters long.</div>
+				</div>
+				</md-input-container>
+				<md-input-container class="md-block col-sm-6">
+				<label>Confirm password</label> <input md-maxlength="50"
+					type="password" md-minlength="8" required
+					ng-model="user.passwordconfirm">
+				<div ng-messages="user.passwordconfirm.$error">
+					<div ng-message="required">This is required.</div>
+					<div ng-message="md-maxlength">The name has to be less than
+						50 characters long.</div>
+				</div>
+				</md-input-container>
+
+				<div class="col-sm-offset-2">
+					<button class="btn btn-info" ng-click="createUser()">
+						<i class="fa fa-user-plus"></i> Sign up
+					</button>
+					<button class="btn btn-warning" ng-click="resetInputs()">
+						<i class="fa fa-times"></i> Reset
+					</button>
+				</div>
+			</form>
+			</md-content>
+		</div>
+	</div>
+
+	<div ng-if="signup !== true">
+		<div class="container choose-role-container">
+			<div class="row">
+				<div class="head col-xs-12 text-center">
+					<h2>Get started!</h2>
+					<h3>What are you looking for ?!</h3>
+				</div>
+				<div class="col-xs-12 col-sm-6 animated zoomIn">
+					<div class="hover ehover13">
+						<img class="img-responsive signup-role-img"
+							ng-src="/images/role/developer (Small).jpg" alt="Developer" />
+						<div class="overlay">
+							<h3 class="text-center">Developer</h3>
+							<h4>Lorem ipsum dolor sit amet, consectetur adipisicing
+								elit. Commodi, nobis!</h4>
+							<button ng-click="chooseRole(true,'developer')" class="info">
+								<span class="glyphicon glyphicon-th"></span>
+								Work
+							</button>
+						</div>
+					</div>
+
+				</div>
+				<div class="col-xs-12 col-sm-6 animated zoomIn">
+					<div class="hover ehover13">
+						<img class="img-responsive signup-role-img"
+							ng-src="/images/role/customer (Small).jpg" alt="Customer" />
+						<div class="overlay">
+							<h3 class="text-center">Customer</h3>
+							<h4>Lorem ipsum dolor sit amet, consectetur adipisicing
+								elit. Architecto, soluta.</h4>
+							<button ng-click="chooseRole(true,'customer')" class="info">
+								<span class="glyphicon glyphicon-th"></span>
+								Hire
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>

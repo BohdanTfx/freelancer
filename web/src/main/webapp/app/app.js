@@ -20,6 +20,13 @@
 											controller : 'jobsCtrl'
 										})
 								.state(
+										'signup',
+										{
+											url : '/signup',
+											templateUrl : 'app/components/signup/signup.html',
+											controller : 'signupCtrl'
+										})
+								.state(
 										'personal',
 										{
 											url : '/personal',
