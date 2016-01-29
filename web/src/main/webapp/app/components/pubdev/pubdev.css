@@ -1,0 +1,12 @@
+.media-body h4 {
+    display: inline-block;
+}
+
+.media-body span {
+    float: right;
+    font-size: 24px;
+}
+
+.date {
+    font-size: 12px;
+}

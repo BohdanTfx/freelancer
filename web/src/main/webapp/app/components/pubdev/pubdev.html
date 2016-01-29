@@ -8,17 +8,15 @@
                             <a href="#">
                                 <img class="media-object" ng-src="{{img}}">
                             </a>
+                            <span class="date">On site from: {{regDate}}</span>
                         </div>
                         <div class="media-body">
-                            <h4 class="media-heading">Bottom aligned media</h4>
+                            <h4 class="media-heading">{{fname}} {{lname}}</h4>
+                            <span>&#36; {{hourly}} &#47;hr</span>
+                            <md-divider></md-divider>
 
-                            <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante
-                                sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra
-                                turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis
-                                in faucibus.</p>
+                            <md-divider></md-divider>
 
-                            <p>Donec sed odio dui. Nullam quis risus eget urna mollis ornare vel eu leo. Cum sociis
-                                natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
                         </div>
                     </div>
                     <!--/row-->
@@ -43,8 +41,6 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="btn btn-success" ng-click="get()">Button</div>
             </div>
             <!--/panel-body-->
             <!--/panel-->
