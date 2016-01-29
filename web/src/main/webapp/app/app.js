@@ -1,14 +1,15 @@
 ;
 (function() {
-    angular
-        .module(
-        'FreelancerApp',
-        [ 'ngRoute', 'ui.router', 'ngCookies', 'ngMaterial',
-            'isteven-multi-select', 'rzModule' ])
-        .config(
-        function($stateProvider, $urlRouterProvider,
-                 $locationProvider) {
-            $urlRouterProvider.otherwise('/orders');
+	angular
+			.module(
+					'FreelancerApp',
+					[ 'ngRoute', 'ui.router', 'ngCookies', 'ngMaterial',
+							'ngAnimate', 'ngAria', 'ngMessages',
+							'isteven-multi-select', 'rzModule' ])
+			.config(
+					function($stateProvider, $urlRouterProvider,
+							$locationProvider) {
+						$urlRouterProvider.otherwise('/orders');
 
             // routes
             $stateProvider
