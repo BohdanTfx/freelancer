@@ -15,7 +15,6 @@ body {
 		rgba(39, 48, 57, 1) 100%);
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3a84cf',
 		endColorstr='#273039', GradientType=1);
-	background-attachment: fixed;
 }
 
 body .brand {
