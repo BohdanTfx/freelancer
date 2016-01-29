@@ -47,6 +47,14 @@ angular.module('FreelancerApp')
 
                 });
 
+        pubdevAPI.getFeed($scope.query).success(
+            function (data, status, headers, config) {
+                console.log(data);
+                $scope.feeds = data;
+            }).error(function () {
+
+            });
+
         $scope.getNumber = function (count) {
 
             var ratings = [];

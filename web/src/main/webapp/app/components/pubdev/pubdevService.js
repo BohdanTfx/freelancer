@@ -17,8 +17,8 @@ angular.module('FreelancerApp')
             return $http.post('/user/getContById?id=' + id);
         };
 
-        dataFactory.getPortById = function (id) {
-            return $http.post('/user/getPortById?id=' + id);
+        dataFactory.getFeedById = function (id) {
+            return $http.post('/user/getFeed?id=' + id);
         };
         dataFactory.getPortById = function (id) {
             return $http.post('/user/getPortById?id=' + id);
