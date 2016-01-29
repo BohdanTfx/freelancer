@@ -7,6 +7,8 @@ angular.module('FreelancerApp')
             pubdevAPI.getDevById($scope.query).success(
                 function (data, status, headers, config) {
                     console.log(data);
+                    $scope.img = data.imgUrl;
+                    alert(data.imgUrl);
                 }).error(function () {
 
                 });
