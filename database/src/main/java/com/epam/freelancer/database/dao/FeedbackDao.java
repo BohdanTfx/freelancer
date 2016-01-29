@@ -9,8 +9,10 @@ import java.util.List;
  */
 public interface FeedbackDao extends GenericDao<Feedback, Integer> {
 
-	public List<Feedback> getFeedbacksByDevId(Integer id);
+    List<Feedback> getFeedbacksByDevId(Integer id);
 
-	public List<Feedback> getFeedbacksByCustId(Integer id);
+    List<Feedback> getFeedbacksByCustId(Integer id);
+
+    Integer getAvgRate(Integer dev_id);
 
 }

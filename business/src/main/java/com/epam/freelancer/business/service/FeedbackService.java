@@ -69,4 +69,8 @@ public class FeedbackService extends GenericService<Feedback, Integer> {
     public List<Feedback> findFeedbacksByDevId(Integer id) {
         return ((FeedbackDao) genericDao).getFeedbacksByDevId(id);
     }
+
+    public Integer getAvgRate(Integer dev_id) {
+        return ((FeedbackDao) genericDao).getAvgRate(dev_id);
+    }
 }

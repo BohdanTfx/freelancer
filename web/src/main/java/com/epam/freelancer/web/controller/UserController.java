@@ -102,8 +102,6 @@ public class UserController extends HttpServlet {
     }
 
     public void signIn(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        DeveloperService des = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
-        System.out.println(des.getDeveloperPortfolio(19));
         boolean remember = "true".equals(request.getParameter("remember"));
         String email = request.getParameter("username");
         String password = request.getParameter("password");
