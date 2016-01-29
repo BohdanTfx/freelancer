@@ -15,7 +15,6 @@ angular.module('FreelancerApp')
              * Turn off or on the 5 themed loaders
              */
             self.toggleActivation = function () {
-                //if (!self.activated) self.modes = [];
                 if (self.activated) {
                     j = counter = 0;
                     self.determinateValue = 0;
@@ -23,14 +22,12 @@ angular.module('FreelancerApp')
             };
 
             var time = $scope.test.secPerQuest * $scope.test.questions.length;
-            var intervalTimeUpdate = time * 10;
-            $interval(function () {
-                if(self.activated){
-                    self.determinateValue += 1;
-                    if (self.determinateValue > 100) {
-                        self.activated = false;
-                        $scope.submitAnswers();
-                    }
+            var intervalTimeUpdate = 2;//time * 10;
+            var intervalProccess = $interval(function () {
+                self.determinateValue += 1;
+                if (self.determinateValue > 100) {
+                    $interval.cancel(intervalProccess);
+                    $scope.submitAnswers();
                 }
             }, intervalTimeUpdate, 0, true);
 
