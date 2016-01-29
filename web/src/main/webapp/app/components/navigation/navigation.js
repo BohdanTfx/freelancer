@@ -25,14 +25,14 @@ angular
 //      }).join(seperator);
 //    };
 //  })
-  .controller('DemoBasicCtrl', function DemoCtrl($mdDialog) {
-    this.settings = {
-      printLayout: true,
-      showRuler: true,
-      showSpellingSuggestions: true,
-      presentationMode: 'edit'
-    };
-
+  .controller('MenuController', function DemoCtrl($mdDialog) {
+    //this.settings = {
+    //  printLayout: true,
+    //  showRuler: true,
+    //  showSpellingSuggestions: true,
+    //  presentationMode: 'edit'
+    //};
+//
 //    this.sampleAction = function(name, ev) {
 //      $mdDialog.show($mdDialog.alert()
 //        .title(name)
