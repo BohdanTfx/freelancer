@@ -1,8 +1,11 @@
 package com.epam.freelancer.web.controller;
 
 import com.epam.freelancer.business.context.ApplicationContext;
+import com.epam.freelancer.business.service.CustomerService;
 import com.epam.freelancer.business.service.TechnologyService;
 import com.epam.freelancer.business.service.TestService;
+import com.epam.freelancer.database.model.Customer;
+import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -61,11 +64,37 @@ public class CustomerController extends HttpServlet {
         }
     }
 
-    public void getCustById(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("CUST");
-        System.out.println("CUST");
-        System.out.println("CUST");
-        System.out.println("CUST");
+    public void getCustById(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String param = request.getParameter("id");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                CustomerService cs = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
+                Customer customer = cs.findById(id);
+
+                if (customer != null) {
+                    customer.setPassword(null);
+                    sendResp(customer, response);
+                } else
+                    response.sendError(404);
+            } catch (Exception e) {
+                response.sendError(500);
+            }
+        } else {
+            response.sendError(404);
+            return;
+        }
+    }
+
+    private void sendResp(Object ue, HttpServletResponse response) throws IOException {
+        String json = new Gson().toJson(ue);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.getWriter().write(json);
+        response.getWriter().flush();
+        response.getWriter().close();
     }
 
 }
