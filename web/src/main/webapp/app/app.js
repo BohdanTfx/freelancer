@@ -8,7 +8,7 @@
 			.config(
 					function($stateProvider, $urlRouterProvider,
 							$locationProvider) {
-						$urlRouterProvider.otherwise('/orders');
+                        //$urlRouterProvider.otherwise('/orders');
 
 						// routes
 						$stateProvider
@@ -66,11 +66,18 @@
 								 * 'Basic ' +
 								 * $rootScope.globals.currentUser.username; }
 								 */
+
+                                if ($location.path() == '/pubdev') {
+                                    if (typeof $location.search().id == 'undefined') {
+                                        $location.path('/');
+                                    }
+                                }
 								$rootScope
 										.$on(
 												'$locationChangeStart',
 												function(event, next, current) {
-													// redirect to login page if
+
+                                                    // redirect to login page if
 													// not logged in
 													/*
 													 * if (typeof
