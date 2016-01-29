@@ -430,18 +430,23 @@ ul, li {
 }
 
 .main-header .header-lower {
-	position: relative;
-	border-bottom: 1px solid #11C3F0;
-	padding: 0px 0px;
-	width: 100%;
-	left: 0px;
-	top: 0px;
-	background: #273039;
-	transition: all 500ms ease;
-	-moz-transition: all 500ms ease;
-	-webkit-transition: all 500ms ease;
-	-ms-transition: all 500ms ease;
-	-o-transition: all 500ms ease;
+    position: relative;
+    padding: 0px 0px;
+    width: 100%;
+    left: 0px;
+    top: 0px;
+    background: #273039;
+    transition: all 500ms ease;
+    -moz-transition: all 500ms ease;
+    -webkit-transition: all 500ms ease;
+    -ms-transition: all 500ms ease;
+    -o-transition: all 500ms ease;
+}
+
+@-moz-document url-prefix() {
+    .main-header .header-lower {
+        padding: 3px 0px;
+    }
 }
 
 .main-header .header-lower .outer-box {
