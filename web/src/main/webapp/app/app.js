@@ -4,6 +4,7 @@
 			.module(
 					'FreelancerApp',
 					[ 'ngRoute', 'ui.router', 'ngCookies', 'ngMaterial',
+							'ngAnimate', 'ngAria', 'ngMessages',
 							'isteven-multi-select', 'rzModule' ])
 			.config(
 					function($stateProvider, $urlRouterProvider,

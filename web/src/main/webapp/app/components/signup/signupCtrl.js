@@ -22,6 +22,17 @@ angular
 						alert($scope.user);
 					}
 
+					$scope.resetInputs = function() {
+						$scope.user = {
+							firstname : "",
+							lastname : "",
+							email : "",
+							password : "",
+							passwordconfirm : "",
+							zone : $scope.getCurrentZone()
+						}
+					}
+
 					$scope.timeZones = [
 							{
 								zone : "-12",
