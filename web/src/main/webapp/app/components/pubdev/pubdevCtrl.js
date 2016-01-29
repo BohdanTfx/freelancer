@@ -22,6 +22,7 @@ angular.module('FreelancerApp')
                     $scope.hourly = data.hourly;
                     $scope.regDate = data.regDate.substring(0, 12);
                     $scope.overview = data.overview;
+                    $scope.position = data.position;
                 }).error(function () {
 
                 });
@@ -62,6 +63,8 @@ angular.module('FreelancerApp')
             function (data, status, headers, config) {
                 console.log(data);
                 $scope.feeds = data;
+                console.log('feeds ' + $scope.feeds);
+
             }).error(function () {
 
             });
