@@ -59,7 +59,6 @@ md-tabs .md-tab .md-ripple-container {
 }
 
 .tests-tabs{
-    margin-top: 100px;
     padding: 10px 0 10px 0;
 }
 
@@ -68,18 +67,14 @@ md-tabs .md-tab .md-ripple-container {
     color: #000000;
 }
 
-.history-title, .tests-title {
-    font-family: Arial;
-}
-
-.history-title .fa, .tests-title .fa{
-    font-size: 18px;
-    font-family: Arial;
+.history-title i, .tests-title i{
+    font-size: 20px;
     margin: 0;
     padding: 0;
     position: relative;
     vertical-align: middle;
 }
+
 
 .history-body, .tests-body {
     font-size: 16px;

@@ -18,7 +18,7 @@
                                                         <a ng-click="sort('name')">
                                                             <i class="fa fa-tasks"> Test name
                                                                 <i class="glyphicon"
-                                                                   ng-class="{'glyphicons-arrow-up' : isSortUp('name'),
+                                                                   ng-class="{'glyphicon-arrow-up' : isSortUp('name'),
                                                                           'glyphicon-arrow-down' : isSortDown('name')}">
                                                                 </i>
                                                             </i>
@@ -144,11 +144,13 @@
                             <div class="row filter">
                                 <div class="form-group col-md-6 col-xs-12">
                                     <label for="test_name">Search by test name:</label>
-                                    <input type="text" ng-model="search.name" class="form-control" id="test_name">
+                                    <input type="text" ng-model="search.name" class="form-control" id="test_name"
+                                           placeholder="&#xF002;" style="font-family:Arial, FontAwesome">
                                 </div>
                                 <div class="form-group col-md-6 col-xs-12">
                                     <label for="tech_name">Search by technology:</label>
-                                    <input type="text" ng-model="search.technology.name" class="form-control" id="tech_name">
+                                    <input type="text" ng-model="search.technology.name" class="form-control" id="tech_name"
+                                           placeholder="&#xF002;" style="font-family:Arial, FontAwesome">
                                 </div>
                             </div>
                             <div class="tests-tab">
@@ -163,7 +165,7 @@
                                                         <a ng-click="sort('name')">
                                                             <i class="fa fa-tasks"> Test name
                                                                 <i class="glyphicon"
-                                                                   ng-class="{'glyphicons-arrow-up' : isSortUp('name'),
+                                                                   ng-class="{'glyphicon-arrow-up' : isSortUp('name'),
                                                                           'glyphicon-arrow-down' : isSortDown('name')}">
                                                                 </i>
                                                             </i>
@@ -212,7 +214,7 @@
                                                 </div>
                                                 <div class="col-md-2 col-sm-2 col-xs-3">
                                                     <a class="btn btn-primary btn-pass-test vertical-align-center"
-                                                       href="test_{{test.id}}">Pass test</a>
+                                                       href="/#/tests/{{test.id}}">Pass test</a>
                                                 </div>
                                             </div>
                                         </div>

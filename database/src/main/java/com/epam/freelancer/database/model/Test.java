@@ -4,6 +4,8 @@ import com.epam.freelancer.database.transformer.annotation.Column;
 import com.epam.freelancer.database.transformer.annotation.Id;
 import com.epam.freelancer.database.transformer.annotation.Table;
 
+import java.util.List;
+
 /**
  * Created by ������ on 16.01.2016.
  */
@@ -26,6 +28,16 @@ public class Test implements BaseEntity<Integer> {
     @Column
     private Integer version;
     private Technology technology;
+
+    private List<Question> questions;
+
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
+    }
 
     public Technology getTechnology() {
         return technology;
