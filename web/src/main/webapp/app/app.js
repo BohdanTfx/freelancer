@@ -4,6 +4,7 @@
 			.module(
 					'FreelancerApp',
 					[ 'ngRoute', 'ui.router', 'ngCookies', 'ngMaterial',
+							'ngAnimate', 'ngAria', 'ngMessages',
 							'isteven-multi-select', 'rzModule' ])
 			.config(
 					function($stateProvider, $urlRouterProvider,
@@ -18,6 +19,13 @@
 											url : '/orders',
 											templateUrl : 'app/components/jobs/jobs.html',
 											controller : 'jobsCtrl'
+										})
+								.state(
+										'signup',
+										{
+											url : '/signup',
+											templateUrl : 'app/components/signup/signup.html',
+											controller : 'signupCtrl'
 										})
 								.state(
 										'personal',

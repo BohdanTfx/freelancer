@@ -8,7 +8,7 @@ angular
 					var that = this;
 
 					this.loadLimits = function($scope, $http) {
-						$http.post("/orders/limits").success(
+						$http.post("/unreg/orders/limits").success(
 								function(data, status, headers, config) {
 									$scope.payment = data;
 									$scope.payment.hourly.options = {
@@ -34,7 +34,7 @@ angular
 					}
 
 					this.loadTechnologies = function($scope, $http) {
-						$http.post("/orders/tech").success(
+						$http.post("/unreg/orders/tech").success(
 								function(data, status, headers, config) {
 									$scope.tech = data;
 								}).error(
@@ -92,7 +92,7 @@ angular
 							data.page = pagination;
 						$http
 								.post(
-										"/orders/filter",
+										"/unreg/orders/filter",
 										data,
 										{
 											headers : {

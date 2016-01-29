@@ -26,6 +26,17 @@ body .brand {
 
 * {
 	font-family: Arial;
+	outline: 0 !important;
+}
+
+.signup-role-img {
+	width: 100%;
+	max-height: 60vh;
+}
+
+.choose-role-container {
+	text-shadow: 0px 0px 7px rgb(0, 0, 0);
+	color: rgb(255, 255, 255);
 }
 
 h1, h2, h3, h4, h5 {

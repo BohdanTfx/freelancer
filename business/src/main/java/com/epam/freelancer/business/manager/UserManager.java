@@ -55,7 +55,7 @@ public class UserManager {
 		return null;
 	}
 
-	public boolean isEmailAvailable(String email) {
+	public Boolean isEmailAvailable(String email) {
 		return adminService.emailAvailable(email)
 				&& customerService.emailAvailable(email)
 				&& developerService.emailAvailable(email);

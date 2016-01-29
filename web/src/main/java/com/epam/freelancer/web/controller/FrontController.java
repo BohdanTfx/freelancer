@@ -52,26 +52,21 @@ public class FrontController extends HttpServlet {
 
 			if (path.startsWith("/front/")) {
 				path = path.substring("/front/".length());
-				switch (path) {
-				case "orders":
-				case "signup":
-				case "language/bundle":
-				case "logout":
+				if (path.startsWith("admin/")) {
+					controllers.get("admin/").service(request, response);
+					return;
+				}
+				if (path.startsWith("unreg/")) {
 					controllers.get("unreg/").service(request, response);
 					return;
-				default:
-					if (path.startsWith("admin/")) {
-						controllers.get("admin/").service(request, response);
-						return;
-					}
-					if (path.startsWith("dev/")) {
-						controllers.get("dev/").service(request, response);
-						return;
-					}
-					if (path.startsWith("cust/")) {
-						controllers.get("cust/").service(request, response);
-						return;
-					}
+				}
+				if (path.startsWith("dev/")) {
+					controllers.get("dev/").service(request, response);
+					return;
+				}
+				if (path.startsWith("cust/")) {
+					controllers.get("cust/").service(request, response);
+					return;
 				}
 			}
 		} catch (Exception e) {
@@ -105,29 +100,25 @@ public class FrontController extends HttpServlet {
 
 			if (path.startsWith("/front/")) {
 				path = path.substring("/front/".length());
-				switch (path) {
-				case "orders/filter":
-				case "orders/limits":
-				case "orders/tech":
+				if (path.startsWith("admin/")) {
+					controllers.get("admin/").service(request, response);
+					return;
+				}
+				if (path.startsWith("unreg/")) {
 					controllers.get("unreg/").service(request, response);
 					return;
-				default:
-					if (path.startsWith("admin/")) {
-						controllers.get("admin/").service(request, response);
-						return;
-					}
-					if (path.startsWith("dev/")) {
-						controllers.get("dev/").service(request, response);
-						return;
-					}
-					if (path.startsWith("cust/")) {
-						controllers.get("cust/").service(request, response);
-						return;
-					}
-					if (path.startsWith("user/")) {
-						controllers.get("user/").service(request, response);
-						return;
-					}
+				}
+				if (path.startsWith("dev/")) {
+					controllers.get("dev/").service(request, response);
+					return;
+				}
+				if (path.startsWith("cust/")) {
+					controllers.get("cust/").service(request, response);
+					return;
+				}
+				if (path.startsWith("user/")) {
+					controllers.get("user/").service(request, response);
+					return;
 				}
 			}
 		} catch (Exception e) {
