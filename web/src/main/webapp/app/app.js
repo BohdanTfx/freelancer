@@ -8,7 +8,7 @@
 			.config(
 					function($stateProvider, $urlRouterProvider,
 							$locationProvider) {
-                        //$urlRouterProvider.otherwise('/orders');
+                        $urlRouterProvider.otherwise('/home');
 
 						// routes
 						$stateProvider
