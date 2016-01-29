@@ -123,44 +123,86 @@
 			</div>
 		</div>
 	</header>
-	<div ng-controller="DemoBasicCtrl as ctrl" ng-cloak=""
-		class="menuBardemoBasicUsage">
-		<md-toolbar class="md-menu-toolbar"> <md-menu-bar
-			class="menuIcons "> <md-menu md-offset="49 -35">
-		<button ng-click="$mdOpenMenu()" class="menuIconBtn testBtn">
-			<i class="fa fa-home"></i>
-		</button>
-		<md-menu-content width=3 md-position-mode=target-left
-			class="menuContent"> <md-menu-item>
-		<!--                           <md-button ng-click="ctrl.sampleAction('Print', $event)">-->
-		<md-button> Profile </md-button> </md-menu-item> <md-menu-item> <md-button>
-		Statistics </md-button> </md-menu-item> <md-menu-item> <md-button>
-		Settings </md-button> </md-menu-item> </md-menu-content> </md-menu> <md-menu md-offset="49 -80">
-		<button ng-click="$mdOpenMenu()" class="menuIconBtn">
-			<i class="fa fa-user"></i>
-		</button>
-		<md-menu-content width=3 md-position-mode=target-left
-			class="menuContent"> <md-menu-item>
-		<md-button> Profile </md-button> </md-menu-item> <md-menu-item> <md-button>
-		Statistics </md-button> </md-menu-item> <md-menu-item> <md-button>
-		Settings </md-button> </md-menu-item> </md-menu-content> </md-menu> ​ <md-menu md-offset="49 -125">
-		<button ng-click="$mdOpenMenu()" class="menuIconBtn">
-			<i class="fa fa-bar-chart "></i>
-		</button>
-		<md-menu-content width=3 md-position-mode=target-left
-			class="menuContent"> <md-menu-item>
-		<md-button> Profile </md-button> </md-menu-item> <md-menu-item> <md-button>
-		Statistics </md-button> </md-menu-item> <md-menu-item> <md-button>
-		Settings </md-button> </md-menu-item> </md-menu-content> </md-menu> ​ <md-menu md-offset="49 -170">
-		<button ng-click="$mdOpenMenu()" class="menuIconBtn">
-			<i class="fa fa-cogs "></i>
-		</button>
-		<md-menu-content width=3 md-position-mode=target-left
-			class="menuContent"> <md-menu-item>
-		<md-button> Profile </md-button> </md-menu-item> <md-menu-item> <md-button>
-		Statistics </md-button> </md-menu-item> <md-menu-item> <md-button>
-		Settings </md-button> </md-menu-item> </md-menu-content> </md-menu> </md-menu-bar> </md-toolbar>
-	</div>
+	<div class="MenuController">
+    <md-toolbar class="md-menu-toolbar">
+        <md-menu-bar class="menuIcons ">
+            <a href="#/home">
+                <i class="fa fa-home menuIconBtn"></i>
+            </a>
+
+            </md-menu>
+
+            <md-menu md-offset="49">
+                <button ng-click="$mdOpenMenu()" class="menuIconBtn">
+                    <i class="fa fa-user"></i>
+                </button>
+                <md-menu-content width=3 md-position-mode=target-left class="menuContent">
+                    <md-menu-item>
+                        <md-button onclick="location.href='#/personal'">
+                              Personal
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button  onclick="location.href='#/myworks'">
+                            My Works
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button  onclick="location.href='#/tests'">
+                            Tests
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+
+            <md-menu md-offset="49">
+                <button ng-click="$mdOpenMenu()" class="menuIconBtn">
+                    <i class="fa fa-bar-chart"></i>
+                </button>
+                <md-menu-content width=3 md-position-mode=target-left class="menuContent">
+                    <md-menu-item>
+                        <md-button>
+                            Statistics 1
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button>
+                            Statistics 2
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button>
+                            Statistics 3
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+
+            <md-menu md-offset="49">
+                <button ng-click="$mdOpenMenu()" class="menuIconBtn">
+                    <i class="fa fa-cogs"></i>
+                </button>
+                <md-menu-content width=3 md-position-mode=target-left class="menuContent">
+                    <md-menu-item>
+                        <md-button>
+                            Settings 1
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button>
+                            Settings 2
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button>
+                            Settings 3
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+        </md-menu-bar>
+    </md-toolbar>
+</div>
 
 	<!-- Main view for templates -->
 	<div ui-view class="container"></div>
