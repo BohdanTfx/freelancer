@@ -11,7 +11,7 @@ angular.module('FreelancerApp')
             return $http.post('/cust/getCustById?id=' + id);
         };
 
-        /*   dataFactory.getDevById = function (id) {
+        dataFactory.getDevById = function (id) {
          alert('dev');
             return $http.post('/user/getById?id=' + id);
         };
@@ -35,7 +35,7 @@ angular.module('FreelancerApp')
         };
         dataFactory.getFeed = function (id) {
             return $http.post('/user/getFeed?id=' + id);
-         };*/
+        };
 
 
 

@@ -3,15 +3,17 @@ angular.module('FreelancerApp')
 
         $scope.query = $location.search().id;
 
-        pubdevAPI.getCustById($scope.query).success(
-            function (data, status, headers, config) {
-                console.log(data);
-                $scope.feeds = data;
-            }).error(function () {
+        var getCust = function (cust_id) {
+            pubdevAPI.getCustById(cust_id).success(
+                function (data, status, headers, config) {
+                    console.log(data);
+                    $scope.cust = data;
+                }).error(function () {
 
-            });
+                });
+        };
 
-        /*pubdevAPI.getDevById($scope.query).success(
+        pubdevAPI.getDevById($scope.query).success(
                 function (data, status, headers, config) {
                     console.log(data);
                     $scope.img = data.imgUrl;
@@ -73,5 +75,5 @@ angular.module('FreelancerApp')
             }
 
             return ratings;
-         }*/
+        }
     });
