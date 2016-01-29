@@ -116,6 +116,10 @@ public class FrontController extends HttpServlet {
 						controllers.get("admin/").service(request, response);
 						return;
 					}
+					if (path.startsWith("home/")) {
+						controllers.get("home/").service(request, response);
+						return;
+					}
 					if (path.startsWith("dev/")) {
 						controllers.get("dev/").service(request, response);
 						return;

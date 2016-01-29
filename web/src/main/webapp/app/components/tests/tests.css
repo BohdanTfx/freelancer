@@ -1,3 +1,7 @@
+.tests-tabs .panel-title{
+    font-size: 18px;
+}
+
 .tests-tabs md-content {
     background-color: transparent !important; }
 .tests-tabs md-content md-tabs {

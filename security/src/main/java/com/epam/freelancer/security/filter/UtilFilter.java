@@ -33,7 +33,7 @@ public class UtilFilter implements Filter {
 				req.getContextPath().length());
 		if (path.endsWith(".jsp"))
 			((HttpServletResponse) response).sendRedirect("/home");
-		if (path.equals("/") ||path.startsWith("/front/") || path.startsWith("/app/")
+		if (path.equals("/") ||path.startsWith("/front/")||path.startsWith("/images/") || path.startsWith("/app/")
 				|| path.startsWith("/bower_components/"))
 			chain.doFilter(request, response);
 		else

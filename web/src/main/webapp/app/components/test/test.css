@@ -1,4 +1,22 @@
-.test_page md-checkbox.md-checked .md-ink-ripple{
+.test_page h2 {
+    display: inline-block;
+}
+.test_page .timer {
+    font-size: 30px;
+    font-weight: bold;
+    float: right;
+    margin: 20px 30px 10px 0px;
+
+}
+.test_page md-progress-linear{
+    height: 15px;
+    padding: 30px 30px;
+}
+.test_page md-progress-linear .md-container, md-progress-linear .md-container .md-bar{
+    height: 15px;
+}
+
+.test_page md-checkbox.md-checked .md-ink-ripple {
     color: #2591ff;
 }
 
@@ -11,7 +29,7 @@
     padding: 15px 30px;
 }
 
-.test_page  md-divider {
+.test_page md-divider {
     border-top-color: #2591ff;
 }
 
@@ -20,17 +38,10 @@
     height: 65vh;
 }
 
-.test_page .md-button.md-warn {
-    background-color: green;
+.test_page .md-button.md-primary {
     margin-top: 15px;
     font-size: 16px;
     font-weight: bolder;
-}
-.test_page .md-button.md-warn.md-raised {
-    background-color: green;
-}
-.test_page .md-button.md-warn.md-raised:hover:not([disabled]){
-    background-color: green;
 }
 
 .test_page .md-button {
@@ -39,7 +50,7 @@
 
 .test_page .ng-hide {
     /* this is just another form of hiding an element */
-    display: block!important;
+    display: block !important;
     position: absolute;
     top: -9999px;
     left: -9999px;
@@ -48,32 +59,46 @@
 .test-result {
     margin: 25px 0;
 }
-.test_page .test-result table{
+
+.test_page .test-result table {
     font-size: 20px;
     font-weight: bolder;
     border: none;
     border-collapse: collapse;
 }
 
-.test_page .test-result td, th{
+.test_page .test-result td, th {
     border-right: solid 2px #2591ff;
     border-bottom: solid 2px #2591ff;
     padding: 10px;
 }
 
-.test_page .test-result td:last-child, td:first-child{
+.test_page .test-result td:last-child, td:first-child {
     border-right: none;
 }
+
 .test_page .test-result tr:first-child {
     border-top: none;
 }
+
 .test_page .test-result tr:last-child td {
     border-bottom: none;
 }
+
 .test_page .test-result tr:last-child {
     border-bottom: none;
 }
 
 .test-result h2, h3 {
     font-weight: bolder;
+}
+
+.test_page .result_success{
+    color: green;
+}
+.test_page .result_fail{
+    color: red;
+}
+.tesp_page {
+    padding: 2.5em;
 }

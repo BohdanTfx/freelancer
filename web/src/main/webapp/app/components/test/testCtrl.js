@@ -22,14 +22,20 @@ angular.module('FreelancerApp')
             };
 
             var time = $scope.test.secPerQuest * $scope.test.questions.length;
-            var intervalTimeUpdate = 2;//time * 10;
-            var intervalProccess = $interval(function () {
-                self.determinateValue += 1;
-                if (self.determinateValue > 100) {
-                    $interval.cancel(intervalProccess);
+            var delta = 100 / time;
+
+            $scope.time = time;
+
+            var timerCtrl = $interval(function () {
+                $scope.time -= 1;
+                self.determinateValue += delta;
+                console.log(self.determinateValue );
+                $scope.timer = ""+ ("0" + parseInt($scope.time/60, 10)).slice(-2)+":" + ("0" + $scope.time%60).slice(-2);
+                if ($scope.time == 0) {
+                    $interval.cancel(timerCtrl);
                     $scope.submitAnswers();
                 }
-            }, intervalTimeUpdate, 0, true);
+            }, 1000, 0, true);
 
             $scope.vm = self;
         }

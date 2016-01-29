@@ -6,7 +6,8 @@
 <!--[if IE 8]>
 <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!-->
-<html lang="en" ng-csp="" ng-app="FreelancerApp"> <!--<![endif]-->
+<html lang="en" ng-csp="" ng-app="FreelancerApp">
+<!--<![endif]-->
 
 <head>
 
@@ -20,7 +21,7 @@
     <!-- mobile meta -->
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
 
     <!--[if IE]>
@@ -34,10 +35,18 @@
     <!--&lt;!&ndash; endbuild &ndash;&gt;-->
 
     <!-- inject:css -->
-    <link rel="stylesheet" href="bower_components/angular-material/angular-material.layouts.min.css">
-    <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="bower_components/angular-material/angular-material.layouts.min.css">
+    <link rel="stylesheet"
+          href="bower_components/angular-material/angular-material.min.css">
+    <link rel="stylesheet"
+          href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+    <link rel="stylesheet"
+          href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="bower_components/angular-multi-select-master/isteven-multi-select.css">
+    <link rel="stylesheet"
+          href="bower_components/angularjs-slider-master/rzslider.min.css">
     <link rel="stylesheet" href="app/styles/Animate.css">
     <link rel="stylesheet" href="app/styles/font-awesome.min.css">
     <link rel="stylesheet" href="app/styles/hover.min.css">
@@ -45,9 +54,14 @@
     <!-- endinject -->
 
     <link rel="stylesheet" href="app/components/tests/tests.css">
-    <link rel="stylesheet" href="app/components/test/test.css">
-
     <link rel="stylesheet" href="app/components/navigation/navigation.css">
+    <link rel="stylesheet" href="app/components/home/home.css">
+    <link rel="stylesheet" href="app/components/home/homeSlider.css">
+
+
+    <link rel="stylesheet" href="app/components/home/home.css">
+    <link rel="stylesheet" href="app/components/home/homeSlider.css">
+    <link rel="stylesheet" href="app/components/test/test.css">
 
 </head>
 
@@ -73,8 +87,8 @@
 
                 <nav class="main-menu">
                     <div class="navbar-header">
-                        <button type="button" class="navbar-toggle" data-toggle="collapse"
-                                data-target=".navbar-collapse">
+                        <button type="button" class="navbar-toggle"
+                                data-toggle="collapse" data-target=".navbar-collapse">
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
@@ -83,24 +97,27 @@
 
                     <div class="navbar-collapse collapse clearfix">
                         <!--<sec:access role="none">-->
-                        <ul class="navigation">
-                            <li class="hvr-underline-from-center"><a
-                                    href="#/personal">
+                        <ul class="navigation" ng-switch on="logged">
+                            <li class="hvr-underline-from-center" ng-switch-when="false"><a
+                                    href="#/auth">
                                 <i class="fa fa-sign-in"></i>Sign In
                             </a></li>
-                            <li class="hvr-underline-from-center"><a
+                            <li class="hvr-underline-from-center" ng-switch-when="false"><a
                                     href="#/chooserole">
                                 <i class="fa fa-user-plus"></i>Sign Up
                             </a></li>
+
+
                         </ul>
                         <!--</sec:access>-->
                         <!--<sec:access role="user">-->
-                        <ul class="navigation">
-                            <li class="hvr-underline-from-center"><a
+                        <ul class="navigation" ng-switch on="logged">
+                            <li class="hvr-underline-from-center" ng-switch-when="true"><a
                                     href="#/cabinet/main">
-                                <i class="fa fa-home"></i>Cabinet
+                                <i class="fa fa-home"></i>{{name}} {{lastName}}
                             </a></li>
-                            <li id="logout" class="hvr-underline-from-center"><a
+                            <li id="logout" ng-click="logout()"
+                                class="hvr-underline-from-center" ng-switch-when="true"><a
                                     href="#/logout">
                                 <i class="fa fa-sign-out"></i>Logout
                             </a></li>
@@ -113,108 +130,89 @@
         </div>
     </div>
 </header>
-<div ng-controller="DemoBasicCtrl as ctrl" ng-cloak="" class="menuBardemoBasicUsage">
+<div class="MenuController">
     <md-toolbar class="md-menu-toolbar">
         <md-menu-bar class="menuIcons ">
-            <md-menu md-offset="49 -35">
-                <button ng-click="$mdOpenMenu()" class="menuIconBtn testBtn">
-                    <i class="fa fa-home"></i>
-                </button>
-                <md-menu-content width=3 md-position-mode=target-left class="menuContent">
-                    <md-menu-item>
-                        <!--                           <md-button ng-click="ctrl.sampleAction('Print', $event)">-->
-                        <md-button>
-                            Profile
-                        </md-button>
-                    </md-menu-item>
-                    <md-menu-item>
-                        <md-button>
-                            Statistics
-                        </md-button>
-                    </md-menu-item>
-                    <md-menu-item>
-                        <md-button>
-                            Settings
-                        </md-button>
-                    </md-menu-item>
-                </md-menu-content>
+            <a href="#/home">
+                <i class="fa fa-home menuIconBtn"></i>
+            </a>
+
             </md-menu>
 
-            <md-menu md-offset="49 -80">
+            <md-menu md-offset="49">
                 <button ng-click="$mdOpenMenu()" class="menuIconBtn">
                     <i class="fa fa-user"></i>
                 </button>
                 <md-menu-content width=3 md-position-mode=target-left class="menuContent">
                     <md-menu-item>
-                        <md-button>
-                            Profile
+                        <md-button onclick="location.href='#/personal'">
+                            Personal
                         </md-button>
                     </md-menu-item>
                     <md-menu-item>
-                        <md-button>
-                            Statistics
+                        <md-button  onclick="location.href='#/myworks'">
+                            My Works
                         </md-button>
                     </md-menu-item>
                     <md-menu-item>
-                        <md-button>
-                            Settings
-                        </md-button>
-                    </md-menu-item>
-                </md-menu-content>
-            </md-menu>
-            ​
-            <md-menu md-offset="49 -125">
-                <button ng-click="$mdOpenMenu()" class="menuIconBtn">
-                    <i class="fa fa-bar-chart "></i>
-                </button>
-                <md-menu-content width=3 md-position-mode=target-left class="menuContent">
-                    <md-menu-item>
-                        <md-button>
-                            Profile
-                        </md-button>
-                    </md-menu-item>
-                    <md-menu-item>
-                        <md-button>
-                            Statistics
-                        </md-button>
-                    </md-menu-item>
-                    <md-menu-item>
-                        <md-button>
-                            Settings
-                        </md-button>
-                    </md-menu-item>
-                </md-menu-content>
-            </md-menu>
-            ​
-            <md-menu md-offset="49 -170">
-                <button ng-click="$mdOpenMenu()" class="menuIconBtn">
-                    <i class="fa fa-cogs "></i>
-                </button>
-                <md-menu-content width=3 md-position-mode=target-left class="menuContent">
-                    <md-menu-item>
-                        <md-button>
-                            Profile
-                        </md-button>
-                    </md-menu-item>
-                    <md-menu-item>
-                        <md-button>
-                            Statistics
-                        </md-button>
-                    </md-menu-item>
-                    <md-menu-item>
-                        <md-button>
-                            Settings
+                        <md-button  onclick="location.href='#/tests'">
+                            Tests
                         </md-button>
                     </md-menu-item>
                 </md-menu-content>
             </md-menu>
 
+            <md-menu md-offset="49">
+                <button ng-click="$mdOpenMenu()" class="menuIconBtn">
+                    <i class="fa fa-bar-chart"></i>
+                </button>
+                <md-menu-content width=3 md-position-mode=target-left class="menuContent">
+                    <md-menu-item>
+                        <md-button>
+                            Statistics 1
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button>
+                            Statistics 2
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button>
+                            Statistics 3
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+
+            <md-menu md-offset="49">
+                <button ng-click="$mdOpenMenu()" class="menuIconBtn">
+                    <i class="fa fa-cogs"></i>
+                </button>
+                <md-menu-content width=3 md-position-mode=target-left class="menuContent">
+                    <md-menu-item>
+                        <md-button>
+                            Settings 1
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button>
+                            Settings 2
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button>
+                            Settings 3
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
         </md-menu-bar>
     </md-toolbar>
 </div>
 
 <!-- Main view for templates -->
-<div ui-view class="container"></div>
+<div ui-view class=""></div>
 
 </body>
 
@@ -227,11 +225,13 @@
 <script src="bower_components/angular-messages/angular-messages.min.js"></script>
 <script src="bower_components/angular-route/angular-route.min.js"></script>
 <script src="bower_components/underscore/underscore-min.js"></script>
-<script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+<script
+        src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
+<script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script
-	src="bower_components/angular-multi-select-master/isteven-multi-select.js"></script>
+        src="bower_components/angular-multi-select-master/isteven-multi-select.js"></script>
 <script src="bower_components/angularjs-slider-master/rzslider.min.js"></script>
 <script src="app/app.js"></script>
 <script src="app/constants/config.js"></script>
@@ -243,12 +243,13 @@
 <script src="app/components/personal/personalCtrl.js"></script>
 <script src="app/components/tests/testsCtrl.js"></script>
 <script src="app/components/tests/testsService.js"></script>
-<script src="app/components/test/testCtrl.js"></script>
-<script src="app/components/test/testService.js"></script>
-
 <script src="app/components/authentication/authCtrl.js"></script>
 <script src="app/components/authentication/authService.js"></script>
 <script src="app/components/header/headerCtrl.js"></script>
+<script src="app/components/home/homeSlider.js"></script>
+<script src="app/components/test/testCtrl.js"></script>
+<script src="app/components/test/testService.js"></script>
+<script src="app/components/home/homeSlider.js"></script>
 <!-- endinject -->
 
 

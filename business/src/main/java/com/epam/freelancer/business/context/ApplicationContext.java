@@ -40,6 +40,7 @@ import com.epam.freelancer.database.dao.jdbc.WorkerManyToManyJdbcDao;
 import com.epam.freelancer.database.dao.*;
 import com.epam.freelancer.database.dao.jdbc.*;
 import com.epam.freelancer.database.model.DeveloperQA;
+import com.epam.freelancer.database.model.Ordering;
 import com.epam.freelancer.database.model.Test;
 
 public final class ApplicationContext {
@@ -72,7 +73,13 @@ public final class ApplicationContext {
                 .getSimpleName()));
         addBean("customerService", customerService);
         addBean("feedbackService", new FeedbackService());
-        addBean("orderingService", new OrderingService());
+
+		OrderingService orderingService = new OrderingService();
+		orderingService.setOrderingTechnoloyManyToManyDao(DAOManager
+				.getInstance().getManyToManyDAO(
+						OrderingTechnologyManyToManyDao.class.getSimpleName()));
+		addBean("orderingService", orderingService);
+
 		addBean("questionService", new QuestionService());
 		addBean("testService", new TestService());
 
