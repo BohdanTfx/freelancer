@@ -42,8 +42,6 @@ public class UserController extends HttpServlet {
                 case "user/create":
                     create(request, response);
                     return;
-                case "user/test":
-                    test(request, response);
                 default:
             }
         } catch (Exception e) {
@@ -104,6 +102,8 @@ public class UserController extends HttpServlet {
     }
 
     public void signIn(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        DeveloperService des = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
+        System.out.println(des.getDeveloperPortfolio(19));
         boolean remember = "true".equals(request.getParameter("remember"));
         String email = request.getParameter("username");
         String password = request.getParameter("password");
@@ -214,9 +214,4 @@ public class UserController extends HttpServlet {
         response.getWriter().flush();
         response.getWriter().close();
     }
-
-    public void test(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("TEST");
-    }
-
 }
