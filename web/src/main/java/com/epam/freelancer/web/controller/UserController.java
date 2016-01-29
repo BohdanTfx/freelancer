@@ -97,7 +97,6 @@ public class UserController extends HttpServlet {
                 Integer id = Integer.parseInt(param);
                 DeveloperService ds = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
                 List<Technology> list = ds.getTechnologiesByDevId(id);
-                System.out.println(list);
                 if (list != null)
                     sendListResp(list, response);
                 else

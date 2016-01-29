@@ -2,7 +2,16 @@ angular.module('FreelancerApp')
     .controller('pubdevCtrl', function ($scope, pubdevAPI, $log, $http, $location, $filter) {
 
         $scope.query = $location.search().id;
-            pubdevAPI.getDevById($scope.query).success(
+
+        pubdevAPI.getCustById($scope.query).success(
+            function (data, status, headers, config) {
+                console.log(data);
+                $scope.feeds = data;
+            }).error(function () {
+
+            });
+
+        /*pubdevAPI.getDevById($scope.query).success(
                 function (data, status, headers, config) {
                     console.log(data);
                     $scope.img = data.imgUrl;
@@ -64,5 +73,5 @@ angular.module('FreelancerApp')
             }
 
             return ratings;
-        }
+         }*/
     });
