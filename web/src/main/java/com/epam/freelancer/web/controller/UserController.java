@@ -75,8 +75,10 @@ public class UserController extends HttpServlet {
                 DeveloperService ds = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
                 Developer developer = ds.findById(id);
 
-                if (developer != null)
+                if (developer != null) {
+                    developer.setPassword(null);
                     sendResp(developer, response);
+                }
                 else
                     response.sendError(404);
             } catch (Exception e) {
