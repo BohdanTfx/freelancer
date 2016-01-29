@@ -257,6 +257,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .padding-bottom {
+
 	padding-bottom: 30px;
 }
 
@@ -444,7 +445,7 @@ ul, li {
 
 @-moz-document url-prefix() {
     .main-header .header-lower {
-        padding: 3px 0px;
+        /*padding: 3px 0px;*/
     }
 }
 
