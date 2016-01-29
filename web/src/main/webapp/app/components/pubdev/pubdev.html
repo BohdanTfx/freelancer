@@ -9,9 +9,14 @@
                                 <img class="media-object" ng-src="{{img}}">
                             </a>
                             <span class="date">On site from: {{regDate}}</span>
+                            <ul class="list-inline ratings text-center" title="Ratings">
+                                <li ng-repeat="i in getNumber(rate)"><a href="#"><span class="fa fa-star fa-lg"></span></a>
+                                </li>
+                            </ul>
+
                         </div>
                         <div class="media-body">
-                            <h4 class="media-heading">{{fname}} {{lname}}</h4>
+                            <h2 class="media-heading">{{fname}} {{lname}}</h2>
                             <span class="sp">&#36; {{hourly}} &#47;hr</span>
                             <md-divider></md-divider>
                             <h3>Overview</h3>

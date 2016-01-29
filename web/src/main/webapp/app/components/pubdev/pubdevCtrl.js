@@ -46,4 +46,15 @@ angular.module('FreelancerApp')
                 }).error(function () {
 
                 });
+
+        $scope.getNumber = function (count) {
+
+            var ratings = [];
+
+            for (var i = 0; i < count; i++) {
+                ratings.push(i)
+            }
+
+            return ratings;
+        }
     });
