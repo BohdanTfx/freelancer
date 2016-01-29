@@ -1,11 +1,11 @@
 package com.epam.freelancer.database.model;
 
-import java.sql.Timestamp;
-import java.util.Locale;
-
 import com.epam.freelancer.database.transformer.annotation.Column;
 import com.epam.freelancer.database.transformer.annotation.Id;
 import com.epam.freelancer.database.transformer.annotation.Table;
+
+import java.sql.Timestamp;
+import java.util.Locale;
 
 /**
  * Created by ������ on 15.01.2016.
@@ -41,7 +41,17 @@ public class Customer implements UserEntity {
     private String salt;
     @Column(name="img_url")
     private String imgUrl;
+    @Column(name = "overview")
+    private String overview;
     private String role;
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
 
     public String getRole() {
         return role;
@@ -110,13 +120,13 @@ public class Customer implements UserEntity {
     }
 
     @Override
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public String getImgUrl() {
+        return imgUrl;
     }
 
     @Override
-    public String getImgUrl() {
-        return imgUrl;
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
     public Timestamp getZone() {

@@ -1,9 +1,6 @@
 package com.epam.freelancer.web.controller;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -11,8 +8,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.apache.log4j.Logger;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class FrontController extends HttpServlet {
 	private final static Logger LOG = Logger.getLogger(FrontController.class);
@@ -37,7 +36,8 @@ public class FrontController extends HttpServlet {
 		controllers.put("user/", new UserController());
 		controllers.put("unreg/", new UnregisteredController());
 		controllers.put("dev/", new DeveloperController());
-	}
+        controllers.put("cust/", new CustomerController());
+    }
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException
@@ -53,6 +53,7 @@ public class FrontController extends HttpServlet {
 			if (path.startsWith("/front/")) {
 				path = path.substring("/front/".length());
 				switch (path) {
+                    case "test":
 				case "orders":
 				case "signup":
 				case "language/bundle":

@@ -8,7 +8,7 @@
 			.config(
 					function($stateProvider, $urlRouterProvider,
 							$locationProvider) {
-						$urlRouterProvider.otherwise('/orders');
+                        //$urlRouterProvider.otherwise('/orders');
 
 						// routes
 						$stateProvider
@@ -39,6 +39,13 @@
 											url : '/auth',
 											templateUrl : 'app/components/authentication/auth.html',
 											controller : 'authCtrl'
+                                        })
+                            .state(
+                            'pubdev',
+                            {
+                                url: '/pubdev',
+                                templateUrl: 'app/components/pubdev/pubdev.html',
+                                controller: 'pubdevCtrl'
 										});
 
 						$locationProvider.html5Mode(false);
@@ -59,11 +66,18 @@
 								 * 'Basic ' +
 								 * $rootScope.globals.currentUser.username; }
 								 */
+
+                                if ($location.path() == '/pubdev') {
+                                    if (typeof $location.search().id == 'undefined') {
+                                        $location.path('/');
+                                    }
+                                }
 								$rootScope
 										.$on(
 												'$locationChangeStart',
 												function(event, next, current) {
-													// redirect to login page if
+
+                                                    // redirect to login page if
 													// not logged in
 													/*
 													 * if (typeof

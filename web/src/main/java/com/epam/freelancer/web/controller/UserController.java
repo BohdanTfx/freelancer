@@ -4,10 +4,8 @@ import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.service.AdminService;
 import com.epam.freelancer.business.service.CustomerService;
 import com.epam.freelancer.business.service.DeveloperService;
-import com.epam.freelancer.database.model.Admin;
-import com.epam.freelancer.database.model.Customer;
-import com.epam.freelancer.database.model.Developer;
-import com.epam.freelancer.database.model.UserEntity;
+import com.epam.freelancer.business.service.FeedbackService;
+import com.epam.freelancer.database.model.*;
 import com.epam.freelancer.security.provider.AuthenticationProvider;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
@@ -18,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 public class UserController extends HttpServlet {
@@ -42,11 +41,143 @@ public class UserController extends HttpServlet {
                 case "user/create":
                     create(request, response);
                     return;
+                case "user/getById":
+                    getById(request, response);
+                    return;
+                case "user/getTechById":
+                    getTechById(request, response);
+                    return;
+                case "user/getContById":
+                    getContById(request, response);
+                    return;
+                case "user/getPortById":
+                    getPortfolioById(request, response);
+                    return;
+                case "user/getRate":
+                    getRate(request, response);
+                    return;
+                case "user/getFeed":
+                    getFeedbackByIdForDev(request, response);
+                    return;
                 default:
             }
         } catch (Exception e) {
             e.printStackTrace();
             LOG.fatal(getClass().getSimpleName() + " - " + "doPost");
+        }
+    }
+
+    public void getById(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String param = request.getParameter("id");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                DeveloperService ds = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
+                Developer developer = ds.findById(id);
+
+                if (developer != null) {
+                    developer.setPassword(null);
+                    sendResp(developer, response);
+                }
+                else
+                    response.sendError(404);
+            } catch (Exception e) {
+                response.sendError(500);
+            }
+        } else {
+            response.sendError(404);
+            return;
+        }
+    }
+
+    public void getTechById(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String param = request.getParameter("id");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                DeveloperService ds = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
+                List<Technology> list = ds.getTechnologiesByDevId(id);
+                if (list != null)
+                    sendListResp(list, response);
+                else
+                    response.sendError(404);
+            } catch (Exception e) {
+                response.sendError(500);
+            }
+        } else {
+            response.sendError(404);
+            return;
+        }
+    }
+
+    public void getContById(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String param = request.getParameter("id");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                DeveloperService ds = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
+                Contact contact = ds.getContactByDevId(id);
+                if (contact != null) {
+                    sendResp(contact, response);
+                } else {
+                    response.sendError(404);
+                }
+
+            } catch (Exception e) {
+                response.sendError(500);
+            }
+        } else {
+            response.setStatus(404);
+        }
+    }
+
+    public void getPortfolioById(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String param = request.getParameter("id");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                DeveloperService ds = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
+                List<Ordering> list = ds.getDeveloperPortfolio(id);
+                if (list != null) {
+                    sendListResp(list, response);
+                } else {
+                    response.sendError(500);
+                }
+            } catch (Exception e) {
+                response.sendError(500);
+            }
+        }
+    }
+
+    public void getRate(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String param = request.getParameter("id");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                FeedbackService fs = (FeedbackService) ApplicationContext.getInstance().getBean("feedbackService");
+                Integer avg = fs.getAvgRate(id);
+                sendResp(avg, response);
+            } catch (Exception e) {
+                response.sendError(500);
+            }
+        } else {
+            response.sendError(404);
+        }
+    }
+
+    public void getFeedbackByIdForDev(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String param = request.getParameter("id");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                FeedbackService fs = (FeedbackService) ApplicationContext.getInstance().getBean("feedbackService");
+                List<Feedback> list = fs.findFeedbacksByDevId(id);
+                sendListResp(list, response);
+            } catch (Exception e) {
+                response.sendError(500);
+            }
+        } else {
+            response.sendError(404);
         }
     }
 
@@ -201,9 +332,7 @@ public class UserController extends HttpServlet {
     }
 
 
-
-    private void sendResp(UserEntity ue, HttpServletResponse response) throws IOException {
-        ue.setPassword(null);
+    private void sendResp(Object ue, HttpServletResponse response) throws IOException {
         String json = new Gson().toJson(ue);
 
         response.setContentType("application/json");
@@ -214,4 +343,14 @@ public class UserController extends HttpServlet {
         response.getWriter().close();
     }
 
+    private void sendListResp(List<?> list, HttpServletResponse response) throws IOException {
+        String json = new Gson().toJson(list);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.getWriter().write(json);
+        response.getWriter().flush();
+        response.getWriter().close();
+    }
 }

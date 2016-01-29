@@ -78,6 +78,9 @@ public class UnregisteredController extends HttpServlet {
 			case "logout":
 				logout(request, response);
 				return;
+                case "test":
+                    test(request, response);
+                    return;
 			default:
 			}
 		} catch (Exception e) {
@@ -85,6 +88,10 @@ public class UnregisteredController extends HttpServlet {
 			LOG.fatal(getClass().getSimpleName() + " - " + "doGet");
 		}
 	}
+
+    public void test(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("TEST");
+    }
 
 	private void fillSignup(HttpServletRequest request,
 			HttpServletResponse response)
