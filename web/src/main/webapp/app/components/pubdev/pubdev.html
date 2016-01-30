@@ -16,14 +16,14 @@
                     </div>-->
                     <div class="col-xs-8 hr">
                         <div class="user" style="background-image: url('{{img}}')"></div>
-                        <h2 class="">{{fname}} {{lname}}</h2>
+                        <h2><em>{{fname}} {{lname}}</em></h2>
                         <!--<span class="sp">&#36; {{hourly}} &#47;hr</span>-->
                         <div class="border col-xs-9">
 
                         </div>
-                            <h3>Overview</h3>
+                        <h3>Overview</h3>
 
-                            <p>{{overview}}</p>
+                        <p>{{overview}}</p>
 
                         <!--<p>
                             <span ng-repeat="tech in techs">
@@ -32,11 +32,42 @@
                         </p>-->
 
 
+                    </div>
+                    <div class="col-xs-4 right-side">
+                        <br/>
+
+                        <p>
+
+                        <div class="btn btn-block btn-primary"><span class="glyphicon glyphicon-thumbs-up"></span> Hire
+                            me
                         </div>
-                    <div class="col-xs-4">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. A ad, aliquam aspernatur blanditiis
-                        dignissimos enim facere fugiat fugit inventore magni molestias numquam quaerat quia reiciendis
-                        rem repellat vero, vitae voluptatum?
+                        </p>
+                        <p class="position">
+                        <h4>{{position}}</h4>
+                        <span class="sp">&#36; {{hourly}} &#47;hr</span>
+                        </p>
+                        <p>
+                            <span ng-repeat="tech in techs">
+                                <span class="label label-success lb">{{tech.name}}</span>
+                            </span>
+                        </p>
+                        <!--<p>On site from: <br/>
+                            {{regDate}}
+                        </p>-->
+                        <md-divider></md-divider>
+                        <p>
+                        <h5>Phone: {{phone}}</h5>
+                        </p>
+                        <p>
+                        <h5>Skype: {{skype}}</h5>
+                        </p>
+                        <p>
+                        <h5>Email: {{email}}</h5>
+                        </p>
+
+                        <div class="btn btn-block btn-danger"><span class="glyphicon glyphicon-envelope"></span> Write
+                            me
+                        </div>
                     </div>
                     <!--/row-->
                 </div>
@@ -49,28 +80,31 @@
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane fade in active" id="menu1">
-
                             <div class="media" ng-repeat="feed in feeds">
+                                <br/>
                                 <div class="feed" style="background-image: url('{{feed.customer.imgUrl}}')"></div>
+                                <p><em>{{feed.customer.fname}} {{feed.customer.lname}}</em></p>
 
-                                    <ul class="list-inline ratings" title="Ratings">
-                                        <li ng-repeat="i in getNumber(feed.rate)"><a href="#"><span
-                                                class="fa fa-star fa-lg"></span></a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                <p>{{feed.comment}}</p>
+                                <ul class="list-inline ratings" title="Ratings">
+                                    <li ng-repeat="i in getNumber(feed.rate)"><a href="#"><span
+                                            class="fa fa-star fa-lg"></span></a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
+
                         <div class="tabe-pane fade" id="menu2">
 
                         </div>
                     </div>
                 </div>
             </div>
-            <!--/panel-body-->
-            <!--/panel-->
         </div>
-        <!--/col-->
+        <!--/panel-body-->
+        <!--/panel-->
     </div>
-    <!--/row-->
+    <!--/col-->
+</div>
+<!--/row-->
 </div>

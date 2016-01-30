@@ -23,5 +23,17 @@
 }
 
 .border {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid #ccc;
+}
+
+.right-side {
+    text-align: center;
+}
+
+.sp {
+    font-size: 16px;
+}
+
+.label {
+    font-size: 14px;
 }

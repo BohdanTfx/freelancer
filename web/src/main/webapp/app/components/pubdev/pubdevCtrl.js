@@ -17,6 +17,7 @@ angular.module('FreelancerApp')
                 function (data, status, headers, config) {
                     console.log(data);
                     $scope.img = data.imgUrl;
+                    $scope.email = data.email;
                     $scope.fname = data.fname;
                     $scope.lname = data.lname;
                     $scope.hourly = data.hourly;
