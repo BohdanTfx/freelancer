@@ -44,26 +44,32 @@ public class Paginator {
 		Integer begin = 0;
 
 		if (isLast(page)) {
-			begin = totalSize / step * step > totalSize ? 0 : totalSize / step
-					* step;
+			boolean end = totalSize % step == 0;
+			if (end)
+				begin = totalSize / step * step > totalSize ? 0 : totalSize
+						/ step * step - 2;
+			else
+				begin = totalSize / step * step > totalSize ? 0 : totalSize
+						/ step * step;
 		} else {
 			begin = page.get("start");
 			begin = begin > totalSize ? 0 : begin;
 			begin *= step;
 		}
 
-		sendResponse(list,
+		sendResponse(list, totalSize / step > 0 ? totalSize / step + 1 : 0,
 				fillPaginationElement(totalSize, page, begin, response),
 				response);
 	}
 
-	private void sendResponse(List<?> list,
+	private void sendResponse(List<?> list, Integer maxPage,
 			ObjectHolder<Integer, List<ObjectHolder<String, Integer>>> result,
 			HttpServletResponse response)
 	{
 		responseText.put("currentPosition", result.getFirst());
 		responseText.put("pages", result.getSecond());
 		responseText.put("items", list);
+		responseText.put("maxPage", maxPage - 1);
 
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
@@ -97,14 +103,22 @@ public class Paginator {
 			Map<String, Integer> page, Integer size, Integer currentPosition)
 	{
 		Integer step = page.get("step") == null ? 10 : page.get("step");
-		Integer limit = size / step;
-		Integer current = currentPosition / step + 1;
+		Integer current = currentPosition / step;
+		Integer limit = getLimit((size - 1) / step, current);
 		List<ObjectHolder<String, Integer>> pages = new ArrayList<>();
-		for (int i = current; i <= limit && i - current < 3; i++) {
-			pages.add(new ObjectHolder<String, Integer>("start", i));
+		for (int i = current; i < limit; i++) {
+			pages.add(new ObjectHolder<String, Integer>("start", i + 1));
 		}
 
 		return pages;
+	}
+
+	private Integer getLimit(Integer oldLimit, Integer current) {
+		Integer limit = oldLimit;
+		if (current + 3 > limit)
+			return limit;
+		else
+			return current + 3;
 	}
 
 	private List<ObjectHolder<String, Integer>> fillPrevBtn(
