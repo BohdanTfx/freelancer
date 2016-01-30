@@ -1,16 +1,39 @@
-.media-body h2 {
+.user {
     display: inline-block;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    margin: 5px;
+    float: left;
 }
 
-.media-body .sp {
-    float: right;
-    font-size: 24px;
+.feed {
+    display: inline-block;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    margin: 5px;
+    float: left;
 }
 
-.date {
-    font-size: 12px;
+.border {
+    border-bottom: 1px solid #ccc;
 }
 
-.lb {
+.right-side {
+    text-align: center;
+}
+
+.sp {
     font-size: 16px;
+}
+
+.label {
+    font-size: 14px;
 }

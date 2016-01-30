@@ -25,8 +25,17 @@ public class Feedback implements BaseEntity<Integer> {
     private Boolean isDeleted;
     @Column
     private Integer version;
+    private Customer customer;
 
     public Feedback() {
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     @Override
@@ -135,6 +144,7 @@ public class Feedback implements BaseEntity<Integer> {
                 ", author='" + author + '\'' +
                 ", isDeleted=" + isDeleted +
                 ", version=" + version +
+                ", customer=" + customer +
                 '}';
     }
 }

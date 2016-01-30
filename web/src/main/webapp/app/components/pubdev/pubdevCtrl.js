@@ -17,6 +17,7 @@ angular.module('FreelancerApp')
                 function (data, status, headers, config) {
                     console.log(data);
                     $scope.img = data.imgUrl;
+                    $scope.email = data.email;
                     $scope.fname = data.fname;
                     $scope.lname = data.lname;
                     $scope.hourly = data.hourly;
@@ -53,7 +54,6 @@ angular.module('FreelancerApp')
 
             pubdevAPI.getRateById($scope.query).success(
                 function (data, status, headers, config) {
-                    console.log(data);
                     $scope.rate = data;
                 }).error(function () {
 
@@ -63,7 +63,6 @@ angular.module('FreelancerApp')
             function (data, status, headers, config) {
                 console.log(data);
                 $scope.feeds = data;
-                console.log('feeds ' + $scope.feeds);
 
             }).error(function () {
 
