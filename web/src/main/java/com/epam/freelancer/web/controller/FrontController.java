@@ -40,8 +40,7 @@ public class FrontController extends HttpServlet {
 	}
 
 	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException
-	{
+						 HttpServletResponse response) throws ServletException, IOException {
 		LOG.info(getClass().getSimpleName() + " - " + "doGet");
 		try {
 			if (request.getSession().isNew())
@@ -76,8 +75,8 @@ public class FrontController extends HttpServlet {
 	}
 
 	private void configAutoAuthentication(HttpSession session) {
-		/*
-		 * LOG.info(getClass().getSimpleName() + " - " +
+        /*
+         * LOG.info(getClass().getSimpleName() + " - " +
 		 * "configAutoAuthentication"); EnvironmentVariablesManager manager =
 		 * EnvironmentVariablesManager .getInstance();
 		 * session.setAttribute(manager.getVar("session.dev.autoauth"), 1);
@@ -88,8 +87,7 @@ public class FrontController extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException
-	{
+						  HttpServletResponse response) throws ServletException, IOException {
 		LOG.info(getClass().getSimpleName() + " - " + "doPost");
 		try {
 			if (request.getSession().isNew())
@@ -107,30 +105,26 @@ public class FrontController extends HttpServlet {
 				if (path.startsWith("unreg/")) {
 					controllers.get("unreg/").service(request, response);
 					return;
-				default:
-					if (path.startsWith("admin/")) {
-						controllers.get("admin/").service(request, response);
-						return;
-					}
-					if (path.startsWith("home/")) {
-						controllers.get("home/").service(request, response);
-						return;
-					}
-					if (path.startsWith("dev/")) {
-						controllers.get("dev/").service(request, response);
-						return;
-					}
-					if (path.startsWith("cust/")) {
-						controllers.get("cust/").service(request, response);
-						return;
-					}
-					if (path.startsWith("user/")) {
-						controllers.get("user/").service(request, response);
-						return;
-					}
+				}
+
+				if (path.startsWith("home/")) {
+					controllers.get("home/").service(request, response);
+					return;
+				}
+				if (path.startsWith("dev/")) {
+					controllers.get("dev/").service(request, response);
+					return;
+				}
+				if (path.startsWith("cust/")) {
+					controllers.get("cust/").service(request, response);
+					return;
+				}
+				if (path.startsWith("user/")) {
+					controllers.get("user/").service(request, response);
+					return;
 				}
 			}
-		} catch (Exception e) {
+		} catch (Exception e){
 			e.printStackTrace();
 			LOG.fatal(getClass().getSimpleName() + " - " + "doPost");
 		}

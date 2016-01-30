@@ -4,10 +4,6 @@ import com.epam.freelancer.database.transformer.annotation.Column;
 import com.epam.freelancer.database.transformer.annotation.Id;
 import com.epam.freelancer.database.transformer.annotation.Table;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
-/**
- * Created by ������ on 15.01.2016.
- */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "answer")
 public class Answer implements BaseEntity<Integer> {

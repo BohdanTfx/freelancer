@@ -7,9 +7,6 @@ import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import java.util.List;
 
-/**
- * Created by ������ on 16.01.2016.
- */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "question")
 public class Question implements BaseEntity<Integer> {
