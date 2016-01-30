@@ -1,6 +1,6 @@
 .menuIcons{
     position: fixed;
-    top:65px;
+    top:70px;
     width: 2.5em;
     padding-left: 0;
     padding-right: 0;
@@ -32,3 +32,12 @@ md-menu-bar.md-default-theme md-menu.md-open > button, md-menu-bar md-menu.md-op
 .md-open-menu-container.md-active{
 height:100vh;
 }
+
+.menu-offset{
+    padding-left: 3.4em;
+}
+.menu-header-offset{
+    padding-top: 2em;
+}
+
+

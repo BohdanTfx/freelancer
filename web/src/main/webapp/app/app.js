@@ -4,6 +4,7 @@
 			.module(
 					'FreelancerApp',
 					[ 'ngRoute', 'ui.router', 'ngCookies', 'ngMaterial',
+							'ngAnimate', 'ngAria', 'ngMessages',
 							'isteven-multi-select', 'rzModule' ])
 			.config(
 					function($stateProvider, $urlRouterProvider,
@@ -39,13 +40,6 @@
 											url : '/auth',
 											templateUrl : 'app/components/authentication/auth.html',
 											controller : 'authCtrl'
-                                        })
-                            .state(
-                            'pubdev',
-                            {
-                                url: '/pubdev',
-                                templateUrl: 'app/components/pubdev/pubdev.html',
-                                controller: 'pubdevCtrl'
 										});
 
 						$locationProvider.html5Mode(false);
@@ -66,18 +60,11 @@
 								 * 'Basic ' +
 								 * $rootScope.globals.currentUser.username; }
 								 */
-
-                                if ($location.path() == '/pubdev') {
-                                    if (typeof $location.search().id == 'undefined') {
-                                        $location.path('/');
-                                    }
-                                }
 								$rootScope
 										.$on(
 												'$locationChangeStart',
 												function(event, next, current) {
-
-                                                    // redirect to login page if
+													// redirect to login page if
 													// not logged in
 													/*
 													 * if (typeof
@@ -88,19 +75,19 @@
 													 * $location.path('/auth'); }
 													 */
 
-													$rootScope.globals = $cookieStore
-															.get('freelancerRememberMeCookieAng')
-															|| {};
-													if ($rootScope.globals.currentUser) {
-														$rootScope.name = $rootScope.globals.currentUser.fname;
-														$rootScope.lastName = $rootScope.globals.currentUser.lname;
-														$rootScope.role = $rootScope.globals.currentUser.role;
+                        $rootScope.globals = $cookieStore
+                                .get('freelancerRememberMeCookieAng')
+                            || {};
+                        if ($rootScope.globals.currentUser) {
+                            $rootScope.name = $rootScope.globals.currentUser.fname;
+                            $rootScope.lastName = $rootScope.globals.currentUser.lname;
+                            $rootScope.role = $rootScope.globals.currentUser.role;
 
-														$rootScope.logged = true;
-													} else {
-														$rootScope.logged = false;
-													}
-												});
-							} ]);
+                            $rootScope.logged = true;
+                        } else {
+                            $rootScope.logged = false;
+                        }
+                    });
+            } ]);
 
 })();

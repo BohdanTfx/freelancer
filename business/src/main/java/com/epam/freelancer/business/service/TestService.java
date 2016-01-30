@@ -5,14 +5,20 @@ import java.util.List;
 import java.util.Map;
 
 import com.epam.freelancer.business.util.ValidationParametersBuilder;
-import com.epam.freelancer.database.dao.TestDao;
+import com.epam.freelancer.database.dao.*;
 import com.epam.freelancer.database.dao.jdbc.DAOManager;
+import com.epam.freelancer.database.model.Answer;
+import com.epam.freelancer.database.model.BaseEntity;
+import com.epam.freelancer.database.model.Question;
 import com.epam.freelancer.database.model.Test;
 
 /**
  * Created by Максим on 18.01.2016.
  */
 public class TestService extends GenericService<Test, Integer> {
+	private GenericDao<Question, Integer> questionDao;
+	private GenericManyToManyDao<Test, Question, BaseEntity<Integer>, Integer> testMTMquestDao;
+	private GenericDao<Answer, Integer> answerDao;
 
 	public TestService() {
 		super(DAOManager.getInstance().getDAO(TestDao.class.getSimpleName()));
@@ -79,7 +85,31 @@ public class TestService extends GenericService<Test, Integer> {
 		return ((TestDao) genericDao).getTestsByTechId(id);
 	}
 
+	public List<Question> findQuestionsByTestId(Integer id){
+		List<Question> questions = testMTMquestDao.getBasedOnFirst(id);
+		for(Question question : questions){
+			question.setAnswers(((AnswerDao)answerDao).getAnswersByQuestionId(question.getId()));
+		}
+		return questions;
+	}
+
 	public List<Test> findTestsByAdminId(Integer id) {
 		return ((TestDao) genericDao).getTestsByAdminId(id);
+	}
+
+	public void setQuestionDao(GenericDao<Question, Integer> questionDao) {
+		this.questionDao = questionDao;
+	}
+
+	public void setTestMTMquestDao(GenericManyToManyDao<Test, Question, BaseEntity<Integer>, Integer> testMTMquestDao) {
+		this.testMTMquestDao = testMTMquestDao;
+		testMTMquestDao.setConnectionPool(DAOManager.getInstance()
+				.getConnectionPool());
+	}
+
+	public void setAnswerDao(GenericDao<Answer, Integer> answerDao) {
+		this.answerDao = answerDao;
+		answerDao.setConnectionPool(DAOManager.getInstance()
+				.getConnectionPool());
 	}
 }

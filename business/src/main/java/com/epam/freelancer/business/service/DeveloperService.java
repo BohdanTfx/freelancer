@@ -11,6 +11,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.epam.freelancer.business.util.ValidationParametersBuilder;
+import com.epam.freelancer.database.dao.ContactDao;
+import com.epam.freelancer.database.dao.DeveloperDao;
+import com.epam.freelancer.database.dao.GenericDao;
+import com.epam.freelancer.database.dao.GenericManyToManyDao;
+import com.epam.freelancer.database.dao.WorkerManyToManyDao;
+import com.epam.freelancer.database.dao.jdbc.DAOManager;
+import com.epam.freelancer.database.model.BaseEntity;
+import com.epam.freelancer.database.model.Contact;
+import com.epam.freelancer.database.model.Developer;
+import com.epam.freelancer.database.model.Ordering;
+import com.epam.freelancer.database.model.Technology;
+import com.epam.freelancer.database.model.Worker;
+
 /**
  * Created by Максим on 18.01.2016.
  */
@@ -103,12 +117,13 @@ public class DeveloperService extends UserService<Developer> {
                 .getConnectionPool());
     }
 
-    public void setDevMTMtechDao(
-            GenericManyToManyDao<Developer, Technology, Worker, Integer> devMTMtechDao) {
-        this.devMTMtechDao = devMTMtechDao;
-        this.devMTMtechDao.setConnectionPool(DAOManager.getInstance()
-                .getConnectionPool());
-    }
+	public void setDevMTMtechDao(
+			GenericManyToManyDao<Developer, Technology, Worker, Integer> devMTMtechDao)
+	{
+		this.devMTMtechDao = devMTMtechDao;
+		this.devMTMtechDao.setConnectionPool(DAOManager.getInstance()
+				.getConnectionPool());
+	}
 
     public Worker createWorker(Worker worker) {
         return workerDao.save(worker);
@@ -142,8 +157,9 @@ public class DeveloperService extends UserService<Developer> {
         contactDao.delete(contact);
     }
 
-    public List<Technology> getTechnologiesByDevId(Integer id) {
-        return ((DevTechManyToManyDao) devMTMtechDao)
-                .getTechnologiesByDevId(id);
-    }
+	public List<Technology> getTechnologiesByDevId(Integer id) {
+		return ((DevTechManyToManyDao) devMTMtechDao)
+				.getTechnologiesByDevId(id);
+	}
+
 }

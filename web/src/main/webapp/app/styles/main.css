@@ -26,6 +26,33 @@ body .brand {
 
 * {
 	font-family: Arial;
+	outline: 0 !important;
+}
+
+.signup-role-img {
+	width: 100%;
+	max-height: 60vh;
+}
+
+.full-width {
+	width: 100%;
+}
+
+div[isteven-multi-select]>span>button {
+	width: 100%;
+}
+
+div[isteven-multi-select]>span>button+div.checkboxLayer {
+	width: calc(100% - 30px);
+}
+
+.empty-margin-left {
+	margin-left: 0 !important;
+}
+
+.choose-role-container {
+	text-shadow: 0px 0px 7px rgb(0, 0, 0);
+	color: rgb(255, 255, 255);
 }
 
 h1, h2, h3, h4, h5 {
@@ -257,6 +284,7 @@ h1, h2, h3, h4, h5 {
 }
 
 .padding-bottom {
+
 	padding-bottom: 30px;
 }
 
@@ -429,23 +457,17 @@ ul, li {
 }
 
 .main-header .header-lower {
-    position: relative;
-    padding: 0px 0px;
-    width: 100%;
-    left: 0px;
-    top: 0px;
-    background: #273039;
-    transition: all 500ms ease;
-    -moz-transition: all 500ms ease;
-    -webkit-transition: all 500ms ease;
-    -ms-transition: all 500ms ease;
-    -o-transition: all 500ms ease;
-}
-
-@-moz-document url-prefix() {
-    .main-header .header-lower {
-        padding: 3px 0px;
-    }
+	position: relative;
+	padding: 0px 0px;
+	width: 100%;
+	left: 0px;
+	top: 0px;
+	background: #273039;
+	transition: all 500ms ease;
+	-moz-transition: all 500ms ease;
+	-webkit-transition: all 500ms ease;
+	-ms-transition: all 500ms ease;
+	-o-transition: all 500ms ease;
 }
 
 .main-header .header-lower .outer-box {
@@ -520,7 +542,7 @@ ul, li {
 .main-header .header-lower .logo {
 	position: relative;
 	float: left;
-	padding: 10px 0px;
+	padding: 5px 0px;
 }
 
 .main-menu {

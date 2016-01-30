@@ -1,5 +1,7 @@
 package com.epam.freelancer.database.model;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 import com.epam.freelancer.database.transformer.annotation.Column;
 import com.epam.freelancer.database.transformer.annotation.Id;
 import com.epam.freelancer.database.transformer.annotation.Table;
@@ -7,7 +9,7 @@ import com.epam.freelancer.database.transformer.annotation.Table;
 /**
  * Created by ������ on 15.01.2016.
  */
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "answer")
 public class Answer implements BaseEntity<Integer> {
     @Id
@@ -22,6 +24,14 @@ public class Answer implements BaseEntity<Integer> {
     private Boolean isDeleted;
     @Column
     private Integer version;
+
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
 
     public Integer getQuestionId() {
         return questionId;

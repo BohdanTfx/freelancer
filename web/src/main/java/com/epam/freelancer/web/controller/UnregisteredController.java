@@ -68,18 +68,18 @@ public class UnregisteredController extends HttpServlet {
 		LOG.info(getClass().getSimpleName() + " - " + "doGet");
 		try {
 			switch (FrontController.getPath(request)) {
-			case "signup":
+			case "unreg/signup":
 				request.setAttribute("role", request.getParameter("role"));
 				fillSignup(request, response);
 				break;
-			case "language/bundle":
+			case "unreg/language/bundle":
 				sendBundle(request, response);
 				return;
-			case "logout":
+			case "unreg/logout":
 				logout(request, response);
 				return;
-                case "test":
-                    test(request, response);
+                case "unreg/email":
+                    checkEmail(request, response);
                     return;
 			default:
 			}
@@ -92,6 +92,20 @@ public class UnregisteredController extends HttpServlet {
     public void test(HttpServletRequest request, HttpServletResponse response) {
         System.out.println("TEST");
     }
+
+	private void checkEmail(HttpServletRequest request,
+			HttpServletResponse response) throws IOException
+	{
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		try (PrintWriter out = response.getWriter()) {
+			out.print(mapper.writeValueAsString(userManager
+					.isEmailAvailable(request.getParameter("email"))));
+			out.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	private void fillSignup(HttpServletRequest request,
 			HttpServletResponse response)
@@ -142,13 +156,13 @@ public class UnregisteredController extends HttpServlet {
 		LOG.info(getClass().getSimpleName() + " - " + "doPost");
 		try {
 			switch (FrontController.getPath(request)) {
-			case "orders/filter":
+			case "unreg/orders/filter":
 				filterOrders(request, response);
 				break;
-			case "orders/limits":
+			case "unreg/orders/limits":
 				sendLimits(response);
 				break;
-			case "orders/tech":
+			case "unreg/orders/tech":
 				sendTechnologies(response);
 				break;
 			default:
@@ -169,14 +183,6 @@ public class UnregisteredController extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-
-	/*
-	 * private Technology findTechnology(Map<Integer, Technology> technologies,
-	 * Integer id) { Technology technology = technologies.get(id); if
-	 * (technology == null) technology = technologyService.findById(id);
-	 * 
-	 * technologies.put(id, technology); return technology; }
-	 */
 
 	private void sendLimits(HttpServletResponse response) {
 		response.setContentType("application/json");
@@ -224,7 +230,7 @@ public class UnregisteredController extends HttpServlet {
 				"freelancerRememberMeCookie", userEntity);
 		userManager.modifyUser(userEntity);
 		request.getSession().removeAttribute("user");
-//		response.sendRedirect(request.getContextPath() + "/");
+		// response.sendRedirect(request.getContextPath() + "/");
 	}
 
 }
