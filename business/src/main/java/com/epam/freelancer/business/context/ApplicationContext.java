@@ -4,7 +4,15 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.epam.freelancer.business.manager.UserManager;
-import com.epam.freelancer.business.service.*;
+import com.epam.freelancer.business.service.AdminService;
+import com.epam.freelancer.business.service.CustomerService;
+import com.epam.freelancer.business.service.DeveloperQAService;
+import com.epam.freelancer.business.service.DeveloperService;
+import com.epam.freelancer.business.service.FeedbackService;
+import com.epam.freelancer.business.service.OrderingService;
+import com.epam.freelancer.business.service.QuestionService;
+import com.epam.freelancer.business.service.TechnologyService;
+import com.epam.freelancer.business.service.TestService;
 import com.epam.freelancer.business.util.CookieManager;
 import com.epam.freelancer.database.dao.AdminDao;
 import com.epam.freelancer.database.dao.AnswerDao;
@@ -19,6 +27,7 @@ import com.epam.freelancer.database.dao.OrderingTechnologyManyToManyDao;
 import com.epam.freelancer.database.dao.QuestionDao;
 import com.epam.freelancer.database.dao.TechnologyDao;
 import com.epam.freelancer.database.dao.TestDao;
+import com.epam.freelancer.database.dao.TestQuestionManyToManyDao;
 import com.epam.freelancer.database.dao.WorkerDao;
 import com.epam.freelancer.database.dao.WorkerManyToManyDao;
 import com.epam.freelancer.database.dao.jdbc.AdminJdbcDao;
@@ -35,13 +44,9 @@ import com.epam.freelancer.database.dao.jdbc.OrderingTechnologyManyToManyJdbcDao
 import com.epam.freelancer.database.dao.jdbc.QuestionJdbcDao;
 import com.epam.freelancer.database.dao.jdbc.TechnologyJdbcDao;
 import com.epam.freelancer.database.dao.jdbc.TestJdbcDao;
+import com.epam.freelancer.database.dao.jdbc.TestQuestionManyToManyJdbcDao;
 import com.epam.freelancer.database.dao.jdbc.WorkerJdbcDao;
 import com.epam.freelancer.database.dao.jdbc.WorkerManyToManyJdbcDao;
-import com.epam.freelancer.database.dao.*;
-import com.epam.freelancer.database.dao.jdbc.*;
-import com.epam.freelancer.database.model.DeveloperQA;
-import com.epam.freelancer.database.model.Ordering;
-import com.epam.freelancer.database.model.Test;
 
 public final class ApplicationContext {
 	private Map<String, Object> beans = new ConcurrentHashMap<>();
