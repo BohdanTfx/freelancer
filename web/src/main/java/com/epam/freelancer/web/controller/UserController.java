@@ -171,8 +171,13 @@ public class UserController extends HttpServlet {
             try {
                 Integer id = Integer.parseInt(param);
                 FeedbackService fs = (FeedbackService) ApplicationContext.getInstance().getBean("feedbackService");
-                List<Feedback> list = fs.findFeedbacksByDevId(id);
-                sendListResp(list, response);
+                List<Feedback> feedbacks = fs.findFeedbacksByDevId(id);
+                CustomerService customerService = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
+                for (Feedback f : feedbacks) {
+                    f.setCustomer(customerService.findById(f.getCustomerId()));
+                }
+                System.out.println(feedbacks);
+                sendListResp(feedbacks, response);
             } catch (Exception e) {
                 response.sendError(500);
             }
@@ -180,6 +185,7 @@ public class UserController extends HttpServlet {
             response.sendError(404);
         }
     }
+
 
     public void create(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String role = request.getParameter("role");
