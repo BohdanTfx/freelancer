@@ -10,6 +10,18 @@
     float: left;
 }
 
+.feed {
+    display: inline-block;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    margin: 5px;
+    float: left;
+}
+
 .border {
     border-bottom: 1px solid black;
 }
