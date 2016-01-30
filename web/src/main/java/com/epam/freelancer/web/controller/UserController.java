@@ -174,9 +174,11 @@ public class UserController extends HttpServlet {
                 List<Feedback> feedbacks = fs.findFeedbacksByDevId(id);
                 CustomerService customerService = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
                 for (Feedback f : feedbacks) {
-                    f.setCustomer(customerService.findById(f.getCustomerId()));
+                    Customer customer = customerService.findById(f.getCustomerId());
+                    customer.setPassword(null);
+                    customer.setSalt(null);
+                    f.setCustomer(customer);
                 }
-                System.out.println(feedbacks);
                 sendListResp(feedbacks, response);
             } catch (Exception e) {
                 response.sendError(500);
