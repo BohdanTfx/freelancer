@@ -74,30 +74,37 @@
 					md-is-error="signupForm.passwordconfirm.$invalid && (signupForm.$submitted || signupForm.passwordconfirm.$dirty)">
 				<label>Confirm password</label> <input md-maxlength="50"
 					type="password" ng-required="true" name="passwordconfirm"
-					ng-model="user.passwordconfirm">
+					ng-model="user.passwordconfirm" match="user.password">
 				<div ng-messages="signupForm.passwordconfirm.$error"
 					ng-if="signupForm.$submitted || signupForm.passwordconfirm.$touched">
 					<div ng-message="required">This is required.</div>
 					<div ng-message="md-maxlength">The name has to be less than
 						50 characters long.</div>
+					<div ng-message="match">Passwords must match.</div>
 				</div>
 				</md-input-container>
 
-				<div class="col-sm-offset-2">
-					<button class="btn btn-info">
-						<i class="fa fa-user-plus"></i> Sign up
-					</button>
-					<button class="btn btn-warning" ng-click="resetInputs()">
-						<i class="fa fa-times"></i> Reset
-					</button>
+				<div class="col-xs-12">
+					<div class="col-xs-6">
+						<button class="btn btn-info full-width">
+							<i class="fa fa-user-plus"></i> Sign up
+						</button>
+					</div>
+					<div class="col-xs-6">
+						<button class="btn btn-warning full-width"
+							ng-click="resetInputs()">
+							<i class="fa fa-times"></i> Reset
+						</button>
+					</div>
 				</div>
 			</form>
 			</md-content>
 		</div>
+
 	</div>
 
 	<div ng-if="signup !== true">
-		<div class="container choose-role-container">
+		<div class="container text-shadow-white">
 			<div class="row">
 				<div class="head col-xs-12 text-center">
 					<h2>Get started!</h2>
