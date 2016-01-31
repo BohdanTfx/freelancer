@@ -3,6 +3,7 @@ package com.epam.freelancer.web.controller;
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.service.*;
 import com.epam.freelancer.business.util.SendMessageToEmail;
+import com.epam.freelancer.business.util.SmsSender;
 import com.epam.freelancer.database.model.*;
 import com.epam.freelancer.security.provider.AuthenticationProvider;
 import com.google.gson.Gson;
@@ -65,6 +66,9 @@ public class UserController extends HttpServlet {
                 case "user/comment":
                     comment(request, response);
                     return;
+                case "user/sms":
+                    sendSms(request, response);
+                    return;
                 default:
             }
         } catch (Exception e) {
@@ -73,9 +77,27 @@ public class UserController extends HttpServlet {
         }
     }
 
+    public void sendSms(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String phone = request.getParameter("phone");
+        String sms = request.getParameter("sms");
+        HttpSession session = request.getSession();
+        UserEntity ue = (UserEntity) session.getAttribute("user");
+
+        if (sms == null || phone == null) {
+            response.sendError(500);
+            return;
+        }
+
+        if (ue == null || "".equals(sms) || "".equals(phone)) {
+            response.sendError(500);
+            return;
+        }
+
+        new SmsSender().sendSms(phone, sms, ue.getFname());
+    }
+
     public void comment(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String rate = request.getParameter("rate");
-        System.out.println("RATE " + rate);
         String dev_id = request.getParameter("id");
         String comment = request.getParameter("comment");
         HttpSession session = request.getSession();

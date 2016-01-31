@@ -68,6 +68,20 @@ angular.module('FreelancerApp')
 
             });
 
+        $scope.sendSms = function () {
+            $scope.sms = 'sms';
+            $scope.phone = "380932497376";
+
+            var data = 'phone=' + $scope.phone + '&sms=' + $scope.sms;
+            $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+
+            $http.post('/user/sms', data).success(function () {
+                $scope.smssuc = 'Sms sent successfully.';
+            }).error(function () {
+                $scope.smserr = 'Error, while sending sms.';
+            });
+        };
+        
         $scope.send = function () {
             var data = 'message=' + $scope.mes + '&email=' + $scope.email;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
