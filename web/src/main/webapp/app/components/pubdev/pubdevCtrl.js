@@ -47,7 +47,7 @@ angular.module('FreelancerApp')
             pubdevAPI.getPortById($scope.query).success(
                 function (data, status, headers, config) {
                     console.log(data);
-                    $scope.port = data;
+                    $scope.ports = data;
                 }).error(function () {
 
                 });
@@ -63,7 +63,6 @@ angular.module('FreelancerApp')
             function (data, status, headers, config) {
                 console.log(data);
                 $scope.feeds = data;
-
             }).error(function () {
 
             });

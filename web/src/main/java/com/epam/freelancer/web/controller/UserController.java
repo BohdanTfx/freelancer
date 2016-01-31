@@ -1,10 +1,7 @@
 package com.epam.freelancer.web.controller;
 
 import com.epam.freelancer.business.context.ApplicationContext;
-import com.epam.freelancer.business.service.AdminService;
-import com.epam.freelancer.business.service.CustomerService;
-import com.epam.freelancer.business.service.DeveloperService;
-import com.epam.freelancer.business.service.FeedbackService;
+import com.epam.freelancer.business.service.*;
 import com.epam.freelancer.database.model.*;
 import com.epam.freelancer.security.provider.AuthenticationProvider;
 import com.google.gson.Gson;
@@ -137,9 +134,14 @@ public class UserController extends HttpServlet {
             try {
                 Integer id = Integer.parseInt(param);
                 DeveloperService ds = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
-                List<Ordering> list = ds.getDeveloperPortfolio(id);
-                if (list != null) {
-                    sendListResp(list, response);
+                OrderingService orderingService = (OrderingService) ApplicationContext.getInstance().getBean("orderingService");
+                List<Ordering> orderings = ds.getDeveloperPortfolio(id);
+                for (Ordering ordering : orderings) {
+                    ordering.setTechnologies(orderingService
+                            .findOrderingTechnologies(ordering.getId()));
+                }
+                if (orderings != null) {
+                    sendListResp(orderings, response);
                 } else {
                     response.sendError(500);
                 }
