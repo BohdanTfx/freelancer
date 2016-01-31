@@ -4,7 +4,7 @@ angular.module('FreelancerApp').service('signupAPI', function() {
 	var that = this;
 
 	this.checkEmail = function($http, ngModel, email) {
-		$http.get("/unreg/email", {
+		$http.get("/user/email", {
 			params : {
 				email : email
 			}
