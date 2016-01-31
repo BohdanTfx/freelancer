@@ -17,10 +17,15 @@ body {
 		endColorstr='#273039', GradientType=1);
 }
 
+.main-menu  div.in ~ .navbar-header .navbar-toggle {
+	color: red !important;
+}
+
 .logo-text {
 	font-weight: bold;
 	display: inline-block;
 	margin: 4px 0px 0px;
+	padding-left: 10px;
 }
 
 body .brand {
@@ -561,6 +566,7 @@ ul, li {
 	padding: 0px;
 	background: rgb(39, 48, 57);
 	box-shadow: none;
+	margin-top: -11px !important;;
 }
 
 .main-menu .navigation {
@@ -1775,12 +1781,6 @@ ul, li {
 		padding: 0px;
 		margin: 0px;
 		margin-bottom: 15px;
-		border-radius: 3px;
-		-ms-border-radius: 3px;
-		-moz-border-radius: 3px;
-		-webkit-border-radius: 3px;
-		-o-border-radius: 3px;
-		border-radius: 3px;
 	}
 	.main-menu .navbar-header {
 		position: relative;
@@ -1798,6 +1798,8 @@ ul, li {
 		border: 1px solid #11c3f0;
 		float: none;
 		margin: 0px;
+		border-radius: 3px 3px 0 0;
+		border-bottom: 1px solid #273039;
 	}
 	.main-menu .navbar-header .navbar-toggle .icon-bar {
 		background: #11c3f0;
@@ -1806,6 +1808,9 @@ ul, li {
 		float: none !important;
 		margin: 0px !important;
 		width: 100% !important;
+	}
+	.main-menu .navbar-collapse {
+		border: 1px solid #11c3f0;
 	}
 	.main-menu .navbar-collapse>.navigation>li {
 		margin: 0px !important;
