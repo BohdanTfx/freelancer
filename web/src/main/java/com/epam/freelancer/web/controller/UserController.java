@@ -2,6 +2,7 @@ package com.epam.freelancer.web.controller;
 
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.service.*;
+import com.epam.freelancer.business.util.SendMessageToEmail;
 import com.epam.freelancer.database.model.*;
 import com.epam.freelancer.security.provider.AuthenticationProvider;
 import com.google.gson.Gson;
@@ -56,12 +57,56 @@ public class UserController extends HttpServlet {
                 case "user/getFeed":
                     getFeedbackByIdForDev(request, response);
                     return;
+                case "user/send":
+                    send(request, response);
+                    return;
                 default:
             }
         } catch (Exception e) {
             e.printStackTrace();
             LOG.fatal(getClass().getSimpleName() + " - " + "doPost");
         }
+    }
+
+    public void send(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String email = request.getParameter("email");
+        String message = request.getParameter("message");
+
+        HttpSession session = request.getSession();
+        UserEntity ue = (UserEntity) session.getAttribute("user");
+        if (ue == null) {
+            response.sendError(500);
+            return;
+        }
+        String from = ue.getEmail();
+        String fromPass = ue.getPassword();
+
+        if ("".equals(email) || "".equals(message) || ue == null) {
+            response.sendError(500);
+        }
+
+        String[] to = new String[]{email};
+        String name = "Feedback from " + ue.getFname() + " " + ue.getLname();
+
+
+        SendMessageToEmail.sendFromGMail(from, fromPass, to, name, message);
+
+        /*
+        * String from = LOGIN;
+        String pass = PASSWORD;
+        String log = req.getParameter("email");
+        String body = req.getParameter("mes");
+        String[] to = {log};
+        String name = "Feedback from " + req.getParameter("name") + " [" + log + "].";
+
+        if(log == null || body == null)
+            throw new RuntimeException();
+
+        if("".equals(log) || "".equals(body))
+            throw new RuntimeException();
+
+        SendMessage.sendFromGMail(LOGIN, PASSWORD, new String[]{LOGIN}, name, body);
+    }*/
     }
 
     public void getById(HttpServletRequest request, HttpServletResponse response) throws IOException {

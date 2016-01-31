@@ -67,6 +67,19 @@ angular.module('FreelancerApp')
 
             });
 
+        $scope.send = function () {
+            alert($scope.mes);
+            var data = 'message=' + $scope.mes + '&email=' + $scope.email;
+            console.log("message" + data);
+            $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+
+            $http.post('/user/send', data).success(function () {
+                $scope.messuc = 'Message sent successfully.';
+            }).error(function () {
+                $scope.messerr = 'Error, while sending message.';
+            });
+        };
+
         $scope.getNumber = function (count) {
 
             var ratings = [];
