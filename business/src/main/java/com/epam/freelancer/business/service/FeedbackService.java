@@ -22,7 +22,7 @@ public class FeedbackService extends GenericService<Feedback, Integer> {
 
     @Override
     public Feedback create(Map<String, String[]> data) {
-        /*if (isDataValid(prepareData(data)))
+        /*if (!isDataValid(prepareData(data)))
             throw new RuntimeException("Validation exception");*/
 
         Feedback feedback = new Feedback();
@@ -56,9 +56,9 @@ public class FeedbackService extends GenericService<Feedback, Integer> {
                 data.get("comment") == null ? null : data.get("comment")[0]);
         map.put(ValidationParametersBuilder.createParameters(false).minLength(5)
                         .maxLength(1000),
-                data.get("author") == null ? null : data.get("author")[0]);
+                data.get("rate") == null ? null : data.get("name")[0]);
         map.put(ValidationParametersBuilder.createParameters(true).isInteger(true).min(0.00).max(5.00),
-                data.get("rate") == null ? null : data.get("rate")[0]);
+                data.get("name") == null ? null : data.get("name")[0]);
         return map;
     }
 
