@@ -1,8 +1,8 @@
 angular.module('FreelancerApp')
     .controller('pubdevCtrl', function ($scope, pubdevAPI, $log, $http, $location, $filter, $stateParams) {
-        //console.log($stateParams.devName, )
+        console.log($stateParams.devName, $stateParams.devId + ' state');
 
-        $scope.query = $location.search().id;
+        $scope.query = $stateParams.devId;
 
         var getCust = function (cust_id) {
             pubdevAPI.getCustById(cust_id).success(
@@ -42,6 +42,7 @@ angular.module('FreelancerApp')
             }).error(function () {
                 $scope.freelancerNotFound = true;
             });
+
         pubdevAPI.getTechById($scope.query).success(
             function (data, status, headers, config) {
                 console.log(data);

@@ -45,7 +45,7 @@
                     controller: 'testCtrl'
                 }).state('home', {
                     url: '/home',
-                    templateUrl: 'app/components/home/home.html',
+                    templateUrl: 'app/components/home/home.html'
                 })
                 .state(
                 'auth',
@@ -56,8 +56,7 @@
                 }).state(
                 'pubdev',
                 {
-                    //url: '/pubdev/:devName/:devId',
-                    url: '/pubdev',
+                    url: '/public/:devName/:devId',
                     templateUrl: 'app/components/pubdev/pubdev.html',
                     controller: 'pubdevCtrl'
                 });
