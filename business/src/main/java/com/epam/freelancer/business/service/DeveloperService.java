@@ -1,24 +1,13 @@
 package com.epam.freelancer.business.service;
 
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.epam.freelancer.business.util.ValidationParametersBuilder;
-import com.epam.freelancer.database.dao.ContactDao;
-import com.epam.freelancer.database.dao.DevTechManyToManyDao;
-import com.epam.freelancer.database.dao.DeveloperDao;
-import com.epam.freelancer.database.dao.GenericDao;
-import com.epam.freelancer.database.dao.GenericManyToManyDao;
-import com.epam.freelancer.database.dao.WorkerManyToManyDao;
+import com.epam.freelancer.database.dao.*;
 import com.epam.freelancer.database.dao.jdbc.DAOManager;
-import com.epam.freelancer.database.model.Contact;
-import com.epam.freelancer.database.model.Developer;
-import com.epam.freelancer.database.model.Ordering;
-import com.epam.freelancer.database.model.Technology;
-import com.epam.freelancer.database.model.Worker;
+import com.epam.freelancer.database.dao.jdbc.FollowerManyToManyJdbcDao;
+import com.epam.freelancer.database.model.*;
 
 /**
  * Created by Максим on 18.01.2016.
@@ -26,6 +15,7 @@ import com.epam.freelancer.database.model.Worker;
 public class DeveloperService extends UserService<Developer> {
 	private GenericManyToManyDao<Developer, Ordering, Worker, Integer> workerMTMDao;
 	private GenericManyToManyDao<Developer, Technology, Worker, Integer> devMTMtechDao;
+	private	GenericManyToManyDao<Developer, Ordering, Follower, Integer> followerMTMDevDao;
 	private GenericDao<Worker, Integer> workerDao;
 	private GenericDao<Contact, Integer> contactDao;
 
@@ -92,6 +82,16 @@ public class DeveloperService extends UserService<Developer> {
 
 	public List<Ordering> getDeveloperPortfolio(Integer id) {
 		return ((WorkerManyToManyDao) workerMTMDao).getPortfolio(id);
+	}
+
+	public List<Ordering> getDeveloperSubscribedProjects(Integer id) {
+		List<Ordering> orders = new ArrayList<>();
+		try {
+			 orders = new FollowerManyToManyJdbcDao().getDevSubscribedProjects(id);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return orders;
 	}
 
 	public void setWorkerMTMDao(
