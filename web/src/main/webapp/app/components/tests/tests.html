@@ -51,78 +51,83 @@
                             <!--end header-->
 
                             <!--start body-->
-                            <div class="history-body" ng-repeat="devQA in devQAs | orderBy:sortField:reverse">
-                                <div class="panel panel-default">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="panel-heading">
-                                                <div class="col-md-4 col-sm-5 col-xs-9">
-                                                    {{devQA.test.name}}
-                                                </div>
-                                                <div class="col-md-3 col-sm-5 hidden-xs">
-                                                    {{devQA.test.technology.name}}
-                                                </div>
-                                                <div ng-if="devQA.isExpire==true">
-                                                    <div class="col-md-3 hidden-sm hidden-xs">
-                                                        <i class="fa fa-calendar-times-o"></i>
+                            <div ng-if="devQAs.length == 0">
+                                <h3>You didn't pass any tests</h3>
+                            </div>
+                            <div ng-if="devQAs.length != 0">
+                                <div class="history-body" ng-repeat="devQA in devQAs | orderBy:sortField:reverse">
+                                    <div class="panel panel-default">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="panel-heading">
+                                                    <div class="col-md-4 col-sm-5 col-xs-9">
+                                                        {{devQA.test.name}}
+                                                    </div>
+                                                    <div class="col-md-3 col-sm-5 hidden-xs">
+                                                        {{devQA.test.technology.name}}
+                                                    </div>
+                                                    <div ng-if="devQA.isExpire==true">
+                                                        <div class="col-md-3 hidden-sm hidden-xs">
+                                                            <i class="fa fa-calendar-times-o"></i>
                                                                 <span class="red-color">
                                                                     {{devQA.expire | date:'dd/MM/yyyy'}}
                                                                 </span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div ng-if="devQA.isExpire!=true">
-                                                    <div class="col-md-3 hidden-sm hidden-xs">
-                                                        <i class="fa fa-calendar-check-o"></i>
+                                                    <div ng-if="devQA.isExpire!=true">
+                                                        <div class="col-md-3 hidden-sm hidden-xs">
+                                                            <i class="fa fa-calendar-check-o"></i>
                                                                 <span class="green-color">
                                                                     {{devQA.expire | date:'dd/MM/yyyy'}}
                                                                 </span>
-                                                    </div>
-                                                </div>
-
-                                                <div ng-if="devQA.rate < devQA.test.passScore">
-                                                    <div class="col-md-2 col-sm-2 hidden-xs">
-                                                        <div class="progress">
-                                                                <span class="progress-text">
-                                                                    {{devQA.rate}}%
-                                                                </span>
-
-                                                            <div class="progress-bar progress-bar-danger"
-                                                                 role="progressbar"
-                                                                 aria-valuenow="40" aria-valuemin="0"
-                                                                 aria-valuemax="100"
-                                                                 style="width:{{devQA.rate}}%">
-                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-xs-3 hidden-sm hidden-md hidden-lg">
+
+                                                    <div ng-if="devQA.rate < devQA.test.passScore">
+                                                        <div class="col-md-2 col-sm-2 hidden-xs">
+                                                            <div class="progress">
+                                                                <span class="progress-text">
+                                                                    {{devQA.rate | number:0}}%
+                                                                </span>
+
+                                                                <div class="progress-bar progress-bar-danger"
+                                                                     role="progressbar"
+                                                                     aria-valuenow="40" aria-valuemin="0"
+                                                                     aria-valuemax="100"
+                                                                     style="width:{{devQA.rate}}%">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xs-3 hidden-sm hidden-md hidden-lg">
                                                             <span class="text-center progress-text red-color">
-                                                                {{devQA.rate}}
+                                                                {{devQA.rate | number:0}}
                                                             </span>
-                                                    </div>
-                                                </div>
-
-                                                <div ng-if="devQA.rate >= devQA.test.passScore">
-                                                    <div class="col-md-2 col-sm-2 hidden-xs">
-                                                        <div class="progress">
-                                                                <span class="progress-text">
-                                                                    {{devQA.rate}}%
-                                                                </span>
-
-                                                            <div class="progress-bar progress-bar-success"
-                                                                 role="progressbar"
-                                                                 aria-valuenow="40" aria-valuemin="0"
-                                                                 aria-valuemax="100"
-                                                                 style="width:{{devQA.rate}}%">
-                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-xs-3 hidden-sm hidden-md hidden-lg">
-                                                            <span class="text-center progress-text green-color">
-                                                                {{devQA.rate}}
-                                                            </span>
-                                                    </div>
-                                                </div>
 
+                                                    <div ng-if="devQA.rate >= devQA.test.passScore">
+                                                        <div class="col-md-2 col-sm-2 hidden-xs">
+                                                            <div class="progress">
+                                                                <span class="progress-text">
+                                                                    {{devQA.rate | number:0}}%
+                                                                </span>
+
+                                                                <div class="progress-bar progress-bar-success"
+                                                                     role="progressbar"
+                                                                     aria-valuenow="40" aria-valuemin="0"
+                                                                     aria-valuemax="100"
+                                                                     style="width:{{devQA.rate}}%">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xs-3 hidden-sm hidden-md hidden-lg">
+                                                            <span class="text-center progress-text green-color">
+                                                                {{devQA.rate | number:0}}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -190,28 +195,35 @@
                             <!--end header-->
 
                             <!--start body-->
-                            <div class="tests-body" ng-repeat="test in tests | orderBy:sortField:reverse
+
+                            <div ng-if="tests.length == 0">
+                                <h3>We don't have any tests for you now. Check it later</h3>
+                            </div>
+                            <div ng-if="tests.length != 0">
+                                <div class="tests-body" ng-repeat="test in tests | orderBy:sortField:reverse
                                             | filter:search">
-                                <div class="panel panel-default">
-                                    <div class="row">
-                                        <div class="testItem">
-                                            <div class="col-md-4 col-sm-5 col-xs-5">
-                                                {{test.name}}
-                                            </div>
-                                            <div class="col-md-3 col-sm-5 col-xs-4">
-                                                {{test.technology.name}}
-                                            </div>
-                                            <div class="col-md-3 hidden-sm hidden-xs text-center">
-                                                {{test.passScore}} %
-                                            </div>
-                                            <div class="col-md-2 col-sm-2 col-xs-3">
-                                                <a class="btn btn-primary btn-pass-test vertical-align-center"
-                                                   href="/#/tests/{{test.id}}">Pass test</a>
+                                    <div class="panel panel-default">
+                                        <div class="row">
+                                            <div class="testItem">
+                                                <div class="col-md-4 col-sm-5 col-xs-5">
+                                                    {{test.name}}
+                                                </div>
+                                                <div class="col-md-3 col-sm-5 col-xs-4">
+                                                    {{test.technology.name}}
+                                                </div>
+                                                <div class="col-md-3 hidden-sm hidden-xs text-center">
+                                                    {{test.passScore}} %
+                                                </div>
+                                                <div class="col-md-2 col-sm-2 col-xs-3">
+                                                    <a class="btn btn-primary btn-pass-test vertical-align-center"
+                                                       href="/#/tests/{{test.id}}">Pass test</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                             <!--end body-->
                         </div>
 

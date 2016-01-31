@@ -37,4 +37,24 @@ public class DeveloperQAJdbcDao extends GenericJdbcDao<DeveloperQA, Integer> imp
         }
         return devsQA;
     }
+
+    @Override
+    public DeveloperQA getByDevIdAndTestId(Integer devId, Integer testId) {
+        String query = "SELECT * FROM " + table + " WHERE dev_id = ? AND test_id = ?";
+        DeveloperQA entity = null;
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection
+                     .prepareStatement(query)) {
+            statement.setInt(1, devId);
+            statement.setInt(2, testId);
+            try (ResultSet set = statement.executeQuery()) {
+                if (set.next()) {
+                    entity = transformer.getObject(set);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return entity;
+    }
 }

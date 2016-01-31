@@ -9,4 +9,6 @@ import java.util.List;
  */
 public interface DeveloperQADao extends GenericDao<DeveloperQA, Integer> {
 	public List<DeveloperQA> getDevQAByDevId(Integer id);
+
+	public DeveloperQA getByDevIdAndTestId(Integer devId, Integer testId);
 }

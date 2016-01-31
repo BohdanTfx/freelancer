@@ -26,7 +26,7 @@ angular.module('FreelancerApp')
 
             $scope.time = time;
 
-            var timerCtrl = $interval(function () {
+            $scope.timerCtrl = $interval(function () {
                 $scope.time -= 1;
                 self.determinateValue += delta;
                 console.log(self.determinateValue );
@@ -55,6 +55,9 @@ angular.module('FreelancerApp')
         };
 
         $scope.submitAnswers = function () {
+
+            $interval.cancel($scope.timerCtrl);
+
             var results = [];
             var questions = $scope.test.questions;
             for (var i = 0; i < questions.length; i++) {
@@ -73,9 +76,21 @@ angular.module('FreelancerApp')
             var jsonResults = JSON.stringify(results);
             var jsonQuests = JSON.stringify(questions);
 
-            testAPI.sendAnswers(jsonQuests, jsonResults).success(function (data) {
+            var today = new Date();
+            var expireDate = new Date(new Date(today).setMonth(today.getMonth()+1));
+            expireDate = new Date(expireDate).getTime();
+
+            testAPI.sendAnswers(jsonQuests, jsonResults, $stateParams.testId, expireDate).success(function (data) {
                 $log.log(data);
                 $scope.result = data;
+                if(data.rate > $scope.test.passScore) {
+                    $scope.result.message = "test is passed";
+                    $scope.resultColor = 'result_success';
+                }else{
+                    $scope.result.message = "test is failed";
+                    $scope.resultColor = 'result_fail';
+                }
+                $scope.result.partlyCorrect = questions.length - data.errors - data.success;
                 $scope.testFinished = true;
                 $scope.hideCssClass = '.ng-hide';
             }).error(function () {
