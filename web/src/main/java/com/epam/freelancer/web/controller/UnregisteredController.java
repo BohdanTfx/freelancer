@@ -1,31 +1,23 @@
 package com.epam.freelancer.web.controller;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
-
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.manager.UserManager;
 import com.epam.freelancer.business.service.OrderingService;
 import com.epam.freelancer.business.service.TechnologyService;
 import com.epam.freelancer.database.model.Ordering;
-import com.epam.freelancer.database.model.UserEntity;
-import com.epam.freelancer.security.provider.AuthenticationProvider;
 import com.epam.freelancer.web.json.model.JsonPaginator;
 import com.epam.freelancer.web.social.Linkedin;
 import com.epam.freelancer.web.util.Paginator;
+import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
 
 public class UnregisteredController extends HttpServlet {
 	private final static Logger LOG = Logger
@@ -75,9 +67,6 @@ public class UnregisteredController extends HttpServlet {
 			case "unreg/language/bundle":
 				sendBundle(request, response);
 				return;
-			case "unreg/logout":
-				logout(request, response);
-				return;
                 case "unreg/email":
                     checkEmail(request, response);
                     return;
@@ -111,8 +100,8 @@ public class UnregisteredController extends HttpServlet {
 			HttpServletResponse response)
 	{
 		request.setAttribute("linkedinurl",
-				linkedin.getAuthentificationUrl("http://localhost:8081/signin"));
-		// request.setAttribute(
+                linkedin.getAuthentificationUrl("http://localhost:8081/signin"));
+        // request.setAttribute(
 		// "linkedinurl",
 		// linkedin.getAuthentificationUrl(request.getRemoteHost()
 		// + ":"
@@ -212,25 +201,9 @@ public class UnregisteredController extends HttpServlet {
 			}
 
 			paginator.next(result.getPage(), response, orderingService
-					.getFilteredObjectNumber(result.getContent()), orderings);
-		} catch (IOException e) {
+                    .getFilteredObjectNumber(result.getContent()), orderings);
+        } catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
-	public void logout(HttpServletRequest request, HttpServletResponse response)
-			throws IOException
-	{
-		LOG.info(getClass().getSimpleName() + " - " + "logout");
-		UserEntity userEntity = (UserEntity) request.getSession().getAttribute(
-				"user");
-		AuthenticationProvider authenticationProvider = (AuthenticationProvider) ApplicationContext
-				.getInstance().getBean("authenticationProvider");
-		authenticationProvider.invalidateUserCookie(response,
-				"freelancerRememberMeCookie", userEntity);
-		userManager.modifyUser(userEntity);
-		request.getSession().removeAttribute("user");
-		// response.sendRedirect(request.getContextPath() + "/");
-	}
-
 }

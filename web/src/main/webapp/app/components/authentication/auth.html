@@ -8,6 +8,7 @@
             <h4><strong>Sign In</strong></h4>
             <md-divider></md-divider>
             <div>
+                <span style="color: firebrick">{{error}}</span>
                 <md-input-container layout-gt-sm="column">
                     <label>Email</label>
                     <input ng-model="username" name="username" id="username" required/>

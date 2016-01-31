@@ -1,6 +1,7 @@
 package com.epam.freelancer.web.controller;
 
 import com.epam.freelancer.business.context.ApplicationContext;
+import com.epam.freelancer.business.manager.UserManager;
 import com.epam.freelancer.business.service.*;
 import com.epam.freelancer.business.util.SendMessageToEmail;
 import com.epam.freelancer.business.util.SmsSender;
@@ -23,6 +24,12 @@ import java.util.UUID;
 public class UserController extends HttpServlet {
     public static final Logger LOG = Logger.getLogger(UserController.class);
     private static final long serialVersionUID = -2356506023594947745L;
+    private UserManager userManager;
+
+    @Override
+    public void init() throws ServletException {
+        userManager = new UserManager();
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -69,11 +76,45 @@ public class UserController extends HttpServlet {
                 case "user/sms":
                     sendSms(request, response);
                     return;
+                case "user/isAuth":
+                    isAuth(request, response);
+                    return;
+                case "user/logout":
+                    logout(request, response);
+                    return;
                 default:
             }
         } catch (Exception e) {
             e.printStackTrace();
             LOG.fatal(getClass().getSimpleName() + " - " + "doPost");
+        }
+    }
+
+    public void logout(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        System.out.println("LOGOUT");
+        LOG.info(getClass().getSimpleName() + " - " + "logout");
+        UserEntity userEntity = (UserEntity) request.getSession().getAttribute(
+                "user");
+        AuthenticationProvider authenticationProvider = (AuthenticationProvider) ApplicationContext
+                .getInstance().getBean("authenticationProvider");
+        authenticationProvider.invalidateUserCookie(response,
+                "freelancerRememberMeCookie", userEntity);
+        if (userEntity != null) {
+            request.getSession().invalidate();
+        }
+        // response.sendRedirect(request.getContextPath() + "/");
+    }
+
+    public void isAuth(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession();
+        UserEntity ue = (UserEntity) session.getAttribute("user");
+        System.out.println(ue + " session");
+        if (ue != null) {
+            sendResp(ue, response);
+        } else {
+            response.sendError(500);
+            return;
         }
     }
 
@@ -349,15 +390,17 @@ public class UserController extends HttpServlet {
         String email = request.getParameter("username");
         String password = request.getParameter("password");
 
+        System.out.println(email);
+        System.out.println(password);
+        System.out.println(remember);
+
         if (email == null || "".equals(email)) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "important_parameter needed");
-            response.flushBuffer();
+            response.sendError(404);
             return;
         }
 
         if (email == null || "".equals(email)) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "important_parameter needed");
-            response.flushBuffer();
+            response.sendError(404);
             return;
         }
 

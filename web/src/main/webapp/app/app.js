@@ -70,20 +70,17 @@
 							'$location',
 							'$cookieStore',
 							'$http',
-							function($rootScope, $location, $cookieStore, $http) {
-								// keep user logged in after page refresh
-								/*
-								 * $rootScope.globals =
-								 * $cookieStore.get('freelancerRememberMeCookieAng') ||
-								 * {}; if ($rootScope.globals.currentUser) {
-								 * $http.defaults.headers.common['Authorization'] =
-								 * 'Basic ' +
-								 * $rootScope.globals.currentUser.username; }
-								 */
+                        'AuthenticationService',
+                        function ($rootScope, $location, $cookieStore, $http, AuthenticationService) {
+                            $rootScope.logout = function () {
+                                // reset login status
+                                AuthenticationService.ClearCredentials();
+
+                            };
 								$rootScope
 										.$on(
 												'$locationChangeStart',
-												function(event, next, current) {
+                                    function (event, next, current, $scope) {
 													// redirect to login page if
 													// not logged in
 													/*
@@ -94,19 +91,18 @@
 													 * '/auth') {
 													 * $location.path('/auth'); }
 													 */
+                                        $rootScope.globals = {};
+                                        $rootScope.logged = false;
+                                        $http.post('/user/isAuth').success(function (data) {
+                                            console.log(data);
+                                            $rootScope.name = data.fname;
+                                            $rootScope.lastName = data.lname;
+                                            $rootScope.role = data.role;
+                                            $rootScope.logged = true;
+                                        }).error(function () {
+                                        });
+                                        console.log('rootScope ' + $rootScope.globals);
 
-                        $rootScope.globals = $cookieStore
-                                .get('freelancerRememberMeCookieAng')
-                            || {};
-                        if ($rootScope.globals.currentUser) {
-                            $rootScope.name = $rootScope.globals.currentUser.fname;
-                            $rootScope.lastName = $rootScope.globals.currentUser.lname;
-                            $rootScope.role = $rootScope.globals.currentUser.role;
-
-                            $rootScope.logged = true;
-                        } else {
-                            $rootScope.logged = false;
-                        }
                     });
             } ]);
 
