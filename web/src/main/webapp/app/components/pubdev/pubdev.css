@@ -1,12 +1,12 @@
 .user {
     display: inline-block;
-    width: 150px;
-    height: 150px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
-    margin: 5px;
+    margin: 15px;
     float: left;
 }
 
@@ -18,7 +18,7 @@
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
-    margin: 5px;
+    margin: 15px;
     float: left;
 }
 
@@ -30,28 +30,12 @@
     text-align: center;
 }
 
-.sp {
-    font-size: 16px;
-}
-
-.label {
-    font-size: 14px;
-}
-
-.tit {
-    margin-left: 5px;
-}
-
-.descr {
-    margin-left: 20px;
-}
-
 .comm-div {
-    margin: 5px;
+    margin: 10px;
 }
 
-.comm-but {
-    margin-top: 5px;
+.overview {
+    clear: both;
 }
 
 .emptyComment {
