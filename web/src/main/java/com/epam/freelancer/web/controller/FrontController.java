@@ -75,9 +75,8 @@ public class FrontController extends HttpServlet {
 					return;
 				}
 			}
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 			LOG.fatal(getClass().getSimpleName() + " - " + "doGet");
 		}
 	}
