@@ -78,28 +78,11 @@ public class UnregisteredController extends HttpServlet {
 			case "unreg/logout":
 				logout(request, response);
 				return;
-			case "unreg/email":
-				checkEmail(request, response);
-				return;
 			default:
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOG.fatal(getClass().getSimpleName() + " - " + "doGet");
-		}
-	}
-
-	private void checkEmail(HttpServletRequest request,
-			HttpServletResponse response) throws IOException
-	{
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		try (PrintWriter out = response.getWriter()) {
-			out.print(mapper.writeValueAsString(userManager
-					.isEmailAvailable(request.getParameter("email"))));
-			out.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -152,65 +135,11 @@ public class UnregisteredController extends HttpServlet {
 		LOG.info(getClass().getSimpleName() + " - " + "doPost");
 		try {
 			switch (FrontController.getPath(request)) {
-			case "unreg/orders/filter":
-				filterOrders(request, response);
-				break;
-			case "unreg/orders/limits":
-				sendLimits(response);
-				break;
-			case "unreg/orders/tech":
-				sendTechnologies(response);
-				break;
 			default:
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOG.fatal(getClass().getSimpleName() + " - " + "doPost");
-		}
-	}
-
-	private void sendTechnologies(HttpServletResponse response) {
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		try (PrintWriter out = response.getWriter()) {
-			out.print(mapper.writeValueAsString(technologyService.findAll()));
-			out.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void sendLimits(HttpServletResponse response) {
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		try (PrintWriter out = response.getWriter()) {
-			out.print(mapper.writeValueAsString(orderingService
-					.findPaymentLimits()));
-			out.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void filterOrders(HttpServletRequest request,
-			HttpServletResponse response)
-	{
-		try {
-			JsonPaginator result = mapper.readValue(request.getReader()
-					.readLine(), JsonPaginator.class);
-			List<Ordering> orderings = orderingService.filterElements(result
-					.getContent(), result.getPage().getStart()
-					* result.getPage().getStep(), result.getPage().getStep());
-
-			for (Ordering ordering : orderings) {
-				ordering.setTechnologies(orderingService
-						.findOrderingTechnologies(ordering.getId()));
-			}
-
-			paginator.next(result.getPage(), response, orderingService
-					.getFilteredObjectNumber(result.getContent()), orderings);
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 
