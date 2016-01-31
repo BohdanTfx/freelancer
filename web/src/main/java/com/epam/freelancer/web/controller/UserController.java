@@ -14,7 +14,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class UserController extends HttpServlet {
@@ -60,12 +62,45 @@ public class UserController extends HttpServlet {
                 case "user/send":
                     send(request, response);
                     return;
+                case "user/comment":
+                    comment(request, response);
+                    return;
                 default:
             }
         } catch (Exception e) {
             e.printStackTrace();
             LOG.fatal(getClass().getSimpleName() + " - " + "doPost");
         }
+    }
+
+    public void comment(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String rate = request.getParameter("rate");
+        System.out.println("RATE " + rate);
+        String dev_id = request.getParameter("id");
+        String comment = request.getParameter("comment");
+        HttpSession session = request.getSession();
+        UserEntity ue = (UserEntity) session.getAttribute("user");
+        if (ue == null) {
+            response.sendError(404);
+            return;
+        }
+        String cust_id = ue.getId().toString();
+        String author = "customer";
+
+        if ("".equals(dev_id) || "".equals(cust_id) || "".equals(comment) || "".equals(rate) || "".equals(author)) {
+            response.sendError(500);
+            return;
+        }
+
+        FeedbackService feedbackService = (FeedbackService) ApplicationContext.getInstance().getBean("feedbackService");
+        Map<String, String[]> map = new HashMap<>();
+        map.put("dev_id", new String[]{dev_id});
+        map.put("cust_id", new String[]{cust_id});
+        map.put("comment", new String[]{comment});
+        map.put("rate", new String[]{rate});
+        map.put("author", new String[]{author});
+
+        feedbackService.create(map);
     }
 
     public void send(HttpServletRequest request, HttpServletResponse response) throws IOException {

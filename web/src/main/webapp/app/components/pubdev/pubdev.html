@@ -71,7 +71,32 @@
                             Portfolio</a></li>
                     </ul>
                     <div class="tab-content">
+
+                        <span style="color: firebrick">{{comerr}}</span>
+                        <span style="color: darkgreen">{{comsuc}}</span>
                         <div class="tab-pane fade in active" id="menu1">
+                            <div class="form-group comm-div">
+                                <br/>
+                            <textarea type="text" class="form-control" ng-model="$parent.com" rows="2"
+                                      placeholder="Comment ..."
+                                      required></textarea>
+
+                                <div class="form-group">
+                                    <label for="sel1">Rate him:</label>
+                                    <select class="form-control" ng-model="$parent.comrate" id="sel1">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
+                                </div>
+                                <button type="button" ng-click="comment()"
+                                        class="btn btn-primary pull-right comm-but"><span
+                                        class="glyphicon glyphicon-comment"></span> Comment
+                                </button>
+                            </div>
+                            <br/>
                             <div ng-repeat="feed in feeds">
                                 <br/>
                                 <div class="feed" style="background-image: url('{{feed.customer.imgUrl}}')"></div>
@@ -134,9 +159,8 @@
                 <div class="form-group">
         <textarea type="text" class="form-control" ng-model="$parent.mes" rows="5" placeholder="Text ..."
                   required></textarea>
-                    {{tb.message}}
                 </div>
-                <button type="button" ng-click="send()" id="deleteGr" class="btn btn-success" data-dismiss="modal"><span
+                <button type="button" ng-click="send()" class="btn btn-success" data-dismiss="modal"><span
                         class="glyphicon glyphicon-envelope"></span> Send
                 </button>
             </div>

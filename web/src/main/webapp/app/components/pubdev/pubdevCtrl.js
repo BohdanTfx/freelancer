@@ -16,6 +16,7 @@ angular.module('FreelancerApp')
         pubdevAPI.getDevById($scope.query).success(
                 function (data, status, headers, config) {
                     console.log(data);
+                    $scope.id = data.id;
                     $scope.img = data.imgUrl;
                     $scope.email = data.email;
                     $scope.fname = data.fname;
@@ -75,6 +76,17 @@ angular.module('FreelancerApp')
                 $scope.messuc = 'Message sent successfully.';
             }).error(function () {
                 $scope.messerr = 'Error, while sending message.';
+            });
+        };
+
+        $scope.comment = function () {
+            var data = 'comment=' + $scope.com + '&id=' + $scope.id + '&rate=' + $scope.comrate;
+            $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+
+            $http.post('/user/comment', data).success(function () {
+                $scope.comsuc = 'Comment sent successfully.';
+            }).error(function () {
+                $scope.comerr = 'Error, bad value.';
             });
         };
 
