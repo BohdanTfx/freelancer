@@ -1,10 +1,9 @@
 package com.epam.freelancer.web.controller;
 
 import com.epam.freelancer.business.context.ApplicationContext;
-import com.epam.freelancer.business.service.AdminService;
-import com.epam.freelancer.business.service.CustomerService;
-import com.epam.freelancer.business.service.DeveloperService;
-import com.epam.freelancer.business.service.FeedbackService;
+import com.epam.freelancer.business.service.*;
+import com.epam.freelancer.business.util.SendMessageToEmail;
+import com.epam.freelancer.business.util.SmsSender;
 import com.epam.freelancer.database.model.*;
 import com.epam.freelancer.security.provider.AuthenticationProvider;
 import com.google.gson.Gson;
@@ -16,7 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 public class UserController extends HttpServlet {
@@ -59,12 +60,110 @@ public class UserController extends HttpServlet {
                 case "user/getFeed":
                     getFeedbackByIdForDev(request, response);
                     return;
+                case "user/send":
+                    send(request, response);
+                    return;
+                case "user/comment":
+                    comment(request, response);
+                    return;
+                case "user/sms":
+                    sendSms(request, response);
+                    return;
                 default:
             }
         } catch (Exception e) {
             e.printStackTrace();
             LOG.fatal(getClass().getSimpleName() + " - " + "doPost");
         }
+    }
+
+    public void sendSms(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String phone = request.getParameter("phone");
+        String sms = request.getParameter("sms");
+        HttpSession session = request.getSession();
+        UserEntity ue = (UserEntity) session.getAttribute("user");
+
+        if (sms == null || phone == null) {
+            response.sendError(500);
+            return;
+        }
+
+        if (ue == null || "".equals(sms) || "".equals(phone)) {
+            response.sendError(500);
+            return;
+        }
+
+        new SmsSender().sendSms(phone, sms, ue.getFname());
+    }
+
+    public void comment(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String rate = request.getParameter("rate");
+        String dev_id = request.getParameter("id");
+        String comment = request.getParameter("comment");
+        HttpSession session = request.getSession();
+        UserEntity ue = (UserEntity) session.getAttribute("user");
+        if (ue == null) {
+            response.sendError(404);
+            return;
+        }
+        String cust_id = ue.getId().toString();
+        String author = "customer";
+
+        if ("".equals(dev_id) || "".equals(cust_id) || "".equals(comment) || "".equals(rate) || "".equals(author)) {
+            response.sendError(500);
+            return;
+        }
+
+        FeedbackService feedbackService = (FeedbackService) ApplicationContext.getInstance().getBean("feedbackService");
+        Map<String, String[]> map = new HashMap<>();
+        map.put("dev_id", new String[]{dev_id});
+        map.put("cust_id", new String[]{cust_id});
+        map.put("comment", new String[]{comment});
+        map.put("rate", new String[]{rate});
+        map.put("author", new String[]{author});
+
+        feedbackService.create(map);
+    }
+
+    public void send(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String email = request.getParameter("email");
+        String message = request.getParameter("message");
+
+        HttpSession session = request.getSession();
+        UserEntity ue = (UserEntity) session.getAttribute("user");
+        if (ue == null) {
+            response.sendError(500);
+            return;
+        }
+        String from = ue.getEmail();
+        String fromPass = ue.getPassword();
+
+        if ("".equals(email) || "".equals(message) || ue == null) {
+            response.sendError(500);
+        }
+
+        String[] to = new String[]{email};
+        String name = "Feedback from " + ue.getFname() + " " + ue.getLname();
+
+
+        SendMessageToEmail.sendFromGMail(from, fromPass, to, name, message);
+
+        /*
+        * String from = LOGIN;
+        String pass = PASSWORD;
+        String log = req.getParameter("email");
+        String body = req.getParameter("mes");
+        String[] to = {log};
+        String name = "Feedback from " + req.getParameter("name") + " [" + log + "].";
+
+        if(log == null || body == null)
+            throw new RuntimeException();
+
+        if("".equals(log) || "".equals(body))
+            throw new RuntimeException();
+
+        SendMessage.sendFromGMail(LOGIN, PASSWORD, new String[]{LOGIN}, name, body);
+    }*/
     }
 
     public void getById(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -137,9 +236,14 @@ public class UserController extends HttpServlet {
             try {
                 Integer id = Integer.parseInt(param);
                 DeveloperService ds = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
-                List<Ordering> list = ds.getDeveloperPortfolio(id);
-                if (list != null) {
-                    sendListResp(list, response);
+                OrderingService orderingService = (OrderingService) ApplicationContext.getInstance().getBean("orderingService");
+                List<Ordering> orderings = ds.getDeveloperPortfolio(id);
+                for (Ordering ordering : orderings) {
+                    ordering.setTechnologies(orderingService
+                            .findOrderingTechnologies(ordering.getId()));
+                }
+                if (orderings != null) {
+                    sendListResp(orderings, response);
                 } else {
                     response.sendError(500);
                 }

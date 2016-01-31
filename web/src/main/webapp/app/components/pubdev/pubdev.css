@@ -37,3 +37,40 @@
 .label {
     font-size: 14px;
 }
+
+.tit {
+    margin-left: 5px;
+}
+
+.descr {
+    margin-left: 20px;
+}
+
+.comm-div {
+    margin: 5px;
+}
+
+.comm-but {
+    margin-top: 5px;
+}
+
+.emptyComment {
+    font-size: 48px;
+    text-align: center;
+    color: #ccc;
+    font-weight: bold;
+}
+
+.emptyPort {
+    margin-top: 70px;
+    margin-bottom: 70px;
+    font-size: 48px;
+    text-align: center;
+    color: #ccc;
+    font-weight: bold;
+}
+
+.tab-content {
+    margin-right: 20px;
+    margin-left: 20px;
+}

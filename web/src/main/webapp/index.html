@@ -59,11 +59,6 @@
     <link rel="stylesheet" href="app/components/home/home.css">
     <link rel="stylesheet" href="app/components/home/homeSlider.css">
 
-
-    <link rel="stylesheet" href="app/components/home/home.css">
-    <link rel="stylesheet" href="app/components/home/homeSlider.css">
-    <link rel="stylesheet" href="app/components/test/test.css">
-
 </head>
 
 <body class="main-wrapper">
@@ -109,24 +104,67 @@
                             </a></li>
 
 
-                        </ul>
-                        <!--</sec:access>-->
-                        <!--<sec:access role="user">-->
-                        <ul class="navigation" ng-switch on="logged">
-                            <li class="hvr-underline-from-center" ng-switch-when="true"><a
-                                    href="#/cabinet/main">
-                                <i class="fa fa-home"></i>{{name}} {{lastName}}
-                            </a></li>
-                            <li id="logout" ng-click="logout()"
-                                class="hvr-underline-from-center" ng-switch-when="true"><a
-                                    href="#/logout">
-                                <i class="fa fa-sign-out"></i>Logout
-                            </a></li>
-                        </ul>
-                        <!--</sec:access>-->
-                    </div>
-                </nav>
+							</ul>
+							<!--</sec:access>-->
+							<!--<sec:access role="user">-->
+							<ul class="navigation" ng-switch on="logged">
+								<li class="hvr-underline-from-center" ng-switch-when="true"><a
+                                        href="#/cabinet/main">{{name}} {{lastName}}
+									</a></li>
+								<li id="logout" ng-click="logout()"
+									class="hvr-underline-from-center" ng-switch-when="true"><a
+										href="#/logout">
+										<i class="fa fa-sign-out"></i>Logout
+									</a></li>
+							</ul>
+							<!--</sec:access>-->
+						</div>
+					</nav>
 
+				</div>
+			</div>
+		</div>
+	</header>
+    <!--
+        <div ng-controller="DemoBasicCtrl as ctrl" ng-cloak=""
+            class="menuBardemoBasicUsage">
+            <md-toolbar class="md-menu-toolbar"> <md-menu-bar
+                class="menuIcons "> <md-menu md-offset="49 -35">
+            <button ng-click="$mdOpenMenu()" class="menuIconBtn testBtn">
+                <i class="fa fa-home"></i>
+            </button>
+            <md-menu-content width=3 md-position-mode=target-left
+                class="menuContent"> <md-menu-item>
+            &lt;!&ndash;                           <md-button ng-click="ctrl.sampleAction('Print', $event)">&ndash;&gt;
+            <md-button> Profile </md-button> </md-menu-item> <md-menu-item> <md-button>
+            Statistics </md-button> </md-menu-item> <md-menu-item> <md-button>
+            Settings </md-button> </md-menu-item> </md-menu-content> </md-menu> <md-menu md-offset="49 -80">
+            <button ng-click="$mdOpenMenu()" class="menuIconBtn">
+                <i class="fa fa-user"></i>
+            </button>
+            <md-menu-content width=3 md-position-mode=target-left
+                class="menuContent"> <md-menu-item>
+            <md-button> Profile </md-button> </md-menu-item> <md-menu-item> <md-button>
+            Statistics </md-button> </md-menu-item> <md-menu-item> <md-button>
+            Settings </md-button> </md-menu-item> </md-menu-content> </md-menu> ​ <md-menu md-offset="49 -125">
+            <button ng-click="$mdOpenMenu()" class="menuIconBtn">
+                <i class="fa fa-bar-chart "></i>
+            </button>
+            <md-menu-content width=3 md-position-mode=target-left
+                class="menuContent"> <md-menu-item>
+            <md-button> Profile </md-button> </md-menu-item> <md-menu-item> <md-button>
+            Statistics </md-button> </md-menu-item> <md-menu-item> <md-button>
+            Settings </md-button> </md-menu-item> </md-menu-content> </md-menu> ​ <md-menu md-offset="49 -170">
+            <button ng-click="$mdOpenMenu()" class="menuIconBtn">
+                <i class="fa fa-cogs "></i>
+            </button>
+            <md-menu-content width=3 md-position-mode=target-left
+                class="menuContent"> <md-menu-item>
+            <md-button> Profile </md-button> </md-menu-item> <md-menu-item> <md-button>
+            Statistics </md-button> </md-menu-item> <md-menu-item> <md-button>
+            Settings </md-button> </md-menu-item> </md-menu-content> </md-menu> </md-menu-bar> </md-toolbar>
+        </div>
+    -->
             </div>
         </div>
     </div>
@@ -244,8 +282,6 @@
 
 <script src="app/components/jobs/jobsCtrl.js"></script>
 <script src="app/components/jobs/jobsService.js"></script>
-<script src="app/components/signup/signupCtrl.js"></script>
-<script src="app/components/signup/signupService.js"></script>
 <script src="app/components/personal/personalCtrl.js"></script>
 <script src="app/components/tests/testsCtrl.js"></script>
 <script src="app/components/tests/testsService.js"></script>
@@ -254,10 +290,6 @@
 <script src="app/components/pubdev/pubdevCtrl.js"></script>
 <script src="app/components/pubdev/pubdevService.js"></script>
 <script src="app/components/header/headerCtrl.js"></script>
-<script src="app/components/home/homeSlider.js"></script>
-<script src="app/components/test/testCtrl.js"></script>
-<script src="app/components/test/testService.js"></script>
-<script src="app/components/home/homeSlider.js"></script>
 <!-- endinject -->
 
 
