@@ -39,24 +39,18 @@ public class FrontController extends HttpServlet {
         controllers.put("cust/", new CustomerController());
     }
 
-    protected void doGet(HttpServletRequest request,
-                         HttpServletResponse response) throws ServletException, IOException {
-        LOG.info(getClass().getSimpleName() + " - " + "doGet");
-        try {
-            if (request.getSession().isNew())
-                configAutoAuthentication(request.getSession());
+	protected void doGet(HttpServletRequest request,
+						 HttpServletResponse response) throws ServletException, IOException {
+		LOG.info(getClass().getSimpleName() + " - " + "doGet");
+		try {
+			if (request.getSession().isNew())
+				configAutoAuthentication(request.getSession());
 
 			String path = request.getRequestURI().substring(
 					request.getContextPath().length());
 
 			if (path.startsWith("/front/")) {
 				path = path.substring("/front/".length());
-				switch (path) {
-                    case "test":
-				case "orders":
-				case "signup":
-				case "language/bundle":
-				case "logout":
 				if (path.startsWith("admin/")) {
 					controllers.get("admin/").service(request, response);
 					return;
@@ -74,9 +68,8 @@ public class FrontController extends HttpServlet {
 					return;
 				}
 			}
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 			LOG.fatal(getClass().getSimpleName() + " - " + "doGet");
 		}
 	}

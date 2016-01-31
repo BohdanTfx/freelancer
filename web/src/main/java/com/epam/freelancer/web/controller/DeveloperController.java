@@ -172,31 +172,40 @@ public class DeveloperController extends HttpServlet {
             rate = 100 * rate / maxRate;
 
             //add in db results!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            Map<String, String[]> map = new HashMap<>();
-//            UserEntity user = (UserEntity) request.getSession().getAttribute("user");
-//            Integer userId = user.getId();
-            map.put("dev_id", new String[]{String.valueOf(19)});
-            map.put("test_id", new String[]{request.getParameter("testId")});
-            map.put("rate", new String[]{String.valueOf(rate)});
-            map.put("expireDate", new String[]{request.getParameter("expireDate")});
-
+            Map<String, String[]> map = createMapForDevQA(request, rate);
             developerQAService.create(map);
 
-            StringBuilder sb = new StringBuilder();
-            sb.append("{\"rate\":");
-            sb.append(rate);
-            sb.append(",\"errors\":");
-            sb.append(errors);
-            sb.append(",\"success\":");
-            sb.append(success);
-            sb.append('}');
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write(sb.toString());
+            //send result on frontend
+            sendResultResponse(response,rate,errors,success);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private Map<String, String[]> createMapForDevQA(HttpServletRequest request, double rate){
+        Map<String, String[]> map = new HashMap<>();
+//            UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+//            Integer userId = user.getId();
+        map.put("dev_id", new String[]{String.valueOf(19)});
+        map.put("test_id", new String[]{request.getParameter("testId")});
+        map.put("rate", new String[]{String.valueOf(rate)});
+        map.put("expireDate", new String[]{request.getParameter("expireDate")});
+        return map;
+    }
+
+    private void sendResultResponse(HttpServletResponse response, double rate, int errors, int success) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{\"rate\":");
+        sb.append(rate);
+        sb.append(",\"errors\":");
+        sb.append(errors);
+        sb.append(",\"success\":");
+        sb.append(success);
+        sb.append('}');
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(sb.toString());
     }
 
 }
