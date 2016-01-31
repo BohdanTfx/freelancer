@@ -1,30 +1,12 @@
 package com.epam.freelancer.web.controller;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.apache.log4j.Logger;
-
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.service.DeveloperQAService;
 import com.epam.freelancer.business.service.TechnologyService;
 import com.epam.freelancer.business.service.TestService;
 import com.epam.freelancer.database.model.*;
 import com.epam.freelancer.web.json.model.Quest;
-import com.epam.freelancer.database.model.Developer;
-import com.epam.freelancer.database.model.DeveloperQA;
-import com.epam.freelancer.database.model.Technology;
-import com.epam.freelancer.database.model.Test;
 import com.google.gson.Gson;
-import jdk.nashorn.internal.parser.JSONParser;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -103,15 +85,16 @@ public class DeveloperController extends HttpServlet {
 
     private void fillTestPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
-        Developer dev = (Developer) session.getAttribute("user");
-//        List<DeveloperQA> devQAs = developerQAService.findAllByDevId(dev.getId());
-        List<DeveloperQA> devQAs = developerQAService.findAllByDevId(1);
+//        UserEntity user = (UserEntity) session.getAttribute("user");
+        List<DeveloperQA> devQAs = developerQAService.findAllByDevId(19);
 
         List<Test> tests = testService.findAll();
         List<Technology> techs = technologyService.findAll();
         Map<Integer, Technology> technologyMap = new HashMap<>();
         techs.forEach(technology -> technologyMap.put(technology.getId(), technology));
         Map<Integer, Test> testMap = new HashMap<>();
+        for(int i=0;i<tests.size();i++){
+        }
         tests.forEach(test -> {
             test.setTechnology(technologyMap.get(test.getTechId()));
             testMap.put(test.getId(), test);
@@ -121,8 +104,9 @@ public class DeveloperController extends HttpServlet {
         }
         for (int i = 0; i < tests.size(); i++) {
             for (DeveloperQA developerQA : devQAs) {
-                if (developerQA.getTest().equals(tests.get(i)) && developerQA.getIsExpire()) {
-                    tests.remove(i);
+                if (developerQA.getTest().equals(tests.get(i)) && !developerQA.getIsExpire()) {
+                    tests.remove(developerQA.getTest());
+                    i--;
                     break;
                 }
             }
@@ -162,30 +146,49 @@ public class DeveloperController extends HttpServlet {
             double rate = 0;
             double maxRate = 0;
             int errors = 0;
+            int success = 0;
             for (Question question : questions) {
-                int qErrors = 0;
+                int points = 0;
                 Integer questionId = question.getId();
                 List<Integer> answersId = answersMap.get(questionId);
                 List<Answer> answers = question.getAnswers();
+                int qErrors = 0;
                 for (Answer answer : answers) {
+                    if (answer.getCorrect()) {
+                        maxRate++;
+                    }
                     if ((answer.getCorrect() && !answersId.contains(answer.getId())) ||
                             (!answer.getCorrect() && answersId.contains(answer.getId()))) {
+                        points--;
                         qErrors++;
+                    } else if (answer.getCorrect()) {
+                        points++;
                     }
                 }
-                errors += qErrors == 0 ? 0 : 1;
-                rate += answers.size() - (question.getMultiple() ? qErrors : qErrors == 0 ? 0 : answers.size());
-                maxRate += answers.size();
+                errors += points > 0 ? 0 : 1;
+                success += qErrors == 0 ? 1 : 0;
+                rate += points > 0 ? points : 0;
             }
             rate = 100 * rate / maxRate;
 
-            //add in db results!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+            //add in db results!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            Map<String, String[]> map = new HashMap<>();
+//            UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+//            Integer userId = user.getId();
+            map.put("dev_id", new String[]{String.valueOf(19)});
+            map.put("test_id", new String[]{request.getParameter("testId")});
+            map.put("rate", new String[]{String.valueOf(rate)});
+            map.put("expireDate", new String[]{request.getParameter("expireDate")});
+
+            developerQAService.create(map);
 
             StringBuilder sb = new StringBuilder();
             sb.append("{\"rate\":");
             sb.append(rate);
             sb.append(",\"errors\":");
             sb.append(errors);
+            sb.append(",\"success\":");
+            sb.append(success);
             sb.append('}');
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");

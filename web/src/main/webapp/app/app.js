@@ -11,44 +11,56 @@
 							$locationProvider) {
                         $urlRouterProvider.otherwise('/home');
 
-						// routes
-						$stateProvider
-								.state(
-										'orders',
-										{
-											url : '/orders',
-											templateUrl : 'app/components/jobs/jobs.html',
-											controller : 'jobsCtrl'
-										})
-								.state(
-										'personal',
-										{
-											url : '/personal',
-											templateUrl : 'app/components/personal/personal.html',
-											controller : 'personalCtrl'
-										})
-								.state(
-										'tests',
-										{
-											url : '/tests',
-											templateUrl : 'app/components/tests/tests.html',
-											controller : 'testsCtrl'
-										})
-								.state(
-										'auth',
-										{
-											url : '/auth',
-											templateUrl : 'app/components/authentication/auth.html',
-											controller : 'authCtrl'
-                                        })
-                            .state(
-                            'pubdev',
-                            {
-                                //url: '/pubdev/:devName/:devId',
-                                url: '/pubdev',
-                                templateUrl: 'app/components/pubdev/pubdev.html',
-                                controller: 'pubdevCtrl'
-										});
+            // routes
+            $stateProvider
+                .state(
+                'orders',
+                {
+                    url : '/orders',
+                    templateUrl : 'app/components/jobs/jobs.html',
+                    controller : 'jobsCtrl'
+                }).state(
+                'signup',
+                {
+                    url : '/signup',
+                    templateUrl : 'app/components/signup/signup.html',
+                    controller : 'signupCtrl'
+                })
+                .state(
+                'personal',
+                {
+                    url : '/personal',
+                    templateUrl : 'app/components/personal/personal.html',
+                    controller : 'personalCtrl'
+                })
+                .state(
+                'tests',
+                {
+                    url : '/tests',
+                    templateUrl : 'app/components/tests/tests.html',
+                    controller : 'testsCtrl'
+                }).state('test', {
+                    url: '/tests/:testId',
+                    templateUrl: 'app/components/test/test.html',
+                    controller: 'testCtrl'
+                }).state('home', {
+                    url: '/home',
+                    templateUrl: 'app/components/home/home.html',
+                })
+                .state(
+                'auth',
+                {
+                    url : '/auth',
+                    templateUrl : 'app/components/authentication/auth.html',
+                    controller : 'authCtrl'
+                }).state(
+                'pubdev',
+                {
+                    //url: '/pubdev/:devName/:devId',
+                    url: '/pubdev',
+                    templateUrl: 'app/components/pubdev/pubdev.html',
+                    controller: 'pubdevCtrl'
+                });
 
 						$locationProvider.html5Mode(false);
 					})

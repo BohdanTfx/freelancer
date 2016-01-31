@@ -62,9 +62,13 @@
     border-collapse: collapse;
 }
 
+.test_page .results_border_bottom{
+    border-bottom: solid 2px #2591ff;;
+}
+
+
 .test_page .test-result td, th {
     border-right: solid 2px #2591ff;
-    border-bottom: solid 2px #2591ff;
     padding: 10px;
 }
 
