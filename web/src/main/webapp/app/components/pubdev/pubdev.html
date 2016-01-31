@@ -100,6 +100,8 @@
                                 </div>
                                 <br/>
 
+                                <p class="emptyComment" ng-if="emptyComm">There is no comment</p>
+
                                 <div ng-repeat="feed in feeds">
                                     <br/>
 
@@ -119,6 +121,7 @@
                             </div>
                         </div>
                         <div role="tabpanel" class="tab-pane fade" id="tab2">
+                            <p class="emptyPort" ng-if="emptyPort">He has no portfolio</p>
                             <div ng-repeat="port in ports">
                                 <h4 class="tit"><em>{{port.title}}</em></h4>
 

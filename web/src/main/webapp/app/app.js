@@ -8,7 +8,7 @@
 			.config(
 					function($stateProvider, $urlRouterProvider,
 							$locationProvider) {
-                        //$urlRouterProvider.otherwise('/orders');
+                        $urlRouterProvider.otherwise('/home');
 
 						// routes
 						$stateProvider
@@ -43,7 +43,7 @@
                             .state(
                             'pubdev',
                             {
-                                url: '/pubdev',
+                                url: '/pubdev/:devName/:devId',
                                 templateUrl: 'app/components/pubdev/pubdev.html',
                                 controller: 'pubdevCtrl'
 										});

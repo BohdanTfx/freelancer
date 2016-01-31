@@ -1,5 +1,6 @@
 angular.module('FreelancerApp')
-    .controller('pubdevCtrl', function ($scope, pubdevAPI, $log, $http, $location, $filter) {
+    .controller('pubdevCtrl', function ($scope, pubdevAPI, $log, $http, $location, $filter, $stateParams) {
+        //console.log($stateParams.devName, )
 
         $scope.query = $location.search().id;
 
@@ -13,11 +14,23 @@ angular.module('FreelancerApp')
                 });
         };
 
+        $scope.empty = function (obj) {
+            for (var prop in obj) {
+                if (obj.hasOwnProperty(prop))
+                    return false;
+            }
+
+            return true;
+        };
+
         pubdevAPI.getDevById($scope.query).success(
                 function (data, status, headers, config) {
-                    console.log(data);
+                    console.log(data + ' dev');
                     $scope.id = data.id;
-                    $scope.img = data.imgUrl;
+                    if (typeof data.imgUrl == 'undefined')
+                        $scope.img = 'http://placehold.it/350x150';
+                    else
+                        $scope.img = data.imgUrl;
                     $scope.email = data.email;
                     $scope.fname = data.fname;
                     $scope.lname = data.lname;
@@ -25,8 +38,9 @@ angular.module('FreelancerApp')
                     $scope.regDate = data.regDate.substring(0, 12);
                     $scope.overview = data.overview;
                     $scope.position = data.position;
-                }).error(function () {
 
+                }).error(function () {
+                $scope.freelancerNotFound = true;
                 });
             pubdevAPI.getTechById($scope.query).success(
                 function (data, status, headers, config) {
@@ -48,9 +62,12 @@ angular.module('FreelancerApp')
             pubdevAPI.getPortById($scope.query).success(
                 function (data, status, headers, config) {
                     console.log(data);
-                    $scope.ports = data;
+                    if (data.length !== 0)
+                        $scope.ports = data;
+                    else
+                        $scope.emptyPort = true;
                 }).error(function () {
-
+                    $scope.emptyPort = true;
                 });
 
             pubdevAPI.getRateById($scope.query).success(
@@ -63,9 +80,18 @@ angular.module('FreelancerApp')
         pubdevAPI.getFeed($scope.query).success(
             function (data, status, headers, config) {
                 console.log(data);
-                $scope.feeds = data;
-            }).error(function () {
+                if (data.length !== 0) {
+                    $scope.feeds = data;
 
+                    for (var i = 0; i < $scope.feeds.length; i++) {
+                        if (typeof $scope.feeds[i].customer.imgUrl == 'undefined')
+                            $scope.feeds[i].customer.imgUrl = 'http://placehold.it/350x150';
+                    }
+                }
+                else
+                    $scope.emptyComm = true;
+            }).error(function () {
+                $scope.emptyComm = true;
             });
 
         $scope.sendSms = function () {
