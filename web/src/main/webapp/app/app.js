@@ -44,7 +44,8 @@
                             .state(
                             'pubdev',
                             {
-                                url: '/pubdev/:devName/:devId',
+                                //url: '/pubdev/:devName/:devId',
+                                url: '/pubdev',
                                 templateUrl: 'app/components/pubdev/pubdev.html',
                                 controller: 'pubdevCtrl'
 										});
