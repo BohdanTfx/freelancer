@@ -118,8 +118,6 @@ angular.module('FreelancerApp')
         };
 
         $scope.send = function () {
-            alert($scope.mes);
-
             var data = 'message=' + $scope.mes + '&email=' + $scope.email + '&changeEmail=' + $scope.mesEmail;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
