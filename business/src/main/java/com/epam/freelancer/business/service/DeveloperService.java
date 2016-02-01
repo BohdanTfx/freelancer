@@ -3,6 +3,7 @@ package com.epam.freelancer.business.service;
 import com.epam.freelancer.business.util.ValidationParametersBuilder;
 import com.epam.freelancer.database.dao.*;
 import com.epam.freelancer.database.dao.jdbc.DAOManager;
+import com.epam.freelancer.database.dao.jdbc.FollowerManyToManyJdbcDao;
 import com.epam.freelancer.database.model.*;
 
 import java.sql.Timestamp;
