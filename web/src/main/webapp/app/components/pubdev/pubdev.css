@@ -16,6 +16,15 @@ body, html {
     left: 0;
 }
 
+.noneOver {
+    font-size: 32px;
+    color: #ccc;
+}
+
+.noneOverAlign {
+    text-align: center;
+}
+
 .user {
     display: inline-block;
     width: 100px;

@@ -24,9 +24,13 @@
 
                         <p class="position">
                         <h5>{{position}}</h5>
-                        <h4 class="overview">Overview</h4>
+                        <h4 class="overview">{{overHead}}</h4>
 
                         <p>{{overview}}</p>
+
+                        <div class="noneOverAlign">
+                            <p class="noneOver">{{noneOver}}</p>
+                        </div>
                         <h4>Default</h4>
                         <uib-rating ng-model="rate" max="max" readonly="isReadonly" on-hover="hoveringOver(value)"
                                     on-leave="overStar = null" titles="['one','two','three']"

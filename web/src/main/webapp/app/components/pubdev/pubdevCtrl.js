@@ -46,7 +46,14 @@ angular.module('FreelancerApp')
                 $scope.lname = data.lname;
                 $scope.hourly = data.hourly;
                 $scope.regDate = data.regDate.substring(0, 12);
-                $scope.overview = data.overview;
+                if (typeof data.overview != 'undefined') {
+                    $scope.overview = data.overview;
+                    $scope.overHead = 'Overview';
+                } else {
+                    $scope.overview = undefined;
+                    $scope.overHead = undefined;
+                    $scope.noneOver = 'Nothing to show';
+                }
                 $scope.position = data.position;
 
             }).error(function () {
