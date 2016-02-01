@@ -76,6 +76,11 @@ public class DeveloperController extends HttpServlet {
                 case "dev/getcustomerbyid":
                     sendCustomerById(request,response);
                     break;
+                case "dev/getworkersbyidorder":
+                    sendWorkersByIdOrder(request, response);
+                    break;
+
+
                 default:
 
             }
@@ -109,9 +114,10 @@ public class DeveloperController extends HttpServlet {
 
     private void fillMyWorksPage(HttpServletRequest  request,HttpServletResponse response) throws IOException{
         HttpSession session = request.getSession();
-        Developer dev = (Developer) session.getAttribute("user");
-        List<Ordering> allProjects = developerService.getDeveloperPortfolio(8);
-        List<Ordering> devSubscribedProjects = allProjects;
+//        UserEntity user = (UserEntity) session.getAttribute("user");
+//        System.out.println("USer"+user);
+        List<Ordering> allProjects = developerService.getDeveloperPortfolio(10);
+        List<Ordering> devSubscribedProjects = developerService.getDeveloperSubscribedProjects(10);
         List<Ordering> devFinishedProjects = new ArrayList<>();
         List<Ordering> devProjectsInProcess = new ArrayList<>();
         allProjects.forEach(ordering -> {
@@ -184,15 +190,25 @@ public class DeveloperController extends HttpServlet {
 
 
     private void sendCustomerById (HttpServletRequest request,HttpServletResponse response) throws IOException{
-         Integer custId = Integer.parseInt(request.getParameter("cust_id"));
+        Integer custId = Integer.parseInt(request.getParameter("cust_id"));
         CustomerService customerService = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
         Customer cust = customerService.findById(custId);
-
         String custJson = new Gson().toJson(cust);
-        String resultJson = "{\"customer\":" + custJson + "}";
+        String resultJson = "{\"cust\":" + custJson + "}";
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(resultJson);
+    }
+
+    private void sendWorkersByIdOrder (HttpServletRequest request,HttpServletResponse response) throws IOException{
+        Integer orderId = Integer.parseInt(request.getParameter("order_id"));
+         List<Developer>  developers = developerService.getDevelopersByIdOrder(orderId);
+        String devListJson = new Gson().toJson(developers);
+        String resultJson = "{\"workers\":"+devListJson+"}";
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(resultJson);
+
     }
 
     private void sendResults(HttpServletRequest request, HttpServletResponse response) {
