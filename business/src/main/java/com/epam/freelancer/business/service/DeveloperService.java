@@ -98,14 +98,22 @@ public class DeveloperService extends UserService<Developer> {
 	}
 
 	public List<Ordering> getDeveloperSubscribedProjects(Integer id) {
-		List<Ordering> orders = new ArrayList<>();
-		try {
-			 orders = new FollowerManyToManyJdbcDao().getDevSubscribedProjects(id);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return orders;
-	}
+        return ((FollowerManyToManyDao) followerMTMDevDao).getDevSubscribedProjects(id);
+
+    }
+
+    public List<Developer> getDevelopersByIdOrder(Integer id){
+        return workerMTMDao.getBasedOnSecond(id);
+    }
+
+
+    public void setFollowerMTMDevDao(GenericManyToManyDao<Developer, Ordering, Follower, Integer> followerMTMDevDao) {
+        this.followerMTMDevDao = followerMTMDevDao;
+        this.followerMTMDevDao.setConnectionPool(DAOManager.getInstance()
+                .getConnectionPool());
+
+    }
+
 
     public void setWorkerMTMDao(
             GenericManyToManyDao<Developer, Ordering, Worker, Integer> workerMTMDao) {

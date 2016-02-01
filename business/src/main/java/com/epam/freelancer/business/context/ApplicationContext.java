@@ -14,39 +14,8 @@ import com.epam.freelancer.business.service.QuestionService;
 import com.epam.freelancer.business.service.TechnologyService;
 import com.epam.freelancer.business.service.TestService;
 import com.epam.freelancer.business.util.CookieManager;
-import com.epam.freelancer.database.dao.AdminDao;
-import com.epam.freelancer.database.dao.AnswerDao;
-import com.epam.freelancer.database.dao.ContactDao;
-import com.epam.freelancer.database.dao.CustomerDao;
-import com.epam.freelancer.database.dao.DevTechManyToManyDao;
-import com.epam.freelancer.database.dao.DeveloperDao;
-import com.epam.freelancer.database.dao.DeveloperQADao;
-import com.epam.freelancer.database.dao.FeedbackDao;
-import com.epam.freelancer.database.dao.OrderingDao;
-import com.epam.freelancer.database.dao.OrderingTechnologyManyToManyDao;
-import com.epam.freelancer.database.dao.QuestionDao;
-import com.epam.freelancer.database.dao.TechnologyDao;
-import com.epam.freelancer.database.dao.TestDao;
-import com.epam.freelancer.database.dao.TestQuestionManyToManyDao;
-import com.epam.freelancer.database.dao.WorkerDao;
-import com.epam.freelancer.database.dao.WorkerManyToManyDao;
-import com.epam.freelancer.database.dao.jdbc.AdminJdbcDao;
-import com.epam.freelancer.database.dao.jdbc.AnswerJdbcDao;
-import com.epam.freelancer.database.dao.jdbc.ContactJdbcDao;
-import com.epam.freelancer.database.dao.jdbc.CustomerJdbcDao;
-import com.epam.freelancer.database.dao.jdbc.DAOManager;
-import com.epam.freelancer.database.dao.jdbc.DevTechManyToManyJdbcDao;
-import com.epam.freelancer.database.dao.jdbc.DeveloperJdbcDao;
-import com.epam.freelancer.database.dao.jdbc.DeveloperQAJdbcDao;
-import com.epam.freelancer.database.dao.jdbc.FeedbackJdbcDao;
-import com.epam.freelancer.database.dao.jdbc.OrderingJdbcDao;
-import com.epam.freelancer.database.dao.jdbc.OrderingTechnologyManyToManyJdbcDao;
-import com.epam.freelancer.database.dao.jdbc.QuestionJdbcDao;
-import com.epam.freelancer.database.dao.jdbc.TechnologyJdbcDao;
-import com.epam.freelancer.database.dao.jdbc.TestJdbcDao;
-import com.epam.freelancer.database.dao.jdbc.TestQuestionManyToManyJdbcDao;
-import com.epam.freelancer.database.dao.jdbc.WorkerJdbcDao;
-import com.epam.freelancer.database.dao.jdbc.WorkerManyToManyJdbcDao;
+import com.epam.freelancer.database.dao.*;
+import com.epam.freelancer.database.dao.jdbc.*;
 
 public final class ApplicationContext {
 	private Map<String, Object> beans = new ConcurrentHashMap<>();
@@ -71,6 +40,7 @@ public final class ApplicationContext {
                 .getSimpleName()));
         developerService.setContactDao(daoManager.getDAO(ContactDao.class
                 .getSimpleName()));
+		developerService.setFollowerMTMDevDao(daoManager.getManyToManyDAO(FollowerManyToManyDao.class.getSimpleName()));
         addBean("developerService", developerService);
         addBean("adminService", new AdminService());
         CustomerService customerService = new CustomerService();
@@ -134,6 +104,8 @@ public final class ApplicationContext {
 					new DevTechManyToManyJdbcDao());
 			daoManager.addDao(TestQuestionManyToManyDao.class.getSimpleName(),
 					new TestQuestionManyToManyJdbcDao());
+			daoManager.addDao(FollowerManyToManyDao.class.getSimpleName(),
+					new FollowerManyToManyJdbcDao());
 			daoManager.addDao(FeedbackDao.class.getSimpleName(),
 					new FeedbackJdbcDao());
 			// daoManager.addDao(FollowerDao.class.getSimpleName(), new Folo);

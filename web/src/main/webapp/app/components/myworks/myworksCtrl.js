@@ -41,26 +41,38 @@ angular.module('FreelancerApp')
             myworksAPI.getCustomerById(projectInfo.customerId).success(
                 function (data){
                     $scope.customer = data.cust;
-                    console.log("getCustById");
+
+                    myworksAPI.getWorkersByIdOrder(projectInfo.id).success(
+                        function (dataWorkers){
+                          $scope.workers = dataWorkers.workers;
+
+
+                            $mdDialog.show({
+                                controller: DialogController,
+                                templateUrl: 'app/components/myworks/workDetailsTabDialog.html',
+                                parent: angular.element(document.body),
+                                targetEvent: ev,
+                                locals: {project:projectInfo ,customer: $scope.customer,workers:$scope.workers},
+                                clickOutsideToClose:true
+                            })
+                                .then(function(answer) {
+                                    $scope.status = 'You said the information was "' + answer + '".';
+                                }, function() {
+                                    $scope.status = 'You cancelled the dialog.';
+                                });
+
+
+
+                        }
+                    ).error(function(){
+                            alert(404);
+                        });
                 }
+
             ).error(function(){
                     alert(404);
                 });
 
-            console.log('$scope.customer: '+$scope.customer.id);
-             $mdDialog.show({
-                controller: DialogController,
-                templateUrl: 'app/components/myworks/workDetailsTabDialog.html',
-                parent: angular.element(document.body),
-                targetEvent: ev,
-                locals: {project:projectInfo ,customer: $scope.customer},
-                clickOutsideToClose:true
-            })
-                .then(function(answer) {
-                    $scope.status = 'You said the information was "' + answer + '".';
-                }, function() {
-                    $scope.status = 'You cancelled the dialog.';
-                });
         };
     });
 
@@ -75,13 +87,12 @@ angular.module('FreelancerApp').filter('dateFormat', function ($filter) {
     };
 });
 
-function DialogController($scope, $mdDialog, project,customer) {
+function DialogController($scope, $mdDialog, project,customer,workers) {
     $scope.project = project;
     $scope.customer = customer;
+    $scope.workers = workers;
 
-    console.log('ProjectID: '+$scope.project.id+"     customerID: "+$scope.customer.id);
-
-    if($scope.project.endedDate==null){
+   if($scope.project.endedDate==null){
         $scope.project.endedDate = 'not finished yet';
     }
 
