@@ -64,7 +64,6 @@ angular.module('FreelancerApp')
         pubdevAPI.getContById($scope.query).success(
             function (data, status, headers, config) {
                 console.log(data);
-                $scope.phone = data.phone;
                 $scope.skype = data.skype;
             }).error(function () {
 
