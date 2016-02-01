@@ -209,6 +209,10 @@ public class UserController extends HttpServlet {
             return;
         }
 
+        if (comment.contains("<")) {
+            response.sendError(500);
+            return;
+        }
         FeedbackService feedbackService = (FeedbackService) ApplicationContext.getInstance().getBean("feedbackService");
         Map<String, String[]> map = new HashMap<>();
         map.put("dev_id", new String[]{dev_id});
