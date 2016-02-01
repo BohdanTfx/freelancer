@@ -5,7 +5,7 @@
 					'FreelancerApp',
 					[ 'ngRoute', 'ui.router', 'ngCookies', 'ngMaterial',
 							'ngAnimate', 'ngAria', 'ngMessages',
-							'isteven-multi-select', 'rzModule' ])
+                        'isteven-multi-select', 'rzModule', 'ui.bootstrap'])
 			.config(
 					function($stateProvider, $urlRouterProvider,
 							$locationProvider) {
