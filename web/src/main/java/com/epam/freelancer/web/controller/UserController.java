@@ -19,10 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class UserController extends HttpServlet {
     public static final Logger LOG = Logger.getLogger(UserController.class);
@@ -235,7 +232,7 @@ public class UserController extends HttpServlet {
         }
         String fromPass = ue.getPassword();
 
-        if ("".equals(email) || "".equals(message) || ue == null) {
+        if ("".equals(email) || "".equals(message)) {
             response.sendError(500);
         }
 
@@ -247,22 +244,6 @@ public class UserController extends HttpServlet {
         if (!bool) {
             response.sendError(500);
         }
-        /*
-        * String from = LOGIN;
-        String pass = PASSWORD;
-        String log = req.getParameter("email");
-        String body = req.getParameter("mes");
-        String[] to = {log};
-        String name = "Feedback from " + req.getParameter("name") + " [" + log + "].";
-
-        if(log == null || body == null)
-            throw new RuntimeException();
-
-        if("".equals(log) || "".equals(body))
-            throw new RuntimeException();
-
-        SendMessage.sendFromGMail(LOGIN, PASSWORD, new String[]{LOGIN}, name, body);
-    }*/
     }
 
     public void getById(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -382,6 +363,7 @@ public class UserController extends HttpServlet {
                     customer.setSalt(null);
                     f.setCustomer(customer);
                 }
+                Collections.reverse(feedbacks);
                 sendListResp(feedbacks, response);
             } catch (Exception e) {
                 response.sendError(500);
