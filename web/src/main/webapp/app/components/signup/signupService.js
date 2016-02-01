@@ -30,6 +30,9 @@ angular
 								$scope.user.email = data.emailAddress;
 								$scope.user.first_name = data.firstName;
 								$scope.user.last_name = data.lastName;
+								$scope.user.img_url = data.pictureUrl;
+								$scope.signup = true;
+								$scope.role = localStorage.getItem("role");
 							}).error(function(data, status, headers, config) {
 								alert('error ' + data);
 							});

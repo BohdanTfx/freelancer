@@ -13,6 +13,7 @@ angular
 					$scope.chooseRole = function(signup, role) {
 						$scope.role = role;
 						$scope.signup = signup;
+						localStorage.setItem("role", role);
 					}
 
 					$scope.getCurrentZone = function() {
