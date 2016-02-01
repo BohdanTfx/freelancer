@@ -1,0 +1,72 @@
+<md-dialog aria-label="Mango (Fruit)">
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <strong><h1>{{project.title}}|{{customer.id}}</h1></strong>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="cancel()">
+                    <i class="fa fa-times"></i>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content style="max-width:800px;max-height:810px; ">
+            <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="Details">
+                    <md-content class="md-padding">
+
+
+                        <div class="row">
+                            <div class="col-sm-7">
+                                <h4>Description</h4>
+
+                                <div class="panel panel-default">
+                                    <div class="panel-body" ;>
+                                        {{project.descr}}ASdajlj dasd akdl kas lsd lkajs kjaldjl ajdlkas ASdajlj dasd
+                                        akdl kas lsd lkajs kjaldjl ajdlkas
+                                        ASdajlj dasd akdl kas lsd lkajs kjaldjl ajdlkas
+                                        ASdajlj dasd akdl kas lsd lkajs kjaldjl ajdlkas
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <h4>Information</h4>
+                                <span><strong>Start date:</strong> {{project.startedDate}}</span><br/>
+                                <span><strong>End date:</strong> {{project.endedDate}}</span><br/>
+                                <span><strong>Time zone:</strong> {{project.zone}}</span><br/>
+                                <span><strong>Privacy:</strong> {{project.priv}}</span><br/>
+                                <span><strong>Payment type:</strong> {{project.payType}}</span><br/>
+                                <span><strong>Payment amount:</strong> {{project.payment | number:1}} $</span><br/>
+                                <span><strong>Worked time:</strong> 76 h</span><br/>
+                            </div>
+                        </div>
+                    </md-content>
+                </md-tab>
+                <md-tab label="Members">
+                    <md-content class="md-padding">
+
+                        <div style="width:600px;min-height:50%;">
+                            <h2>Customer</h2>
+                            <h3><span style="margin-left: 5%;">{{customer.fname}}  {{customer.lname}}</span></h3>
+                            <hr/>
+                            <h2>Developers</h2>
+                            <ul class="details-dev-list">
+                                <li>Jellad Mohamed</li>
+                                <li>Stefan Scekic</li>
+                                <li>Iuliana Pavaloaie</li>
+                            </ul>
+                        </div>
+
+                    </md-content>
+                </md-tab>
+
+            </md-tabs>
+        </md-dialog-content>
+
+        <md-dialog-actions>
+            <md-button ng-click="cancel()" md-autofocus>
+                Got it
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

@@ -8,9 +8,6 @@ import com.epam.freelancer.database.transformer.annotation.Column;
 import com.epam.freelancer.database.transformer.annotation.Id;
 import com.epam.freelancer.database.transformer.annotation.Table;
 
-/**
- * Created by ������ on 16.01.2016.
- */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "question")
 public class Question implements BaseEntity<Integer> {

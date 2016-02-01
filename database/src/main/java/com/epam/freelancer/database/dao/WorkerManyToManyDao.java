@@ -16,4 +16,5 @@ public interface WorkerManyToManyDao extends
     List<Ordering> getOrdersByDevId(Integer devId);
     List<Developer> getDevsByOrderingId(Integer orderId);
 
+
 }

@@ -39,6 +39,12 @@
                     url : '/tests',
                     templateUrl : 'app/components/tests/tests.html',
                     controller : 'testsCtrl'
+                }) .state(
+                'myworks',
+                {
+                    url : '/myworks',
+                    templateUrl : 'app/components/myworks/myworks.html',
+                    controller : 'myworksCtrl'
                 }).state('test', {
                     url: '/tests/:testId',
                     templateUrl: 'app/components/test/test.html',

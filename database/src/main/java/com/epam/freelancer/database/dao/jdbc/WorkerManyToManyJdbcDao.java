@@ -37,7 +37,7 @@ public class WorkerManyToManyJdbcDao extends
 						.prepareStatement(query)) {
 			statement.setObject(1, devId);
 			statement.setObject(2, false);
-			try (ResultSet set = statement.executeQuery()) {
+				try (ResultSet set = statement.executeQuery()) {
 				while (set.next()) {
 					entities.add(secondTransformer.getObject(set));
 				}
@@ -47,6 +47,8 @@ public class WorkerManyToManyJdbcDao extends
 		}
 		return entities;
 	}
+
+
 
 	@Override
 	public List<Ordering> getOrdersByDevId(Integer devId) {

@@ -13,6 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.log4j.Logger;
+
 public class FrontController extends HttpServlet {
 	private final static Logger LOG = Logger.getLogger(FrontController.class);
 	private static final long serialVersionUID = 1L;
@@ -122,6 +124,8 @@ public class FrontController extends HttpServlet {
 					controllers.get("user/").service(request, response);
 					return;
 				}
+
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
