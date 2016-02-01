@@ -6,6 +6,7 @@ import com.epam.freelancer.business.service.FeedbackService;
 import com.epam.freelancer.business.service.TechnologyService;
 import com.epam.freelancer.business.service.TestService;
 import com.epam.freelancer.database.model.Customer;
+import com.epam.freelancer.database.model.Feedback;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by Максим on 22.01.2016.
@@ -93,7 +95,8 @@ public class CustomerController extends HttpServlet {
             try {
                 Integer id = Integer.parseInt(param);
                 FeedbackService fs = (FeedbackService) ApplicationContext.getInstance().getBean("feedbackService");
-
+                List<Feedback> feedbacks = fs.findFeedbacksByCustId(id);
+                sendListResp(feedbacks, response);
 
             }catch (Exception e) {
                 response.sendError(500);
@@ -103,6 +106,17 @@ public class CustomerController extends HttpServlet {
 
     private void sendResp(Object ue, HttpServletResponse response) throws IOException {
         String json = new Gson().toJson(ue);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.getWriter().write(json);
+        response.getWriter().flush();
+        response.getWriter().close();
+    }
+
+    private void sendListResp(List<?> list, HttpServletResponse response) throws IOException {
+        String json = new Gson().toJson(list);
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
