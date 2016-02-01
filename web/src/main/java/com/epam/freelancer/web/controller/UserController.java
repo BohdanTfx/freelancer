@@ -110,13 +110,13 @@ public class UserController extends HttpServlet {
                 case "user/logout":
                     logout(request, response);
                     return;
-                case "user/getorderbyid":
+                case "user/orders/getorderbyid":
                     getOrderById(request, response);
                     break;
-                case "user/getfollowersbyorderid":
+                case "user/orders/getfollowersbyorderid":
                     getFollowersByOrderId(request, response);
                     break;
-                case "user/getcustomerbyid":
+                case "user/orders/getcustomerbyid":
                     getCustomerById(request, response);
                     break;
                 default:

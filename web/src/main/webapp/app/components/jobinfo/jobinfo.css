@@ -1,0 +1,16 @@
+.jpb-info h2 {
+    display: inline-block;
+}
+
+.job-info .title-date {
+    float: right;
+}
+
+.job-info .list-unstyled {
+    padding-left: 0px;
+    list-style: outside none none;
+}
+
+.job-info ul li {
+    margin-bottom: 10px;
+}
