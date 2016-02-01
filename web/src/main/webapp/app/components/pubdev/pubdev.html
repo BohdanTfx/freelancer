@@ -1,4 +1,19 @@
-<div class="container-top">
+<div class="container-top" ng-if="freelancerNotFound">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="well panel panel-default">
+                <div class="panel-body fl-left">
+                    <img class="not-found" src="/images/profile/no-profile-img-head.gif" alt=""/>
+
+                    <h2 class="free-not-found">Freelancer not found</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="container-top" ng-if="!freelancerNotFound">
     <div class="row">
         <div class="col-md-12">
             <div class="well panel panel-default">

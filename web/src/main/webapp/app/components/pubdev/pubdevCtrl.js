@@ -30,6 +30,11 @@ angular.module('FreelancerApp')
 
         pubdevAPI.getDevById($scope.query).success(
             function (data, status, headers, config) {
+                if (data) {
+
+                } else {
+                    $scope.freelancerNotFound = true;
+                }
                 console.log(data + ' dev');
                 $scope.id = data.id;
                 if (typeof data.imgUrl == 'undefined')
