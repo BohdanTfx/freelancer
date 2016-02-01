@@ -8,6 +8,8 @@ angular
 					$scope.signup = false;
 					$scope.signupForm = {};
 
+					$scope.roles = [ "developer", "customer" ];
+
 					$scope.chooseRole = function(signup, role) {
 						$scope.role = role;
 						$scope.signup = signup;
@@ -20,13 +22,13 @@ angular
 					}
 
 					$scope.createUser = function() {
-						alert($scope.user);
+						signupAPI.createUser($http, $scope.user);
 					}
 
 					$scope.resetInputs = function() {
 						$scope.user = {
-							firstname : "",
-							lastname : "",
+							first_name : "",
+							last_name : "",
 							email : "",
 							password : "",
 							passwordconfirm : "",

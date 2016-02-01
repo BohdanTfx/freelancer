@@ -23,7 +23,7 @@ public class Customer implements UserEntity {
     @Column(name = "last_name")
     private String lname;
     @Column
-    private Timestamp zone;
+    private Integer zone;
     @Column
     private String lang;
     @Column
@@ -119,11 +119,11 @@ public class Customer implements UserEntity {
         return imgUrl;
     }
 
-    public Timestamp getZone() {
+    public Integer getZone() {
         return zone;
     }
 
-    public void setZone(Timestamp zone) {
+    public void setZone(Integer zone) {
         this.zone = zone;
     }
 

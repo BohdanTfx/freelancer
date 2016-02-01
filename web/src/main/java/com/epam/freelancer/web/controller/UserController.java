@@ -2,7 +2,9 @@ package com.epam.freelancer.web.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.manager.UserManager;
@@ -139,66 +142,35 @@ public class UserController extends HttpServlet implements Responsable {
 	public void create(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException
 	{
-		String role = request.getParameter("role");
+		String requestData = request.getReader().readLine();
+		Map<String, String> data = mapper.readValue(requestData,
+				new TypeReference<Map<String, String>>() {
+				});
+		String role = data.get("role");
 		if (role == null || role.isEmpty()) {
-			response.sendRedirect("/chooserole");
-			return;
-		}
-		String email = request.getParameter("email");
-		if (!isAvailable(email)) {
-			request.setAttribute("notAvailableEmail", true);
-			request.setAttribute("role", role);
-			request.getRequestDispatcher("/views/signup.jsp").forward(request,
-					response);
+			response.sendError(HttpServletResponse.SC_MULTIPLE_CHOICES);
 			return;
 		}
 
-		if (!request.getParameter("password").equals(
-				request.getParameter("password_confirmation")))
-		{
-			request.setAttribute("notEqualsPasswords", true);
-			request.setAttribute("role", role);
-			request.getRequestDispatcher("/views/signup.jsp").forward(request,
-					response);
+		if (!userManager.isEmailAvailable(data.get("email"))) {
+			response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
 			return;
 		}
-
-		request.getParameterMap().put("uuid",
-				new String[] { UUID.randomUUID().toString() });
 
 		try {
-			if (role.equals("developer")) {
-				DeveloperService developerService = (DeveloperService) ApplicationContext
-						.getInstance().getBean("developerService");
-				developerService.create(request.getParameterMap());
-			} else if (role.equals("customer")) {
-				CustomerService customerService = (CustomerService) ApplicationContext
-						.getInstance().getBean("customerService");
-				customerService.create(request.getParameterMap());
-			}
+			userManager.createUser(
+					data.entrySet()
+							.stream()
+							.collect(
+									Collectors.toMap(Map.Entry::getKey,
+											e -> new String[] { e.getValue() })),
+					role);
 		} catch (Exception e) {
-			request.setAttribute("error_message", "Not correct data");
-			request.setAttribute("role", role);
-			request.getRequestDispatcher("/views/signup.jsp").forward(request,
-					response);
-			return;
+			e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 		}
-		request.setAttribute("confirm_email", true);
-		response.sendRedirect("/signin");
-	}
-
-	private boolean isAvailable(String email) {
-		boolean result = false;
-		if (((AdminService) ApplicationContext.getInstance().getBean(
-				"adminService")).emailAvailable(email)
-				&& ((DeveloperService) ApplicationContext.getInstance()
-						.getBean("developerService")).emailAvailable(email)
-				&& ((CustomerService) ApplicationContext.getInstance().getBean(
-						"customerService")).emailAvailable(email))
-		{
-			result = true;
-		}
-		return result;
+			
+		response.setStatus(200);
 	}
 
 	public void signIn(HttpServletRequest request, HttpServletResponse response)

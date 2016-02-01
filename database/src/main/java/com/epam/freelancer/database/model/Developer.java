@@ -24,7 +24,7 @@ public class Developer implements UserEntity {
     private String lname;
     @Column
     private Double hourly;
-    private Timestamp zone;
+    private Integer zone;
     private Locale locale;
     @Column
     private String lang;
@@ -78,11 +78,11 @@ public class Developer implements UserEntity {
         this.hourly = hourly;
     }
 
-    public Timestamp getZone() {
+    public Integer getZone() {
         return zone;
     }
 
-    public void setZone(Timestamp zone) {
+    public void setZone(Integer zone) {
         this.zone = zone;
     }
 
