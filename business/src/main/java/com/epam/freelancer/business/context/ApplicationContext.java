@@ -53,6 +53,9 @@ public final class ApplicationContext {
 		orderingService.setOrderingTechnoloyManyToManyDao(DAOManager
 				.getInstance().getManyToManyDAO(
 						OrderingTechnologyManyToManyDao.class.getSimpleName()));
+		orderingService.setFollowerManyToManyDao(DAOManager
+				.getInstance().getManyToManyDAO(
+						FollowerManyToManyDao.class.getSimpleName()));
 		addBean("orderingService", orderingService);
 
 		addBean("questionService", new QuestionService());
@@ -102,6 +105,8 @@ public final class ApplicationContext {
 					new DeveloperQAJdbcDao());
 			daoManager.addDao(DevTechManyToManyDao.class.getSimpleName(),
 					new DevTechManyToManyJdbcDao());
+			daoManager.addDao(FollowerManyToManyDao.class.getSimpleName(),
+					new FollowerManyToManyJdbcDao());
 			daoManager.addDao(TestQuestionManyToManyDao.class.getSimpleName(),
 					new TestQuestionManyToManyJdbcDao());
 			daoManager.addDao(FollowerManyToManyDao.class.getSimpleName(),
