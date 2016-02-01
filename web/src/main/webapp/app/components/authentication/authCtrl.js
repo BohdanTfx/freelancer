@@ -8,9 +8,6 @@ angular.module('FreelancerApp')
                 return;
             }
 
-            // reset login status
-            AuthenticationService.ClearCredentials();
-
             $scope.login = function () {
                 AuthenticationService.Login($scope.username, $scope.password, $scope.remember).success(function (response) {
                     AuthenticationService.SetCredentials(response.fname, response.lname, response.role);

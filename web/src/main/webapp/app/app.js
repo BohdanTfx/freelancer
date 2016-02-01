@@ -80,16 +80,6 @@
 										.$on(
 												'$locationChangeStart',
                                     function (event, next, current, $scope) {
-													// redirect to login page if
-													// not logged in
-													/*
-													 * if (typeof
-													 * $rootScope.globals.currentUser ==
-													 * 'undefined') if
-													 * ($location.path() !==
-													 * '/auth') {
-													 * $location.path('/auth'); }
-													 */
                                         $rootScope.globals = {};
                                         $rootScope.logged = false;
                                         $http.post('/user/isAuth').success(function (data) {

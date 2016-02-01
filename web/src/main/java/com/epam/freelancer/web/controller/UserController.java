@@ -169,6 +169,7 @@ public class UserController extends HttpServlet {
     public void send(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String email = request.getParameter("email");
         String message = request.getParameter("message");
+        String changeEmail = request.getParameter("changeEmail");
 
         HttpSession session = request.getSession();
         UserEntity ue = (UserEntity) session.getAttribute("user");
@@ -177,6 +178,9 @@ public class UserController extends HttpServlet {
             return;
         }
         String from = ue.getEmail();
+        if (changeEmail != null && !"".equals(changeEmail) && !changeEmail.equals(from)) {
+            from = changeEmail;
+        }
         String fromPass = ue.getPassword();
 
         if ("".equals(email) || "".equals(message) || ue == null) {

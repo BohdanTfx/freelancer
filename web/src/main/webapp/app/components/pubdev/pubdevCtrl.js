@@ -3,6 +3,11 @@ angular.module('FreelancerApp')
         console.log($stateParams.devName, $stateParams.devId + ' state');
 
         $scope.query = $stateParams.devId;
+        $http.post('/user/isAuth').success(function (data) {
+            console.log(data);
+            $scope.mesEmail = data.email;
+        }).error(function () {
+        });
 
         var getCust = function (cust_id) {
             pubdevAPI.getCustById(cust_id).success(
@@ -28,7 +33,7 @@ angular.module('FreelancerApp')
                 console.log(data + ' dev');
                 $scope.id = data.id;
                 if (typeof data.imgUrl == 'undefined')
-                    $scope.img = 'http://placehold.it/350x150';
+                    $scope.img = 'images/profile/no-profile-img.jpg';
                 else
                     $scope.img = data.imgUrl;
                 $scope.email = data.email;
@@ -86,7 +91,7 @@ angular.module('FreelancerApp')
 
                     for (var i = 0; i < $scope.feeds.length; i++) {
                         if (typeof $scope.feeds[i].customer.imgUrl == 'undefined')
-                            $scope.feeds[i].customer.imgUrl = 'http://placehold.it/350x150';
+                            $scope.feeds[i].customer.imgUrl = 'images/profile/no-profile-img-head.gif';
                     }
                 }
                 else
@@ -110,7 +115,7 @@ angular.module('FreelancerApp')
         };
 
         $scope.send = function () {
-            var data = 'message=' + $scope.mes + '&email=' + $scope.email;
+            var data = 'message=' + $scope.mes + '&email=' + $scope.email + '&changeEmail=' + $scope.mesEmail;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
             $http.post('/user/send', data).success(function () {
