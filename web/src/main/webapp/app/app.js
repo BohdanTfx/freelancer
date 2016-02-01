@@ -5,13 +5,23 @@
 					'FreelancerApp',
 					[ 'ngRoute', 'ui.router', 'ngCookies', 'ngMaterial',
 							'ngAnimate', 'ngAria', 'ngMessages',
-							'isteven-multi-select', 'rzModule' ])
+							'isteven-multi-select', 'rzModule',
+							'ui-notification' ])
 			.config(
 					function($stateProvider, $urlRouterProvider,
-							$locationProvider) {
-						$urlRouterProvider.otherwise('/orders');
+							$locationProvider, NotificationProvider) {
+				        NotificationProvider.setOptions({
+				            delay: 5000,
+				            startTop: 20,
+				            startRight: 10,
+				            verticalSpacing: 20,
+				            horizontalSpacing: 20,
+				            positionX: 'right',
+				            positionY: 'bottom'
+				        });
+						
+						$urlRouterProvider.otherwise('/home');
 
-						// routes
 						$stateProvider
 								.state(
 										'orders',

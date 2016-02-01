@@ -70,15 +70,16 @@ public class DeveloperService extends UserService<Developer> {
 	{
 		Map<ValidationParametersBuilder.Parameters, String> map = new HashMap<>();
 		map.put(ValidationParametersBuilder.createParameters(false)
-				.maxLength(50).minLength(1),
-				data.get("first_name") == null ? null
-						: data.get("first_name")[0]);
+
+		.maxLength(50).minLength(1), data.get("first_name") == null ? null
+				: data.get("first_name")[0]);
+		map.put(ValidationParametersBuilder.createParameters(false).maxLength(
+				255), data.get("img_url") == null ? null
+				: data.get("img_url")[0]);
 		map.put(ValidationParametersBuilder.createParameters(false)
-				.notEmptyString(false).maxLength(255),
-				data.get("img_url") == null ? null : data.get("img_url")[0]);
-		map.put(ValidationParametersBuilder.createParameters(false)
 				.maxLength(50).minLength(1),
-				data.get("last_name") == null ? null : data.get("last_name")[0]);
+				data.get("last_name") == null ? null
+						: data.get("las3t_name")[0]);
 		map.put(ValidationParametersBuilder.createParameters(false)
 				.maxLength(140).minLength(8),
 				data.get("password") == null ? null : data.get("password")[0]);
