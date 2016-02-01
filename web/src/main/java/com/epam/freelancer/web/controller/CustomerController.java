@@ -2,6 +2,7 @@ package com.epam.freelancer.web.controller;
 
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.service.CustomerService;
+import com.epam.freelancer.business.service.FeedbackService;
 import com.epam.freelancer.business.service.TechnologyService;
 import com.epam.freelancer.business.service.TestService;
 import com.epam.freelancer.database.model.Customer;
@@ -86,8 +87,18 @@ public class CustomerController extends HttpServlet {
         }
     }
 
-    public void getFeedbacksByIdForCust(HttpServletRequest request, HttpServletResponse response) {
+    public void getFeedbacksByIdForCust(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String param = request.getParameter("id");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                FeedbackService fs = (FeedbackService) ApplicationContext.getInstance().getBean("feedbackService");
 
+
+            }catch (Exception e) {
+                response.sendError(500);
+            }
+        }
     }
 
     private void sendResp(Object ue, HttpServletResponse response) throws IOException {
