@@ -193,6 +193,12 @@ public class UserController extends HttpServlet {
             response.sendError(404);
             return;
         }
+
+        if (comment == null || rate == null || dev_id == null) {
+            response.sendError(500);
+            return;
+        }
+
         String cust_id = ue.getId().toString();
         String author = "customer";
 

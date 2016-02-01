@@ -86,6 +86,10 @@ public class CustomerController extends HttpServlet {
         }
     }
 
+    public void getFeedbacksByIdForCust(HttpServletRequest request, HttpServletResponse response) {
+
+    }
+
     private void sendResp(Object ue, HttpServletResponse response) throws IOException {
         String json = new Gson().toJson(ue);
 
