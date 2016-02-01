@@ -7,8 +7,11 @@ import com.epam.freelancer.business.util.SendMessageToEmail;
 import com.epam.freelancer.business.util.SmsSender;
 import com.epam.freelancer.database.model.*;
 import com.epam.freelancer.security.provider.AuthenticationProvider;
+import com.epam.freelancer.web.social.Linkedin;
+import com.epam.freelancer.web.util.Paginator;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,12 +27,37 @@ import java.util.UUID;
 public class UserController extends HttpServlet {
     public static final Logger LOG = Logger.getLogger(UserController.class);
     private static final long serialVersionUID = -2356506023594947745L;
+    private OrderingService orderingService;
+    private CustomerService customerService;
+    private TechnologyService technologyService;
     private UserManager userManager;
-
-    @Override
-    public void init() throws ServletException {
-        userManager = new UserManager();
+    private Linkedin linkedin;
+    private ObjectMapper mapper;
+    private Paginator paginator;
+    public UserController() {
+        init();
     }
+    @Override
+    public void init() {
+        LOG.info(getClass().getSimpleName() + " - " + " loaded");
+        linkedin = new Linkedin();
+        mapper = new ObjectMapper();
+        paginator = new Paginator();
+        try {
+            linkedin.initKeys("/social.properties");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        orderingService = (OrderingService) ApplicationContext.getInstance()
+                .getBean("orderingService");
+        technologyService = (TechnologyService) ApplicationContext
+                .getInstance().getBean("technologyService");
+        userManager = (UserManager) ApplicationContext.getInstance().getBean(
+                "userManager");
+        customerService = (CustomerService) ApplicationContext.getInstance()
+                .getBean("customerService");
+    }
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -82,6 +110,15 @@ public class UserController extends HttpServlet {
                 case "user/logout":
                     logout(request, response);
                     return;
+                case "user/getorderbyid":
+                    getOrderById(request, response);
+                    break;
+                case "user/getfollowersbyorderid":
+                    getFollowersByOrderId(request, response);
+                    break;
+                case "user/getcustomerbyid":
+                    getCustomerById(request, response);
+                    break;
                 default:
             }
         } catch (Exception e) {
@@ -522,5 +559,25 @@ public class UserController extends HttpServlet {
         response.getWriter().write(json);
         response.getWriter().flush();
         response.getWriter().close();
+    }
+
+    private void getOrderById(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Integer orderId = Integer.parseInt(request.getParameter("orderId"));
+        Ordering order = orderingService.findById(orderId);
+        sendResp(order, response);
+    }
+
+    private void getFollowersByOrderId(HttpServletRequest request, HttpServletResponse respons) throws IOException {
+        Integer orderId = Integer.parseInt(request.getParameter("orderId"));
+        List<Developer> developers = orderingService.findOrderFollowers(orderId);
+        developers.forEach(dev -> dev.setPassword(null));
+        sendListResp(developers, respons);
+    }
+
+    private void getCustomerById(HttpServletRequest request, HttpServletResponse respons) throws IOException {
+        Integer custId = Integer.parseInt(request.getParameter("custId"));
+        Customer customer = customerService.findById(custId);
+        customer.setPassword(null);
+        sendResp(customer, respons);
     }
 }

@@ -136,8 +136,8 @@ public class DeveloperController extends HttpServlet {
 
     private void fillTestPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
-//        UserEntity user = (UserEntity) session.getAttribute("user");
-        List<DeveloperQA> devQAs = developerQAService.findAllByDevId(19);
+        UserEntity user = (UserEntity) session.getAttribute("user");
+        List<DeveloperQA> devQAs = developerQAService.findAllByDevId(user.getId());
 
         List<Test> tests = testService.findAll();
         List<Technology> techs = technologyService.findAll();
@@ -196,9 +196,7 @@ public class DeveloperController extends HttpServlet {
     }
 
     private void sendResults(HttpServletRequest request, HttpServletResponse response) {
-
         try {
-
             String resultsJson = request.getParameter("results");
             List<Quest> results = mapper.readValue(resultsJson, new TypeReference<List<Quest>>() {
             });
@@ -234,14 +232,11 @@ public class DeveloperController extends HttpServlet {
                 rate += points > 0 ? points : 0;
             }
             rate = 100 * rate / maxRate;
-
             //add in db results!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             Map<String, String[]> map = createMapForDevQA(request, rate);
             developerQAService.create(map);
-
             //send result on frontend
             sendResultResponse(response,rate,errors,success);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -249,9 +244,9 @@ public class DeveloperController extends HttpServlet {
 
     private Map<String, String[]> createMapForDevQA(HttpServletRequest request, double rate){
         Map<String, String[]> map = new HashMap<>();
-//            UserEntity user = (UserEntity) request.getSession().getAttribute("user");
-//            Integer userId = user.getId();
-        map.put("dev_id", new String[]{String.valueOf(19)});
+        UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+        Integer userId = user.getId();
+        map.put("dev_id", new String[]{String.valueOf(userId)});
         map.put("test_id", new String[]{request.getParameter("testId")});
         map.put("rate", new String[]{String.valueOf(rate)});
         map.put("expireDate", new String[]{request.getParameter("expireDate")});
