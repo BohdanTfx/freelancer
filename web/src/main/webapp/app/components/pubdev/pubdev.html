@@ -1,4 +1,19 @@
-<div class="container" style="padding-top: 50px;">
+<div class="container-top" ng-if="freelancerNotFound">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="well panel panel-default">
+                <div class="panel-body fl-left">
+                    <img class="not-found" src="/images/profile/no-profile-img-head.gif" alt=""/>
+
+                    <h2 class="free-not-found">Freelancer not found</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="container-top" ng-if="!freelancerNotFound">
     <div class="row">
         <div class="col-md-12">
             <div class="well panel panel-default">
@@ -12,6 +27,35 @@
                         <h4 class="overview">Overview</h4>
 
                         <p>{{overview}}</p>
+                        <h4>Default</h4>
+                        <uib-rating ng-model="rate" max="max" readonly="isReadonly" on-hover="hoveringOver(value)"
+                                    on-leave="overStar = null" titles="['one','two','three']"
+                                    aria-labelledby="default-rating"></uib-rating>
+                        <span class="label"
+                              ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}"
+                              ng-show="overStar && !isReadonly">{{percent}}%</span>
+
+                        <pre style="margin:15px 0;">Rate: <b>{{rateq}}</b> - Readonly is: <i>{{isReadonly}}</i> - Hovering over: <b>{{overStar
+                            || "none"}}</b></pre>
+
+                        <button type="button" class="btn btn-sm btn-danger" ng-click="rate = 0"
+                                ng-disabled="isReadonly">Clear
+                        </button>
+                        <button type="button" class="btn btn-sm btn-default" ng-click="isReadonly = ! isReadonly">Toggle
+                            Readonly
+                        </button>
+                        <hr/>
+
+                        <h4>Custom icons</h4>
+
+                        <div ng-init="x = 5">
+                            <uib-rating ng-model="x" max="15" state-on="'glyphicon-ok-sign'"
+                                        state-off="'glyphicon-ok-circle'" aria-labelledby="custom-icons-1"></uib-rating>
+                            <b>(<i>Rate:</i> {{x}})</b></div>
+                        <div ng-init="y = 2">
+                            <uib-rating ng-model="y" rating-states="ratingStates"
+                                        aria-labelledby="custom-icons-2"></uib-rating>
+                            <b>(<i>Rate:</i> {{y}})</b></div>
 
 
                     </div>
@@ -286,6 +330,7 @@
 
     <textarea type="text" class="form-control" ng-model="$parent.mes" rows="5" placeholder="Text ..."
               required></textarea>
+                    <br/>
                     <button type="button" ng-disabled="mesSemdDis" ng-click="send()" class="btn btn-success"
                             data-dismiss="modal">
         <span
@@ -298,4 +343,5 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
+
 </div>

@@ -30,6 +30,11 @@ angular.module('FreelancerApp')
 
         pubdevAPI.getDevById($scope.query).success(
             function (data, status, headers, config) {
+                if (data) {
+
+                } else {
+                    $scope.freelancerNotFound = true;
+                }
                 console.log(data + ' dev');
                 $scope.id = data.id;
                 if (typeof data.imgUrl == 'undefined')
@@ -78,7 +83,7 @@ angular.module('FreelancerApp')
 
         pubdevAPI.getRateById($scope.query).success(
             function (data, status, headers, config) {
-                $scope.rate = data;
+                $scope.rateq = data;
             }).error(function () {
 
             });
@@ -113,8 +118,6 @@ angular.module('FreelancerApp')
         };
 
         $scope.send = function () {
-            alert($scope.mes);
-
             var data = 'message=' + $scope.mes + '&email=' + $scope.email + '&changeEmail=' + $scope.mesEmail;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
@@ -145,5 +148,22 @@ angular.module('FreelancerApp')
             }
 
             return ratings;
-        }
+        };
+
+        $scope.rate = 7;
+        $scope.max = 10;
+        $scope.isReadonly = false;
+
+        $scope.hoveringOver = function (value) {
+            $scope.overStar = value;
+            $scope.percent = 100 * (value / $scope.max);
+        };
+
+        $scope.ratingStates = [
+            {stateOn: 'glyphicon-ok-sign', stateOff: 'glyphicon-ok-circle'},
+            {stateOn: 'glyphicon-star', stateOff: 'glyphicon-star-empty'},
+            {stateOn: 'glyphicon-heart', stateOff: 'glyphicon-ban-circle'},
+            {stateOn: 'glyphicon-heart'},
+            {stateOff: 'glyphicon-off'}
+        ];
     });
