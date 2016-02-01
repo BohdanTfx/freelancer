@@ -102,7 +102,6 @@ angular.module('FreelancerApp')
 
         $scope.sendSms = function () {
             $scope.sms = 'sms';
-            $scope.phone = '38093222222';
             var data = 'phone=' + $scope.phone + '&sms=' + $scope.sms;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
@@ -114,6 +113,8 @@ angular.module('FreelancerApp')
         };
 
         $scope.send = function () {
+            alert($scope.mes);
+
             var data = 'message=' + $scope.mes + '&email=' + $scope.email + '&changeEmail=' + $scope.mesEmail;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 

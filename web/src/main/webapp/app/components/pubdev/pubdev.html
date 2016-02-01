@@ -22,14 +22,19 @@
                             <span style="color: firebrick">{{smserr}}</span>
                             <span style="color: darkgreen">{{smssuc}}</span>
 
-                        <div class="btn btn-block btn-primary" ng-click="sendSms()"><span
-                                class="glyphicon glyphicon-thumbs-up"></span> Hire
+                        <div class="btn btn-block btn-primary" ng-click="sendSms()">
+                                    <span
+                                            class="glyphicon glyphicon-thumbs-up"></span>
+                            Hire
                             me
                         </div>
                         </p>
                         <ul class="list-inline ratings" title="Ratings">
-                            <li ng-repeat="i in getNumber(rate)"><a href="#"><span
-                                    class="fa fa-star fa-lg"></span></a>
+                            <li ng-repeat="i in getNumber(rate)">
+                                <a href="#">
+                                        <span
+                                                class="fa fa-star fa-lg"></span>
+                                </a>
                             </li>
                         </ul>
                         <span class="sp">&#36; {{hourly}} &#47;hr</span>
@@ -39,9 +44,12 @@
                                 <span class="label label-success lb">{{tech.name}}</span>
                             </span>
                         </p>
-                        <!--<p>On site from: <br/>
-                            {{regDate}}
-                        </p>-->
+                        <!--<p>
+                        On site from:
+                        <br/>
+                        {{regDate}}
+                    </p>
+                    -->
                         <md-divider></md-divider>
                         <p>
                         <h5>Phone: {{phone}}</h5>
@@ -55,95 +63,114 @@
                         <span style="color: firebrick">{{messerr}}</span>
                         <span style="color: darkgreen">{{messuc}}</span>
                         <div class="btn btn-block btn-danger" data-toggle="modal"
-                             data-target=".bs-example-modal-md"><span class="glyphicon glyphicon-envelope"></span> Write
+                             data-target=".bs-example-modal-md">
+                            <span class="glyphicon glyphicon-envelope"></span>
+                            Write
                             me
                         </div>
                     </div>
-                    <!--/row-->
-                </div>
+                    <!--/row--> </div>
                 <!--<div class="row">
-                    <div class="container">
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li role="presentation" class="active"><a href="#tab1" role="tab" data-toggle="tab"><span
-                                    class="glyphicon glyphicon-comment"></span> Comments</a></li>
-                            <li role="presentation"><a href="#tab2" role="tab" data-toggle="tab"><span
-                                    class="glyphicon glyphicon-paperclip"></span> Portfolio</a></li>
-                        </ul>
-                    </div>
+                <div class="container">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#tab1" role="tab" data-toggle="tab">
+                                <span
+                                        class="glyphicon glyphicon-comment"></span>
+                                Comments
+                            </a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#tab2" role="tab" data-toggle="tab">
+                                <span
+                                        class="glyphicon glyphicon-paperclip"></span>
+                                Portfolio
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                &lt;!&ndash; Tab panes &ndash;&gt;
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade in active" id="tab1">
+                        <div class="tab-pane fade in active" id="menu1">
+                            <span style="color: firebrick">{{comerr}}</span>
+                            <span style="color: darkgreen">{{comsuc}}</span>
 
-                    &lt;!&ndash; Tab panes &ndash;&gt;
-                    <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane fade in active" id="tab1">
-                            <div class="tab-pane fade in active" id="menu1">
-                                <span style="color: firebrick">{{comerr}}</span>
-                                <span style="color: darkgreen">{{comsuc}}</span>
+                            <div class="form-group comm-div">
+                                <br/>
+                                <textarea type="text" class="form-control" ng-model="$parent.com" rows="2"
+                                          placeholder="Comment ..."
+                                          required></textarea>
 
-                                <div class="form-group comm-div">
-                                    <br/>
-                            <textarea type="text" class="form-control" ng-model="$parent.com" rows="2"
-                                      placeholder="Comment ..."
-                                      required></textarea>
-
-                                    <div class="form-group">
-                                        <label for="sel1">Rate him:</label>
-                                        <select class="form-control" ng-model="$parent.comrate" id="sel1">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
-                                        </select>
-                                    </div>
-                                    <button type="button" ng-click="comment()"
-                                            class="btn btn-primary pull-right comm-but"><span
-                                            class="glyphicon glyphicon-comment"></span> Comment
-                                    </button>
+                                <div class="form-group">
+                                    <label for="sel1">Rate him:</label>
+                                    <select class="form-control" ng-model="$parent.comrate" id="sel1">
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </select>
                                 </div>
+                                <button type="button" ng-click="comment()"
+                                                class="btn btn-primary pull-right comm-but">
+                                    <span
+                                                class="glyphicon glyphicon-comment"></span>
+                                    Comment
+                                </button>
+                            </div>
+                            <br/>
+
+                            <p class="emptyComment" ng-if="emptyComm">There is no comment</p>
+
+                            <div ng-repeat="feed in feeds">
                                 <br/>
 
-                                <p class="emptyComment" ng-if="emptyComm">There is no comment</p>
+                                <div class="feed" style="background-image: url('{{feed.customer.imgUrl}}')"></div>
+                                <p> <em>{{feed.customer.fname}} {{feed.customer.lname}}</em>
+                                </p>
 
-                                <div ng-repeat="feed in feeds">
-                                    <br/>
+                                <p>{{feed.comment}}</p>
+                                <ul class="list-inline ratings" title="Ratings">
+                                    <li ng-repeat="i in getNumber(feed.rate)">
+                                        <a href="#">
+                                            <span
+                                                    class="fa fa-star fa-lg"></span>
+                                        </a>
+                                    </li>
+                                </ul>
 
-                                    <div class="feed" style="background-image: url('{{feed.customer.imgUrl}}')"></div>
-                                    <p><em>{{feed.customer.fname}} {{feed.customer.lname}}</em></p>
-
-                                    <p>{{feed.comment}}</p>
-                                    <ul class="list-inline ratings" title="Ratings">
-                                        <li ng-repeat="i in getNumber(feed.rate)"><a href="#"><span
-                                                class="fa fa-star fa-lg"></span></a>
-                                        </li>
-                                    </ul>
-
-                                    <br/>
-                                    <md-divider></md-divider>
-                                </div>
-                            </div>
-                        </div>
-                        <div role="tabpanel" class="tab-pane fade" id="tab2">
-                            <p class="emptyPort" ng-if="emptyPort">He has no portfolio</p>
-                            <div ng-repeat="port in ports">
-                                <h4 class="tit"><em>{{port.title}}</em></h4>
-
-                                <div class="descr">
-                                    <p>{{port.descr}}</p>
-
-                                    <p>
-                                        <span ng-repeat="tech in port.technologies">
-                                            <span class="label label-success lb">{{tech.name}}</span>
-                                        </span>
-                                    </p>
-
-                                    <p>
-                                        {{port.startedDate.substring(0, 12)}} - {{port.endedDate.substring(0, 12)}}
-                                    </p>
-                                </div>
+                                <br/>
                                 <md-divider></md-divider>
                             </div>
                         </div>
                     </div>
-                </div>-->
+                    <div role="tabpanel" class="tab-pane fade" id="tab2">
+                        <p class="emptyPort" ng-if="emptyPort">He has no portfolio</p>
+                        <div ng-repeat="port in ports">
+                            <h4 class="tit">
+                                <em>{{port.title}}</em>
+                            </h4>
+
+                            <div class="descr">
+                                <p>{{port.descr}}</p>
+
+                                <p>
+                                    <span ng-repeat="tech in port.technologies">
+                                        <span class="label label-success lb">{{tech.name}}</span>
+                                    </span>
+                                </p>
+
+                                <p>
+                                    {{port.startedDate.substring(0, 12)}} - {{port.endedDate.substring(0, 12)}}
+                                </p>
+                            </div>
+                            <md-divider></md-divider>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            -->
                 <md-content>
                     <md-tabs md-dynamic-height md-border-bottom>
                         <md-tab label="Feedbacks">
@@ -168,8 +195,10 @@
                                         </select>
                                     </div>
                                     <button type="button" ng-click="comment()"
-                                            class="btn btn-primary pull-right comm-but"><span
-                                            class="glyphicon glyphicon-comment"></span> Comment
+                                            class="btn btn-primary pull-right comm-but">
+                                <span
+                                        class="glyphicon glyphicon-comment"></span>
+                                        Comment
                                     </button>
                                 </div>
                                 <br/>
@@ -180,12 +209,17 @@
                                     <br/>
 
                                     <div class="feed" style="background-image: url('{{feed.customer.imgUrl}}')"></div>
-                                    <p><em>{{feed.customer.fname}} {{feed.customer.lname}}</em></p>
+                                    <p>
+                                        <em>{{feed.customer.fname}} {{feed.customer.lname}}</em>
+                                    </p>
 
                                     <p>{{feed.comment}}</p>
                                     <ul class="list-inline ratings" title="Ratings">
-                                        <li ng-repeat="i in getNumber(feed.rate)"><a href="#"><span
-                                                class="fa fa-star fa-lg"></span></a>
+                                        <li ng-repeat="i in getNumber(feed.rate)">
+                                            <a href="#">
+                                        <span
+                                                class="fa fa-star fa-lg"></span>
+                                            </a>
                                         </li>
                                     </ul>
 
@@ -199,15 +233,17 @@
                                 <p class="emptyPort" ng-if="emptyPort">He has no portfolio</p>
 
                                 <div ng-repeat="port in ports">
-                                    <h4 class="tit"><em>{{port.title}}</em></h4>
+                                    <h4 class="tit">
+                                        <em>{{port.title}}</em>
+                                    </h4>
 
                                     <div class="descr">
                                         <p>{{port.descr}}</p>
 
                                         <p>
-                                        <span ng-repeat="tech in port.technologies">
-                                            <span class="label label-success lb">{{tech.name}}</span>
-                                        </span>
+                                    <span ng-repeat="tech in port.technologies">
+                                        <span class="label label-success lb">{{tech.name}}</span>
+                                    </span>
                                         </p>
 
                                         <p>
@@ -216,7 +252,6 @@
                                     </div>
                                     <md-divider></md-divider>
                                 </div>
-
 
                             </md-content>
                         </md-tab>
@@ -237,8 +272,10 @@
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span
+            aria-hidden="true">&times;</span>
+                </button>
                 <h4 class="modal-title">Send mail</h4>
             </div>
             <div class="modal-footer">
@@ -247,17 +284,18 @@
                            required/>
                     <br/>
 
-                    <div class="form-group">
-        <textarea type="text" class="form-control" ng-model="$parent.mes" rows="5" placeholder="Text ..."
-                  required></textarea>
-                </div>
+    <textarea type="text" class="form-control" ng-model="$parent.mes" rows="5" placeholder="Text ..."
+              required></textarea>
                     <button type="button" ng-disabled="mesSemdDis" ng-click="send()" class="btn btn-success"
-                            data-dismiss="modal"><span
-                        class="glyphicon glyphicon-envelope"></span> Send
-                </button>
+                            data-dismiss="modal">
+        <span
+                class="glyphicon glyphicon-envelope"></span>
+                        Send
+                    </button>
+                </div>
             </div>
+            <!-- /.modal-content -->
         </div>
-        <!-- /.modal-content -->
+        <!-- /.modal-dialog -->
     </div>
-    <!-- /.modal-dialog -->
 </div>
