@@ -25,24 +25,23 @@ public class FollowerManyToManyJdbcDao extends
 
 	@Override
 	public List<Ordering> getDevSubscribedProjects(Integer devId) {
-		List<Follower> entities = new ArrayList<>();
+		List<Ordering> entities = new ArrayList<>();
 		String query = "SELECT " + secondTable + ".* FROM " + secondTable
 				+ ", " + table + " WHERE " + secondTable + ".id = " + table
 				+ "." + secondIdName + " AND " + table + "." + firstIdName
 				+ " = ?";
-		System.out.println("query: "+query);
 		try (Connection connection = dataSource.getConnection();
 			 PreparedStatement statement = connection
 					 .prepareStatement(query)) {
 			statement.setObject(1, devId);
 			try (ResultSet set = statement.executeQuery()) {
 				while (set.next()) {
-
+					entities.add(secondTransformer.getObject(set));
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		return entities;
 	}
 }

@@ -50,6 +50,8 @@ public class WorkerManyToManyJdbcDao extends
 
 
 
+
+
 	@Override
 	public List<Ordering> getOrdersByDevId(Integer devId) {
 		return getBasedOnFirst(devId);

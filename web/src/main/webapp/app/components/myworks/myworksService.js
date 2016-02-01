@@ -6,8 +6,8 @@
 angular.module('FreelancerApp')
     .factory('myworksAPI', function ($http, config) {
         var urlBase = '/dev/getallworks',dataFactory = {};
-
-        var getCustByIdPath = '/dev/getcustomerbyid';
+        var getCustById = '/dev/getcustomerbyid';
+        var getWorkersByIdOrder = '/dev/getworkersbyidorder';
 
 
         dataFactory.getAllWorks = function () {
@@ -15,11 +15,16 @@ angular.module('FreelancerApp')
         };
 
         dataFactory.getCustomerById = function(customer_id){
-
-            return $http.get(getCustByIdPath,{
+            return $http.get(getCustById,{
                 params:{cust_id : customer_id}
             });
         };
+
+        dataFactory.getWorkersByIdOrder = function (order_id){
+            return $http.get(getWorkersByIdOrder,{
+                params:{order_id:order_id}
+            })
+        }
 
 
 

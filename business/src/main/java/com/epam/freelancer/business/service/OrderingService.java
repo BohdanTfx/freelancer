@@ -9,16 +9,14 @@ import com.epam.freelancer.business.util.ValidationParametersBuilder;
 import com.epam.freelancer.database.dao.GenericManyToManyDao;
 import com.epam.freelancer.database.dao.OrderingDao;
 import com.epam.freelancer.database.dao.jdbc.DAOManager;
-import com.epam.freelancer.database.model.ObjectHolder;
-import com.epam.freelancer.database.model.Ordering;
-import com.epam.freelancer.database.model.Technology;
-import com.epam.freelancer.database.model.Worker;
+import com.epam.freelancer.database.model.*;
 
 /**
  * Created by Максим on 19.01.2016.
  */
 public class OrderingService extends GenericService<Ordering, Integer> {
 	private GenericManyToManyDao<Ordering, Technology, Worker, Integer> orderingTechnoloyManyToManyDao;
+	private GenericManyToManyDao<Developer, Ordering, Follower, Integer> followerMTMDao;
 
 	public OrderingService() {
 		super(DAOManager.getInstance()
@@ -114,5 +112,13 @@ public class OrderingService extends GenericService<Ordering, Integer> {
 
 	public List<Technology> findOrderingTechnologies(Integer orderId) {
 		return orderingTechnoloyManyToManyDao.getBasedOnFirst(orderId);
+	}
+
+	public void setFollowerManyToManyDao(GenericManyToManyDao<Developer, Ordering, Follower, Integer> followerMTMDao) {
+		this.followerMTMDao = followerMTMDao;
+	}
+
+	public List<Developer> findOrderFollowers(Integer orderId){
+		return followerMTMDao.getBasedOnSecond(orderId);
 	}
 }

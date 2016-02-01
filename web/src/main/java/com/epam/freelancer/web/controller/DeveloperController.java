@@ -76,6 +76,11 @@ public class DeveloperController extends HttpServlet {
                 case "dev/getcustomerbyid":
                     sendCustomerById(request,response);
                     break;
+                case "dev/getworkersbyidorder":
+                    sendWorkersByIdOrder(request, response);
+                    break;
+
+
                 default:
 
             }
@@ -109,9 +114,10 @@ public class DeveloperController extends HttpServlet {
 
     private void fillMyWorksPage(HttpServletRequest  request,HttpServletResponse response) throws IOException{
         HttpSession session = request.getSession();
-        Developer dev = (Developer) session.getAttribute("user");
-        List<Ordering> allProjects = developerService.getDeveloperPortfolio(8);
-        List<Ordering> devSubscribedProjects = allProjects;
+//        UserEntity user = (UserEntity) session.getAttribute("user");
+//        System.out.println("USer"+user);
+        List<Ordering> allProjects = developerService.getDeveloperPortfolio(10);
+        List<Ordering> devSubscribedProjects = developerService.getDeveloperSubscribedProjects(10);
         List<Ordering> devFinishedProjects = new ArrayList<>();
         List<Ordering> devProjectsInProcess = new ArrayList<>();
         allProjects.forEach(ordering -> {
@@ -136,8 +142,8 @@ public class DeveloperController extends HttpServlet {
 
     private void fillTestPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
-//        UserEntity user = (UserEntity) session.getAttribute("user");
-        List<DeveloperQA> devQAs = developerQAService.findAllByDevId(19);
+        UserEntity user = (UserEntity) session.getAttribute("user");
+        List<DeveloperQA> devQAs = developerQAService.findAllByDevId(user.getId());
 
         List<Test> tests = testService.findAll();
         List<Technology> techs = technologyService.findAll();
@@ -184,21 +190,29 @@ public class DeveloperController extends HttpServlet {
 
 
     private void sendCustomerById (HttpServletRequest request,HttpServletResponse response) throws IOException{
-         Integer custId = Integer.parseInt(request.getParameter("cust_id"));
+        Integer custId = Integer.parseInt(request.getParameter("cust_id"));
         CustomerService customerService = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
         Customer cust = customerService.findById(custId);
-
         String custJson = new Gson().toJson(cust);
-        String resultJson = "{\"customer\":" + custJson + "}";
+        String resultJson = "{\"cust\":" + custJson + "}";
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(resultJson);
     }
 
+    private void sendWorkersByIdOrder (HttpServletRequest request,HttpServletResponse response) throws IOException{
+        Integer orderId = Integer.parseInt(request.getParameter("order_id"));
+         List<Developer>  developers = developerService.getDevelopersByIdOrder(orderId);
+        String devListJson = new Gson().toJson(developers);
+        String resultJson = "{\"workers\":"+devListJson+"}";
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(resultJson);
+
+    }
+
     private void sendResults(HttpServletRequest request, HttpServletResponse response) {
-
         try {
-
             String resultsJson = request.getParameter("results");
             List<Quest> results = mapper.readValue(resultsJson, new TypeReference<List<Quest>>() {
             });
@@ -234,14 +248,11 @@ public class DeveloperController extends HttpServlet {
                 rate += points > 0 ? points : 0;
             }
             rate = 100 * rate / maxRate;
-
             //add in db results!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             Map<String, String[]> map = createMapForDevQA(request, rate);
             developerQAService.create(map);
-
             //send result on frontend
             sendResultResponse(response,rate,errors,success);
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -249,9 +260,9 @@ public class DeveloperController extends HttpServlet {
 
     private Map<String, String[]> createMapForDevQA(HttpServletRequest request, double rate){
         Map<String, String[]> map = new HashMap<>();
-//            UserEntity user = (UserEntity) request.getSession().getAttribute("user");
-//            Integer userId = user.getId();
-        map.put("dev_id", new String[]{String.valueOf(19)});
+        UserEntity user = (UserEntity) request.getSession().getAttribute("user");
+        Integer userId = user.getId();
+        map.put("dev_id", new String[]{String.valueOf(userId)});
         map.put("test_id", new String[]{request.getParameter("testId")});
         map.put("rate", new String[]{String.valueOf(rate)});
         map.put("expireDate", new String[]{request.getParameter("expireDate")});
