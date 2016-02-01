@@ -35,7 +35,7 @@
                               ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}"
                               ng-show="overStar && !isReadonly">{{percent}}%</span>
 
-                        <pre style="margin:15px 0;">Rate: <b>{{rateq}}</b> - Readonly is: <i>{{isReadonly}}</i> - Hovering over: <b>{{overStar
+                        <pre style="margin:15px 0;">Rate: <b>{{rate}}</b> - Readonly is: <i>{{isReadonly}}</i> - Hovering over: <b>{{overStar
                             || "none"}}</b></pre>
 
                         <button type="button" class="btn btn-sm btn-danger" ng-click="rate = 0"
@@ -100,6 +100,9 @@
                         </p>
                         <p>
                         <h5>{{emailUnd}}</h5>
+                        </p>
+                        <p>
+                        <h5>Email: {{email}}</h5>
                         </p>
                         <span style="color: firebrick">{{messerr}}</span>
                         <span style="color: darkgreen">{{messuc}}</span>

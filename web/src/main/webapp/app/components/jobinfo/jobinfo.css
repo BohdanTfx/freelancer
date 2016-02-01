@@ -14,3 +14,26 @@
 .job-info ul li {
     margin-bottom: 10px;
 }
+
+.job-info .right-side {
+    text-align: center;
+}
+
+.job-info .details {
+    clear: both;
+}
+
+.job-info .centure {
+}
+
+.job-info .user{
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    margin: 15px auto;
+    float: none;
+}

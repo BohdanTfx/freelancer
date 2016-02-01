@@ -103,7 +103,6 @@
                                         }).error(function () {
                                         });
                                         console.log('rootScope ' + $rootScope.globals);
-
                     });
             } ]);
 
