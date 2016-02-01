@@ -1,11 +1,12 @@
 package com.epam.freelancer.database.model;
 
+import java.util.List;
+
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 import com.epam.freelancer.database.transformer.annotation.Column;
 import com.epam.freelancer.database.transformer.annotation.Id;
 import com.epam.freelancer.database.transformer.annotation.Table;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
-import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "question")

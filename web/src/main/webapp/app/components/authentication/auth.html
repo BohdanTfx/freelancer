@@ -3,10 +3,12 @@
 <br/>
 <br/>
 <div class="login-form col-md-6 col-md-offset-3">
-    <div ng-show="error" class="alert alert-danger">{{error}}</div>
     <form name="form" ng-submit="login()" role="form">
         <md-content md-theme="docs-dark" layout-gt-sm="column" layout-padding>
+            <h4><strong>Sign In</strong></h4>
+            <md-divider></md-divider>
             <div>
+                <span style="color: firebrick">{{error}}</span>
                 <md-input-container layout-gt-sm="column">
                     <label>Email</label>
                     <input ng-model="username" name="username" id="username" required/>
@@ -20,7 +22,11 @@
           </span></div>
                 </md-checkbox>
             </div>
-            <button aria-label="Primary" class="md-raised md-primary md-button md-ink-ripple" type="submit"><span class="ng-scope">Login</span><div style="" class="md-ripple-container"></div></button>
+            <button aria-label="Primary" class="md-raised md-primary md-button md-ink-ripple" type="submit"><strong>Sign
+                In</strong><span class="ng-scope"></span>
+
+                <div style="" class="md-ripple-container"></div>
+            </button>
         </md-content>
     </form>
 </div>

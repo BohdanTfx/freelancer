@@ -18,6 +18,15 @@
 		<servlet-name>FrontController</servlet-name>
 		<url-pattern>/front/*</url-pattern>
 	</servlet-mapping>
+
+    <!--<filter>-->
+        <!--<filter-name>DevPubPageFilter</filter-name>-->
+        <!--<filter-class>com.epam.freelancer.security.filter.DevPublicPageFilter</filter-class>-->
+    <!--</filter>-->
+    <!--<filter-mapping>-->
+        <!--<filter-name>DevPubPageFilter</filter-name>-->
+        <!--<url-pattern>/front/pubdev/*</url-pattern>-->
+    <!--</filter-mapping>-->
 	<filter>
 		<filter-name>AdminAccessFilter</filter-name>
 		<filter-class>com.epam.freelancer.security.filter.AdminAccessFilter</filter-class>

@@ -22,8 +22,8 @@ public class FeedbackService extends GenericService<Feedback, Integer> {
 
     @Override
     public Feedback create(Map<String, String[]> data) {
-        if (!isDataValid(prepareData(data)))
-            throw new RuntimeException("Validation exception");
+        /*if (!isDataValid(prepareData(data)))
+            throw new RuntimeException("Validation exception");*/
 
         Feedback feedback = new Feedback();
         String[] value = data.get("dev_id");
@@ -68,5 +68,9 @@ public class FeedbackService extends GenericService<Feedback, Integer> {
 
     public List<Feedback> findFeedbacksByDevId(Integer id) {
         return ((FeedbackDao) genericDao).getFeedbacksByDevId(id);
+    }
+
+    public Integer getAvgRate(Integer dev_id) {
+        return ((FeedbackDao) genericDao).getAvgRate(dev_id);
     }
 }

@@ -39,6 +39,18 @@ angular.module('ngCookies', ['ng']).
      * The object may have following properties:
      *
      * - **path** - `{string}` - The cookie will be available only for this path and its
+<<<<<<< HEAD
+     *   sub-paths. By default, this would be the URL that appears in your base tag.
+     * - **domain** - `{string}` - The cookie will be available only for this domain and
+     *   its sub-domains. For obvious security reasons the user agent will not accept the
+     *   cookie if the current domain is not a sub domain or equals to the requested domain.
+     * - **expires** - `{string|Date}` - String of the form "Wdy, DD Mon YYYY HH:MM:SS GMT"
+     *   or a Date object indicating the exact date/time this cookie will expire.
+     * - **secure** - `{boolean}` - The cookie will be available only in secured connection.
+     *
+     * Note: by default the address that appears in your `<base>` tag will be used as path.
+     * This is important so that cookies will be visible for all routes in case html5mode is enabled
+=======
      *   sub-paths. By default, this is the URL that appears in your `<base>` tag.
      * - **domain** - `{string}` - The cookie will be available only for this domain and
      *   its sub-domains. For security reasons the user agent will not accept the cookie
@@ -50,6 +62,7 @@ angular.module('ngCookies', ['ng']).
      *
      * Note: By default, the address that appears in your `<base>` tag will be used as the path.
      * This is important so that cookies will be visible for all routes when html5mode is enabled.
+>>>>>>> 3aed84b19aec884a62ba5db71f30445db3fef7ac
      *
      **/
     var defaults = this.defaults = {};

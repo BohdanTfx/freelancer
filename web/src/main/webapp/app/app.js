@@ -9,7 +9,7 @@
 			.config(
 					function($stateProvider, $urlRouterProvider,
 							$locationProvider) {
-						$urlRouterProvider.otherwise('/orders');
+                        $urlRouterProvider.otherwise('/home');
 
             // routes
             $stateProvider
@@ -19,6 +19,12 @@
                     url : '/orders',
                     templateUrl : 'app/components/jobs/jobs.html',
                     controller : 'jobsCtrl'
+                }).state(
+                'signup',
+                {
+                    url : '/signup',
+                    templateUrl : 'app/components/signup/signup.html',
+                    controller : 'signupCtrl'
                 })
                 .state(
                 'personal',
@@ -47,53 +53,56 @@
                     url : '/auth',
                     templateUrl : 'app/components/authentication/auth.html',
                     controller : 'authCtrl'
+                }).state(
+                'pubdev',
+                {
+                    //url: '/pubdev/:devName/:devId',
+                    url: '/pubdev',
+                    templateUrl: 'app/components/pubdev/pubdev.html',
+                    controller: 'pubdevCtrl'
                 });
 
-            $locationProvider.html5Mode(false);
-        })
-        .run(
-        [
-            '$rootScope',
-            '$location',
-            '$cookieStore',
-            '$http',
-            function($rootScope, $location, $cookieStore, $http) {
-                // keep user logged in after page refresh
-                /*
-                 * $rootScope.globals =
-                 * $cookieStore.get('freelancerRememberMeCookieAng') ||
-                 * {}; if ($rootScope.globals.currentUser) {
-                 * $http.defaults.headers.common['Authorization'] =
-                 * 'Basic ' +
-                 * $rootScope.globals.currentUser.username; }
-                 */
-                $rootScope
-                    .$on(
-                    '$locationChangeStart',
-                    function(event, next, current) {
-                        // redirect to login page if
-                        // not logged in
-                        /*
-                         * if (typeof
-                         * $rootScope.globals.currentUser ==
-                         * 'undefined') if
-                         * ($location.path() !==
-                         * '/auth') {
-                         * $location.path('/auth'); }
-                         */
+						$locationProvider.html5Mode(false);
+					})
+			.run(
+					[
+							'$rootScope',
+							'$location',
+							'$cookieStore',
+							'$http',
+                        'AuthenticationService',
+                        function ($rootScope, $location, $cookieStore, $http, AuthenticationService) {
+                            $rootScope.logout = function () {
+                                // reset login status
+                                AuthenticationService.ClearCredentials();
 
-                        $rootScope.globals = $cookieStore
-                                .get('freelancerRememberMeCookieAng')
-                            || {};
-                        if ($rootScope.globals.currentUser) {
-                            $rootScope.name = $rootScope.globals.currentUser.fname;
-                            $rootScope.lastName = $rootScope.globals.currentUser.lname;
-                            $rootScope.role = $rootScope.globals.currentUser.role;
+                            };
+								$rootScope
+										.$on(
+												'$locationChangeStart',
+                                    function (event, next, current, $scope) {
+													// redirect to login page if
+													// not logged in
+													/*
+													 * if (typeof
+													 * $rootScope.globals.currentUser ==
+													 * 'undefined') if
+													 * ($location.path() !==
+													 * '/auth') {
+													 * $location.path('/auth'); }
+													 */
+                                        $rootScope.globals = {};
+                                        $rootScope.logged = false;
+                                        $http.post('/user/isAuth').success(function (data) {
+                                            console.log(data);
+                                            $rootScope.name = data.fname;
+                                            $rootScope.lastName = data.lname;
+                                            $rootScope.role = data.role;
+                                            $rootScope.logged = true;
+                                        }).error(function () {
+                                        });
+                                        console.log('rootScope ' + $rootScope.globals);
 
-                            $rootScope.logged = true;
-                        } else {
-                            $rootScope.logged = false;
-                        }
                     });
             } ]);
 

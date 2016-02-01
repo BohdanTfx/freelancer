@@ -2,6 +2,10 @@
     font-size: 18px;
 }
 
+.tests-tabs a:hover {
+    text-decoration: none;
+}
+
 .tests-tabs md-content {
     background-color: transparent !important; }
 .tests-tabs md-content md-tabs {
@@ -63,7 +67,7 @@ md-tabs .md-tab .md-ripple-container {
 }
 
 .tests-tabs{
-    padding: 10px 0 10px 0;
+    padding: 0;
 }
 
 .history-title a, .tests-title a{
@@ -135,4 +139,8 @@ md-tabs .md-tab .md-ripple-container {
 .img-center {
     margin: 0 auto;
     padding: 15px;
+}
+
+.filter > div {
+    padding: 0 15px;
 }

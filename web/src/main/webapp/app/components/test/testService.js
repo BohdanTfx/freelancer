@@ -7,23 +7,25 @@ angular.module('FreelancerApp')
 
         dataFactory.getTestById = function (testId) {
             return $http.get(urlBase, {
-                params: { test_id: testId }
+                params: {test_id: testId}
             });
         };
 
         var urlResult = '/dev/getresults';
-        dataFactory.sendAnswers = function (questions, results) {
+        dataFactory.sendAnswers = function (questions, results, testId, expireDate) {
 
             var data = $.param({
                 results: results,
-                questions: questions
+                questions: questions,
+                testId: testId,
+                expireDate: expireDate
             });
 
             return $http({
                 method: 'POST',
                 url: urlResult,
-                    headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            data: data
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                data: data
             });
         };
         return dataFactory;

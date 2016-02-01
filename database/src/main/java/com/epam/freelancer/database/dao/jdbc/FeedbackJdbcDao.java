@@ -30,6 +30,25 @@ public class FeedbackJdbcDao extends GenericJdbcDao<Feedback, Integer> implement
         return getFeedbacksByQuery(query, id);
     }
 
+    @Override
+    public Integer getAvgRate(Integer dev_id) {
+        Integer avg = null;
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection
+                     .prepareStatement("SELECT AVG(rate) from feedback WHERE dev_id = ? ;")) {
+            statement.setObject(1, dev_id);
+            try (ResultSet set = statement.executeQuery()) {
+                while (set.next()) {
+                    avg = set.getInt(1);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return avg;
+    }
+
     private List<Feedback>  getFeedbacksByQuery(String query, Integer id) {
         List<Feedback> feedbacks = new ArrayList<>();
         try (Connection connection = connectionPool.getConnection();
