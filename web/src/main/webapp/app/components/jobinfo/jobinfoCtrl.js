@@ -3,25 +3,22 @@ angular.module('FreelancerApp')
         var orderId = $stateParams.orderId;
         orderAPI.getOrderById(orderId).success(function(data){
             $scope.order = data;
-            $log.log(data + ' order');
+            getData();
+        }).error(function () {
+            alert("Order doesn't exist");
+        });
 
+        orderAPI.getFollowers(orderId).success(function(data){
+            console.log('followers');
+            $scope.followers = data;
         }).error(function () {
             alert(404);
         });
 
-        if($scope.order){
-
-        }else{
-            orderAPI.getFollowers(orderId).success(function(data){
-                console.log('followers');
-                $scope.followers = data;
-                $log.log(data +  ' followers');
-            }).error(function () {
-                alert(404);
-            });
-
-            orderAPI.getCustomerById().success(function(data){
-                $scope.followers = data;
+        function getData(){
+            console.log($scope.order.customerId);
+            orderAPI.getCustomerById($scope.order.customerId).success(function(data){
+                $scope.customer = data;
             }).error(function () {
                 alert(404);
             });

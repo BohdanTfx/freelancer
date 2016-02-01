@@ -16,8 +16,14 @@ angular.module('FreelancerApp')
 
         var urlCust = 'user/orders/getcustomerbyid?custId=';
 
-        dataFactory.getCustomerById = function (custId) {
-            return $http.post(urlCust + custId);
+        dataFactory.getCustomerById = function (customerId) {
+            return $http.post(urlCust + customerId);
+        };
+
+        var urlCust = 'user/orders/getcustomerfeedbacks?custId=';
+
+        dataFactory.getCustomerById = function (customerId) {
+            return $http.post(urlCust + customerId);
         };
 
         return dataFactory;
