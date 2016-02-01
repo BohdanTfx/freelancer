@@ -102,8 +102,7 @@ angular.module('FreelancerApp')
 
         $scope.sendSms = function () {
             $scope.sms = 'sms';
-            $scope.phone = "380932497376";
-
+            $scope.phone = '38093222222';
             var data = 'phone=' + $scope.phone + '&sms=' + $scope.sms;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 

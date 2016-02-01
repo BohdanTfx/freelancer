@@ -243,7 +243,7 @@
             </div>
             <div class="modal-footer">
                 <div class="form-group">
-                    <input type="text" class="form-control" ng-model="mesEmail" rows="5" placeholder="Your email"
+                    <input type="email" class="form-control" ng-model="mesEmail" rows="5" placeholder="Your email"
                            required/>
                     <br/>
 
@@ -251,7 +251,8 @@
         <textarea type="text" class="form-control" ng-model="$parent.mes" rows="5" placeholder="Text ..."
                   required></textarea>
                 </div>
-                <button type="button" ng-click="send()" class="btn btn-success" data-dismiss="modal"><span
+                    <button type="button" ng-disabled="mesSemdDis" ng-click="send()" class="btn btn-success"
+                            data-dismiss="modal"><span
                         class="glyphicon glyphicon-envelope"></span> Send
                 </button>
             </div>

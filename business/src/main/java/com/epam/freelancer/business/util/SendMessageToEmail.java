@@ -16,7 +16,7 @@ public class SendMessageToEmail {
 
     public static final Logger LOG = Logger.getLogger(SendMessageToEmail.class);
 
-    public static void sendFromGMail(String from, String pass, String[] to, String subject, String body) throws IOException {
+    public static boolean sendFromGMail(String from, String pass, String[] to, String subject, String body) throws IOException {
         Properties props = System.getProperties();
 
         String host = "smtp.gmail.com";
@@ -52,11 +52,14 @@ public class SendMessageToEmail {
             transport.connect(host, from, pass);
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
+            return true;
 
         } catch (AddressException ae) {
             LOG.error("Send message failed " + ae);
+            return false;
         } catch (MessagingException me) {
             LOG.error("Send message failed " + me);
+            return false;
         }
     }
 }

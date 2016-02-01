@@ -134,7 +134,16 @@ public class UserController extends HttpServlet {
             return;
         }
 
-        new SmsSender().sendSms(phone, sms, ue.getFname());
+        String[] str = new SmsSender().sendSms(phone, sms, ue.getFname());
+
+        try {
+            int res = Integer.parseInt(str[1]);
+            if (res < 0) {
+                response.sendError(500);
+            }
+        } catch (Exception e) {
+            response.sendError(500);
+        }
     }
 
     public void comment(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -191,8 +200,10 @@ public class UserController extends HttpServlet {
         String name = "Feedback from " + ue.getFname() + " " + ue.getLname();
 
 
-        SendMessageToEmail.sendFromGMail(from, fromPass, to, name, message);
-
+        boolean bool = SendMessageToEmail.sendFromGMail(from, fromPass, to, name, message);
+        if (!bool) {
+            response.sendError(500);
+        }
         /*
         * String from = LOGIN;
         String pass = PASSWORD;
