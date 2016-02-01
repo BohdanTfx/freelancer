@@ -18,6 +18,35 @@ angular
 						});
 					}
 
+					this.initSocial = function($http, $scope) {
+						var linkedinVerifier = getUrlVars();
+						if (linkedinVerifier !== undefined
+								&& linkedinVerifier.oauth_verifier !== undefined) {
+							$http.get("/user/signup/linkedin", {
+								params : {
+									verifier : linkedinVerifier.oauth_verifier
+								}
+							}).success(function(data, status, headers, config) {
+								$scope.user.email = data.emailAddress;
+								$scope.user.first_name = data.firstName;
+								$scope.user.last_name = data.lastName;
+							}).error(function(data, status, headers, config) {
+								alert('error ' + data);
+							});
+							return;
+						}
+
+						$http.get("/user/signup/social", {
+							params : {
+								callbackUrl : document.URL
+							}
+						}).success(function(data, status, headers, config) {
+							$scope.linkedinUrl = data.linkedinUrl;
+						}).error(function(data, status, headers, config) {
+							alert('error ' + data);
+						});
+					}
+
 					this.createUser = function($http, user) {
 						var config = {
 							headers : {
@@ -33,3 +62,15 @@ angular
 								});
 					}
 				});
+
+function getUrlVars() {
+	var vars = [], hash;
+	var hashes = window.location.href.slice(
+			window.location.href.indexOf('?') + 1).split('&');
+	for (var i = 0; i < hashes.length; i++) {
+		hash = hashes[i].split('=');
+		vars.push(hash[0]);
+		vars[hash[0]] = hash[1];
+	}
+	return vars;
+}

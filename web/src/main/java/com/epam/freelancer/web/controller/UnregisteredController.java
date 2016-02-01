@@ -3,7 +3,6 @@ package com.epam.freelancer.web.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -18,25 +17,14 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.manager.UserManager;
-import com.epam.freelancer.business.service.OrderingService;
-import com.epam.freelancer.business.service.TechnologyService;
-import com.epam.freelancer.database.model.Ordering;
 import com.epam.freelancer.database.model.UserEntity;
 import com.epam.freelancer.security.provider.AuthenticationProvider;
-import com.epam.freelancer.web.json.model.JsonPaginator;
-import com.epam.freelancer.web.social.Linkedin;
-import com.epam.freelancer.web.util.Paginator;
 
 public class UnregisteredController extends HttpServlet {
 	private final static Logger LOG = Logger
 			.getLogger(UnregisteredController.class);
 	private static final long serialVersionUID = 1L;
-	private OrderingService orderingService;
-	private TechnologyService technologyService;
 	private UserManager userManager;
-	private Linkedin linkedin;
-	private ObjectMapper mapper;
-	private Paginator paginator;
 
 	public UnregisteredController() {
 		init();
@@ -45,18 +33,6 @@ public class UnregisteredController extends HttpServlet {
 	@Override
 	public void init() {
 		LOG.info(getClass().getSimpleName() + " - " + " loaded");
-		linkedin = new Linkedin();
-		mapper = new ObjectMapper();
-		paginator = new Paginator();
-		try {
-			linkedin.initKeys("/social.properties");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		orderingService = (OrderingService) ApplicationContext.getInstance()
-				.getBean("orderingService");
-		technologyService = (TechnologyService) ApplicationContext
-				.getInstance().getBean("technologyService");
 
 		userManager = (UserManager) ApplicationContext.getInstance().getBean(
 				"userManager");
@@ -68,10 +44,6 @@ public class UnregisteredController extends HttpServlet {
 		LOG.info(getClass().getSimpleName() + " - " + "doGet");
 		try {
 			switch (FrontController.getPath(request)) {
-			case "unreg/signup":
-				request.setAttribute("role", request.getParameter("role"));
-				fillSignup(request, response);
-				break;
 			case "unreg/language/bundle":
 				sendBundle(request, response);
 				return;
@@ -84,20 +56,6 @@ public class UnregisteredController extends HttpServlet {
 			e.printStackTrace();
 			LOG.fatal(getClass().getSimpleName() + " - " + "doGet");
 		}
-	}
-
-	private void fillSignup(HttpServletRequest request,
-			HttpServletResponse response)
-	{
-		request.setAttribute("linkedinurl",
-				linkedin.getAuthentificationUrl("http://localhost:8081/signin"));
-		// request.setAttribute(
-		// "linkedinurl",
-		// linkedin.getAuthentificationUrl(request.getRemoteHost()
-		// + ":"
-		// + request.get
-		// + (request.getContextPath().isEmpty() ? "" : "/" + "/"
-		// + request.getContextPath()) + "/signin"));
 	}
 
 	private void sendBundle(HttpServletRequest request,

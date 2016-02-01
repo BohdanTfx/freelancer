@@ -1,9 +1,9 @@
 package com.epam.freelancer.web.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
@@ -31,6 +31,7 @@ import com.epam.freelancer.database.model.UserEntity;
 import com.epam.freelancer.security.provider.AuthenticationProvider;
 import com.epam.freelancer.web.json.model.JsonPaginator;
 import com.epam.freelancer.web.social.Linkedin;
+import com.epam.freelancer.web.social.model.LinkedinProfile;
 import com.epam.freelancer.web.util.Paginator;
 import com.google.gson.Gson;
 
@@ -79,12 +80,41 @@ public class UserController extends HttpServlet implements Responsable {
 				sendResponse(response, userManager.isEmailAvailable(request
 						.getParameter("email")), mapper);
 				return;
+			case "user/signup/social":
+				configSocials(request, response);
+				return;
+			case "user/signup/linkedin":
+				linkedinSignUp(request, response);
+				return;
 			default:
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOG.fatal(getClass().getSimpleName() + " - " + "doGet");
 		}
+	}
+
+	private void linkedinSignUp(HttpServletRequest request,
+			HttpServletResponse response)
+	{
+		String oauthVerifier = request.getParameter("verifier");
+		try {
+			linkedin.loadData(oauthVerifier);
+			LinkedinProfile linkedinProfile = linkedin.getProfile();
+
+			sendResponse(response, linkedinProfile, mapper);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void configSocials(HttpServletRequest request,
+			HttpServletResponse response)
+	{
+		String callbackUrl = request.getParameter("callbackUrl");
+		Map<String, Object> result = new HashMap<>();
+		result.put("linkedinUrl", linkedin.getAuthentificationUrl(callbackUrl));
+		sendResponse(response, result, mapper);
 	}
 
 	@Override
@@ -158,18 +188,20 @@ public class UserController extends HttpServlet implements Responsable {
 		}
 
 		try {
-			userManager.createUser(
-					data.entrySet()
-							.stream()
-							.collect(
-									Collectors.toMap(Map.Entry::getKey,
-											e -> new String[] { e.getValue() })),
-					role);
+			userManager
+					.createUser(
+							data.entrySet()
+									.stream()
+									.collect(
+											Collectors.toMap(Map.Entry::getKey,
+													e -> new String[] { e
+															.getValue() })),
+							role);
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 		}
-			
+
 		response.setStatus(200);
 	}
 

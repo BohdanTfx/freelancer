@@ -36,6 +36,8 @@ angular
 						}
 					}
 
+					signupAPI.initSocial($http, $scope);
+
 					$scope.timeZones = [
 							{
 								zone : "-12",
