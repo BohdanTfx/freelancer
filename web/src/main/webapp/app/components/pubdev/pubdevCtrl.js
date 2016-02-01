@@ -88,22 +88,26 @@ angular.module('FreelancerApp')
 
             });
 
-        pubdevAPI.getFeed($scope.query).success(
-            function (data, status, headers, config) {
-                console.log(data);
-                if (data.length !== 0) {
-                    $scope.feeds = data;
+        $scope.feed = function () {
+            pubdevAPI.getFeed($scope.query).success(
+                function (data, status, headers, config) {
+                    console.log(data);
+                    if (data.length !== 0) {
+                        $scope.feeds = data;
 
-                    for (var i = 0; i < $scope.feeds.length; i++) {
-                        if (typeof $scope.feeds[i].customer.imgUrl == 'undefined')
-                            $scope.feeds[i].customer.imgUrl = 'images/profile/no-profile-img-head.gif';
+                        for (var i = 0; i < $scope.feeds.length; i++) {
+                            if (typeof $scope.feeds[i].customer.imgUrl == 'undefined')
+                                $scope.feeds[i].customer.imgUrl = 'images/profile/no-profile-img-head.gif';
+                        }
                     }
-                }
-                else
+                    else
+                        $scope.emptyComm = true;
+                }).error(function () {
                     $scope.emptyComm = true;
-            }).error(function () {
-                $scope.emptyComm = true;
-            });
+                });
+        };
+
+        $scope.feed();
 
         $scope.sendSms = function () {
             $scope.sms = 'sms';
@@ -131,12 +135,21 @@ angular.module('FreelancerApp')
         $scope.comment = function () {
             var data = 'comment=' + $scope.com + '&id=' + $scope.id + '&rate=' + $scope.comrate;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+            if (typeof $scope.com != 'undefined' && typeof $scope.comrate != 'undefined') {
+                $http.post('/user/comment', data).success(function () {
+                    $scope.comsuc = 'Comment sent successfully.';
+                    $scope.comerr = undefined;
 
-            $http.post('/user/comment', data).success(function () {
-                $scope.comsuc = 'Comment sent successfully.';
-            }).error(function () {
+                    $scope.feed();
+
+                }).error(function () {
+                    $scope.comerr = 'Error, bad value.';
+                    $scope.comsuc = undefined;
+                });
+            } else {
                 $scope.comerr = 'Error, bad value.';
-            });
+                $scope.comsuc = undefined;
+            }
         };
 
         $scope.getNumber = function (count) {

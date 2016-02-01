@@ -196,6 +196,11 @@ public class UserController extends HttpServlet {
             return;
         }
 
+        if ("".equals(comment)) {
+            response.sendError(500);
+            return;
+        }
+
         String cust_id = ue.getId().toString();
         String author = "customer";
 
