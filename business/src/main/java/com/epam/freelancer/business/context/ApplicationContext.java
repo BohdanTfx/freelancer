@@ -40,6 +40,7 @@ public final class ApplicationContext {
                 .getSimpleName()));
         developerService.setContactDao(daoManager.getDAO(ContactDao.class
                 .getSimpleName()));
+		developerService.setFollowerMTMDevDao(daoManager.getManyToManyDAO(FollowerManyToManyDao.class.getSimpleName()));
         addBean("developerService", developerService);
         addBean("adminService", new AdminService());
         CustomerService customerService = new CustomerService();
@@ -108,6 +109,8 @@ public final class ApplicationContext {
 					new FollowerManyToManyJdbcDao());
 			daoManager.addDao(TestQuestionManyToManyDao.class.getSimpleName(),
 					new TestQuestionManyToManyJdbcDao());
+			daoManager.addDao(FollowerManyToManyDao.class.getSimpleName(),
+					new FollowerManyToManyJdbcDao());
 			daoManager.addDao(FeedbackDao.class.getSimpleName(),
 					new FeedbackJdbcDao());
 			// daoManager.addDao(FollowerDao.class.getSimpleName(), new Folo);

@@ -1,0 +1,41 @@
+<div class="job-info">
+    <md-toolbar class="md-primary">
+        <div class="md-toolbar-tools">
+            <h2 class="md-flex">{{order.title}}</h2>
+        </div>
+    </md-toolbar>
+
+    <md-content flex layout-padding>
+        <div class="col-xs-8 col-sm-10">
+            <p>{{order.descr}}</p>
+            <ul class="list-unstyled">
+                <li>Date: {{order.date | date:'dd/MM/yyyy'}}</li>
+                <li>Payment: {{order.payType}}, {{order.payment | number:2}} $</li>
+                <li>Time zone: {{order.zone}}</li>
+            </ul>
+        </div>
+        <div class="col-xs-4 col-sm-2">
+            <md-button
+                ng-click="submitAnswers()"
+                class="md-raised md-primary btn-pass-test">Subscribe
+            </md-button>
+            <div class="form-group">
+                <label class="control-label">Customer</label>
+                <div class="col-xs-12">
+                    <div class="label form-control">
+                        <div>{{customer.name}} {{customer.last_name}}</div>
+                        <ul class="list-unstyled">
+                            <li>Email: {{customer.email}}</li>
+                            <li>Zone: {{customer.zone}}</li>
+                            <li class="form-group">
+                                <label class="control-label">On site since</label>
+                                <div class="form-control">{{customer.regDate}}</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </md-content>
+</div>

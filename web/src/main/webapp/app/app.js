@@ -20,6 +20,12 @@
                     templateUrl : 'app/components/jobs/jobs.html',
                     controller : 'jobsCtrl'
                 }).state(
+                'order',
+                {
+                    url : '/orders/:orderId',
+                    templateUrl : 'app/components/jobinfo/jobinfo.html',
+                    controller : 'jobinfoCtrl'
+                }).state(
                 'signup',
                 {
                     url : '/signup',
