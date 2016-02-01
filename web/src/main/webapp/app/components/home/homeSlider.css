@@ -36,7 +36,7 @@
     position:absolute;
     width:100%;
     height:auto;
-    padding:10px 0;/* 10px will increase the height.*/
+    padding:30px 0;/* 10px will increase the height.*/
     left:0px; /*if the caption needs to be aligned from right, specify by right instead of left. i.e. right:20px;*/
     bottom:0px;/*if the caption needs to be aligned from top, specify by top instead of bottom. i.e. top:150px;*/
     z-index:3;
@@ -52,7 +52,7 @@
     background:none;
 }
 #slider div.mc-caption {
-    font: bold 14px/20px Arial;
+    font: bold 20px/24px Arial;
     color:#EEE;
     z-index:4;
     text-align:center;

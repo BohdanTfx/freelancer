@@ -40,4 +40,13 @@ height:100vh;
     padding-top: 2em;
 }
 
+.home-btn:active{
+    background-color: #11C3F0;
+    color:#273039;
+}
+
+.home-btn{
+   padding-top: 5px;
+    height: 40px;
+}
 

@@ -6,19 +6,16 @@ import com.epam.freelancer.database.dao.jdbc.DAOManager;
 import com.epam.freelancer.database.model.*;
 
 import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.epam.freelancer.business.util.ValidationParametersBuilder;
 import com.epam.freelancer.database.dao.ContactDao;
+import com.epam.freelancer.database.dao.DevTechManyToManyDao;
 import com.epam.freelancer.database.dao.DeveloperDao;
 import com.epam.freelancer.database.dao.GenericDao;
 import com.epam.freelancer.database.dao.GenericManyToManyDao;
 import com.epam.freelancer.database.dao.WorkerManyToManyDao;
 import com.epam.freelancer.database.dao.jdbc.DAOManager;
-import com.epam.freelancer.database.model.BaseEntity;
 import com.epam.freelancer.database.model.Contact;
 import com.epam.freelancer.database.model.Developer;
 import com.epam.freelancer.database.model.Ordering;
@@ -29,10 +26,11 @@ import com.epam.freelancer.database.model.Worker;
  * Created by Максим on 18.01.2016.
  */
 public class DeveloperService extends UserService<Developer> {
-    private GenericManyToManyDao<Developer, Ordering, Worker, Integer> workerMTMDao;
-    private GenericManyToManyDao<Developer, Technology, Worker, Integer> devMTMtechDao;
-    private GenericDao<Worker, Integer> workerDao;
-    private GenericDao<Contact, Integer> contactDao;
+	private GenericManyToManyDao<Developer, Ordering, Worker, Integer> workerMTMDao;
+	private GenericManyToManyDao<Developer, Technology, Worker, Integer> devMTMtechDao;
+	private	GenericManyToManyDao<Developer, Ordering, Follower, Integer> followerMTMDevDao;
+	private GenericDao<Worker, Integer> workerDao;
+	private GenericDao<Contact, Integer> contactDao;
 
     public DeveloperService() {
         super(DAOManager.getInstance().getDAO(
@@ -94,9 +92,19 @@ public class DeveloperService extends UserService<Developer> {
         return map;
     }
 
-    public List<Ordering> getDeveloperPortfolio(Integer id) {
-        return ((WorkerManyToManyDao) workerMTMDao).getPortfolio(id);
-    }
+	public List<Ordering> getDeveloperPortfolio(Integer id) {
+		return ((WorkerManyToManyDao) workerMTMDao).getPortfolio(id);
+	}
+
+	public List<Ordering> getDeveloperSubscribedProjects(Integer id) {
+		List<Ordering> orders = new ArrayList<>();
+		try {
+			 orders = new FollowerManyToManyJdbcDao().getDevSubscribedProjects(id);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return orders;
+	}
 
     public void setWorkerMTMDao(
             GenericManyToManyDao<Developer, Ordering, Worker, Integer> workerMTMDao) {

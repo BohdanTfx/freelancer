@@ -1,5 +1,19 @@
 package com.epam.freelancer.web.controller;
 
+import java.io.IOException;
+import java.util.*;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import com.epam.freelancer.business.service.*;
+import com.sun.deploy.net.HttpRequest;
+import com.sun.deploy.net.HttpResponse;
+import org.apache.log4j.Logger;
+
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.service.DeveloperQAService;
 import com.epam.freelancer.business.service.TechnologyService;
@@ -7,6 +21,7 @@ import com.epam.freelancer.business.service.TestService;
 import com.epam.freelancer.database.model.*;
 import com.epam.freelancer.web.json.model.Quest;
 import com.google.gson.Gson;
+import jdk.nashorn.internal.parser.JSONParser;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -32,12 +47,14 @@ public class DeveloperController extends HttpServlet {
     private TechnologyService technologyService;
     private ObjectMapper mapper;
     private DeveloperQAService developerQAService;
+    private DeveloperService developerService;
 
     public DeveloperController() {
         testService = (TestService) ApplicationContext.getInstance().getBean("testService");
         technologyService = (TechnologyService) ApplicationContext.getInstance().getBean("technologyService");
         mapper = new ObjectMapper();
         developerQAService = (DeveloperQAService) ApplicationContext.getInstance().getBean("developerQAService");
+        developerService = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
     }
 
     @Override
@@ -52,6 +69,12 @@ public class DeveloperController extends HttpServlet {
                     break;
                 case "dev/gettestbyid":
                     sendTestById(request, response);
+                    break;
+                case "dev/getallworks":
+                    fillMyWorksPage(request,response);
+                    break;
+                case "dev/getcustomerbyid":
+                    sendCustomerById(request,response);
                     break;
                 default:
 
@@ -82,6 +105,34 @@ public class DeveloperController extends HttpServlet {
             LOG.fatal(getClass().getSimpleName() + " - " + "doPost");
         }
     }
+
+
+    private void fillMyWorksPage(HttpServletRequest  request,HttpServletResponse response) throws IOException{
+        HttpSession session = request.getSession();
+        Developer dev = (Developer) session.getAttribute("user");
+        List<Ordering> allProjects = developerService.getDeveloperPortfolio(8);
+        List<Ordering> devSubscribedProjects = allProjects;
+        List<Ordering> devFinishedProjects = new ArrayList<>();
+        List<Ordering> devProjectsInProcess = new ArrayList<>();
+        allProjects.forEach(ordering -> {
+            if(ordering.getEnded()){
+                devFinishedProjects.add(ordering);
+            }else {
+                devProjectsInProcess.add(ordering);
+            }
+        });
+
+        String devFinishedWorksJson = new Gson().toJson(devFinishedProjects);
+        String devProjectsInProcessJson = new Gson().toJson(devProjectsInProcess);
+        String devSubscribedWorksJson = new Gson().toJson(devSubscribedProjects);
+        String resultJson = "{\"processedWorks\":"+devProjectsInProcessJson+",\"finishedWorks\":"+devFinishedWorksJson+
+                ",\"subscribedWorks\":"+devSubscribedWorksJson+"}";
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(resultJson);
+    }
+
+
 
     private void fillTestPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
@@ -129,6 +180,19 @@ public class DeveloperController extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(testJson);
+    }
+
+
+    private void sendCustomerById (HttpServletRequest request,HttpServletResponse response) throws IOException{
+         Integer custId = Integer.parseInt(request.getParameter("cust_id"));
+        CustomerService customerService = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
+        Customer cust = customerService.findById(custId);
+
+        String custJson = new Gson().toJson(cust);
+        String resultJson = "{\"customer\":" + custJson + "}";
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(resultJson);
     }
 
     private void sendResults(HttpServletRequest request, HttpServletResponse response) {

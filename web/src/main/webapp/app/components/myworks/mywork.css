@@ -1,0 +1,11 @@
+.details-dev-list{
+    font-size: 2em;
+}
+
+.details-dev-list li {
+    margin-left: 5%;
+}
+
+.hidden-icons-title{
+   display: inline-block;
+}
