@@ -73,6 +73,13 @@ angular.module('FreelancerApp')
 
             });
 
+        pubdevAPI.getTestByDevId($scope.query).success(
+            function (data, status, headers, config) {
+                console.log('test ' + data);
+            }).error(function () {
+
+            });
+
         pubdevAPI.getContById($scope.query).success(
             function (data, status, headers, config) {
                 console.log(data);

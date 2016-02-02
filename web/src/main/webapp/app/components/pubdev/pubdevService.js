@@ -34,6 +34,9 @@ angular.module('FreelancerApp')
         dataFactory.getFeed = function (id) {
             return $http.post('/user/getFeed?id=' + id);
         };
+        dataFactory.getTestByDevId = function (id) {
+            return $http.get('/dev/getTestByDevId?id=' + id);
+        };
 
         return dataFactory;
     });
