@@ -167,8 +167,13 @@
                             <md-content class="md-padding">
                                 <p class="devpub-emptyPort" ng-if="emptyPort">He hasn't test</p>
 
-                                <div ng-repeat="test in tests">
-                                    
+                                <div ng-repeat="qa in qas">
+                                    <h2>{{qa.test.name}}</h2>
+
+                                    <p>Rate: {{qa.rate}} / {{qa.test.passScore}}</p>
+
+                                    <p><span class="label label-success devpub-lb">{{qa.test.technology.name}}</span>
+                                    </p>
                                     <md-divider></md-divider>
                                 </div>
 
