@@ -88,7 +88,7 @@
     border-bottom: none;
 }
 
-.test-result h2, h3 {
+.test-result h2, .test-result h3 {
     font-weight: bolder;
 }
 

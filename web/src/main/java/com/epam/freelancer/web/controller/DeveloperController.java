@@ -32,9 +32,28 @@ import com.epam.freelancer.database.model.Technology;
 import com.epam.freelancer.database.model.Test;
 import com.epam.freelancer.database.model.UserEntity;
 import com.epam.freelancer.database.model.Worker;
+import com.epam.freelancer.business.service.*;
+import com.epam.freelancer.database.model.*;
 import com.epam.freelancer.web.json.model.Quest;
 import com.google.gson.Gson;
+import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * Created by Максим on 22.01.2016.
+ */
 public class DeveloperController extends HttpServlet {
     public static final Logger LOG = Logger.getLogger(UserController.class);
     private static final long serialVersionUID = -2356506023594947745L;
@@ -77,7 +96,8 @@ public class DeveloperController extends HttpServlet {
                 case "dev/getworkersbyidorder":
                     sendWorkersByIdOrder(request, response);
                     break;
-
+                case "dev/getTestByDevId":
+                    getTestByDevId(request, response);
 
                 default:
 
@@ -151,6 +171,32 @@ public class DeveloperController extends HttpServlet {
     }
 
 
+    public void getTestByDevId(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String param = request.getParameter("id");
+
+        try {
+            Integer devId = Integer.parseInt(param);
+            TestService ts = (TestService) ApplicationContext.getInstance().getBean("testService");
+            DeveloperQAService dQAs = (DeveloperQAService) ApplicationContext.getInstance().getBean("developerQAService");
+            List<DeveloperQA> developerQAs = dQAs.findAllByDevId(devId);
+            for (DeveloperQA developerQA : developerQAs) {
+                developerQA.setTest(ts.findById(developerQA.getTestId()));
+                if (developerQA.getTest().getPassScore() >= developerQA.getRate()) {
+                    developerQA.setIsPassed(false);
+                } else {
+                    developerQA.setIsPassed(true);
+                }
+            }
+            TechnologyService technologyService = (TechnologyService) ApplicationContext.getInstance().getBean("technologyService");
+            for (DeveloperQA developerQA : developerQAs) {
+                developerQA.getTest().setTechnology(technologyService.findById(developerQA.getTestId()));
+            }
+            sendListResp(developerQAs, response);
+        } catch (Exception e) {
+            response.sendError(500);
+            return;
+        }
+    }
 
     private void fillTestPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
@@ -299,6 +345,17 @@ public class DeveloperController extends HttpServlet {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(sb.toString());
+    }
+
+    private void sendListResp(List<?> list, HttpServletResponse response) throws IOException {
+        String json = new Gson().toJson(list);
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.getWriter().write(json);
+        response.getWriter().flush();
+        response.getWriter().close();
     }
 
 }

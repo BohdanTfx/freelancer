@@ -73,6 +73,15 @@
     font-weight: bold;
 }
 
+.devpub-emptyTest {
+    margin-top: 70px;
+    margin-bottom: 70px;
+    font-size: 48px;
+    text-align: center;
+    color: #ccc;
+    font-weight: bold;
+}
+
 .devpub-sp {
     clear: both;
 }
@@ -86,6 +95,14 @@
     margin-right: 20px;
 }
 
-.pubdev-overview {
-    margin: 10px;
+.devpub-test-name {
+    display: inline;
+}
+
+.devpub-lb-test {
+    font-size: 10px;
+}
+
+.devpub-test-label {
+    display: inline;
 }

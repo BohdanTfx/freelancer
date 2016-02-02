@@ -81,6 +81,19 @@ angular.module('FreelancerApp')
 
             });
 
+        pubdevAPI.getTestByDevId($scope.query).success(
+            function (data, status, headers, config) {
+                if (data.length != 0) {
+                    $scope.qas = data;
+                    $scope.outOfDate = 'Out of date';
+                    $scope.passed = 'Passed';
+                    $scope.notPassed = 'Not passed'
+                } else {
+                    $scope.emptyTest = true;
+                }
+            }).error(function () {
+            });
+
         pubdevAPI.getContById($scope.query).success(
             function (data, status, headers, config) {
                 console.log(data);
@@ -150,13 +163,16 @@ angular.module('FreelancerApp')
         };
 
         $scope.send = function () {
+            $scope.dataLoading = true;
             var data = 'message=' + $scope.mes + '&email=' + $scope.email + '&changeEmail=' + $scope.mesEmail;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
             $http.post('/user/send', data).success(function () {
                 $scope.messuc = 'Message sent successfully.';
+                $scope.dataLoading = false;
             }).error(function () {
                 $scope.messerr = 'Error, while sending message.';
+                $scope.dataLoading = false;
             });
         };
 

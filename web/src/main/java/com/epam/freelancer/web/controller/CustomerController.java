@@ -61,11 +61,40 @@ public class CustomerController extends HttpServlet {
                 case "cust/getCustById":
                     getCustById(request, response);
                     break;
+                case "cust/getFeedForCust":
+                    getFeedbacksByIdForCust(request, response);
+                    break;
+                case "cust/getContForCust":
+                    getContForCust(request, response);
+                    break;
                 default:
             }
         } catch (Exception e) {
             e.printStackTrace();
             LOG.fatal(getClass().getSimpleName() + " - " + "doPost");
+        }
+    }
+
+    public void getContForCust(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String param = request.getParameter("id");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                CustomerService cs = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
+                Customer customer = cs.findById(id);
+
+
+                if (customer != null) {
+                    customer.setPassword(null);
+                    sendResp(customer, response);
+                } else
+                    response.sendError(404);
+            } catch (Exception e) {
+                response.sendError(500);
+            }
+        } else {
+            response.sendError(404);
+            return;
         }
     }
 

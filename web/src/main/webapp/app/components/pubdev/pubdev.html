@@ -1,199 +1,242 @@
 <div class="container-top" ng-if="freelancerNotFound">
-	<div class="row">
-		<div class="col-md-12">
-			<div class="well panel panel-default">
-				<div class="panel-body fl-left">
-					<img class="devpub-not-found"
-						src="/images/profile/no-profile-img-head.gif" alt="" />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="well panel panel-default">
+                <div class="panel-body fl-left">
+                    <img class="devpub-not-found" src="/images/profile/no-profile-img-head.gif" alt=""/>
 
-					<h2 class="devpub-free-not-found">Freelancer not found</h2>
-				</div>
-			</div>
-		</div>
-	</div>
+                    <h2 class="devpub-free-not-found">Freelancer not found</h2>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </div>
 
 <div class="container-top" ng-if="!freelancerNotFound">
-	<div class="row">
-		<div class="col-md-12">
-			<div class="well panel panel-default">
-				<div class="panel-body">
-					<div class="col-xs-12 col-md-8 hr">
-						<div class="devpub-user" style="background-image: url('{{img}}')"></div>
-						<h2>
-							<em>{{fname}} {{lname}}</em>
-						</h2>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="well panel panel-default">
+                <div class="panel-body">
+                    <div class="col-xs-12 col-md-8 hr">
+                        <div class="devpub-user" style="background-image: url('{{img}}')"></div>
+                        <h2><em>{{fname}} {{lname}}</em></h2>
 
-						<p class="position">
-						<h5>{{position}}</h5>
-						<h4 class="devpub-overview">{{overHead}}</h4>
+                        <p class="position">
+                        <h5>{{position}}</h5>
+                        <h4 class="devpub-overview">{{overHead}}</h4>
 
-						<p class="pubdev-overview">{{overview}}</p>
+                        <p>{{overview}}</p>
 
-						<div class="devpub-noneOverAlign">
-							<p class="devpub-noneOver">{{noneOver}}</p>
-						</div>
-					</div>
-					<div class="col-xs-12 col-md-4 devpub-right-side">
-						<br />
+                        <div class="devpub-noneOverAlign">
+                            <p class="devpub-noneOver">{{noneOver}}</p>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-4 devpub-right-side">
+                        <br/>
 
-						<p>
-							<span style="color: firebrick">{{smserr}}</span>
-							<span style="color: darkgreen">{{smssuc}}</span>
-						<div ng-if="show" class="btn btn-block btn-primary"
-							ng-click="sendSms()">
-							<span class="glyphicon glyphicon-thumbs-up"></span>
-							Hire me
-						</div>
-						</p>
-						Rate:
-						<uib-rating ng-model="rateq" max="5" readonly="true"
-							on-leave="overStar = null" titles="['1','2','3','4', '5']"
-							aria-labelledby="default-rating"></uib-rating>
-						<br />
-						<span class="devpub-sp">{{hourly}}</span>
-						</p>
-						<p>
-							Technologies: <br />
-							<span ng-repeat="tech in techs">
-								<span class="label label-success devpub-lb">{{tech.name}}</span>
-							</span>
-						</p>
+                        <p>
+                            <span style="color: firebrick">{{smserr}}</span>
+                            <span style="color: darkgreen">{{smssuc}}</span>
 
-						<p></p>
-						<md-divider></md-divider>
-						<p>
-						<h5>{{skype}}</h5>
-						</p>
-						<p>
-						<h5>Email: {{email}}</h5>
-						</p>
-						<p>On site from: {{regDate | date: 'longDate' }}</p>
-						<span style="color: firebrick">{{messerr}}</span>
-						<span style="color: darkgreen">{{messuc}}</span>
-						<div class="btn btn-block btn-danger" data-toggle="modal"
-							data-target=".bs-example-modal-md">
-							<span class="glyphicon glyphicon-envelope"></span>
-							Write me
-						</div>
-					</div>
-				</div>
+                        <div class="btn btn-block btn-primary" ng-click="sendSms()">
+                                    <span
+                                            class="glyphicon glyphicon-thumbs-up"></span>
+                            Hire
+                            me
+                        </div>
+                        </p>
+                        Rate:
+                        <uib-rating ng-model="rateq" max="5" readonly="true"
+                                    on-leave="overStar = null" titles="['one','two','three']"
+                                    aria-labelledby="default-rating"></uib-rating>
+                        <br/>
+                        <span class="devpub-sp">{{hourly}}</span>
+                        </p>
+                        <p>
+                            Technologies:
+                            <br/>
+                            <span ng-repeat="tech in techs">
+                                <span class="label label-success devpub-lb">{{tech.name}}</span>
+                            </span>
+                        </p>
 
-				<md-content> <md-tabs md-dynamic-height
-					md-border-bottom> <md-tab label="Feedbacks">
-				<div class="tab-pane fade in active" id="menu1">
-					<span style="color: firebrick">{{comerr}}</span>
-					<span style="color: darkgreen">{{comsuc}}</span>
+                        <p>
+                    </p>
+                        <md-divider></md-divider>
+                        <p>
+                        <h5>{{skype}}</h5>
+                        </p>
+                        <p>
+                        <h5>Email: {{email}}</h5>
+                        </p>
+                        <p>On site from:
+                            {{regDate}}
+                        </p>
+                        <span style="color: firebrick">{{messerr}}</span>
+                        <span style="color: darkgreen">{{messuc}}</span>
+                        <div class="btn btn-block btn-danger" data-toggle="modal"
+                             data-target=".bs-example-modal-md">
+                            <span class="glyphicon glyphicon-envelope"></span>
+                            Write
+                            me
+                            <img ng-if="dataLoading"
+                                 src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
+                        </div>
+                    </div>
+                </div>
 
-					<div class="form-group devpub-comm-div" ng-if="show">
-						<br /> <label>Rate him: <uib-rating ng-model="rate"
-								max="max" readonly="false" on-leave="overStar = null"
-								titles="['1','2','3', '4', '5']"
-								aria-labelledby="default-rating"></uib-rating>
-						</label> <br />
-						<textarea type="text" class="form-control" ng-model="$parent.com"
-							rows="2" placeholder="Comment ..." required></textarea>
-						<br />
-						<button type="button" ng-click="comment(rate)"
-							class="btn btn-primary pull-right comm-but">
-							<span class="glyphicon glyphicon-comment"></span>
-							Comment
-						</button>
-					</div>
-					<br />
-					<hr />
+                <md-content>
+                    <md-tabs md-dynamic-height md-border-bottom>
+                        <md-tab label="Feedbacks">
+                            <div class="tab-pane fade in active" id="menu1">
+                                <span style="color: firebrick">{{comerr}}</span>
+                                <span style="color: darkgreen">{{comsuc}}</span>
 
-					<p class="devpub-emptyComment" ng-if="emptyComm">{{noneFeed}}</p>
+                                <div class="form-group devpub-comm-div">
+                                    <br/>
+                                    <label>Rate him:
+                                        <uib-rating ng-model="rate" max="max" readonly="false"
+                                                    on-leave="overStar = null" titles="['one','two','three']"
+                                                    aria-labelledby="default-rating"></uib-rating>
+                                    </label>
+                                    <br/>
+                            <textarea type="text" class="form-control" ng-model="$parent.com" rows="2"
+                                      placeholder="Comment ..."
+                                      required></textarea>
+                                    <br/>
+                                    <button type="button" ng-click="comment(rate)"
+                                            class="btn btn-primary pull-right comm-but">
+                                <span
+                                        class="glyphicon glyphicon-comment"></span>
+                                        Comment
+                                    </button>
+                                </div>
+                                <br/>
+                                <hr/>
 
-					<div ng-repeat="feed in feeds">
-						<span ng-if="$index != 0">
-							<br />
-						</span>
+                                <p class="devpub-emptyComment" ng-if="emptyComm">{{noneFeed}}</p>
 
-						<div class="feed"
-							style="background-image: url('{{feed.customer.imgUrl}}')"></div>
-						<p>
-							<em>{{feed.customer.fname}} {{feed.customer.lname}}</em>
-						</p>
+                                <div ng-repeat="feed in feeds">
+                                    <span ng-if="$index != 0"><br/></span>
 
-						<p>{{feed.comment}}</p>
-						<ul class="list-inline ratings" title="Ratings">
-							<uib-rating ng-model="feed.rate" max="5" readonly="true"
-								on-leave="overStar = null" titles="['1','2','3','4','5']"
-								aria-labelledby="default-rating"></uib-rating>
-						</ul>
+                                    <div class="feed"
+                                         style="background-image: url('{{feed.customer.imgUrl}}')"></div>
+                                    <p>
+                                        <em>{{feed.customer.fname}} {{feed.customer.lname}}</em>
+                                    </p>
 
-						<br />
-						<md-divider></md-divider>
-					</div>
-				</div>
-				</md-tab> <md-tab label="Portfolio"> <md-content class="md-padding">
-				<p class="devpub-emptyPort" ng-if="emptyPort">He has no
-					portfolio</p>
+                                    <p>{{feed.comment}}</p>
+                                    <ul class="list-inline ratings" title="Ratings">
+                                        <uib-rating ng-model="feed.rate" max="5" readonly="true"
+                                                    on-leave="overStar = null" titles="['one','two','three']"
+                                                    aria-labelledby="default-rating"></uib-rating>
+                                    </ul>
 
-				<div ng-repeat="port in ports">
-					<h4 class="tit">
-						<em>{{port.title}}</em>
-					</h4>
+                                    <br/>
+                                    <md-divider></md-divider>
+                                </div>
+                            </div>
+                        </md-tab>
+                        <md-tab label="Portfolio">
+                            <md-content class="md-padding">
+                                <p class="devpub-emptyPort" ng-if="emptyPort">He has no portfolio</p>
 
-					<div class="descr">
-						<p>{{port.descr}}</p>
+                                <div ng-repeat="port in ports">
+                                    <h4 class="tit">
+                                        <em>{{port.title}}</em>
+                                    </h4>
 
-						<p>
-							<span ng-repeat="tech in port.technologies">
-								<span class="label label-success devpub-lb">{{tech.name}}</span>
-							</span>
-						</p>
+                                    <div class="descr">
+                                        <p>{{port.descr}}</p>
 
-						<p>{{port.startedDate | date: 'longDate'}} - {{port.endedDate
-							| date: 'longDate'}}</p>
-					</div>
-					<md-divider></md-divider>
-				</div>
+                                        <p>
+                                    <span ng-repeat="tech in port.technologies">
+                                        <span class="label label-success devpub-lb">{{tech.name}}</span>
+                                    </span>
+                                        </p>
 
-				</md-content> </md-tab> </md-tabs> </md-content>
-			</div>
-		</div>
-	</div>
-	<!--/panel-body-->
-	<!--/panel-->
+                                        <p>
+                                            {{port.startedDate.substring(0, 12)}} - {{port.endedDate.substring(0, 12)}}
+                                        </p>
+                                    </div>
+                                    <md-divider></md-divider>
+                                </div>
+
+                            </md-content>
+                        </md-tab>
+                        <md-tab label="Test">
+                            <md-content class="md-padding">
+                                <p class="devpub-emptyTest" ng-if="emptyTest">There is no test</p>
+
+                                <div ng-repeat="qa in qas">
+                                    <h3 class="devpub-test-name">{{qa.test.name}}</h3>
+
+                                    <p ng-if="qa.isExpire" class="devpub-test-label"><span
+                                            class="label label-danger devpub-lb devpub-lb-test">{{outOfDate}}</span></p>
+
+                                    <p ng-if="qa.isPassed" class="devpub-test-label"><span
+                                            class="label label-primary devpub-lb devpub-lb-test">{{passed}}</span></p>
+
+                                    <p ng-if="qa.isPassed != true" class="devpub-test-label"><span
+                                            class="label label-danger devpub-lb devpub-lb-test">{{notPassed}}</span></p>
+
+                                    <div class="devpub-clear-div">
+                                        <p>Point: {{qa.rate}} / 100</p>
+
+                                        <p><span
+                                                class="label label-success devpub-lb">{{qa.test.technology.name}}</span>
+                                        </p>
+                                    </div>
+                                    <md-divider></md-divider>
+                                </div>
+
+                            </md-content>
+                        </md-tab>
+                    </md-tabs>
+                </md-content>
+            </div>
+        </div>
+    </div>
+    <!--/panel-body-->
+    <!--/panel-->
 </div>
 <!--/col-->
 </div>
 <!--/row-->
 </div>
 
-<div class="modal fade bs-example-modal-md" tabindex="-1" role="dialog"
-	aria-labelledby="mySmallModalLabel">
-	<div class="modal-dialog modal-md">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal"
-					aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-				<h4 class="modal-title">Send mail</h4>
-			</div>
-			<div class="modal-footer">
-				<div class="form-group">
-					<input type="email" readonly="readonly" class="form-control"
-						ng-model="mesEmail" rows="5" placeholder="Your email" required />
-					<br />
+<div class="modal fade bs-example-modal-md" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span
+            aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Send mail</h4>
+            </div>
+            <div class="modal-footer">
+                <div class="form-group">
+                    <input type="email" readonly="readonly" class="form-control" ng-model="mesEmail" rows="5"
+                           placeholder="Your email"
+                           required/>
+                    <br/>
 
-					<textarea type="text" class="form-control" ng-model="$parent.mes"
-						rows="5" placeholder="Text ..." required></textarea>
-					<br />
-					<button type="button" ng-disabled="mesSemdDis" ng-click="send()"
-						class="btn btn-success" data-dismiss="modal">
-						<span class="glyphicon glyphicon-envelope"></span>
-						Send
-					</button>
-				</div>
-			</div>
-			<!-- /.modal-content -->
-		</div>
-		<!-- /.modal-dialog -->
-	</div>
+    <textarea type="text" class="form-control" ng-model="$parent.mes" rows="5" placeholder="Text ..."
+              required></textarea>
+                    <br/>
+                    <button type="button" ng-disabled="mesSemdDis" ng-click="send()" class="btn btn-success"
+                            data-dismiss="modal">
+        <span
+                class="glyphicon glyphicon-envelope"></span>
+                        Send
+                    </button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 
 </div>
