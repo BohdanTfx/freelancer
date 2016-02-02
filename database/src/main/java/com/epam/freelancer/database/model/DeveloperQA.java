@@ -144,6 +144,7 @@ public class DeveloperQA implements BaseEntity<Integer> {
                 ", isExpire=" + isExpire +
                 ", isDeleted=" + isDeleted +
                 ", version=" + version +
+                ", test=" + test +
                 '}';
     }
 }

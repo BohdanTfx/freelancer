@@ -75,7 +75,7 @@ angular.module('FreelancerApp')
 
         pubdevAPI.getTestByDevId($scope.query).success(
             function (data, status, headers, config) {
-                console.log('test ' + data);
+                $scope.tests = data
             }).error(function () {
 
             });
