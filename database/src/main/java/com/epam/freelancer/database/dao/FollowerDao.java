@@ -12,4 +12,5 @@ public interface FollowerDao extends GenericDao<Follower, Integer> {
 	List<Follower> getDeveloperFollowings(Integer developerId);
 
 	List<Follower> getCustomerInvitation(Integer customerId);
+    List<Follower> getProjectFollowers(Integer id);
 }

@@ -20,7 +20,7 @@
                                 <li ng-show="order.zone"><strong>Time zone:</strong> {{order.zone}}</li>
                                 <li><strong>Technologies:</strong>
                                     <span ng-switch on="techs.length == 0">
-                                        <span ng-switch-when="true">unknown</span>
+                                        <span ng-switch-when="true">none</span>
                                         <span ng-switch-when="false">
                                             <span ng-repeat="tech in techs">
                                                 <span class="label label-success lb">{{tech.name}}</span>
@@ -62,6 +62,34 @@
 
                     <md-content>
                         <md-tabs md-dynamic-height md-border-bottom>
+                            <md-tab label="Followers">
+                                <div class="tab-pane fade in active">
+                                    <br/>
+
+                                    <p class="noFollowers" ng-if="noFollowers">There is no followers on this project</p>
+
+                                    <div ng-repeat="follower in followers">
+                                        <br/>
+
+                                        <div class="follower" style="background-image: url('../../../images/role/developer.png')"></div>
+
+                                        <p>
+                                            <em>{{follower.developer.fname}} {{follower.developer.lname}}</em>
+                                        </p>
+
+                                        <p>{{follower.message}}</p>
+
+                                        <ul class="list-inline ratings" title="Ratings">
+                                            <li ng-repeat="i in getNumber(feedback.rate)">
+                                                <span class="fa fa-star fa-lg"></span>
+                                            </li>
+                                        </ul>
+
+                                        <br/>
+                                        <md-divider></md-divider>
+                                    </div>
+                                </div>
+                            </md-tab>
                             <md-tab label="Feedbacks about customer">
                                 <div class="tab-pane fade in active" id="menu1">
                                     <br/>
