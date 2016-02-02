@@ -1,6 +1,7 @@
 package com.epam.freelancer.web.controller;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,31 +13,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.epam.freelancer.business.service.*;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
 import com.epam.freelancer.business.context.ApplicationContext;
-import com.epam.freelancer.business.service.DeveloperQAService;
-import com.epam.freelancer.business.service.TechnologyService;
-import com.epam.freelancer.business.service.TestService;
 import com.epam.freelancer.database.model.*;
 import com.epam.freelancer.web.json.model.Quest;
 import com.google.gson.Gson;
-import jdk.nashorn.internal.parser.JSONParser;
-import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Максим on 22.01.2016.
