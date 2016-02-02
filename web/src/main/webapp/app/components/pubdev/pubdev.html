@@ -76,22 +76,16 @@
                             me
                         </div>
                         </p>
-                        <!--<ul class="list-inline ratings" title="Ratings">
-                            <li ng-repeat="i in getNumber(rateq)">
-                                <a href="#">
-                                        <span
-                                                class="fa fa-star fa-lg"></span>
-                                </a>
-                            </li>
-                        </ul>-->
                         Rate:
                         <uib-rating ng-model="rateq" max="5" readonly="true" on-hover="hoveringOver(value)"
                                     on-leave="overStar = null" titles="['one','two','three']"
                                     aria-labelledby="default-rating"></uib-rating>
                         <br/>
-                        <span class="sp">&#36; {{hourly}} &#47;hr</span>
+                        <span class="sp">{{hourly}}</span>
                         </p>
                         <p>
+                            Technologies:
+                            <br/>
                             <span ng-repeat="tech in techs">
                                 <span class="label label-success lb">{{tech.name}}</span>
                             </span>
@@ -152,7 +146,7 @@
                                 </div>
                                 <br/>
 
-                                <p class="emptyComment" ng-if="emptyComm">There is no feedback</p>
+                                <p class="emptyComment" ng-if="emptyComm">{{noneFeed}}</p>
 
                                 <div ng-repeat="feed in feeds">
                                     <br/>

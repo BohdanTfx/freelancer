@@ -44,7 +44,12 @@ angular.module('FreelancerApp')
                 $scope.email = data.email;
                 $scope.fname = data.fname;
                 $scope.lname = data.lname;
-                $scope.hourly = data.hourly;
+                if (typeof data.hourly != 'undefined') {
+                    $scope.hourly = '$ ' + data.hourly + '/hr';
+                }
+                else {
+                    $scope.hourly = undefined;
+                }
                 $scope.regDate = data.regDate.substring(0, 12);
                 if (typeof data.overview != 'undefined') {
                     $scope.overview = data.overview;
@@ -105,6 +110,7 @@ angular.module('FreelancerApp')
                 function (data, status, headers, config) {
                     console.log(data);
                     if (data.length !== 0) {
+                        $scope.noneFeed = undefined;
                         $scope.feeds = data;
 
                         for (var i = 0; i < $scope.feeds.length; i++) {
@@ -112,10 +118,13 @@ angular.module('FreelancerApp')
                                 $scope.feeds[i].customer.imgUrl = 'images/profile/no-profile-img-head.gif';
                         }
                     }
-                    else
+                    else {
                         $scope.emptyComm = true;
+                        $scope.noneFeed = 'There is no feedback';
+                    }
                 }).error(function () {
                     $scope.emptyComm = true;
+                    $scope.noneFeed = 'There is no feedback';
                 });
         };
 
@@ -154,6 +163,8 @@ angular.module('FreelancerApp')
 
                     $scope.feed();
                     $scope.rating();
+
+                    $scope.noneFeed = undefined;
 
                 }).error(function () {
                     $scope.comerr = 'Error, bad value.';

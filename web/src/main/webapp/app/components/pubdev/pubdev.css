@@ -86,3 +86,7 @@
 .sp {
     clear: both;
 }
+
+.lb {
+    padding: 5px;
+}
