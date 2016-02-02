@@ -15,6 +15,13 @@ angular.module('FreelancerApp')
             alert(404);
         });
 
+        orderAPI.getOrderTechs(orderId).success(function(data){
+            console.log('followers');
+            $scope.techs = data;
+        }).error(function () {
+            alert(404);
+        });
+
         function getData(){
             console.log($scope.order.customerId);
             orderAPI.getCustomerById($scope.order.customerId).success(function(data){
@@ -22,5 +29,12 @@ angular.module('FreelancerApp')
             }).error(function () {
                 alert(404);
             });
+            console.log($scope.order.customerId);
+            orderAPI.getCustomerFeedbacks($scope.order.customerId).success(function(data){
+                $scope.feedbacks = data;
+            }).error(function () {
+                alert(404);
+            });
+
         }
     });

@@ -53,37 +53,14 @@
 
                     <md-content>
                         <md-tabs md-dynamic-height md-border-bottom>
-                            <md-tab label="Feedbacks">
+                            <md-tab label="Feedbacks about customer">
                                 <div class="tab-pane fade in active" id="menu1">
                                     <span style="color: firebrick">{{comerr}}</span>
                                     <span style="color: darkgreen">{{comsuc}}</span>
 
-                                    <div class="form-group comm-div">
-                                        <br/>
-                            <textarea type="text" class="form-control" ng-model="$parent.com" rows="2"
-                                      placeholder="Comment ..."
-                                      required></textarea>
-
-                                        <div class="form-group">
-                                            <label for="sel1">Rate him:</label>
-                                            <select class="form-control" ng-model="$parent.comrate" id="sel1">
-                                                <option>1</option>
-                                                <option>2</option>
-                                                <option>3</option>
-                                                <option>4</option>
-                                                <option>5</option>
-                                            </select>
-                                        </div>
-                                        <button type="button" ng-click="comment()"
-                                                class="btn btn-primary pull-right comm-but">
-                                <span
-                                        class="glyphicon glyphicon-comment"></span>
-                                            Comment
-                                        </button>
-                                    </div>
                                     <br/>
 
-                                    <p class="emptyComment" ng-if="emptyComm">There is no comment</p>
+                                    <p class="noFeedbacks" ng-if="noFeedbacks">There is no feedbacks</p>
 
                                     <div ng-repeat="feed in feeds">
                                         <br/>

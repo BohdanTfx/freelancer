@@ -116,6 +116,12 @@ public class UserController extends HttpServlet {
                 case "user/orders/getcustomerbyid":
                     getCustomerById(request, response);
                     break;
+                case "user/orders/getcustomerfeedbacks":
+                    getFeedbacksByIdForCust(request, response);
+                    break;
+                case "user/orders/getordertechs":
+                    getFeedbacksByIdForCust(request, response);
+                    break;
                 default:
             }
         } catch (Exception e) {
@@ -572,5 +578,20 @@ public class UserController extends HttpServlet {
         Customer customer = customerService.findById(custId);
         customer.setPassword(null);
         sendResp(customer, respons);
+    }
+
+    private void getFeedbacksByIdForCust(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String param = request.getParameter("custId");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                FeedbackService fs = (FeedbackService) ApplicationContext.getInstance().getBean("feedbackService");
+                List<Feedback> feedbacks = fs.findFeedbacksByCustId(id);
+                sendListResp(feedbacks, response);
+
+            }catch (Exception e) {
+                response.sendError(500);
+            }
+        }
     }
 }

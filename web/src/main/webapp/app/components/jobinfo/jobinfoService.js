@@ -20,10 +20,16 @@ angular.module('FreelancerApp')
             return $http.post(urlCust + customerId);
         };
 
-        var urlCust = 'user/orders/getcustomerfeedbacks?custId=';
+        var urlFeedbacks = 'user/orders/getcustomerfeedbacks?custId=';
 
-        dataFactory.getCustomerById = function (customerId) {
-            return $http.post(urlCust + customerId);
+        dataFactory.getCustomerFeedbacks = function (customerId) {
+            return $http.post(urlFeedbacks + customerId);
+        };
+
+        var urlTechs = 'user/orders/getordertechs';
+
+        dataFactory.getOrderTechs = function (orderId) {
+            return $http.post(urlTechs + orderId);
         };
 
         return dataFactory;

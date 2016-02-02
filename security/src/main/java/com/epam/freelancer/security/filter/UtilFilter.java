@@ -21,6 +21,9 @@ public class UtilFilter implements Filter {
 	public void init(FilterConfig filterConfig) throws
 			ServletException {
 
+		System.out.println("Util filter init");
+
+
 	}
 
 	@Override
