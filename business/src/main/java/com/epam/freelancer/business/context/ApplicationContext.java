@@ -46,6 +46,8 @@ public final class ApplicationContext {
         CustomerService customerService = new CustomerService();
         customerService.setContactDao(daoManager.getDAO(ContactDao.class
                 .getSimpleName()));
+		customerService.setOrderingDao(daoManager.getDAO(OrderingDao.class
+				.getSimpleName()));
         addBean("customerService", customerService);
         addBean("feedbackService", new FeedbackService());
 
@@ -60,7 +62,6 @@ public final class ApplicationContext {
 
 		addBean("questionService", new QuestionService());
 		addBean("testService", new TestService());
-
 
 		TestService testService = new TestService();
 		testService.setQuestionDao(daoManager.getDAO(QuestionDao.class.getSimpleName()));

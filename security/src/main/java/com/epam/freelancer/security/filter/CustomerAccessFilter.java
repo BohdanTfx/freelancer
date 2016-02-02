@@ -20,13 +20,13 @@ public class CustomerAccessFilter implements Filter {
 	private String userName;
 
 	public void init(FilterConfig config) throws ServletException {
-		authenticationProvider = new AuthenticationProvider();
+		/*authenticationProvider = (AuthenticationProvider) ApplicationContext.getInstance().getBean("authenticationProvider");
 		customerService = (CustomerService) ApplicationContext.getInstance()
 				.getBean("customerService");
 		EnvironmentVariablesManager manager = EnvironmentVariablesManager
 				.getInstance();
 		cookieAutoAuthName = manager.getVar("cookie.user.remember");
-		userName = manager.getVar("user.customer");
+		userName = manager.getVar("user.customer");*/
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response,

@@ -11,6 +11,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
@@ -25,13 +29,13 @@ public class FrontController extends HttpServlet {
 				.substring("/front/".length());
 	}
 
-	@Override
-	public void init(ServletConfig config) throws ServletException {
-		LOG.info(getClass().getSimpleName() + " - " + "front controller loaded");
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        LOG.info(getClass().getSimpleName() + " - " + "front controller loaded");
 
-		super.init(config);
-		configControllers();
-	}
+        super.init(config);
+        configControllers();
+    }
 
 	private void configControllers() {
 		controllers.put("user/", new UserController());
