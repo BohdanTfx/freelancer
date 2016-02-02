@@ -134,6 +134,11 @@ public class DeveloperController extends HttpServlet {
             List<DeveloperQA> developerQAs = dQAs.findAllByDevId(devId);
             for (DeveloperQA developerQA : developerQAs) {
                 developerQA.setTest(ts.findById(developerQA.getTestId()));
+                if (developerQA.getTest().getPassScore() >= developerQA.getRate()) {
+                    developerQA.setIsPassed(false);
+                } else {
+                    developerQA.setIsPassed(true);
+                }
             }
             TechnologyService technologyService = (TechnologyService) ApplicationContext.getInstance().getBean("technologyService");
             for (DeveloperQA developerQA : developerQAs) {
