@@ -48,7 +48,7 @@
                         </p>
                         Rate:
                         <uib-rating ng-model="rateq" max="5" readonly="true"
-                                    on-leave="overStar = null" titles="['one','two','three']"
+                                    on-leave="overStar = null" titles="['1','2','3','4', '5']"
                                     aria-labelledby="default-rating"></uib-rating>
                         <br/>
                         <span class="devpub-sp">{{hourly}}</span>
@@ -95,7 +95,7 @@
                                     <br/>
                                     <label>Rate him:
                                         <uib-rating ng-model="rate" max="max" readonly="false"
-                                                    on-leave="overStar = null" titles="['one','two','three']"
+                                                    on-leave="overStar = null" titles="['1','2','3', '4', '5']"
                                                     aria-labelledby="default-rating"></uib-rating>
                                     </label>
                                     <br/>
@@ -127,7 +127,7 @@
                                     <p>{{feed.comment}}</p>
                                     <ul class="list-inline ratings" title="Ratings">
                                         <uib-rating ng-model="feed.rate" max="5" readonly="true"
-                                                    on-leave="overStar = null" titles="['one','two','three']"
+                                                    on-leave="overStar = null" titles="['1','2','3','4','5']"
                                                     aria-labelledby="default-rating"></uib-rating>
                                     </ul>
 
