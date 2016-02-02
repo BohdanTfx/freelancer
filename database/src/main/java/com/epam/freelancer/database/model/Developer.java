@@ -141,7 +141,7 @@ public class Developer implements UserEntity {
     }
 
     public String getLang() {
-        return lang != null ? locale.toLanguageTag() : null;
+        return locale != null ? locale.toLanguageTag() : null;
     }
 
     public void setLang(String lang) {
