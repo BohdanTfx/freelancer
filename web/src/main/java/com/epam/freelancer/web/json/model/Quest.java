@@ -3,11 +3,11 @@ package com.epam.freelancer.web.json.model;
 import java.util.List;
 
 /**
- * Created by Максим on 28.01.2016.
+ * Created by пїЅпїЅпїЅпїЅпїЅпїЅ on 28.01.2016.
  */
 public class Quest {
-    Integer questionId;
-    List<Integer> answersId;
+    private Integer questionId;
+    private List<Integer> answersId;
 
     public Integer getQuestionId() {
         return questionId;

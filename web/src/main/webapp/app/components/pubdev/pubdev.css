@@ -1,22 +1,20 @@
-body, html {
-    width: 100%;
-    height: 100%;
-}
-
-.panel {
-    min-width: 100%;
-    min-height: 100%;
-    position: relative;
-}
-
-.not-found {
+.devpub-not-found {
     position: relative;
     float: left;
     top: 0;
     left: 0;
 }
 
-.user {
+.devpub-noneOver {
+    font-size: 32px;
+    color: #ccc;
+}
+
+.devpub-noneOverAlign {
+    text-align: center;
+}
+
+.devpub-user {
     display: inline-block;
     width: 100px;
     height: 100px;
@@ -30,8 +28,8 @@ body, html {
 
 .feed {
     display: inline-block;
-    width: 64px;
-    height: 64px;
+    width: 75px;
+    height: 75px;
     border-radius: 50%;
     background-repeat: no-repeat;
     background-position: center center;
@@ -40,37 +38,33 @@ body, html {
     float: left;
 }
 
-.border {
-    border-bottom: 1px solid #ccc;
-}
-
-.right-side {
+.devpub-right-side {
     text-align: center;
 }
 
-.comm-div {
+.devpub-comm-div {
     margin: 10px;
 }
 
-.overview {
+.devpub-overview {
     clear: both;
 }
 
-.emptyComment {
+.devpub-emptyComment {
     font-size: 48px;
     text-align: center;
     color: #ccc;
     font-weight: bold;
 }
 
-.free-not-found {
+.devpub-free-not-found {
     font-size: 48px;
     text-align: center;
     color: #ccc;
     font-weight: bold;
 }
 
-.emptyPort {
+.devpub-emptyPort {
     margin-top: 70px;
     margin-bottom: 70px;
     font-size: 48px;
@@ -79,7 +73,19 @@ body, html {
     font-weight: bold;
 }
 
-.tab-content {
-    margin-right: 20px;
+.devpub-sp {
+    clear: both;
+}
+
+.devpub-lb {
+    padding: 5px;
+}
+
+.devpub-feed-cont {
     margin-left: 20px;
+    margin-right: 20px;
+}
+
+.pubdev-overview {
+    margin: 10px;
 }

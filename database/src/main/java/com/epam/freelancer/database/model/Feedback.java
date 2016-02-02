@@ -26,6 +26,7 @@ public class Feedback implements BaseEntity<Integer> {
     @Column
     private Integer version;
     private Customer customer;
+    private Developer developer;
 
     public Feedback() {
     }
@@ -36,6 +37,14 @@ public class Feedback implements BaseEntity<Integer> {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public Developer getDeveloper() {
+        return developer;
+    }
+
+    public void setDeveloper(Developer developer) {
+        this.developer = developer;
     }
 
     @Override

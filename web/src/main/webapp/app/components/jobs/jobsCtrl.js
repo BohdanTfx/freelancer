@@ -7,6 +7,7 @@ angular
 				function($scope, jobsAPI, $log, $http) {
 					$scope.filter = {}
 					$scope.hourly = {};
+					$scope.ordersLoading = true;
 
 					$scope.filterToggle = function() {
 						if (filterOpen) {

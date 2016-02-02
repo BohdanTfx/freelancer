@@ -16,9 +16,25 @@ angular.module('FreelancerApp')
 
         var urlCust = 'user/orders/getcustomerbyid?custId=';
 
-        dataFactory.getCustomerById = function (custId) {
-            return $http.post(urlCust + custId);
+        dataFactory.getCustomerById = function (customerId) {
+            return $http.post(urlCust + customerId);
         };
 
+        var urlFeedbacks = 'user/orders/getcustomerfeedbacks?custId=';
+
+        dataFactory.getCustomerFeedbacks = function (customerId) {
+            return $http.post(urlFeedbacks + customerId);
+        };
+
+        var urlTechs = 'user/orders/getordertechs?orderId=';
+
+        dataFactory.getOrderTechs = function (orderId) {
+            return $http.post(urlTechs + orderId);
+        };
+
+        var urlCustHistory = 'user/orders/getcustomerhistory?custId=';
+        dataFactory.getCustomerHistory = function (custId) {
+            return $http.post(urlCustHistory+ custId);
+        };
         return dataFactory;
     });

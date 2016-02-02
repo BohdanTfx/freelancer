@@ -7,4 +7,6 @@ import com.epam.freelancer.database.model.Worker;
  */
 public interface WorkerDao extends GenericDao<Worker, Integer> {
 
+    public Worker getWorkerByDevIdAndOrderId (Integer idDev, Integer idOrder);
+
 }

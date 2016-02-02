@@ -1,6 +1,14 @@
 angular.module('FreelancerApp')
-    .controller('pubdevCtrl', function ($scope, pubdevAPI, $log, $http, $location, $filter, $stateParams) {
+    .controller('pubdevCtrl', function ($scope, pubdevAPI, $log, $http, $location, $filter, $stateParams, $rootScope) {
         console.log($stateParams.devName, $stateParams.devId + ' state');
+
+        $scope.userrole = $rootScope.role;
+
+        if ($scope.userrole == 'developer') {
+            $scope.show = false;
+        } else {
+            $scope.show = true;
+        }
 
         $scope.query = $stateParams.devId;
         $http.post('/user/isAuth').success(function (data) {
@@ -44,9 +52,21 @@ angular.module('FreelancerApp')
                 $scope.email = data.email;
                 $scope.fname = data.fname;
                 $scope.lname = data.lname;
-                $scope.hourly = data.hourly;
-                $scope.regDate = data.regDate.substring(0, 12);
-                $scope.overview = data.overview;
+                if (typeof data.hourly != 'undefined') {
+                    $scope.hourly = '$ ' + data.hourly + '/hr';
+                }
+                else {
+                    $scope.hourly = undefined;
+                }
+                $scope.regDate = data.regDate;
+                if (typeof data.overview != 'undefined') {
+                    $scope.overview = data.overview;
+                    $scope.overHead = 'Overview';
+                } else {
+                    $scope.overview = undefined;
+                    $scope.overHead = undefined;
+                    $scope.noneOver = 'Nothing to show';
+                }
                 $scope.position = data.position;
 
             }).error(function () {
@@ -83,12 +103,15 @@ angular.module('FreelancerApp')
                 $scope.emptyPort = true;
             });
 
-        pubdevAPI.getRateById($scope.query).success(
-            function (data, status, headers, config) {
-                $scope.rateq = data;
-            }).error(function () {
+        $scope.rating = function () {
+            pubdevAPI.getRateById($scope.query).success(
+                function (data, status, headers, config) {
+                    $scope.rateq = data;
+                }).error(function () {
 
-            });
+                });
+        };
+        $scope.rating();
 
         $scope.feed = function () {
             pubdevAPI.getFeed($scope.query).success(
@@ -102,10 +125,13 @@ angular.module('FreelancerApp')
                                 $scope.feeds[i].customer.imgUrl = 'images/profile/no-profile-img-head.gif';
                         }
                     }
-                    else
+                    else {
                         $scope.emptyComm = true;
+                        $scope.noneFeed = 'There is no feedback';
+                    }
                 }).error(function () {
                     $scope.emptyComm = true;
+                    $scope.noneFeed = 'There is no feedback';
                 });
         };
 
@@ -134,15 +160,24 @@ angular.module('FreelancerApp')
             });
         };
 
-        $scope.comment = function () {
-            var data = 'comment=' + $scope.com + '&id=' + $scope.id + '&rate=' + $scope.comrate;
-            $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
-            if (typeof $scope.com != 'undefined' && typeof $scope.comrate != 'undefined') {
+        $scope.comment = function (rate) {
+            if (rate != 0) {
+                var data = 'comment=' + $scope.com + '&id=' + $scope.id + '&rate=' + rate;
+                $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+            } else {
+                $scope.comerr = 'Error, bad value.';
+                $scope.comsuc = undefined;
+                return;
+            }
+            if (typeof $scope.com != 'undefined' && typeof rate != 'undefined') {
                 $http.post('/user/comment', data).success(function () {
                     $scope.comsuc = 'Comment sent successfully.';
                     $scope.comerr = undefined;
 
                     $scope.feed();
+                    $scope.rating();
+
+                    $scope.noneFeed = undefined;
 
                 }).error(function () {
                     $scope.comerr = 'Error, bad value.';
@@ -165,14 +200,9 @@ angular.module('FreelancerApp')
             return ratings;
         };
 
-        $scope.rate = 7;
-        $scope.max = 10;
+        $scope.rate = 1;
+        $scope.max = 5;
         $scope.isReadonly = false;
-
-        $scope.hoveringOver = function (value) {
-            $scope.overStar = value;
-            $scope.percent = 100 * (value / $scope.max);
-        };
 
         $scope.ratingStates = [
             {stateOn: 'glyphicon-ok-sign', stateOff: 'glyphicon-ok-circle'},
