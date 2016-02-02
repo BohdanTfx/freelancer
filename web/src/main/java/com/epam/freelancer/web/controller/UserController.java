@@ -5,6 +5,7 @@ import com.epam.freelancer.business.manager.UserManager;
 import com.epam.freelancer.business.service.*;
 import com.epam.freelancer.business.util.SendMessageToEmail;
 import com.epam.freelancer.business.util.SmsSender;
+import com.epam.freelancer.database.dao.jdbc.WorkerManyToManyJdbcDao;
 import com.epam.freelancer.database.model.*;
 import com.epam.freelancer.security.provider.AuthenticationProvider;
 import com.epam.freelancer.web.social.Linkedin;
@@ -26,6 +27,7 @@ public class UserController extends HttpServlet {
     private static final long serialVersionUID = -2356506023594947745L;
     private OrderingService orderingService;
     private CustomerService customerService;
+    private DeveloperService developerService;
     private TechnologyService technologyService;
     private UserManager userManager;
     private Linkedin linkedin;
@@ -55,6 +57,9 @@ public class UserController extends HttpServlet {
                 "userManager");
         customerService = (CustomerService) ApplicationContext.getInstance()
                 .getBean("customerService");
+        developerService = (DeveloperService) ApplicationContext.getInstance()
+                .getBean("developerService");
+
     }
 
 
@@ -123,6 +128,9 @@ public class UserController extends HttpServlet {
                     break;
                 case "user/orders/getordertechs":
                     getOrderTechs(request, response);
+                    break;
+                case "user/orders/getcustomerhistory":
+                    getCustomerHistory(request, response);
                     break;
                 default:
             }
@@ -580,7 +588,7 @@ public class UserController extends HttpServlet {
             try {
                 Integer orderId = Integer.parseInt(param);
                 List<Developer> developers = orderingService.findOrderFollowers(orderId);
-                developers.forEach(dev -> dev.setPassword(null));
+                developers.forEach(dev -> {dev.setPassword(null); dev.setSalt(null);});
                 sendListResp(developers, response);
             } catch (Exception e) {
                 response.sendError(500);
@@ -595,6 +603,7 @@ public class UserController extends HttpServlet {
                 Integer custId = Integer.parseInt(param);
                 Customer customer = customerService.findById(custId);
                 customer.setPassword(null);
+                customer.setSalt(null);
                 sendResp(customer, response);
             } catch (Exception e) {
                 response.sendError(500);
@@ -609,6 +618,14 @@ public class UserController extends HttpServlet {
                 Integer id = Integer.parseInt(param);
                 FeedbackService fs = (FeedbackService) ApplicationContext.getInstance().getBean("feedbackService");
                 List<Feedback> feedbacks = fs.findFeedbacksByCustId(id);
+
+                for (Feedback feedback : feedbacks) {
+                    Developer developer = developerService.findById(feedback.getDevId());
+                    developer.setPassword(null);
+                    developer.setSalt(null);
+                    feedback.setDeveloper(developer);
+                }
+
                 sendListResp(feedbacks, response);
 
             } catch (Exception e) {
@@ -624,6 +641,27 @@ public class UserController extends HttpServlet {
                 Integer id = Integer.parseInt(param);
                 List<Technology> technologies = orderingService.findOrderingTechnologies(id);
                 sendListResp(technologies, response);
+            } catch (Exception e) {
+                response.sendError(500);
+            }
+        }
+    }
+
+    private void getCustomerHistory(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String param = request.getParameter("custId");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                List<Ordering> orders = customerService.getProjectsPublicHistory(id);
+                for (Ordering ordering : orders) {
+                    ordering.setTechnologies(orderingService
+                            .findOrderingTechnologies(ordering.getId()));
+                }
+                if (orders != null) {
+                    sendListResp(orders, response);
+                } else {
+                    response.sendError(500);
+                }
             } catch (Exception e) {
                 response.sendError(500);
             }

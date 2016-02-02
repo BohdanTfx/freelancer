@@ -32,5 +32,9 @@ angular.module('FreelancerApp')
             return $http.post(urlTechs + orderId);
         };
 
+        var urlCustHistory = 'user/orders/getcustomerhistory?custId=';
+        dataFactory.getCustomerHistory = function (custId) {
+            return $http.post(urlCustHistory+ custId);
+        };
         return dataFactory;
     });

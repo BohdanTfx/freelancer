@@ -19,13 +19,12 @@
                                 <li><strong>Payment:</strong> {{order.payType}}, {{order.payment | number:2}} $</li>
                                 <li ng-show="order.zone"><strong>Time zone:</strong> {{order.zone}}</li>
                                 <li><strong>Technologies:</strong>
-                                    <code ng-hide="true">noTechs={{techs.length == 0}}</code>
-                                    noTechs
-                                    <span ng-switch on="noTechs"></span>
-                                    <span ng-switch-when="true">unknown</span>
-                                    <span ng-switch-when="false">
-                                        <span ng-repeat="tech in techs">
-                                            <span class="label label-success lb">{{tech.name}}</span>
+                                    <span ng-switch on="techs.length == 0">
+                                        <span ng-switch-when="true">unknown</span>
+                                        <span ng-switch-when="false">
+                                            <span ng-repeat="tech in techs">
+                                                <span class="label label-success lb">{{tech.name}}</span>
+                                            </span>
                                         </span>
                                     </span>
                                 </li>
@@ -40,11 +39,15 @@
                                 Subscribe
                             </div>
                             <div class="col-lg-5 col-sm-12 hidden-xs">
-                                <div class="user center" style="background-image: url('https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSmt5i-ru168WMldKAgcExrQIEKzlys0qTjjAA13TmHf5COlixX')">></div>
+                                <div class="user" style="background-image: url('https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSmt5i-ru168WMldKAgcExrQIEKzlys0qTjjAA13TmHf5COlixX')"></div>
                             </div>
                             <div class="col-lg-7 col-sm-12">
                                 <h2><em>{{customer.fname}} {{customer.lname}}</em></h2>
-
+                                <ul class="list-inline ratings" title="Ratings">
+                                    <li ng-repeat="i in getNumber(custRate)">
+                                        <span class="fa fa-star fa-lg"></span>
+                                    </li>
+                                </ul>
                                 <md-divider></md-divider>
                                 <ul class="list-unstyled">
                                     <li>Email: {{customer.email}}</li>
@@ -61,29 +64,24 @@
                         <md-tabs md-dynamic-height md-border-bottom>
                             <md-tab label="Feedbacks about customer">
                                 <div class="tab-pane fade in active" id="menu1">
-                                    <span style="color: firebrick">{{comerr}}</span>
-                                    <span style="color: darkgreen">{{comsuc}}</span>
-
                                     <br/>
 
                                     <p class="noFeedbacks" ng-if="noFeedbacks">There is no feedbacks about customer</p>
 
-                                    <div ng-repeat="feed in feeds">
+                                    <div ng-repeat="feedback in feedbacks">
                                         <br/>
 
-                                        <div class="feed"
-                                             style="background-image: url('{{feed.customer.imgUrl}}')"></div>
+                                        <div class="feedback" style="background-image: url('../../../images/role/developer.png')"></div>
+
                                         <p>
-                                            <em>{{feed.customer.fname}} {{feed.customer.lname}}</em>
+                                            <em>{{feedback.developer.fname}} {{feedback.developer.lname}}</em>
                                         </p>
 
-                                        <p>{{feed.comment}}</p>
+                                        <p>{{feedback.comment}}</p>
+
                                         <ul class="list-inline ratings" title="Ratings">
-                                            <li ng-repeat="i in getNumber(feed.rate)">
-                                                <a href="#">
-                                        <span
-                                                class="fa fa-star fa-lg"></span>
-                                                </a>
+                                            <li ng-repeat="i in getNumber(feedback.rate)">
+                                                <span class="fa fa-star fa-lg"></span>
                                             </li>
                                         </ul>
 
@@ -96,20 +94,18 @@
                                 <md-content class="md-padding">
                                     <p class="emptyHistory" ng-if="emptyPort">Customer hadn't any projects</p>
 
-                                    <div ng-repeat="port in ports">
+                                    <div ng-repeat="project in custProjects">
                                         <h4 class="tit">
-                                            <em>{{port.title}}</em>
+                                            <em>{{project.title}}</em>
                                         </h4>
 
                                         <div class="descr">
-                                            <p>{{port.descr}}</p>
-
+                                            <p>{{project.descr}}</p>
                                             <p>
-                                    <span ng-repeat="tech in port.technologies">
-                                        <span class="label label-success lb">{{tech.name}}</span>
-                                    </span>
+                                                <span ng-repeat="tech in project.technologies">
+                                                    <span class="label label-success lb">{{tech.name}}</span>
+                                                </span>
                                             </p>
-
                                             <p>
                                                 {{port.startedDate.substring(0, 12)}} - {{port.endedDate.substring(0,
                                                 12)}}
