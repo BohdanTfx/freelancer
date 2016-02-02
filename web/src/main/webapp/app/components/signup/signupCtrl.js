@@ -14,17 +14,17 @@ angular
 						$scope.role = role;
 						$scope.signup = signup;
 						localStorage.setItem("role", role);
-					}
+                    };
 
 					$scope.getCurrentZone = function() {
 						var offset = new Date().getTimezoneOffset(), o = Math
 								.abs(offset);
 						return Math.floor(o / 60);
-					}
+                    };
 
 					$scope.createUser = function() {
 						signupAPI.createUser($http, $scope.user);
-					}
+                    };
 
 					$scope.resetInputs = function() {
 						$scope.user = {
@@ -35,7 +35,7 @@ angular
 							passwordconfirm : "",
 							zone : $scope.getCurrentZone()
 						}
-					}
+                    };
 
 					signupAPI.initSocial($http, $scope);
 
@@ -190,6 +190,8 @@ angular
 																	}, 1000);
 														}
 													});
+
+                                    $scope.emailInputNgModel = ngModel;
 								}
 							}
 						} ]).directive(
@@ -226,4 +228,4 @@ angular
 						}
 					};
 				});
-;
+

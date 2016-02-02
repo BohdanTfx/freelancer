@@ -39,7 +39,7 @@
                             <span style="color: firebrick">{{smserr}}</span>
                             <span style="color: darkgreen">{{smssuc}}</span>
 
-                        <div class="btn btn-block btn-primary" ng-click="sendSms()">
+                        <div ng-if="show" class="btn btn-block btn-primary" ng-click="sendSms()">
                                     <span
                                             class="glyphicon glyphicon-thumbs-up"></span>
                             Hire
@@ -93,7 +93,7 @@
                                 <span style="color: firebrick">{{comerr}}</span>
                                 <span style="color: darkgreen">{{comsuc}}</span>
 
-                                <div class="form-group devpub-comm-div">
+                                <div ng-if="show" class="form-group devpub-comm-div">
                                     <br/>
                                     <label>Rate him:
                                         <uib-rating ng-model="rate" max="max" readonly="false"
@@ -101,11 +101,11 @@
                                                     aria-labelledby="default-rating"></uib-rating>
                                     </label>
                                     <br/>
-                            <textarea type="text" class="form-control" ng-model="$parent.com" rows="2"
+                            <textarea type="text" class="form-control" ng-model="feedback" rows="2"
                                       placeholder="Comment ..."
                                       required></textarea>
                                     <br/>
-                                    <button type="button" ng-click="comment(rate)"
+                                    <button type="button" ng-click="comment(rate, feedback)"
                                             class="btn btn-primary pull-right comm-but">
                                 <span
                                         class="glyphicon glyphicon-comment"></span>

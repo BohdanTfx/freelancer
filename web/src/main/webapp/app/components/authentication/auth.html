@@ -1,29 +1,27 @@
-<br/>
-<br/>
-<br/>
-<br/>
 <div class="login-form col-md-6 col-md-offset-3">
     <form name="form" ng-submit="login()" role="form">
         <md-content md-theme="docs-dark" layout-gt-sm="column" layout-padding>
-            <h4><strong>Sign In</strong></h4>
-            <md-divider></md-divider>
+            <h4>Sign In</h4>
+
             <div>
                 <span style="color: firebrick">{{error}}</span>
-                <md-input-container layout-gt-sm="column">
-                    <label>Email</label>
+                <md-input-container layout-gt-sm="column"><label>Email</label>
                     <input ng-model="username" name="username" id="username" required/>
                 </md-input-container>
-                <md-input-container layout-gt-sm="column">
-                    <label>Password</label>
-                    <input type="password" ng-model="password" name="password" id="password" required/>
-                </md-input-container>
-                <md-checkbox layout-gt-sm="column" name="remember" id="remember" ng-model="remember">Remember me
-                    <div class="md-label"><span class="ng-binding ng-scope">
-          </span></div>
+                <md-input-container layout-gt-sm="column"><label>Password</label>
+                    <input type="password" ng-model="password" name="password"
+                           id="password" required/></md-input-container>
+                <md-checkbox layout-gt-sm="column" name="remember" id="remember"
+                             ng-model="remember">Remember me
+                    <div class="md-label">
+                        <span class="ng-binding ng-scope"> </span>
+                    </div>
                 </md-checkbox>
             </div>
-            <button aria-label="Primary" class="md-raised md-primary md-button md-ink-ripple" type="submit"><strong>Sign
-                In</strong><span class="ng-scope"></span>
+            <button aria-label="Primary"
+                    class="md-raised md-primary md-button md-ink-ripple" type="submit">
+                <strong>Sign In</strong>
+                <span class="ng-scope"></span>
 
                 <div style="" class="md-ripple-container"></div>
             </button>

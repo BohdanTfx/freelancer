@@ -45,21 +45,21 @@ angular.module('FreelancerApp')
                 }
                 console.log(data + ' dev');
                 $scope.id = data.id;
-                if (typeof data.imgUrl == 'undefined')
+                if (typeof data.imgUrl == 'undefined' || data.imgUrl == null)
                     $scope.img = 'images/profile/no-profile-img.jpg';
                 else
                     $scope.img = data.imgUrl;
                 $scope.email = data.email;
                 $scope.fname = data.fname;
                 $scope.lname = data.lname;
-                if (typeof data.hourly != 'undefined') {
+                if (typeof data.hourly != 'undefined' && data.hourly != null) {
                     $scope.hourly = '$ ' + data.hourly + '/hr';
                 }
                 else {
                     $scope.hourly = undefined;
                 }
                 $scope.regDate = data.regDate;
-                if (typeof data.overview != 'undefined') {
+                if (typeof data.overview != 'undefined' && data.overview != null) {
                     $scope.overview = data.overview;
                     $scope.overHead = 'Overview';
                 } else {
@@ -176,16 +176,16 @@ angular.module('FreelancerApp')
             });
         };
 
-        $scope.comment = function (rate) {
+        $scope.comment = function (rate, feedback) {
             if (rate != 0) {
-                var data = 'comment=' + $scope.com + '&id=' + $scope.id + '&rate=' + rate;
+                var data = 'comment=' + feedback + '&id=' + $scope.id + '&rate=' + rate;
                 $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
             } else {
                 $scope.comerr = 'Error, bad value.';
                 $scope.comsuc = undefined;
                 return;
             }
-            if (typeof $scope.com != 'undefined' && typeof rate != 'undefined') {
+            if (typeof feedback != 'undefined' && typeof rate != 'undefined') {
                 $http.post('/user/comment', data).success(function () {
                     $scope.comsuc = 'Comment sent successfully.';
                     $scope.comerr = undefined;
