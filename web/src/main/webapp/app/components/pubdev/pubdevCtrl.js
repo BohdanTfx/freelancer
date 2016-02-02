@@ -90,12 +90,15 @@ angular.module('FreelancerApp')
                 $scope.emptyPort = true;
             });
 
-        pubdevAPI.getRateById($scope.query).success(
-            function (data, status, headers, config) {
-                $scope.rateq = data;
-            }).error(function () {
+        $scope.rating = function () {
+            pubdevAPI.getRateById($scope.query).success(
+                function (data, status, headers, config) {
+                    $scope.rateq = data;
+                }).error(function () {
 
-            });
+                });
+        };
+        $scope.rating();
 
         $scope.feed = function () {
             pubdevAPI.getFeed($scope.query).success(
@@ -150,6 +153,7 @@ angular.module('FreelancerApp')
                     $scope.comerr = undefined;
 
                     $scope.feed();
+                    $scope.rating();
 
                 }).error(function () {
                     $scope.comerr = 'Error, bad value.';

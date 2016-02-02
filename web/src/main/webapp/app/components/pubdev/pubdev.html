@@ -31,8 +31,7 @@
                         <div class="noneOverAlign">
                             <p class="noneOver">{{noneOver}}</p>
                         </div>
-                        <h4>Default</h4>
-                        <uib-rating ng-model="rate" max="max" readonly="isReadonly" on-hover="hoveringOver(value)"
+                        <!--<uib-rating ng-model="rate" max="max" readonly="isReadonly" on-hover="hoveringOver(value)"
                                     on-leave="overStar = null" titles="['one','two','three']"
                                     aria-labelledby="default-rating"></uib-rating>
                         <span class="label"
@@ -60,7 +59,7 @@
                             <uib-rating ng-model="y" rating-states="ratingStates"
                                         aria-labelledby="custom-icons-2"></uib-rating>
                             <b>(<i>Rate:</i> {{y}})</b></div>
-
+-->
 
                     </div>
                     <div class="col-xs-12 col-md-4 right-side">
@@ -77,14 +76,19 @@
                             me
                         </div>
                         </p>
-                        <ul class="list-inline ratings" title="Ratings">
+                        <!--<ul class="list-inline ratings" title="Ratings">
                             <li ng-repeat="i in getNumber(rateq)">
                                 <a href="#">
                                         <span
                                                 class="fa fa-star fa-lg"></span>
                                 </a>
                             </li>
-                        </ul>
+                        </ul>-->
+                        Rate:
+                        <uib-rating ng-model="rateq" max="5" readonly="true" on-hover="hoveringOver(value)"
+                                    on-leave="overStar = null" titles="['one','two','three']"
+                                    aria-labelledby="default-rating"></uib-rating>
+                        <br/>
                         <span class="sp">&#36; {{hourly}} &#47;hr</span>
                         </p>
                         <p>
