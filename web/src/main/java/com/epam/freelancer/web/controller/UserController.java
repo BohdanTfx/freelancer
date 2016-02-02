@@ -312,7 +312,10 @@ public class UserController extends HttpServlet implements Responsable {
 			response.sendError(500);
 			return;
 		}
-
+		if (comment.contains("<")) {
+			response.sendError(500);
+			return;
+		}
 		FeedbackService feedbackService = (FeedbackService) ApplicationContext
 				.getInstance().getBean("feedbackService");
 		Map<String, String[]> map = new HashMap<>();

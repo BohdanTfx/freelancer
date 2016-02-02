@@ -71,9 +71,7 @@
 					function($rootScope, $location, $cookieStore, $http,
 							AuthenticationService) {
 						$rootScope.logout = function() {
-							// reset login status
 							AuthenticationService.ClearCredentials();
-
 						};
 						$rootScope.$on('$locationChangeStart', function(event,
 								next, current, $scope) {
@@ -88,7 +86,6 @@
 							}).error(function() {
 							});
 							console.log('rootScope ' + $rootScope.globals);
-
 						});
 					} ]);
 
