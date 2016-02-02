@@ -59,10 +59,6 @@
     <link rel="stylesheet" href="app/components/home/home.css">
     <link rel="stylesheet" href="app/components/home/homeSlider.css">
 
-
-    <link rel="stylesheet" href="app/components/home/home.css">
-    <link rel="stylesheet" href="app/components/home/homeSlider.css">
-    <link rel="stylesheet" href="app/components/test/test.css">
     <link rel="stylesheet" href="app/components/myworks/mywork.css">
     <link rel="stylesheet" href="app/components/pubdev/pubdev.css">
 
@@ -133,93 +129,110 @@
         </div>
     </div>
 </header>
-<div class="MenuController">
-    <md-toolbar class="md-menu-toolbar">
-        <md-menu-bar class="menuIcons ">
-            <a href="#/home">
-                <i class="fa fa-home menuIconBtn home-btn"></i>
-            </a>
 
-            </md-menu>
 
-            <md-menu md-offset="49">
-                <button ng-click="$mdOpenMenu()" class="menuIconBtn">
-                    <i class="fa fa-user "></i>
-                </button>
-                <md-menu-content width=3 md-position-mode=target-left class="menuContent">
-                    <md-menu-item>
-                        <md-button onclick="location.href='#/personal'">
-                            Personal
-                        </md-button>
-                    </md-menu-item>
-                    <md-menu-item>
-                        <md-button onclick="location.href='#/myworks'">
-                            My Works
-                        </md-button>
-                    </md-menu-item>
-                    <md-menu-item>
-                        <md-button onclick="location.href='#/tests'">
-                            Tests
-                        </md-button>
-                    </md-menu-item>
-                </md-menu-content>
-            </md-menu>
+<div ng-switch on="logged">
+    <div ng-switch-when="true">
+            <div class="MenuController" >
+                <md-toolbar class="md-menu-toolbar">
+                <md-menu-bar class="menuIcons ">
+                    <a href="#/home">
+                        <i class="fa fa-home menuIconBtn home-btn"></i>
+                    </a>
 
-            <md-menu md-offset="49">
-                <button ng-click="$mdOpenMenu()" class="menuIconBtn">
-                    <i class="fa fa-bar-chart"></i>
-                </button>
-                <md-menu-content width=3 md-position-mode=target-left class="menuContent">
-                    <md-menu-item>
-                        <md-button>
-                            Statistics 1
-                        </md-button>
-                    </md-menu-item>
-                    <md-menu-item>
-                        <md-button>
-                            Statistics 2
-                        </md-button>
-                    </md-menu-item>
-                    <md-menu-item>
-                        <md-button>
-                            Statistics 3
-                        </md-button>
-                    </md-menu-item>
-                </md-menu-content>
-            </md-menu>
+                    </md-menu>
 
-            <md-menu md-offset="49">
-                <button ng-click="$mdOpenMenu()" class="menuIconBtn">
-                    <i class="fa fa-cogs"></i>
-                </button>
-                <md-menu-content width=3 md-position-mode=target-left class="menuContent">
-                    <md-menu-item>
-                        <md-button>
-                            Settings 1
-                        </md-button>
-                    </md-menu-item>
-                    <md-menu-item>
-                        <md-button>
-                            Settings 2
-                        </md-button>
-                    </md-menu-item>
-                    <md-menu-item>
-                        <md-button>
-                            Settings 3
-                        </md-button>
-                    </md-menu-item>
-                </md-menu-content>
-            </md-menu>
-        </md-menu-bar>
-    </md-toolbar>
-</div>
+                    <md-menu md-offset="49">
+                        <button ng-click="$mdOpenMenu()" class="menuIconBtn">
+                            <i class="fa fa-user "></i>
+                        </button>
+                        <md-menu-content width=3 md-position-mode=target-left class="menuContent">
+                            <md-menu-item>
+                                <md-button onclick="location.href='#/personal'">
+                                    Personal
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button onclick="location.href='#/myworks'">
+                                    My Works
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button onclick="location.href='#/tests'">
+                                    Tests
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
 
-<!-- Main view for templates -->
-<div class="menu-offset menu-header-offset">
-    <div class="container">
-        <div ui-view ></div>
+                    <md-menu md-offset="49">
+                        <button ng-click="$mdOpenMenu()" class="menuIconBtn">
+                            <i class="fa fa-bar-chart"></i>
+                        </button>
+                        <md-menu-content width=3 md-position-mode=target-left class="menuContent">
+                            <md-menu-item>
+                                <md-button>
+                                    Statistics 1
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button>
+                                    Statistics 2
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button>
+                                    Statistics 3
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+
+                    <md-menu md-offset="49">
+                        <button ng-click="$mdOpenMenu()" class="menuIconBtn">
+                            <i class="fa fa-cogs"></i>
+                        </button>
+                        <md-menu-content width=3 md-position-mode=target-left class="menuContent">
+                            <md-menu-item>
+                                <md-button>
+                                    Settings 1
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button>
+                                    Settings 2
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button>
+                                    Settings 3
+                                </md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                </md-menu-bar>
+            </md-toolbar>
+        </div>
+
+        <!-- Main view for templates -->
+        <div class="menu-offset menu-header-offset">
+            <div class="container">
+                <div ui-view ></div>
+            </div>
+        </div>
     </div>
+
+
+    <div ng-switch-default>
+        <div class="menu-header-offset-unlog">
+            <div class="">
+                <div ui-view ></div>
+            </div>
+        </div>
+    </div>
+
 </div>
+
 </body>
 
 
@@ -257,7 +270,6 @@
 <script src="app/components/home/homeSlider.js"></script>
 <script src="app/components/test/testCtrl.js"></script>
 <script src="app/components/test/testService.js"></script>
-<script src="app/components/home/homeSlider.js"></script>
 
 <script src="app/components/myworks/myworksCtrl.js"></script>
 <script src="app/components/myworks/myworksService.js"></script>
