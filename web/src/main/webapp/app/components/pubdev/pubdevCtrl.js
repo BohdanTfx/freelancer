@@ -1,6 +1,16 @@
 angular.module('FreelancerApp')
-    .controller('pubdevCtrl', function ($scope, pubdevAPI, $log, $http, $location, $filter, $stateParams) {
+    .controller('pubdevCtrl', function ($scope, pubdevAPI, $log, $http, $location, $filter, $stateParams, $rootScope) {
         console.log($stateParams.devName, $stateParams.devId + ' state');
+
+        $scope.userrole = $rootScope.role;
+
+        if ($scope.userrole == 'developer') {
+            $scope.showAddComment = false;
+        } else {
+            $scope.showAddComment = true;
+        }
+
+        alert($scope.showAddComment);
 
         $scope.query = $stateParams.devId;
         $http.post('/user/isAuth').success(function (data) {

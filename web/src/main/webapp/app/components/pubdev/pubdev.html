@@ -91,7 +91,7 @@
                                 <span style="color: firebrick">{{comerr}}</span>
                                 <span style="color: darkgreen">{{comsuc}}</span>
 
-                                <div class="form-group devpub-comm-div">
+                                <div class="form-group devpub-comm-div" ng-if="showAddComment">
                                     <br/>
                                     <label>Rate him:
                                         <uib-rating ng-model="rate" max="max" readonly="false"
