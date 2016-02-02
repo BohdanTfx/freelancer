@@ -5,12 +5,10 @@ angular.module('FreelancerApp')
         $scope.userrole = $rootScope.role;
 
         if ($scope.userrole == 'developer') {
-            $scope.showAddComment = false;
+            $scope.show = false;
         } else {
-            $scope.showAddComment = true;
+            $scope.show = true;
         }
-
-        alert($scope.showAddComment);
 
         $scope.query = $stateParams.devId;
         $http.post('/user/isAuth').success(function (data) {

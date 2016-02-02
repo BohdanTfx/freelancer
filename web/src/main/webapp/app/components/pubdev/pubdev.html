@@ -26,7 +26,7 @@
                         <h5>{{position}}</h5>
                         <h4 class="devpub-overview">{{overHead}}</h4>
 
-                        <p>{{overview}}</p>
+                        <p class="pubdev-overview">{{overview}}</p>
 
                         <div class="devpub-noneOverAlign">
                             <p class="devpub-noneOver">{{noneOver}}</p>
@@ -39,7 +39,7 @@
                             <span style="color: firebrick">{{smserr}}</span>
                             <span style="color: darkgreen">{{smssuc}}</span>
 
-                        <div class="btn btn-block btn-primary" ng-click="sendSms()">
+                        <div ng-if="show" class="btn btn-block btn-primary" ng-click="sendSms()">
                                     <span
                                             class="glyphicon glyphicon-thumbs-up"></span>
                             Hire
@@ -91,7 +91,7 @@
                                 <span style="color: firebrick">{{comerr}}</span>
                                 <span style="color: darkgreen">{{comsuc}}</span>
 
-                                <div class="form-group devpub-comm-div" ng-if="showAddComment">
+                                <div class="form-group devpub-comm-div" ng-if="show">
                                     <br/>
                                     <label>Rate him:
                                         <uib-rating ng-model="rate" max="max" readonly="false"
