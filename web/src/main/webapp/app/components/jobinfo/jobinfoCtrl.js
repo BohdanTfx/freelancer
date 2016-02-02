@@ -29,6 +29,9 @@ angular.module('FreelancerApp')
 
             orderAPI.getCustomerFeedbacks($scope.order.customerId).success(function (data) {
                 $scope.feedbacks = data;
+                if(data.length == 0) {
+                    $scope.noFeedbacks = true;
+                }
                 $scope.calcCustRate();
             }).error(function () {
                 alert(404);
@@ -36,6 +39,9 @@ angular.module('FreelancerApp')
 
             orderAPI.getCustomerHistory($scope.order.customerId).success(function (data) {
                 $scope.custProjects = data;
+                if(data.length == 0) {
+                    $scope.emptyHistory = true;
+                }
             }).error(function () {
                 alert(404);
             });

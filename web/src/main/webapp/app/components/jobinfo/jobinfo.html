@@ -92,7 +92,7 @@
                             </md-tab>
                             <md-tab label="Customer projects history">
                                 <md-content class="md-padding">
-                                    <p class="emptyHistory" ng-if="emptyPort">Customer hadn't any projects</p>
+                                    <p class="emptyHistory" ng-if="emptyHistory">Customer hadn't any projects</p>
 
                                     <div ng-repeat="project in custProjects">
                                         <h4 class="tit">
@@ -107,7 +107,7 @@
                                                 </span>
                                             </p>
                                             <p>
-                                                {{port.startedDate.substring(0, 12)}} - {{port.endedDate.substring(0,
+                                                {{project.startedDate.substring(0, 12)}} - {{project.endedDate.substring(0,
                                                 12)}}
                                             </p>
                                         </div>
