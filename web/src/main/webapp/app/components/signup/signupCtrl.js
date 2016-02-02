@@ -6,10 +6,14 @@ angular
 					$scope.page = {};
 					$scope.user = {};
 					$scope.signup = false;
+					$scope.signupForm = {};
+
+					$scope.roles = [ "developer", "customer" ];
 
 					$scope.chooseRole = function(signup, role) {
 						$scope.role = role;
 						$scope.signup = signup;
+						localStorage.setItem("role", role);
 					}
 
 					$scope.getCurrentZone = function() {
@@ -19,19 +23,21 @@ angular
 					}
 
 					$scope.createUser = function() {
-						alert($scope.user);
+						signupAPI.createUser($http, $scope.user);
 					}
 
 					$scope.resetInputs = function() {
 						$scope.user = {
-							firstname : "",
-							lastname : "",
+							first_name : "",
+							last_name : "",
 							email : "",
 							password : "",
 							passwordconfirm : "",
 							zone : $scope.getCurrentZone()
 						}
 					}
+
+					signupAPI.initSocial($http, $scope);
 
 					$scope.timeZones = [
 							{
@@ -186,4 +192,38 @@ angular
 													});
 								}
 							}
-						} ]);
+						} ]).directive(
+				'match',
+				function($parse) {
+					return {
+						require : '?ngModel',
+						restrict : 'A',
+						link : function(scope, elem, attrs, ctrl) {
+							if (!ctrl) {
+								return;
+							}
+
+							var matchGetter = $parse(attrs.match);
+
+							scope.$watch(getMatchValue, function() {
+								ctrl.$$parseAndValidate();
+							});
+
+							ctrl.$validators.match = function() {
+								var match = getMatchValue();
+								var value = ctrl.$viewValue === match;
+								return value;
+							};
+
+							function getMatchValue() {
+								var match = matchGetter(scope);
+								if (angular.isObject(match)
+										&& match.hasOwnProperty('$viewValue')) {
+									match = match.$viewValue;
+								}
+								return match;
+							}
+						}
+					};
+				});
+;

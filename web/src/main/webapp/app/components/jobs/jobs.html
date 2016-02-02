@@ -1,6 +1,6 @@
 <div class="container col-xs-12 center">
 	<div class="row">
-		<div class="panel panel-primary sticky-element">
+		<div class="panel panel-primary">
 			<div class="panel-heading" id="filterHeader"
 				ng-click="filterToggle()">
 				<div class="panel-title">
@@ -83,8 +83,9 @@
 	<div class="row">
 		<div class="pagination dark animated fadeIn">
 			<div class="col-xs-6">
-				<button ng-click="openPage(0)" class="page dark gradient">
-					<i class="fa fa-chevron-left"></i> <i class="fa fa-chevron-left"></i>
+				<button ng-click="openPage(0)" class="page dark gradient"
+					ng-if="showFirst">
+					<i class="fa fa-caret-left"></i>
 					<span>First</span>
 				</button>
 				<div data-pagination="yes" class="inline-block">
@@ -93,9 +94,10 @@
 						ng-class="page.first == 'current' ? 'page dark active' : 'page dark gradient'">{{page.second
 						+ 1}}</button>
 				</div>
-				<button class="page dark gradient" ng-click="openPage('last')">
-					<span>Last </span>
-					<i class="fa fa-chevron-right"></i> <i class="fa fa-chevron-right"></i>
+				<button class="page dark gradient" ng-click="openPage('last')"
+					ng-if="showLast">
+					<span>{{maxPage}} </span>
+					<i class="fa fa-caret-right"></i>
 				</button>
 			</div>
 			<md-input-container class="pull-right box-none">

@@ -3,9 +3,9 @@
         <div class="col-md-12">
             <div class="well panel panel-default">
                 <div class="panel-body fl-left">
-                    <img class="not-found" src="/images/profile/no-profile-img-head.gif" alt=""/>
+                    <img class="devpub-not-found" src="/images/profile/no-profile-img-head.gif" alt=""/>
 
-                    <h2 class="free-not-found">Freelancer not found</h2>
+                    <h2 class="devpub-free-not-found">Freelancer not found</h2>
                 </div>
             </div>
         </div>
@@ -19,90 +19,59 @@
             <div class="well panel panel-default">
                 <div class="panel-body">
                     <div class="col-xs-12 col-md-8 hr">
-                        <div class="user" style="background-image: url('{{img}}')"></div>
+                        <div class="devpub-user" style="background-image: url('{{img}}')"></div>
                         <h2><em>{{fname}} {{lname}}</em></h2>
 
                         <p class="position">
                         <h5>{{position}}</h5>
-                        <h4 class="overview">Overview</h4>
+                        <h4 class="devpub-overview">{{overHead}}</h4>
 
-                        <p>{{overview}}</p>
-                        <h4>Default</h4>
-                        <uib-rating ng-model="rate" max="max" readonly="isReadonly" on-hover="hoveringOver(value)"
-                                    on-leave="overStar = null" titles="['one','two','three']"
-                                    aria-labelledby="default-rating"></uib-rating>
-                        <span class="label"
-                              ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}"
-                              ng-show="overStar && !isReadonly">{{percent}}%</span>
+                        <p class="pubdev-overview">{{overview}}</p>
 
-                        <pre style="margin:15px 0;">Rate: <b>{{rate}}</b> - Readonly is: <i>{{isReadonly}}</i> - Hovering over: <b>{{overStar
-                            || "none"}}</b></pre>
-
-                        <button type="button" class="btn btn-sm btn-danger" ng-click="rate = 0"
-                                ng-disabled="isReadonly">Clear
-                        </button>
-                        <button type="button" class="btn btn-sm btn-default" ng-click="isReadonly = ! isReadonly">Toggle
-                            Readonly
-                        </button>
-                        <hr/>
-
-                        <h4>Custom icons</h4>
-
-                        <div ng-init="x = 5">
-                            <uib-rating ng-model="x" max="15" state-on="'glyphicon-ok-sign'"
-                                        state-off="'glyphicon-ok-circle'" aria-labelledby="custom-icons-1"></uib-rating>
-                            <b>(<i>Rate:</i> {{x}})</b></div>
-                        <div ng-init="y = 2">
-                            <uib-rating ng-model="y" rating-states="ratingStates"
-                                        aria-labelledby="custom-icons-2"></uib-rating>
-                            <b>(<i>Rate:</i> {{y}})</b></div>
-
-
+                        <div class="devpub-noneOverAlign">
+                            <p class="devpub-noneOver">{{noneOver}}</p>
+                        </div>
                     </div>
-                    <div class="col-xs-12 col-md-4 right-side">
+                    <div class="col-xs-12 col-md-4 devpub-right-side">
                         <br/>
 
                         <p>
                             <span style="color: firebrick">{{smserr}}</span>
                             <span style="color: darkgreen">{{smssuc}}</span>
 
-                        <div class="btn btn-block btn-primary" ng-click="sendSms()">
+                        <div ng-if="show" class="btn btn-block btn-primary" ng-click="sendSms()">
                                     <span
                                             class="glyphicon glyphicon-thumbs-up"></span>
                             Hire
                             me
                         </div>
                         </p>
-                        <ul class="list-inline ratings" title="Ratings">
-                            <li ng-repeat="i in getNumber(rateq)">
-                                <a href="#">
-                                        <span
-                                                class="fa fa-star fa-lg"></span>
-                                </a>
-                            </li>
-                        </ul>
-                        <span class="sp">&#36; {{hourly}} &#47;hr</span>
+                        Rate:
+                        <uib-rating ng-model="rateq" max="5" readonly="true"
+                                    on-leave="overStar = null" titles="['1','2','3','4', '5']"
+                                    aria-labelledby="default-rating"></uib-rating>
+                        <br/>
+                        <span class="devpub-sp">{{hourly}}</span>
                         </p>
                         <p>
+                            Technologies:
+                            <br/>
                             <span ng-repeat="tech in techs">
-                                <span class="label label-success lb">{{tech.name}}</span>
+                                <span class="label label-success devpub-lb">{{tech.name}}</span>
                             </span>
                         </p>
-                        <!--<p>
-                        On site from:
-                        <br/>
-                        {{regDate}}
+
+                        <p>
                     </p>
-                    -->
                         <md-divider></md-divider>
                         <p>
                         <h5>{{skype}}</h5>
                         </p>
                         <p>
-                        <h5>{{emailUnd}}</h5>
-                        </p>
-                        <p>
                         <h5>Email: {{email}}</h5>
+                        </p>
+                        <p>On site from:
+                            {{regDate}}
                         </p>
                         <span style="color: firebrick">{{messerr}}</span>
                         <span style="color: darkgreen">{{messuc}}</span>
@@ -113,108 +82,8 @@
                             me
                         </div>
                     </div>
-                    <!--/row--> </div>
-                <!--<div class="row">
-                <div class="container">
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active">
-                            <a href="#tab1" role="tab" data-toggle="tab">
-                                <span
-                                        class="glyphicon glyphicon-comment"></span>
-                                Comments
-                            </a>
-                        </li>
-                        <li role="presentation">
-                            <a href="#tab2" role="tab" data-toggle="tab">
-                                <span
-                                        class="glyphicon glyphicon-paperclip"></span>
-                                Portfolio
-                            </a>
-                        </li>
-                    </ul>
                 </div>
-                &lt;!&ndash; Tab panes &ndash;&gt;
-                <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane fade in active" id="tab1">
-                        <div class="tab-pane fade in active" id="menu1">
-                            <span style="color: firebrick">{{comerr}}</span>
-                            <span style="color: darkgreen">{{comsuc}}</span>
 
-                            <div class="form-group comm-div">
-                                <br/>
-                                <textarea type="text" class="form-control" ng-model="$parent.com" rows="2"
-                                          placeholder="Comment ..."
-                                          required></textarea>
-
-                                <div class="form-group">
-                                    <label for="sel1">Rate him:</label>
-                                    <select class="form-control" ng-model="$parent.comrate" id="sel1">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                        <option>4</option>
-                                        <option>5</option>
-                                    </select>
-                                </div>
-                                <button type="button" ng-click="comment()"
-                                                class="btn btn-primary pull-right comm-but">
-                                    <span
-                                                class="glyphicon glyphicon-comment"></span>
-                                    Comment
-                                </button>
-                            </div>
-                            <br/>
-
-                            <p class="emptyComment" ng-if="emptyComm">There is no comment</p>
-
-                            <div ng-repeat="feed in feeds">
-                                <br/>
-
-                                <div class="feed" style="background-image: url('{{feed.customer.imgUrl}}')"></div>
-                                <p> <em>{{feed.customer.fname}} {{feed.customer.lname}}</em>
-                                </p>
-
-                                <p>{{feed.comment}}</p>
-                                <ul class="list-inline ratings" title="Ratings">
-                                    <li ng-repeat="i in getNumber(feed.rate)">
-                                        <a href="#">
-                                            <span
-                                                    class="fa fa-star fa-lg"></span>
-                                        </a>
-                                    </li>
-                                </ul>
-
-                                <br/>
-                                <md-divider></md-divider>
-                            </div>
-                        </div>
-                    </div>
-                    <div role="tabpanel" class="tab-pane fade" id="tab2">
-                        <p class="emptyPort" ng-if="emptyPort">He has no portfolio</p>
-                        <div ng-repeat="port in ports">
-                            <h4 class="tit">
-                                <em>{{port.title}}</em>
-                            </h4>
-
-                            <div class="descr">
-                                <p>{{port.descr}}</p>
-
-                                <p>
-                                    <span ng-repeat="tech in port.technologies">
-                                        <span class="label label-success lb">{{tech.name}}</span>
-                                    </span>
-                                </p>
-
-                                <p>
-                                    {{port.startedDate.substring(0, 12)}} - {{port.endedDate.substring(0, 12)}}
-                                </p>
-                            </div>
-                            <md-divider></md-divider>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            -->
                 <md-content>
                     <md-tabs md-dynamic-height md-border-bottom>
                         <md-tab label="Feedbacks">
@@ -222,23 +91,19 @@
                                 <span style="color: firebrick">{{comerr}}</span>
                                 <span style="color: darkgreen">{{comsuc}}</span>
 
-                                <div class="form-group comm-div">
+                                <div class="form-group devpub-comm-div" ng-if="show">
+                                    <br/>
+                                    <label>Rate him:
+                                        <uib-rating ng-model="rate" max="max" readonly="false"
+                                                    on-leave="overStar = null" titles="['1','2','3', '4', '5']"
+                                                    aria-labelledby="default-rating"></uib-rating>
+                                    </label>
                                     <br/>
                             <textarea type="text" class="form-control" ng-model="$parent.com" rows="2"
                                       placeholder="Comment ..."
                                       required></textarea>
-
-                                    <div class="form-group">
-                                        <label for="sel1">Rate him:</label>
-                                        <select class="form-control" ng-model="$parent.comrate" id="sel1">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
-                                        </select>
-                                    </div>
-                                    <button type="button" ng-click="comment()"
+                                    <br/>
+                                    <button type="button" ng-click="comment(rate)"
                                             class="btn btn-primary pull-right comm-but">
                                 <span
                                         class="glyphicon glyphicon-comment"></span>
@@ -246,25 +111,24 @@
                                     </button>
                                 </div>
                                 <br/>
+                                <hr/>
 
-                                <p class="emptyComment" ng-if="emptyComm">There is no comment</p>
+                                <p class="devpub-emptyComment" ng-if="emptyComm">{{noneFeed}}</p>
 
                                 <div ng-repeat="feed in feeds">
-                                    <br/>
+                                    <span ng-if="$index != 0"><br/></span>
 
-                                    <div class="feed" style="background-image: url('{{feed.customer.imgUrl}}')"></div>
+                                    <div class="feed"
+                                         style="background-image: url('{{feed.customer.imgUrl}}')"></div>
                                     <p>
                                         <em>{{feed.customer.fname}} {{feed.customer.lname}}</em>
                                     </p>
 
                                     <p>{{feed.comment}}</p>
                                     <ul class="list-inline ratings" title="Ratings">
-                                        <li ng-repeat="i in getNumber(feed.rate)">
-                                            <a href="#">
-                                        <span
-                                                class="fa fa-star fa-lg"></span>
-                                            </a>
-                                        </li>
+                                        <uib-rating ng-model="feed.rate" max="5" readonly="true"
+                                                    on-leave="overStar = null" titles="['1','2','3','4','5']"
+                                                    aria-labelledby="default-rating"></uib-rating>
                                     </ul>
 
                                     <br/>
@@ -274,7 +138,7 @@
                         </md-tab>
                         <md-tab label="Portfolio">
                             <md-content class="md-padding">
-                                <p class="emptyPort" ng-if="emptyPort">He has no portfolio</p>
+                                <p class="devpub-emptyPort" ng-if="emptyPort">He has no portfolio</p>
 
                                 <div ng-repeat="port in ports">
                                     <h4 class="tit">
@@ -286,7 +150,7 @@
 
                                         <p>
                                     <span ng-repeat="tech in port.technologies">
-                                        <span class="label label-success lb">{{tech.name}}</span>
+                                        <span class="label label-success devpub-lb">{{tech.name}}</span>
                                     </span>
                                         </p>
 
@@ -324,7 +188,8 @@
             </div>
             <div class="modal-footer">
                 <div class="form-group">
-                    <input type="email" class="form-control" ng-model="mesEmail" rows="5" placeholder="Your email"
+                    <input type="email" readonly="readonly" class="form-control" ng-model="mesEmail" rows="5"
+                           placeholder="Your email"
                            required/>
                     <br/>
 

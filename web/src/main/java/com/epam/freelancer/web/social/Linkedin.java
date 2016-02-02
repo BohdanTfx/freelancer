@@ -47,20 +47,6 @@ public class Linkedin {
 		return service.getAuthorizationUrl(requestToken);
 	}
 
-	// public static void main(String[] args) {
-	// Linkedin linkedin = new Linkedin();
-	// try {
-	// linkedin.initKeys("/social.properties");
-	// System.out.println(linkedin.getAuthentificationUrl());
-	// Scanner scanner = new Scanner(System.in);
-	// linkedin.loadData(scanner.next());
-	// System.out.println(linkedin.getProfile());
-	//
-	// } catch (IOException e) {
-	// e.printStackTrace();
-	// }
-	// }
-
 	public void loadData(String value) throws JsonParseException,
 			JsonMappingException, IOException
 	{

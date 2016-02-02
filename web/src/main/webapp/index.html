@@ -48,6 +48,7 @@
     <link rel="stylesheet"
           href="bower_components/angularjs-slider-master/rzslider.min.css">
     <link rel="stylesheet" href="bower_components/angular-bootstrap/ui-bootstrap-csp.css"/>
+    <link rel="stylesheet" href="bower_components/angular-ui-notification-master/angular-ui-notification.min.css"/>
     <link rel="stylesheet" href="app/styles/Animate.css">
     <link rel="stylesheet" href="app/styles/font-awesome.min.css">
     <link rel="stylesheet" href="app/styles/hover.min.css">
@@ -99,21 +100,18 @@
                     </div>
 
                     <div class="navbar-collapse collapse clearfix">
-                        <!--<sec:access role="none">-->
                         <ul class="navigation" ng-switch on="logged">
                             <li class="hvr-underline-from-center" ng-switch-when="false"><a
                                     href="#/auth">
                                 <i class="fa fa-sign-in"></i>Sign In
                             </a></li>
                             <li class="hvr-underline-from-center" ng-switch-when="false"><a
-                                    href="#/chooserole">
+                                    href="#/signup">
                                 <i class="fa fa-user-plus"></i>Sign Up
                             </a></li>
 
 
                         </ul>
-                        <!--</sec:access>-->
-                        <!--<sec:access role="user">-->
                         <ul class="navigation" ng-switch on="logged">
                             <li class="hvr-underline-from-center" ng-switch-when="true"><a
                                     href="#/cabinet/main">
@@ -125,7 +123,6 @@
                                 <i class="fa fa-sign-out"></i>Logout
                             </a></li>
                         </ul>
-                        <!--</sec:access>-->
                     </div>
                 </nav>
 
@@ -286,6 +283,7 @@
 <script
         src="bower_components/angular-multi-select-master/isteven-multi-select.js"></script>
 <script src="bower_components/angularjs-slider-master/rzslider.min.js"></script>
+<script src="bower_components/angular-ui-notification-master/angular-ui-notification.min.js"></script>
 <script src="app/app.js"></script>
 <script src="app/constants/config.js"></script>
 

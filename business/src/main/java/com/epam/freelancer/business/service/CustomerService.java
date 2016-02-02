@@ -3,6 +3,7 @@ package com.epam.freelancer.business.service;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import com.epam.freelancer.business.util.ValidationParametersBuilder;
 import com.epam.freelancer.database.dao.ContactDao;
@@ -36,12 +37,13 @@ public class CustomerService extends UserService<Customer> {
 		entity.setLname(value != null ? value[0] : null);
 		value = data.get("email");
 		entity.setEmail(value != null ? value[0] : null);
+		value = data.get("img_url");
+		entity.setImgUrl(value != null ? value[0] : null);
 		value = data.get("lang");
 		entity.setLang(value != null ? value[0] : "en");
-		value = data.get("uuid");
-		entity.setUuid(value != null ? value[0] : null);
-		value = data.get("reg_url");
-		entity.setRegUrl(value != null ? value[0] : null);
+		value = data.get("zone");
+		entity.setZone(value != null ? Integer.parseInt(value[0]) : null);
+		entity.setRegUrl(UUID.randomUUID().toString());
 		entity.setRegDate(new Timestamp(new java.util.Date().getTime()));
 		value = data.get("password");
 		entity.setPassword(value != null ? value[0] : null);
@@ -59,14 +61,14 @@ public class CustomerService extends UserService<Customer> {
 				.maxLength(50).minLength(1),
 				data.get("first_name") == null ? null
 						: data.get("first_name")[0]);
+		map.put(ValidationParametersBuilder.createParameters(false).maxLength(
+				255), data.get("img_url") == null ? null
+				: data.get("img_url")[0]);
 		map.put(ValidationParametersBuilder.createParameters(false)
 				.maxLength(50).minLength(1),
 				data.get("last_name") == null ? null : data.get("last_name")[0]);
 		map.put(ValidationParametersBuilder.createParameters(false)
-				.maxLength(50).minLength(1), data.get("uuid") == null ? null
-				: data.get("uuid")[0]);
-		map.put(ValidationParametersBuilder.createParameters(false)
-				.maxLength(140).minLength(1),
+				.maxLength(140).minLength(8),
 				data.get("password") == null ? null : data.get("password")[0]);
 		map.put(ValidationParametersBuilder
 				.createParameters(false)
@@ -74,6 +76,9 @@ public class CustomerService extends UserService<Customer> {
 				.pattern(
 						"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]+)"),
 				data.get("email") == null ? null : data.get("email")[0]);
+		map.put(ValidationParametersBuilder.createParameters(true)
+				.isInteger(true).max(13.0).min(-12.0),
+				data.get("zone") == null ? null : data.get("zone")[0]);
 
 		return map;
 	}

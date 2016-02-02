@@ -1,58 +1,24 @@
 package com.epam.freelancer.web.controller;
 
-import com.epam.freelancer.business.context.ApplicationContext;
-import com.epam.freelancer.business.manager.UserManager;
-import com.epam.freelancer.business.service.OrderingService;
-import com.epam.freelancer.business.service.TechnologyService;
-import com.epam.freelancer.database.model.Ordering;
-import com.epam.freelancer.web.json.model.JsonPaginator;
-import com.epam.freelancer.web.social.Linkedin;
-import com.epam.freelancer.web.util.Paginator;
-import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.*;
+
+import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
 
 public class UnregisteredController extends HttpServlet {
 	private final static Logger LOG = Logger
 			.getLogger(UnregisteredController.class);
 	private static final long serialVersionUID = 1L;
-	private OrderingService orderingService;
-	private TechnologyService technologyService;
-	private UserManager userManager;
-	private Linkedin linkedin;
-	private ObjectMapper mapper;
-	private Paginator paginator;
-
-	public UnregisteredController() {
-		init();
-	}
-
-	@Override
-	public void init() {
-		LOG.info(getClass().getSimpleName() + " - " + " loaded");
-		linkedin = new Linkedin();
-		mapper = new ObjectMapper();
-		paginator = new Paginator();
-		try {
-			linkedin.initKeys("/social.properties");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		orderingService = (OrderingService) ApplicationContext.getInstance()
-				.getBean("orderingService");
-		technologyService = (TechnologyService) ApplicationContext
-				.getInstance().getBean("technologyService");
-
-		userManager = (UserManager) ApplicationContext.getInstance().getBean(
-				"userManager");
-	}
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException
@@ -60,54 +26,15 @@ public class UnregisteredController extends HttpServlet {
 		LOG.info(getClass().getSimpleName() + " - " + "doGet");
 		try {
 			switch (FrontController.getPath(request)) {
-			case "unreg/signup":
-				request.setAttribute("role", request.getParameter("role"));
-				fillSignup(request, response);
-				break;
 			case "unreg/language/bundle":
 				sendBundle(request, response);
 				return;
-                case "unreg/email":
-                    checkEmail(request, response);
-                    return;
 			default:
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOG.fatal(getClass().getSimpleName() + " - " + "doGet");
 		}
-	}
-
-    public void test(HttpServletRequest request, HttpServletResponse response) {
-        System.out.println("TEST");
-    }
-
-	private void checkEmail(HttpServletRequest request,
-			HttpServletResponse response) throws IOException
-	{
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		try (PrintWriter out = response.getWriter()) {
-			out.print(mapper.writeValueAsString(userManager
-					.isEmailAvailable(request.getParameter("email"))));
-			out.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void fillSignup(HttpServletRequest request,
-			HttpServletResponse response)
-	{
-		request.setAttribute("linkedinurl",
-                linkedin.getAuthentificationUrl("http://localhost:8081/signin"));
-        // request.setAttribute(
-		// "linkedinurl",
-		// linkedin.getAuthentificationUrl(request.getRemoteHost()
-		// + ":"
-		// + request.get
-		// + (request.getContextPath().isEmpty() ? "" : "/" + "/"
-		// + request.getContextPath()) + "/signin"));
 	}
 
 	private void sendBundle(HttpServletRequest request,
@@ -145,65 +72,11 @@ public class UnregisteredController extends HttpServlet {
 		LOG.info(getClass().getSimpleName() + " - " + "doPost");
 		try {
 			switch (FrontController.getPath(request)) {
-			case "unreg/orders/filter":
-				filterOrders(request, response);
-				break;
-			case "unreg/orders/limits":
-				sendLimits(response);
-				break;
-			case "unreg/orders/tech":
-				sendTechnologies(response);
-				break;
 			default:
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOG.fatal(getClass().getSimpleName() + " - " + "doPost");
-		}
-	}
-
-	private void sendTechnologies(HttpServletResponse response) {
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		try (PrintWriter out = response.getWriter()) {
-			out.print(mapper.writeValueAsString(technologyService.findAll()));
-			out.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void sendLimits(HttpServletResponse response) {
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		try (PrintWriter out = response.getWriter()) {
-			out.print(mapper.writeValueAsString(orderingService
-					.findPaymentLimits()));
-			out.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void filterOrders(HttpServletRequest request,
-			HttpServletResponse response)
-	{
-		try {
-			JsonPaginator result = mapper.readValue(request.getReader()
-					.readLine(), JsonPaginator.class);
-			List<Ordering> orderings = orderingService.filterElements(result
-					.getContent(), result.getPage().getStart()
-					* result.getPage().getStep(), result.getPage().getStep());
-
-			for (Ordering ordering : orderings) {
-				ordering.setTechnologies(orderingService
-						.findOrderingTechnologies(ordering.getId()));
-			}
-
-			paginator.next(result.getPage(), response, orderingService
-                    .getFilteredObjectNumber(result.getContent()), orderings);
-        } catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 }

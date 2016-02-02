@@ -12,9 +12,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Максим on 28.01.2016.
- */
 public class TestQuestionManyToManyJdbcDao extends
         GenericJdbcManyToManyDao<Test, Question, Worker, Integer>
         implements TestQuestionManyToManyDao {

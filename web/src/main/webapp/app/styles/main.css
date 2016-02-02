@@ -17,6 +17,138 @@ body {
 	endColorstr='#273039', GradientType=1);
 }
 
+.btn-social {
+	position: relative;
+	padding-left: 44px;
+	text-align: left;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis
+}
+
+.btn-social :first-child {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 32px;
+	line-height: 34px;
+	font-size: 1.6em;
+	text-align: center;
+	border-right: 1px solid rgba(0, 0, 0, 0.2)
+}
+
+.btn-social-icon {
+	position: relative;
+	padding-left: 44px;
+	text-align: left;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 34px;
+	width: 34px;
+	padding-left: 0;
+	padding-right: 0
+}
+
+.btn-social-icon :first-child {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 32px;
+	line-height: 34px;
+	font-size: 1.6em;
+	text-align: center;
+	border-right: 1px solid rgba(0, 0, 0, 0.2)
+}
+
+.btn-social-icon :first-child {
+	border: none;
+	text-align: center;
+	width: 100% !important
+}
+
+.btn-google-plus {
+	color: #fff;
+	background-color: #dd4b39;
+	border-color: rgba(0, 0, 0, 0.2)
+}
+
+.btn-google-plus:hover, .btn-google-plus:focus, .btn-google-plus:active,
+	.btn-google-plus.active, .open .dropdown-toggle.btn-google-plus {
+	color: #fff;
+	background-color: #ca3523;
+	border-color: rgba(0, 0, 0, 0.2)
+}
+
+.btn-google-plus:active, .btn-google-plus.active, .open .dropdown-toggle.btn-google-plus
+	{
+	background-image: none
+}
+
+.btn-google-plus.disabled, .btn-google-plus[disabled], fieldset[disabled] .btn-google-plus,
+	.btn-google-plus.disabled:hover, .btn-google-plus[disabled]:hover,
+	fieldset[disabled] .btn-google-plus:hover, .btn-google-plus.disabled:focus,
+	.btn-google-plus[disabled]:focus, fieldset[disabled] .btn-google-plus:focus,
+	.btn-google-plus.disabled:active, .btn-google-plus[disabled]:active,
+	fieldset[disabled] .btn-google-plus:active, .btn-google-plus.disabled.active,
+	.btn-google-plus[disabled].active, fieldset[disabled] .btn-google-plus.active
+	{
+	background-color: #dd4b39;
+	border-color: rgba(0, 0, 0, 0.2)
+}
+
+.btn-linkedin {
+	color: #fff;
+	background-color: #007bb6;
+	border-color: rgba(0, 0, 0, 0.2)
+}
+
+.btn-linkedin:hover, .btn-linkedin:focus, .btn-linkedin:active,
+	.btn-linkedin.active, .open .dropdown-toggle.btn-linkedin {
+	color: #fff;
+	background-color: #005f8d;
+	border-color: rgba(0, 0, 0, 0.2)
+}
+
+.btn-linkedin:active, .btn-linkedin.active, .open .dropdown-toggle.btn-linkedin
+	{
+	background-image: none
+}
+
+.btn-linkedin.disabled, .btn-linkedin[disabled], fieldset[disabled] .btn-linkedin,
+	.btn-linkedin.disabled:hover, .btn-linkedin[disabled]:hover, fieldset[disabled] .btn-linkedin:hover,
+	.btn-linkedin.disabled:focus, .btn-linkedin[disabled]:focus, fieldset[disabled] .btn-linkedin:focus,
+	.btn-linkedin.disabled:active, .btn-linkedin[disabled]:active, fieldset[disabled] .btn-linkedin:active,
+	.btn-linkedin.disabled.active, .btn-linkedin[disabled].active, fieldset[disabled] .btn-linkedin.active
+	{
+	background-color: #007bb6;
+	border-color: rgba(0, 0, 0, 0.2)
+}
+
+.signup-choose-role-select {
+	margin-top: -16px !important;
+	position: absolute;
+	padding-left: 5px !important;
+	top: 44px;
+}
+
+.signup-choose-role-select div.md-text {
+	font-size: 1.3em;
+}
+
+.main-menu  div.in ~ .navbar-header .navbar-toggle {
+	color: red !important;
+}
+
+.logo-text {
+	font-weight: bold;
+	display: inline-block;
+	margin: 4px 0px 0px;
+	padding-left: 10px;
+}
+
 body .brand {
 	color: #f5f5f5;
 	text-decoration: none;
@@ -26,6 +158,33 @@ body .brand {
 
 * {
 	font-family: Arial;
+	outline: 0 !important;
+}
+
+.signup-role-img {
+	width: 100%;
+	max-height: 60vh;
+}
+
+.full-width {
+	width: 100%;
+}
+
+div[isteven-multi-select]>span>button {
+	width: 100%;
+}
+
+div[isteven-multi-select]>span>button+div.checkboxLayer {
+	width: calc(100% - 30px);
+}
+
+.empty-margin-left {
+	margin-left: 0 !important;
+}
+
+.text-shadow-white {
+	text-shadow: 0px 0px 7px rgb(0, 0, 0);
+	color: rgb(255, 255, 255);
 }
 
 h1, h2, h3, h4, h5 {
@@ -39,10 +198,6 @@ h1, h2, h3, h4, h5 {
 
 .inner-elements-color-blue-light * {
 	color: #00A7F5 !important;
-}
-
-.inline-block {
-	display: inline-block;;
 }
 
 .pagination {
@@ -122,12 +277,6 @@ h1, h2, h3, h4, h5 {
 	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#565b5f),
 	to(#273039));
 	background: -moz-linear-gradient(0% 0% 270deg, #565b5f, #273039);
-}
-
-.sticky-element {
-	position: sticky;
-	z-index: 50;
-	top: 72px;
 }
 
 .order-open-filter-btn {
@@ -524,13 +673,17 @@ ul, li {
 }
 
 .main-menu {
-	position: relative;
-	float: right;
 	padding: 0px 0px;
+	float: right;
+	position: absolute;
+	right: 0px;
 }
 
 .main-menu .navbar-collapse {
 	padding: 0px;
+	background: rgb(39, 48, 57);
+	box-shadow: none;
+	margin-top: -11px !important;;
 }
 
 .main-menu .navigation {
@@ -1562,7 +1715,7 @@ ul, li {
 		padding-right: 0px;
 	}
 	.header-lower .logo, .header-lower .main-menu {
-		float: none !important;
+		display: inline-block;
 	}
 	.main-menu .navigation>li {
 		margin-left: 40px;
@@ -1595,7 +1748,6 @@ ul, li {
 		padding-right: 0px;
 	}
 	.main-menu {
-		float: none;
 		padding-top: 0px;
 		z-index: 5;
 		padding-bottom: 0px;
@@ -1606,7 +1758,6 @@ ul, li {
 		float: none;
 		width: 100%;
 		padding: 0px 0px 25px;
-		border: 1px solid #11c3f0;
 		margin: 0px;
 		border-radius: 3px;
 		-ms-border-radius: 3px;
@@ -1733,6 +1884,11 @@ ul, li {
 	{
 		float: none !important;
 	}
+	.signup-choose-role-select {
+		position: relative;
+		display: inline !important;
+		top: 0;
+	}
 }
 
 @media only screen and (max-width: 479px) {
@@ -1747,8 +1903,7 @@ ul, li {
 		padding-right: 0px;
 	}
 	.main-menu {
-		float: none;
-		padding-top: 0px;
+		padding-top: 18px;
 		z-index: 5;
 		padding-bottom: 0px;
 	}
@@ -1758,15 +1913,8 @@ ul, li {
 		float: none;
 		width: 100%;
 		padding: 0px;
-		border: 1px solid #11c3f0;
 		margin: 0px;
 		margin-bottom: 15px;
-		border-radius: 3px;
-		-ms-border-radius: 3px;
-		-moz-border-radius: 3px;
-		-webkit-border-radius: 3px;
-		-o-border-radius: 3px;
-		border-radius: 3px;
 	}
 	.main-menu .navbar-header {
 		position: relative;
@@ -1784,6 +1932,8 @@ ul, li {
 		border: 1px solid #11c3f0;
 		float: none;
 		margin: 0px;
+		border-radius: 3px 3px 0 0;
+		border-bottom: 1px solid #273039;
 	}
 	.main-menu .navbar-header .navbar-toggle .icon-bar {
 		background: #11c3f0;
@@ -1792,6 +1942,9 @@ ul, li {
 		float: none !important;
 		margin: 0px !important;
 		width: 100% !important;
+	}
+	.main-menu .navbar-collapse {
+		border: 1px solid #11c3f0;
 	}
 	.main-menu .navbar-collapse>.navigation>li {
 		margin: 0px !important;
