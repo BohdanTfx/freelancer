@@ -112,6 +112,9 @@ public class DeveloperService extends UserService<Developer> {
         return workerMTMDao.getBasedOnSecond(id);
     }
 
+//    public List<Worker> getWorkersByIdOrder(Integer id){
+//        return workerMTMDao.;
+//    }
 
     public void setFollowerMTMDevDao(GenericManyToManyDao<Developer, Ordering, Follower, Integer> followerMTMDevDao) {
         this.followerMTMDevDao = followerMTMDevDao;
@@ -148,6 +151,8 @@ public class DeveloperService extends UserService<Developer> {
 				.getConnectionPool());
 	}
 
+
+
     public Worker createWorker(Worker worker) {
         return workerDao.save(worker);
     }
@@ -170,6 +175,10 @@ public class DeveloperService extends UserService<Developer> {
 
     public Contact getContactByDevId(Integer id) {
         return ((ContactDao) contactDao).getContactByDevId(id);
+    }
+
+    public Worker getWorkerByDevIdAndOrderId(Integer idDev,Integer idOrder) {
+        return ((WorkerDao) workerDao).getWorkerByDevIdAndOrderId(idDev,idOrder);
     }
 
     public Contact updateContact(Contact contact) {

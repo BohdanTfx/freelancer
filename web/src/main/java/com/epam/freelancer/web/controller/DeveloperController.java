@@ -43,6 +43,7 @@ public class DeveloperController extends HttpServlet {
     private ObjectMapper mapper;
     private DeveloperQAService developerQAService;
     private DeveloperService developerService;
+    private CustomerService customerService;
 
     public DeveloperController() {
         testService = (TestService) ApplicationContext.getInstance().getBean("testService");
@@ -50,6 +51,7 @@ public class DeveloperController extends HttpServlet {
         mapper = new ObjectMapper();
         developerQAService = (DeveloperQAService) ApplicationContext.getInstance().getBean("developerQAService");
         developerService = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
+        customerService = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
     }
 
     @Override
@@ -109,10 +111,16 @@ public class DeveloperController extends HttpServlet {
 
     private void fillMyWorksPage(HttpServletRequest  request,HttpServletResponse response) throws IOException{
         HttpSession session = request.getSession();
-//        UserEntity user = (UserEntity) session.getAttribute("user");
-//        System.out.println("USer"+user);
-        List<Ordering> allProjects = developerService.getDeveloperPortfolio(10);
-        List<Ordering> devSubscribedProjects = developerService.getDeveloperSubscribedProjects(10);
+        UserEntity user = (UserEntity) session.getAttribute("user");
+        System.out.println("USer"+user);
+        List<Ordering> allProjects = developerService.getDeveloperPortfolio(user.getId());
+        List<Ordering> devSubscribedProjects = developerService.getDeveloperSubscribedProjects(user.getId());
+
+
+        for (Ordering order :devSubscribedProjects){
+            order.setTechnologies(technologyService.findTechnolodyByOrderingId(order.getId()));
+         }
+
         List<Ordering> devFinishedProjects = new ArrayList<>();
         List<Ordering> devProjectsInProcess = new ArrayList<>();
         allProjects.forEach(ordering -> {
@@ -122,6 +130,14 @@ public class DeveloperController extends HttpServlet {
                 devProjectsInProcess.add(ordering);
             }
         });
+
+        for (Ordering order :devFinishedProjects){
+            order.setTechnologies(technologyService.findTechnolodyByOrderingId(order.getId()));
+        }
+
+        for (Ordering order :devProjectsInProcess){
+            order.setTechnologies(technologyService.findTechnolodyByOrderingId(order.getId()));
+        }
 
         String devFinishedWorksJson = new Gson().toJson(devFinishedProjects);
         String devProjectsInProcessJson = new Gson().toJson(devProjectsInProcess);
@@ -196,10 +212,16 @@ public class DeveloperController extends HttpServlet {
     }
 
     private void sendWorkersByIdOrder (HttpServletRequest request,HttpServletResponse response) throws IOException{
+        HttpSession session = request.getSession();
+        UserEntity user = (UserEntity) session.getAttribute("user");
         Integer orderId = Integer.parseInt(request.getParameter("order_id"));
+
+        Worker worker = developerService.getWorkerByDevIdAndOrderId(user.getId(),orderId);
          List<Developer>  developers = developerService.getDevelopersByIdOrder(orderId);
+        if(developers.contains(worker))developers.remove(worker);
         String devListJson = new Gson().toJson(developers);
-        String resultJson = "{\"workers\":"+devListJson+"}";
+        String workerInfoJson = new Gson().toJson(worker);
+        String resultJson = "{\"workers\":"+devListJson+", \"workerInfo\":"+workerInfoJson+"}";
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(resultJson);

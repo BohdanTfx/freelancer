@@ -58,4 +58,8 @@ public class TechnologyService extends GenericService<Technology, Integer> {
 	public List<Ordering> findTechnologyOrderings(Integer techId) {
 		return orderingTechnoloyManyToManyDao.getBasedOnSecond(techId);
 	}
+
+	public List<Technology> findTechnolodyByOrderingId(Integer orderId) {
+		return orderingTechnoloyManyToManyDao.getBasedOnFirst(orderId);
+	}
 }
