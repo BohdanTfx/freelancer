@@ -17,10 +17,16 @@
                             <ul class="list-unstyled">
                                 <li><strong>Date:</strong> {{order.date | date:'dd/MM/yyyy'}}</li>
                                 <li><strong>Payment:</strong> {{order.payType}}, {{order.payment | number:2}} $</li>
-                                <li><strong>Time zone:</strong> {{order.zone}}</li>
+                                <li ng-show="order.zone"><strong>Time zone:</strong> {{order.zone}}</li>
                                 <li><strong>Technologies:</strong>
-                                    <span ng-repeat="tech in techs">
-                                        <span class="label label-success lb">{{tech.name}}</span>
+                                    <code ng-hide="true">noTechs={{techs.length == 0}}</code>
+                                    noTechs
+                                    <span ng-switch on="noTechs"></span>
+                                    <span ng-switch-when="true">unknown</span>
+                                    <span ng-switch-when="false">
+                                        <span ng-repeat="tech in techs">
+                                            <span class="label label-success lb">{{tech.name}}</span>
+                                        </span>
                                     </span>
                                 </li>
                             </ul>
