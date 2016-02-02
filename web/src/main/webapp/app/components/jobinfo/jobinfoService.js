@@ -26,7 +26,7 @@ angular.module('FreelancerApp')
             return $http.post(urlFeedbacks + customerId);
         };
 
-        var urlTechs = 'user/orders/getordertechs';
+        var urlTechs = 'user/orders/getordertechs?orderId=';
 
         dataFactory.getOrderTechs = function (orderId) {
             return $http.post(urlTechs + orderId);

@@ -60,7 +60,7 @@
 
                                     <br/>
 
-                                    <p class="noFeedbacks" ng-if="noFeedbacks">There is no feedbacks</p>
+                                    <p class="noFeedbacks" ng-if="noFeedbacks">There is no feedbacks about customer</p>
 
                                     <div ng-repeat="feed in feeds">
                                         <br/>
@@ -86,9 +86,9 @@
                                     </div>
                                 </div>
                             </md-tab>
-                            <md-tab label="Portfolio">
+                            <md-tab label="Customer projects history">
                                 <md-content class="md-padding">
-                                    <p class="emptyPort" ng-if="emptyPort">He has no portfolio</p>
+                                    <p class="emptyHistory" ng-if="emptyPort">Customer hadn't any projects</p>
 
                                     <div ng-repeat="port in ports">
                                         <h4 class="tit">

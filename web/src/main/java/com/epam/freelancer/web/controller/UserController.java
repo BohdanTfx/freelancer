@@ -120,7 +120,7 @@ public class UserController extends HttpServlet {
                     getFeedbacksByIdForCust(request, response);
                     break;
                 case "user/orders/getordertechs":
-                    getFeedbacksByIdForCust(request, response);
+                    getOrderTechs(request, response);
                     break;
                 default:
             }
@@ -589,6 +589,19 @@ public class UserController extends HttpServlet {
                 List<Feedback> feedbacks = fs.findFeedbacksByCustId(id);
                 sendListResp(feedbacks, response);
 
+            }catch (Exception e) {
+                response.sendError(500);
+            }
+        }
+    }
+
+    private void getOrderTechs(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String param = request.getParameter("orderId");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                List<Technology> technologies = orderingService.findOrderingTechnologies(id);
+                sendListResp(technologies, response);
             }catch (Exception e) {
                 response.sendError(500);
             }
