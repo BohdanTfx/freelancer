@@ -1,5 +1,7 @@
 package com.epam.freelancer.business.manager;
 
+import java.util.Map;
+
 import com.epam.freelancer.business.service.AdminService;
 import com.epam.freelancer.business.service.CustomerService;
 import com.epam.freelancer.business.service.DeveloperService;
@@ -22,6 +24,22 @@ public class UserManager {
 		}
 		if (userEntity instanceof Admin) {
 			adminService.modify((Admin) userEntity);
+		}
+	}
+
+	public void createUser(Map<String, String[]> userData, String type) {
+		switch (type) {
+		case "developer":
+			developerService.create(userData);
+			break;
+		case "customer":
+			customerService.create(userData);
+			break;
+		case "admin":
+			adminService.create(userData);
+			break;
+		default:
+			break;
 		}
 	}
 

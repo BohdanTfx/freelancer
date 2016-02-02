@@ -4,12 +4,32 @@
 			<md-content layout-padding>
 			<form name="signupForm" novalidate
 				ng-submit="signupForm.$valid && createUser()">
-				<h3>Become a new {{role}}</h3>
+				<h3>
+					Become a new
+					<md-select ng-model="user.role" ng-init="user.role = role"
+						class="box-none inline-block signup-choose-role-select">
+					<md-option ng-repeat="role in roles" value="{{role}}">{{role}}</md-option>
+					</md-select>
+				</h3>
 
-				<md-input-container class="md-block col-sm-6"
+				<div class="col-xs-12 social-buttons">
+					<div class="col-xs-6">
+						<a class="btn btn-block btn-social btn-google-plus"> <i
+							class="fa fa-google-plus"></i> Sign up with Google
+						</a>
+					</div>
+					<div class="col-xs-6">
+						<a href="{{linkedinUrl}}"
+							class="btn btn-block btn-social btn-linkedin"> <i
+							class="fa fa-linkedin"></i> Sign up with LinkedIn
+						</a>
+					</div>
+				</div>
+
+				<md-input-container class="col-sm-6 col-xs-12"
 					md-is-error="signupForm.firstname.$invalid && (signupForm.$submitted || signupForm.firstname.$dirty)">
 				<label>First name</label> <input ng-required="true"
-					md-maxlength="50" ng-model="user.firstname" name="firstname">
+					md-maxlength="50" ng-model="user.first_name" name="firstname">
 				<div ng-messages="signupForm.firstname.$error"
 					ng-if="signupForm.$submitted || signupForm.firstname.$touched">
 					<div ng-message="required">This is required.</div>
@@ -18,10 +38,10 @@
 				</div>
 				</md-input-container>
 
-				<md-input-container class="md-block col-sm-6"
+				<md-input-container class="col-sm-6 col-xs-12"
 					md-is-error="signupForm.lastname.$invalid && (signupForm.$submitted || signupForm.lastname.$dirty)">
 				<label>Last name</label> <input md-maxlength="50" ng-required="true"
-					ng-model="user.lastname" name="lastname">
+					ng-model="user.last_name" name="lastname">
 				<div ng-messages="signupForm.lastname.$error"
 					ng-if="signupForm.$submitted || signupForm.lastname.$touched">
 					<div ng-message="required">This is required.</div>
@@ -30,7 +50,7 @@
 				</div>
 				</md-input-container>
 
-				<md-input-container class="md-block col-xs-12"
+				<md-input-container class="col-xs-12"
 					md-is-error="signupForm.email.$invalid && (signupForm.$submitted || signupForm.email.$dirty)">
 				<label>Email</label> <input ng-required="true" type="email"
 					name="email" ng-model="user.email" ng-minlength="10"
@@ -49,13 +69,13 @@
 				</div>
 				</md-input-container>
 
-				<md-input-container class="md-block col-xs-12">
-				<label>Time zone</label> <md-select
-					ng-init="user.zone = getCurrentZone()" ng-model="user.zone">
-				<md-option ng-repeat="zone in timeZones" value="{{zone.zone}}">
+				<md-input-container class="col-xs-12"> <label>Time
+					zone</label> <md-select ng-init="user.zone = getCurrentZone()"
+					ng-model="user.zone"> <md-option
+					ng-repeat="zone in timeZones" value="{{zone.zone}}">
 				{{zone.title}} </md-option> </md-select> </md-input-container>
 
-				<md-input-container class="md-block col-sm-6"
+				<md-input-container class="col-sm-6 col-xs-12"
 					md-is-error="signupForm.password.$invalid && (signupForm.$submitted || signupForm.password.$dirty)">
 				<label>Password</label> <input md-maxlength="50" ng-minlength="8"
 					name="password" type="password" ng-required="true"
@@ -70,34 +90,41 @@
 				</div>
 				</md-input-container>
 
-				<md-input-container class="md-block col-sm-6"
+				<md-input-container class="col-sm-6 col-xs-12"
 					md-is-error="signupForm.passwordconfirm.$invalid && (signupForm.$submitted || signupForm.passwordconfirm.$dirty)">
 				<label>Confirm password</label> <input md-maxlength="50"
 					type="password" ng-required="true" name="passwordconfirm"
-					ng-model="user.passwordconfirm">
+					ng-model="user.passwordconfirm" match="user.password">
 				<div ng-messages="signupForm.passwordconfirm.$error"
 					ng-if="signupForm.$submitted || signupForm.passwordconfirm.$touched">
 					<div ng-message="required">This is required.</div>
 					<div ng-message="md-maxlength">The name has to be less than
 						50 characters long.</div>
+					<div ng-message="match">Passwords must match.</div>
 				</div>
 				</md-input-container>
 
-				<div class="col-sm-offset-2">
-					<button class="btn btn-info">
-						<i class="fa fa-user-plus"></i> Sign up
-					</button>
-					<button class="btn btn-warning" ng-click="resetInputs()">
-						<i class="fa fa-times"></i> Reset
-					</button>
+				<div class="col-xs-12">
+					<div class="col-xs-6">
+						<button class="btn btn-info full-width">
+							<i class="fa fa-user-plus"></i> Sign up
+						</button>
+					</div>
+					<div class="col-xs-6">
+						<button class="btn btn-warning full-width"
+							ng-click="resetInputs()">
+							<i class="fa fa-times"></i> Reset
+						</button>
+					</div>
 				</div>
 			</form>
 			</md-content>
 		</div>
+
 	</div>
 
 	<div ng-if="signup !== true">
-		<div class="container choose-role-container">
+		<div class="container text-shadow-white">
 			<div class="row">
 				<div class="head col-xs-12 text-center">
 					<h2>Get started!</h2>

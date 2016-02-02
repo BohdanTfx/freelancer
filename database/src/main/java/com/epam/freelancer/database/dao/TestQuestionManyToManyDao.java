@@ -6,9 +6,6 @@ import com.epam.freelancer.database.model.Worker;
 
 import java.util.List;
 
-/**
- * Created by Максим on 28.01.2016.
- */
 public interface TestQuestionManyToManyDao extends
         GenericManyToManyDao<Test, Question, Worker, Integer>
 {

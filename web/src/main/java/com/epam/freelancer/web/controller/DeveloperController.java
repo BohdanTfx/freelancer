@@ -1,44 +1,39 @@
 package com.epam.freelancer.web.controller;
 
 import java.io.IOException;
-import java.util.*;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import com.epam.freelancer.business.service.*;
-import com.sun.deploy.net.HttpRequest;
-import com.sun.deploy.net.HttpResponse;
-import org.apache.log4j.Logger;
-
-import com.epam.freelancer.business.context.ApplicationContext;
-import com.epam.freelancer.business.service.DeveloperQAService;
-import com.epam.freelancer.business.service.TechnologyService;
-import com.epam.freelancer.business.service.TestService;
-import com.epam.freelancer.database.model.*;
-import com.epam.freelancer.web.json.model.Quest;
-import com.google.gson.Gson;
-import jdk.nashorn.internal.parser.JSONParser;
-import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Максим on 22.01.2016.
- */
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
+
+import com.epam.freelancer.business.context.ApplicationContext;
+import com.epam.freelancer.business.service.CustomerService;
+import com.epam.freelancer.business.service.DeveloperQAService;
+import com.epam.freelancer.business.service.DeveloperService;
+import com.epam.freelancer.business.service.TechnologyService;
+import com.epam.freelancer.business.service.TestService;
+import com.epam.freelancer.database.model.Answer;
+import com.epam.freelancer.database.model.Customer;
+import com.epam.freelancer.database.model.Developer;
+import com.epam.freelancer.database.model.DeveloperQA;
+import com.epam.freelancer.database.model.Ordering;
+import com.epam.freelancer.database.model.Question;
+import com.epam.freelancer.database.model.Technology;
+import com.epam.freelancer.database.model.Test;
+import com.epam.freelancer.database.model.UserEntity;
+import com.epam.freelancer.web.json.model.Quest;
+import com.google.gson.Gson;
+
 public class DeveloperController extends HttpServlet {
     public static final Logger LOG = Logger.getLogger(UserController.class);
     private static final long serialVersionUID = -2356506023594947745L;
