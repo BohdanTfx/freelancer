@@ -71,7 +71,7 @@
                         <h5>Email: {{email}}</h5>
                         </p>
                         <p>On site from:
-                            {{regDate}}
+                            {{regDate |date:'longDate'}}
                         </p>
                         <span style="color: firebrick">{{messerr}}</span>
                         <span style="color: darkgreen">{{messuc}}</span>
@@ -157,7 +157,8 @@
                                         </p>
 
                                         <p>
-                                            {{port.startedDate.substring(0, 12)}} - {{port.endedDate.substring(0, 12)}}
+                                            {{port.startedDate | date:'longDate'}} - {{port.endedDate |
+                                            date:'longDate'}}
                                         </p>
                                     </div>
                                     <md-divider></md-divider>
