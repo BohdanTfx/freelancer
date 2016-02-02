@@ -165,12 +165,12 @@
                         </md-tab>
                         <md-tab label="Test">
                             <md-content class="md-padding">
-                                <p class="devpub-emptyPort" ng-if="emptyPort">He hasn't test</p>
+                                <p class="devpub-emptyTest" ng-if="emptyTest">There is no test</p>
 
                                 <div ng-repeat="qa in qas">
                                     <h2>{{qa.test.name}}</h2>
 
-                                    <p>Rate: {{qa.rate}} / {{qa.test.passScore}}</p>
+                                    <p>Rate: {{qa.rate}} / 100</p>
 
                                     <p><span class="label label-success devpub-lb">{{qa.test.technology.name}}</span>
                                     </p>
