@@ -1,22 +1,13 @@
 package com.epam.freelancer.business.context;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import com.epam.freelancer.business.manager.UserManager;
-import com.epam.freelancer.business.service.AdminService;
-import com.epam.freelancer.business.service.CustomerService;
-import com.epam.freelancer.business.service.DeveloperQAService;
-import com.epam.freelancer.business.service.DeveloperService;
-import com.epam.freelancer.business.service.FeedbackService;
-import com.epam.freelancer.business.service.OrderingService;
-import com.epam.freelancer.business.service.QuestionService;
-import com.epam.freelancer.business.service.TechnologyService;
-import com.epam.freelancer.business.service.TestService;
+import com.epam.freelancer.business.service.*;
 import com.epam.freelancer.business.util.CookieManager;
 import com.epam.freelancer.database.dao.*;
 import com.epam.freelancer.database.dao.jdbc.*;
-import com.epam.freelancer.database.model.Follower;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class ApplicationContext {
 	private Map<String, Object> beans = new ConcurrentHashMap<>();
@@ -60,9 +51,9 @@ public final class ApplicationContext {
 				.getInstance().getManyToManyDAO(
 						OrderingTechnologyManyToManyDao.class.getSimpleName()));
 		orderingService.setFollowerDao(DAOManager
-				.getInstance().getDAO(
-						FollowerDao.class.getSimpleName()));
-		addBean("orderingService", orderingService);
+                .getInstance().getDAO(
+                        FollowerDao.class.getSimpleName()));
+        addBean("orderingService", orderingService);
 
 		addBean("questionService", new QuestionService());
 		addBean("testService", new TestService());

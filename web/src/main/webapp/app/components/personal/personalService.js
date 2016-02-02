@@ -38,14 +38,14 @@ angular.module('FreelancerApp')
                 data: data
             })
         };
-        dataFactory.upload = function(files){
+        dataFactory.upload = function (files) {
             var data = $.param({
                 image: files
             });
             return $http({
                 method: 'POST',
                 url: urlImage,
-                headers: {'Content-Type' : 'multipart/form-data'},
+                headers: {'Content-Type': 'multipart/form-data'},
                 data: data
             })
 

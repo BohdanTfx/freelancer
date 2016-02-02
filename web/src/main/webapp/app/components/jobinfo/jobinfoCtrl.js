@@ -10,7 +10,7 @@ angular.module('FreelancerApp')
 
         orderAPI.getFollowers(orderId).success(function (data) {
             $scope.followers = data;
-            if(data.length == 0) {
+            if (data.length == 0) {
                 $scope.noFollowers = true;
             }
         }).error(function () {

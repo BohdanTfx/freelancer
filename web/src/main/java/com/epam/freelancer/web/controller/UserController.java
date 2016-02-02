@@ -1,38 +1,31 @@
 package com.epam.freelancer.web.controller;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import com.epam.freelancer.business.context.ApplicationContext;
+import com.epam.freelancer.business.manager.UserManager;
+import com.epam.freelancer.business.service.*;
+import com.epam.freelancer.business.util.SendMessageToEmail;
+import com.epam.freelancer.business.util.SmsSender;
+import com.epam.freelancer.database.model.*;
+import com.epam.freelancer.security.provider.AuthenticationProvider;
+import com.epam.freelancer.web.json.model.JsonPaginator;
+import com.epam.freelancer.web.social.Linkedin;
+import com.epam.freelancer.web.social.model.LinkedinProfile;
+import com.epam.freelancer.web.util.Paginator;
+import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import com.epam.freelancer.database.model.*;
-import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
-
-import com.epam.freelancer.business.context.ApplicationContext;
-import com.epam.freelancer.business.manager.UserManager;
-import com.epam.freelancer.business.service.AdminService;
-import com.epam.freelancer.business.service.CustomerService;
-import com.epam.freelancer.business.service.DeveloperService;
-import com.epam.freelancer.business.service.FeedbackService;
-import com.epam.freelancer.business.service.OrderingService;
-import com.epam.freelancer.business.service.TechnologyService;
-import com.epam.freelancer.business.util.SendMessageToEmail;
-import com.epam.freelancer.business.util.SmsSender;
-import com.epam.freelancer.security.provider.AuthenticationProvider;
-import com.epam.freelancer.web.json.model.JsonPaginator;
-import com.epam.freelancer.web.social.Linkedin;
-import com.epam.freelancer.web.social.model.LinkedinProfile;
-import com.epam.freelancer.web.util.Paginator;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class UserController extends HttpServlet implements Responsable {
     public static final Logger LOG = Logger.getLogger(UserController.class);

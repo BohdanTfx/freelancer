@@ -9,9 +9,7 @@ angular.module('FreelancerApp')
         //console.log($scope.devId + '  devID');
 
 
-
-
-        personalAPI.getPersonal().success(function(data) {
+        personalAPI.getPersonal().success(function (data) {
 
             $log.log(data);
 
@@ -20,14 +18,14 @@ angular.module('FreelancerApp')
             $scope.dev = data.dev;
             $scope.dev.regDate = new Date($scope.dev.regDate).getTime();
 
-            if(typeof data.techs != 'undefined'){
+            if (typeof data.techs != 'undefined') {
                 $scope.techs = data.techs;
                 console.log($scope.techs);
             } else {
                 console.log('No technologies');
             }
 
-            if(typeof data.contacts != 'undefined'){
+            if (typeof data.contacts != 'undefined') {
                 $scope.cont = data.contacts;
                 console.log($scope.cont);
             } else {
@@ -47,10 +45,10 @@ angular.module('FreelancerApp')
 
 
             $scope.testTech = [
-                { name: "Java"},
-                { name: "C"},
-                { name: "C++"},
-                { name: "C#"},
+                {name: "Java"},
+                {name: "C"},
+                {name: "C++"},
+                {name: "C#"},
             ];
             $scope.allTestTech = [
                 {name: "Test"},
@@ -66,7 +64,7 @@ angular.module('FreelancerApp')
         $scope.hide = false;
         $scope.editClass = 'editClass';
 
-        $scope.enableEditor = function() {
+        $scope.enableEditor = function () {
             $scope.editClass = '';
             $scope.hide = true;
 
@@ -75,7 +73,7 @@ angular.module('FreelancerApp')
             contTemp = clone($scope.cont);
         };
 
-        $scope.disableEditor = function() {
+        $scope.disableEditor = function () {
 
             $scope.hide = false;
 
@@ -83,14 +81,14 @@ angular.module('FreelancerApp')
             $scope.techs = techsTemp;
             $scope.cont = contTemp;
 
-            console.log(devTemp );
+            console.log(devTemp);
 
             $scope.editClass = 'editClass';
 
 
         };
 
-        $scope.save = function() {
+        $scope.save = function () {
             var devJson, techsJson, contJson;
 
             $scope.editClass = 'editClass';
@@ -109,7 +107,7 @@ angular.module('FreelancerApp')
             console.log(techsJson);
             console.log(contJson);
 
-            personalAPI.sendData(devJson, techsJson, contJson).success(function (data){
+            personalAPI.sendData(devJson, techsJson, contJson).success(function (data) {
                 $log.log(data);
                 $scope.result = data;
             }).error(function () {
@@ -123,13 +121,13 @@ angular.module('FreelancerApp')
         //};
 
         function clone(obj) {
-            if(obj === null || typeof(obj) !== 'object' || 'isActiveClone' in obj)
+            if (obj === null || typeof(obj) !== 'object' || 'isActiveClone' in obj)
                 return obj;
 
             var temp = obj.constructor(); // changed
 
-            for(var key in obj) {
-                if(Object.prototype.hasOwnProperty.call(obj, key)) {
+            for (var key in obj) {
+                if (Object.prototype.hasOwnProperty.call(obj, key)) {
                     obj['isActiveClone'] = null;
                     temp[key] = clone(obj[key]);
                     delete obj['isActiveClone'];
@@ -247,9 +245,6 @@ angular.module('FreelancerApp')
         //  };
 
 
-
-
-
         //$scope.loadTechs = function($query) {
         //    return $http.get('techs.json', {cache: true}).then(function (response) {
         //        var techs = response.data;
@@ -260,129 +255,128 @@ angular.module('FreelancerApp')
         //};
 
 
-
         $scope.timeZones = [
             {
-                zone : "-12",
-                title : "-12 Baker island, Howland island",
-                ticked : false
+                zone: "-12",
+                title: "-12 Baker island, Howland island",
+                ticked: false
             },
             {
-                zone : "-11",
-                title : "-11 American Samoa, Niue",
-                ticked : false
+                zone: "-11",
+                title: "-11 American Samoa, Niue",
+                ticked: false
             },
             {
-                zone : "-10",
-                title : "-10 Hawaii",
-                ticked : false
+                zone: "-10",
+                title: "-10 Hawaii",
+                ticked: false
             },
             {
-                zone : "-9",
-                title : "-9 Marquesas Islands, Gamblie Islands",
-                ticked : false
+                zone: "-9",
+                title: "-9 Marquesas Islands, Gamblie Islands",
+                ticked: false
             },
             {
-                zone : "-8",
-                title : "-8 British Columbia, Mexico, California",
-                ticked : false
+                zone: "-8",
+                title: "-8 British Columbia, Mexico, California",
+                ticked: false
             },
             {
-                zone : "-7",
-                title : "-7 British Columbia, US Arizona",
-                ticked : false
+                zone: "-7",
+                title: "-7 British Columbia, US Arizona",
+                ticked: false
             },
             {
-                zone : "-6",
-                title : "-6 Canada Saskatchewan, Costa Rica, Guatemala, Honduras",
-                ticked : false
+                zone: "-6",
+                title: "-6 Canada Saskatchewan, Costa Rica, Guatemala, Honduras",
+                ticked: false
             },
             {
-                zone : "-5",
-                title : "-5 Colombia, Cuba, Ecuador, Peru",
-                ticked : false
+                zone: "-5",
+                title: "-5 Colombia, Cuba, Ecuador, Peru",
+                ticked: false
             },
             {
-                zone : "-4",
-                title : "-4 Venezuela, Bolivia, Brazil,	Barbados",
-                ticked : false
+                zone: "-4",
+                title: "-4 Venezuela, Bolivia, Brazil,	Barbados",
+                ticked: false
             },
             {
-                zone : "-3",
-                title : "-3 Newfoundland, Argentina, Chile",
-                ticked : false
+                zone: "-3",
+                title: "-3 Newfoundland, Argentina, Chile",
+                ticked: false
             },
             {
-                zone : "-2",
-                title : "-2 South Georgia",
-                ticked : false
+                zone: "-2",
+                title: "-2 South Georgia",
+                ticked: false
             },
             {
-                zone : "-1",
-                title : "-1 Capa Verde",
-                ticked : false
+                zone: "-1",
+                title: "-1 Capa Verde",
+                ticked: false
             },
             {
-                zone : "0",
-                title : "0 Ghana, Iceland, Senegal",
-                ticked : false
+                zone: "0",
+                title: "0 Ghana, Iceland, Senegal",
+                ticked: false
             },
             {
-                zone : "1",
-                title : "+1 Algeria, Nigeria, Tunisia",
-                ticked : false
+                zone: "1",
+                title: "+1 Algeria, Nigeria, Tunisia",
+                ticked: false
             },
             {
-                zone : "2",
-                title : "+2 Ukraine, Zambia, Egypt",
-                ticked : false
+                zone: "2",
+                title: "+2 Ukraine, Zambia, Egypt",
+                ticked: false
             },
             {
-                zone : "3",
-                title : "+3 Belarus, Iraq, Iran",
-                ticked : false
+                zone: "3",
+                title: "+3 Belarus, Iraq, Iran",
+                ticked: false
             },
             {
-                zone : "4",
-                title : "+4 Armenia, Georgia, Oman",
-                ticked : false
+                zone: "4",
+                title: "+4 Armenia, Georgia, Oman",
+                ticked: false
             },
             {
-                zone : "5",
-                title : "+5 Kazakhstan, Pakistan, India",
-                ticked : false
+                zone: "5",
+                title: "+5 Kazakhstan, Pakistan, India",
+                ticked: false
             },
             {
-                zone : "6",
-                title : "+6 Ural, Bangladesh",
-                ticked : false
+                zone: "6",
+                title: "+6 Ural, Bangladesh",
+                ticked: false
             },
             {
-                zone : "7",
-                title : "+7 Western Indonesai, Thailand",
-                ticked : false
+                zone: "7",
+                title: "+7 Western Indonesai, Thailand",
+                ticked: false
             },
             {
-                zone : "8",
-                title : "+8 Hong Kong, China, Taiwan, Australia",
-                ticked : false
+                zone: "8",
+                title: "+8 Hong Kong, China, Taiwan, Australia",
+                ticked: false
             }, {
-                zone : "9",
-                title : "+9 Timor,Japan",
-                ticked : false
+                zone: "9",
+                title: "+9 Timor,Japan",
+                ticked: false
             }, {
-                zone : "10",
-                title : "+10 New Guinea, Australia",
-                ticked : false
+                zone: "10",
+                title: "+10 New Guinea, Australia",
+                ticked: false
             }, {
-                zone : "11",
-                title : "+11 Solomon Islands, Vanuatu",
-                ticked : false
+                zone: "11",
+                title: "+11 Solomon Islands, Vanuatu",
+                ticked: false
             }, {
-                zone : "12",
-                title : "+12 New zealand, Kamchatka, Kiribati",
-                ticked : false
-            } ];
+                zone: "12",
+                title: "+12 New zealand, Kamchatka, Kiribati",
+                ticked: false
+            }];
 
 
 

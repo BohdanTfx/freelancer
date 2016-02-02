@@ -1,8 +1,8 @@
 package com.epam.freelancer.database.dao;
 
-import java.util.List;
-
 import com.epam.freelancer.database.model.Follower;
+
+import java.util.List;
 
 /**
  * Created by ������ on 17.01.2016.
