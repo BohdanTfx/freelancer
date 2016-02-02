@@ -17,5 +17,34 @@ public class WorkerJdbcDao extends GenericJdbcDao<Worker, Integer> implements Wo
         super(Worker.class);
     }
 
+    @Override
+    public Worker getWorkerByDevIdAndOrderId(Integer idDev, Integer idOrder) {
+        String query = "SELECT * FROM " + table + " WHERE dev_id = ? AND order_id = ?";
+        return getContactByQuery(query, idDev,idOrder);
+    }
+
+    private Worker getContactByQuery(String query, Integer firstId,Integer secondId) {
+        Worker worker = null;
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection
+                     .prepareStatement(query)) {
+            if(firstId!=null && secondId!=null){
+                statement.setInt(1, firstId);
+                statement.setInt(2, secondId);
+            }
+            if(firstId!=null && secondId==null || firstId==null && secondId!=null){
+                statement.setInt(1, firstId);
+            }
+            try (ResultSet set = statement.executeQuery()) {
+                if (set.next()) {
+                    worker = transformer.getObject(set);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return worker;
+    }
+
 
 }

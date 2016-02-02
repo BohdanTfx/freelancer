@@ -2,14 +2,14 @@
     <form>
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <strong><h1>{{project.title}}</h1></strong>
+                <small> {{project.title}}</small>
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="cancel()">
                     <i class="fa fa-times"></i>
                 </md-button>
             </div>
         </md-toolbar>
-        <md-dialog-content style="max-width:800px;max-height:810px; ">
+        <md-dialog-content style="max-width:800px;max-height:810px;min-width: 650px; ">
             <md-tabs md-dynamic-height md-border-bottom>
                 <md-tab label="Details">
                     <md-content class="md-padding">
@@ -24,16 +24,36 @@
                                         {{project.descr}}
                                     </div>
                                 </div>
+                                <div>
+                                    Technologies:
+                                                <span ng-repeat="tech in project.technologies">
+                                                     <span class="label label-success lb">{{tech.name}}</span>
+                                                 </span>
+                                </div>
                             </div>
                             <div class="col-sm-5">
                                 <h4>Information</h4>
+                                <span><strong>Registration date:</strong> {{project.date}}</span><br/>
                                 <span><strong>Start date:</strong> {{project.startedDate}}</span><br/>
                                 <span><strong>End date:</strong> {{project.endedDate}}</span><br/>
                                 <span><strong>Time zone:</strong> {{project.zone}}</span><br/>
-                                <span><strong>Privacy:</strong> {{project.priv}}</span><br/>
+
+                                <span>
+                                <strong>Privacy:</strong>
+                                <span ng-switch="project.priv">
+                                    <span ng-switch-when="">
+                                        public
+                                    </span>
+                                    <span ng-switch-default>
+                                        private
+                                    </span>
+                                </span>
+                                </span><br/>
                                 <span><strong>Payment type:</strong> {{project.payType}}</span><br/>
-                                <span><strong>Payment amount:</strong> {{project.payment | number:1}} $</span><br/>
-                                <span><strong>Worked time:</strong> 76 h</span><br/>
+                                <span><strong>Payment amount as worker:</strong> {{workerInfo.newHourly | number:1}} $</span><br/>
+                                <div ng-if="hideDevelopers!=true">
+                                    <span><strong>Worked time:</strong> {{workerInfo.sumHours}}h</span><br/>
+                                </div>
                             </div>
                         </div>
                     </md-content>
@@ -42,15 +62,28 @@
                     <md-content class="md-padding">
 
                         <div style="width:600px;min-height:50%;">
-                            <h2>Customer</h2>
-                            <h3><span style="margin-left: 5%;">{{customer.fname}}  {{customer.lname}}</span></h3>
+                            <!--<h2>Customer</h2>-->
+                            <!--<h3><span style="margin-left: 5%;">{{customer.fname}}  {{customer.lname}}</span></h3>-->
+
+                            <div class="panel panel-success">
+                                <div class="panel-heading">Customer</div>
+                                <div class="panel-body">
+                                    {{customer.fname}}  {{customer.lname}}
+                                </div>
+                            </div>
+
+
                             <hr/>
-                            <h2>Developers</h2>
-                            <ol class="details-dev-list">
-                                <li ng-repeat="devWorker in workers">
-                                    {{devWorker.fname}} {{devWorker.lname}}
-                                </li>
-                            </ol>
+                            <div ng-if="hideDevelopers!=true">
+                                   <div class="panel panel-info">
+                                    <div class="panel-heading">Developers</div>
+                                    <div  class="panel-body">
+                                        <div ng-repeat="devWorker in workers">
+                                        {{devWorker.fname}} {{devWorker.lname}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                        </div>
                    </md-content>
                 </md-tab>

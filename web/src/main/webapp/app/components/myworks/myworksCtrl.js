@@ -14,6 +14,7 @@ angular.module('FreelancerApp')
             $scope.customFullscreen = $mdMedia('xs') || $mdMedia('sm');
 
 
+
         }).error(function () {
             alert(404);
         });
@@ -37,7 +38,7 @@ angular.module('FreelancerApp')
             return $scope.sortField === fieldName && $scope.reverse;
         };
 
-        $scope.showTabDialog = function(ev,projectInfo) {
+        $scope.showTabDialog = function(ev,projectInfo,hideDevelopers) {
             myworksAPI.getCustomerById(projectInfo.customerId).success(
                 function (data){
                     $scope.customer = data.cust;
@@ -45,14 +46,15 @@ angular.module('FreelancerApp')
                     myworksAPI.getWorkersByIdOrder(projectInfo.id).success(
                         function (dataWorkers){
                           $scope.workers = dataWorkers.workers;
-
+                            $scope.workerInfo = dataWorkers.workerInfo;
 
                             $mdDialog.show({
                                 controller: DialogController,
                                 templateUrl: 'app/components/myworks/workDetailsTabDialog.html',
                                 parent: angular.element(document.body),
                                 targetEvent: ev,
-                                locals: {project:projectInfo ,customer: $scope.customer,workers:$scope.workers},
+                                locals: {project:projectInfo ,customer: $scope.customer,workers:$scope.workers,
+                                    hideDevelopers:hideDevelopers,workerInfo:$scope.workerInfo},
                                 clickOutsideToClose:true
                             })
                                 .then(function(answer) {
@@ -65,12 +67,12 @@ angular.module('FreelancerApp')
 
                         }
                     ).error(function(){
-                            alert(404);
+                            alert('Herer');
                         });
                 }
 
             ).error(function(){
-                    alert(404);
+                    alert("2herwrwr");
                 });
 
         };
@@ -87,10 +89,12 @@ angular.module('FreelancerApp').filter('dateFormat', function ($filter) {
     };
 });
 
-function DialogController($scope, $mdDialog, project,customer,workers) {
+function DialogController($scope, $mdDialog, project,customer,workers,hideDevelopers,workerInfo) {
     $scope.project = project;
     $scope.customer = customer;
     $scope.workers = workers;
+    $scope.hideDevelopers = hideDevelopers;
+    $scope.workerInfo = workerInfo;
 
    if($scope.project.endedDate==null){
         $scope.project.endedDate = 'not finished yet';
