@@ -25,13 +25,13 @@ public class FrontController extends HttpServlet {
 				.substring("/front/".length());
 	}
 
-	@Override
-	public void init(ServletConfig config) throws ServletException {
-		LOG.info(getClass().getSimpleName() + " - " + "front controller loaded");
+    @Override
+    public void init(ServletConfig config) throws ServletException {
+        LOG.info(getClass().getSimpleName() + " - " + "front controller loaded");
 
-		super.init(config);
-		configControllers();
-	}
+        super.init(config);
+        configControllers();
+    }
 
 	private void configControllers() {
 		controllers.put("user/", new UserController());

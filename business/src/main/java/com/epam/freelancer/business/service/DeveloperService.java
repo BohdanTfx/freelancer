@@ -8,13 +8,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.epam.freelancer.business.util.ValidationParametersBuilder;
-import com.epam.freelancer.database.dao.ContactDao;
-import com.epam.freelancer.database.dao.DevTechManyToManyDao;
-import com.epam.freelancer.database.dao.DeveloperDao;
-import com.epam.freelancer.database.dao.FollowerManyToManyDao;
-import com.epam.freelancer.database.dao.GenericDao;
-import com.epam.freelancer.database.dao.GenericManyToManyDao;
-import com.epam.freelancer.database.dao.WorkerManyToManyDao;
+import com.epam.freelancer.database.dao.*;
 import com.epam.freelancer.database.dao.jdbc.DAOManager;
 import com.epam.freelancer.database.model.Contact;
 import com.epam.freelancer.database.model.Developer;
@@ -112,6 +106,9 @@ public class DeveloperService extends UserService<Developer> {
         return workerMTMDao.getBasedOnSecond(id);
     }
 
+//    public List<Worker> getWorkersByIdOrder(Integer id){
+//        return workerMTMDao.;
+//    }
 
     public void setFollowerMTMDevDao(GenericManyToManyDao<Developer, Ordering, Follower, Integer> followerMTMDevDao) {
         this.followerMTMDevDao = followerMTMDevDao;
@@ -148,6 +145,8 @@ public class DeveloperService extends UserService<Developer> {
 				.getConnectionPool());
 	}
 
+
+
     public Worker createWorker(Worker worker) {
         return workerDao.save(worker);
     }
@@ -170,6 +169,10 @@ public class DeveloperService extends UserService<Developer> {
 
     public Contact getContactByDevId(Integer id) {
         return ((ContactDao) contactDao).getContactByDevId(id);
+    }
+
+    public Worker getWorkerByDevIdAndOrderId(Integer idDev,Integer idOrder) {
+        return ((WorkerDao) workerDao).getWorkerByDevIdAndOrderId(idDev,idOrder);
     }
 
     public Contact updateContact(Contact contact) {

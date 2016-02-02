@@ -2,6 +2,7 @@ package com.epam.freelancer.business.service;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -9,15 +10,18 @@ import com.epam.freelancer.business.util.ValidationParametersBuilder;
 import com.epam.freelancer.database.dao.ContactDao;
 import com.epam.freelancer.database.dao.CustomerDao;
 import com.epam.freelancer.database.dao.GenericDao;
+import com.epam.freelancer.database.dao.OrderingDao;
 import com.epam.freelancer.database.dao.jdbc.DAOManager;
 import com.epam.freelancer.database.model.Contact;
 import com.epam.freelancer.database.model.Customer;
+import com.epam.freelancer.database.model.Ordering;
 
 /**
  * Created by Максим on 18.01.2016.
  */
 public class CustomerService extends UserService<Customer> {
 	private GenericDao<Contact, Integer> contactDao;
+	private GenericDao<Ordering, Integer> orderingDao;
 
 	public CustomerService() {
 		super(DAOManager.getInstance()
@@ -99,5 +103,15 @@ public class CustomerService extends UserService<Customer> {
 
 	public void deleteContact(Contact contact) {
 		contactDao.delete(contact);
+	}
+
+	public void setOrderingDao(GenericDao<Ordering, Integer> orderingDao) {
+		this.orderingDao = orderingDao;
+		orderingDao.setConnectionPool(DAOManager.getInstance()
+				.getConnectionPool());
+	}
+
+	public List<Ordering> getProjectsPublicHistory(Integer custId){
+		return ((OrderingDao)orderingDao).getCustomerPublicHistory(custId);
 	}
 }
