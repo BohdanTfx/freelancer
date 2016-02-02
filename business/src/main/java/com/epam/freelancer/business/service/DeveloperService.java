@@ -8,13 +8,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.epam.freelancer.business.util.ValidationParametersBuilder;
-import com.epam.freelancer.database.dao.ContactDao;
-import com.epam.freelancer.database.dao.DevTechManyToManyDao;
-import com.epam.freelancer.database.dao.DeveloperDao;
-import com.epam.freelancer.database.dao.FollowerManyToManyDao;
-import com.epam.freelancer.database.dao.GenericDao;
-import com.epam.freelancer.database.dao.GenericManyToManyDao;
-import com.epam.freelancer.database.dao.WorkerManyToManyDao;
+import com.epam.freelancer.database.dao.*;
 import com.epam.freelancer.database.dao.jdbc.DAOManager;
 import com.epam.freelancer.database.model.Contact;
 import com.epam.freelancer.database.model.Developer;

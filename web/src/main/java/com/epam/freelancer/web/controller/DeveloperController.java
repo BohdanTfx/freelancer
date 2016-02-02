@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.epam.freelancer.database.model.*;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -22,15 +23,6 @@ import com.epam.freelancer.business.service.DeveloperQAService;
 import com.epam.freelancer.business.service.DeveloperService;
 import com.epam.freelancer.business.service.TechnologyService;
 import com.epam.freelancer.business.service.TestService;
-import com.epam.freelancer.database.model.Answer;
-import com.epam.freelancer.database.model.Customer;
-import com.epam.freelancer.database.model.Developer;
-import com.epam.freelancer.database.model.DeveloperQA;
-import com.epam.freelancer.database.model.Ordering;
-import com.epam.freelancer.database.model.Question;
-import com.epam.freelancer.database.model.Technology;
-import com.epam.freelancer.database.model.Test;
-import com.epam.freelancer.database.model.UserEntity;
 import com.epam.freelancer.web.json.model.Quest;
 import com.google.gson.Gson;
 
