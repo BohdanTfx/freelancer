@@ -85,7 +85,7 @@
                                 <div ng-repeat="project in processedWorks | orderBy:sortField:reverse">
                                     <div class="panel panel-default">
                                         <div class="row project-block panel-body"
-                                             ng-click="showTabDialog($event,project)">
+                                             ng-click="showTabDialog($event,project,false)">
 
                                             <div class="col-xs-10">
                                                 <span class="project-block-title">{{project.title}}</span><br>
@@ -151,7 +151,7 @@
                                 <div ng-repeat="project in finishedWorks | orderBy:sortField:reverse">
                                     <div class="panel panel-default">
                                         <div class="row project-block panel-body"
-                                             ng-click="showTabDialog($event,project)">
+                                             ng-click="showTabDialog($event,project,false)">
 
                                             <div class="col-xs-10">
                                                 <span class="project-block-title">{{project.title}}</span><br>

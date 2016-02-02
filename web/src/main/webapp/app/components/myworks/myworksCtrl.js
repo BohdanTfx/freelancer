@@ -38,7 +38,7 @@ angular.module('FreelancerApp')
             return $scope.sortField === fieldName && $scope.reverse;
         };
 
-        $scope.showTabDialog = function(ev,projectInfo,hideDevelopers) {
+        $scope.showTabDialog = function(ev,projectInfo,subscribePage) {
             myworksAPI.getCustomerById(projectInfo.customerId).success(
                 function (data){
                     $scope.customer = data.cust;
@@ -48,13 +48,15 @@ angular.module('FreelancerApp')
                           $scope.workers = dataWorkers.workers;
                             $scope.workerInfo = dataWorkers.workerInfo;
 
+                            //alert('dataWorkers.workerInfo: '+dataWorkers.workerInfo);
+
                             $mdDialog.show({
                                 controller: DialogController,
                                 templateUrl: 'app/components/myworks/workDetailsTabDialog.html',
                                 parent: angular.element(document.body),
                                 targetEvent: ev,
                                 locals: {project:projectInfo ,customer: $scope.customer,workers:$scope.workers,
-                                    hideDevelopers:hideDevelopers,workerInfo:$scope.workerInfo},
+                                    subscribePage:subscribePage,workerInfo:$scope.workerInfo},
                                 clickOutsideToClose:true
                             })
                                 .then(function(answer) {
@@ -89,11 +91,11 @@ angular.module('FreelancerApp').filter('dateFormat', function ($filter) {
     };
 });
 
-function DialogController($scope, $mdDialog, project,customer,workers,hideDevelopers,workerInfo) {
+function DialogController($scope, $mdDialog, project,customer,workers,subscribePage,workerInfo) {
     $scope.project = project;
     $scope.customer = customer;
     $scope.workers = workers;
-    $scope.hideDevelopers = hideDevelopers;
+    $scope.subscribePage = subscribePage;
     $scope.workerInfo = workerInfo;
 
    if($scope.project.endedDate==null){

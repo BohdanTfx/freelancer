@@ -50,10 +50,17 @@
                                 </span>
                                 </span><br/>
                                 <span><strong>Payment type:</strong> {{project.payType}}</span><br/>
-                                <span><strong>Payment amount as worker:</strong> {{workerInfo.newHourly | number:1}} $</span><br/>
-                                <div ng-if="hideDevelopers!=true">
-                                    <span><strong>Worked time:</strong> {{workerInfo.sumHours}}h</span><br/>
-                                </div>
+
+                                <span ng-switch="subscribePage">
+                                <span ng-switch-when="true">
+                                    <strong>Payment:</strong> {{project.payment | number:1}} $<br/>
+                                </span>
+
+                                <span ng-switch-when="false">
+                                    <strong>Payment</strong> {{workerInfo.newHourly | number:1}} $<br>
+                                    <span><strong>Worked time:</strong> {{workerInfo.sumHours}} h</span><br/>
+                                </span>
+                                 </span>
                             </div>
                         </div>
                     </md-content>
@@ -74,7 +81,7 @@
 
 
                             <hr/>
-                            <div ng-if="hideDevelopers!=true">
+                            <div ng-if="subscribePage!=true">
                                    <div class="panel panel-info">
                                     <div class="panel-heading">Developers</div>
                                     <div  class="panel-body">

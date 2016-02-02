@@ -35,7 +35,6 @@ public class DeveloperController extends HttpServlet {
     private ObjectMapper mapper;
     private DeveloperQAService developerQAService;
     private DeveloperService developerService;
-    private CustomerService customerService;
 
     public DeveloperController() {
         testService = (TestService) ApplicationContext.getInstance().getBean("testService");
@@ -43,7 +42,6 @@ public class DeveloperController extends HttpServlet {
         mapper = new ObjectMapper();
         developerQAService = (DeveloperQAService) ApplicationContext.getInstance().getBean("developerQAService");
         developerService = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
-        customerService = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
     }
 
     @Override
@@ -104,7 +102,6 @@ public class DeveloperController extends HttpServlet {
     private void fillMyWorksPage(HttpServletRequest  request,HttpServletResponse response) throws IOException{
         HttpSession session = request.getSession();
         UserEntity user = (UserEntity) session.getAttribute("user");
-        System.out.println("USer"+user);
         List<Ordering> allProjects = developerService.getDeveloperPortfolio(user.getId());
         List<Ordering> devSubscribedProjects = developerService.getDeveloperSubscribedProjects(user.getId());
 
@@ -210,9 +207,11 @@ public class DeveloperController extends HttpServlet {
 
         Worker worker = developerService.getWorkerByDevIdAndOrderId(user.getId(),orderId);
          List<Developer>  developers = developerService.getDevelopersByIdOrder(orderId);
-        if(developers.contains(worker))developers.remove(worker);
+//        if(developers.contains(worker))developers.remove(worker);
         String devListJson = new Gson().toJson(developers);
         String workerInfoJson = new Gson().toJson(worker);
+        System.out.println("devListJson: "+devListJson);
+        System.out.println("workerInfoJson: "+workerInfoJson);
         String resultJson = "{\"workers\":"+devListJson+", \"workerInfo\":"+workerInfoJson+"}";
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");

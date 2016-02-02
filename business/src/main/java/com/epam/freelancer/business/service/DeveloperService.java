@@ -106,9 +106,6 @@ public class DeveloperService extends UserService<Developer> {
         return workerMTMDao.getBasedOnSecond(id);
     }
 
-//    public List<Worker> getWorkersByIdOrder(Integer id){
-//        return workerMTMDao.;
-//    }
 
     public void setFollowerMTMDevDao(GenericManyToManyDao<Developer, Ordering, Follower, Integer> followerMTMDevDao) {
         this.followerMTMDevDao = followerMTMDevDao;
