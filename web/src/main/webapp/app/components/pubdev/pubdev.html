@@ -31,36 +31,6 @@
                         <div class="noneOverAlign">
                             <p class="noneOver">{{noneOver}}</p>
                         </div>
-                        <!--<uib-rating ng-model="rate" max="max" readonly="isReadonly" on-hover="hoveringOver(value)"
-                                    on-leave="overStar = null" titles="['one','two','three']"
-                                    aria-labelledby="default-rating"></uib-rating>
-                        <span class="label"
-                              ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}"
-                              ng-show="overStar && !isReadonly">{{percent}}%</span>
-
-                        <pre style="margin:15px 0;">Rate: <b>{{rateq}}</b> - Readonly is: <i>{{isReadonly}}</i> - Hovering over: <b>{{overStar
-                            || "none"}}</b></pre>
-
-                        <button type="button" class="btn btn-sm btn-danger" ng-click="rate = 0"
-                                ng-disabled="isReadonly">Clear
-                        </button>
-                        <button type="button" class="btn btn-sm btn-default" ng-click="isReadonly = ! isReadonly">Toggle
-                            Readonly
-                        </button>
-                        <hr/>
-
-                        <h4>Custom icons</h4>
-
-                        <div ng-init="x = 5">
-                            <uib-rating ng-model="x" max="15" state-on="'glyphicon-ok-sign'"
-                                        state-off="'glyphicon-ok-circle'" aria-labelledby="custom-icons-1"></uib-rating>
-                            <b>(<i>Rate:</i> {{x}})</b></div>
-                        <div ng-init="y = 2">
-                            <uib-rating ng-model="y" rating-states="ratingStates"
-                                        aria-labelledby="custom-icons-2"></uib-rating>
-                            <b>(<i>Rate:</i> {{y}})</b></div>
--->
-
                     </div>
                     <div class="col-xs-12 col-md-4 right-side">
                         <br/>
@@ -77,7 +47,7 @@
                         </div>
                         </p>
                         Rate:
-                        <uib-rating ng-model="rateq" max="5" readonly="true" on-hover="hoveringOver(value)"
+                        <uib-rating ng-model="rateq" max="5" readonly="true"
                                     on-leave="overStar = null" titles="['one','two','three']"
                                     aria-labelledby="default-rating"></uib-rating>
                         <br/>
@@ -123,21 +93,17 @@
 
                                 <div class="form-group comm-div">
                                     <br/>
+                                    <label>Rate him:
+                                        <uib-rating ng-model="rate" max="max" readonly="false"
+                                                    on-leave="overStar = null" titles="['one','two','three']"
+                                                    aria-labelledby="default-rating"></uib-rating>
+                                    </label>
+                                    <br/>
                             <textarea type="text" class="form-control" ng-model="$parent.com" rows="2"
                                       placeholder="Comment ..."
                                       required></textarea>
-
-                                    <div class="form-group">
-                                        <label for="sel1">Rate him:</label>
-                                        <select class="form-control" ng-model="$parent.comrate" id="sel1">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
-                                        </select>
-                                    </div>
-                                    <button type="button" ng-click="comment()"
+                                    <br/>
+                                    <button type="button" ng-click="comment(rate)"
                                             class="btn btn-primary pull-right comm-but">
                                 <span
                                         class="glyphicon glyphicon-comment"></span>

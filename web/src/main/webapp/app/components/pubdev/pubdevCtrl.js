@@ -152,10 +152,16 @@ angular.module('FreelancerApp')
             });
         };
 
-        $scope.comment = function () {
-            var data = 'comment=' + $scope.com + '&id=' + $scope.id + '&rate=' + $scope.comrate;
-            $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
-            if (typeof $scope.com != 'undefined' && typeof $scope.comrate != 'undefined') {
+        $scope.comment = function (rate) {
+            if (rate != 0) {
+                var data = 'comment=' + $scope.com + '&id=' + $scope.id + '&rate=' + rate;
+                $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+            } else {
+                $scope.comerr = 'Error, bad value.';
+                $scope.comsuc = undefined;
+                return;
+            }
+            if (typeof $scope.com != 'undefined' && typeof rate != 'undefined') {
                 $http.post('/user/comment', data).success(function () {
                     $scope.comsuc = 'Comment sent successfully.';
                     $scope.comerr = undefined;
@@ -186,14 +192,9 @@ angular.module('FreelancerApp')
             return ratings;
         };
 
-        $scope.rate = 7;
-        $scope.max = 10;
+        $scope.rate = 1;
+        $scope.max = 5;
         $scope.isReadonly = false;
-
-        $scope.hoveringOver = function (value) {
-            $scope.overStar = value;
-            $scope.percent = 100 * (value / $scope.max);
-        };
 
         $scope.ratingStates = [
             {stateOn: 'glyphicon-ok-sign', stateOff: 'glyphicon-ok-circle'},
