@@ -321,7 +321,6 @@ public class DeveloperController extends HttpServlet {
             System.out.println(contact);
 
 
-
         } catch (Exception e) {
             e.printStackTrace();
             LOG.error("Error when get data from developer table" + e.getMessage());
@@ -341,6 +340,17 @@ public class DeveloperController extends HttpServlet {
         System.out.println("ALL TECHNOLOGIES" + allTechsJson);
 
         resultJson = "{\"dev\":" + developerJson + ",\"techs\":" + devTechsJson +",\"contacts\":" + contactJson + ",\"allTechs\":" + allTechsJson +"}";
+
+        if(devTechsJson.length() == 2){
+            resultJson = "{\"dev\":" + developerJson + ",\"contacts\":" + contactJson + ",\"allTechs\":" + allTechsJson +"}";
+        } if(contactJson.length() == 0) {
+            resultJson = "{\"dev\":" + developerJson + ",\"techs\":" + devTechsJson + ",\"allTechs\":" + allTechsJson +"}";
+        } if(contactJson.length() == 0 && devTechsJson.length() == 2) {
+            resultJson = "{\"dev\":" + developerJson + ",\"allTechs\":" + allTechsJson +"}";
+        }
+
+
+
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -375,15 +385,21 @@ public class DeveloperController extends HttpServlet {
         technologiesJson = request.getParameter("technologies");
         System.out.println(technologiesJson);
 
-        technologies = mapper.readValue(technologiesJson, new TypeReference<List<Technology>>(){});
-        System.out.println(technologies);
+        System.out.println(technologiesJson.length());
+
+        if(technologiesJson.length() != 0) {
+            technologies = mapper.readValue(technologiesJson, new TypeReference<List<Technology>>() {});
+            System.out.println(technologies);
+        }
 
 
-        contactJson = request.getParameter("contact");
-        System.out.println(contactJson);
+            contactJson = request.getParameter("contact");
+            System.out.println(contactJson);
 
-        contact = mapper.readValue(contactJson, Contact.class);
-        System.out.println(contact);
+        if(contactJson.length() != 0 ) {
+            contact = mapper.readValue(contactJson, Contact.class);
+            System.out.println(contact);
+        }
 
     }
 

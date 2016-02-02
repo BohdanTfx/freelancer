@@ -1,14 +1,39 @@
 angular.module('FreelancerApp')
-    .controller('personalCtrl', function ($scope, $http, personalAPI, $log, $stateParams) {
+    .controller('personalCtrl', function ($scope, $http, personalAPI, $log, $stateParams, $rootScope) {
+
         var devTemp, techsTemp, contTemp;
+
+        console.log('START PERSONAL');
+        console.log($rootScope.role);
         //$scope.devId = $stateParams.id;
         //console.log($scope.devId + '  devID');
-        personalAPI.getPersonal().success(function (data) {
+
+
+
+
+        personalAPI.getPersonal().success(function(data) {
+
             $log.log(data);
+
+            $scope.patternPhone = '[0-9]{11}';
+
             $scope.dev = data.dev;
             $scope.dev.regDate = new Date($scope.dev.regDate).getTime();
-            $scope.techs = data.techs;
-            $scope.cont = data.contacts;
+
+            if(typeof data.techs != 'undefined'){
+                $scope.techs = data.techs;
+                console.log($scope.techs);
+            } else {
+                console.log('No technologies');
+            }
+
+            if(typeof data.contacts != 'undefined'){
+                $scope.cont = data.contacts;
+                console.log($scope.cont);
+            } else {
+                console.log('No contacts');
+            }
+
             $scope.allTechs = data.allTechs;
 
             devTemp = clone($scope.dev);
@@ -19,14 +44,6 @@ angular.module('FreelancerApp')
                 $scope.img = 'images/profile/default_logo.jpg';
             else
                 $scope.img = $scope.dev.imgUrl;
-
-            console.log($scope.allTechs);
-
-            console.log(devTemp);
-
-            console.log($scope.dev.fname);
-
-
 
 
             $scope.testTech = [
@@ -42,6 +59,8 @@ angular.module('FreelancerApp')
                 {name: "Red"}
             ];
 
+        }).error(function () {
+            alert('alert');
         });
 
         $scope.hide = false;
@@ -98,10 +117,10 @@ angular.module('FreelancerApp')
             });
         };
 
-        $scope.tags = $scope.techs;
-        $scope.loadTags = function(query){
-            return $http.get(query);
-        };
+        //$scope.tags = $scope.techs;
+        //$scope.loadTags = function(query){
+        //    return $http.get(query);
+        //};
 
         function clone(obj) {
             if(obj === null || typeof(obj) !== 'object' || 'isActiveClone' in obj)
