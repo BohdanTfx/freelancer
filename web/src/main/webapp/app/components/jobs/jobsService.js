@@ -83,7 +83,7 @@ angular
 						var pagination = {};
 						pagination.start = $scope.itemListStart | 0;
 						pagination.last = last;
-						pagination.step = $scope.itesStep.number;
+						pagination.step = that.getStep($scope);
 
 						var data = {};
 						if (isNotEmpty(content))
@@ -135,6 +135,18 @@ angular
 					}
 					this.fillOrders = function(data, $scope) {
 						$scope.orders = data;
+					}
+
+					this.getStep = function($scope) {
+						var localStep = localStorage
+								.getItem("freelancerOrdersStep");
+						if (localStep !== undefined && localStep != null)
+							return localStep;
+						else {
+							localStorage.setItem("freelancerOrdersStep",
+									$scope.itesStep.number);
+							return $scope.itesStep.number;
+						}
 					}
 				});
 
