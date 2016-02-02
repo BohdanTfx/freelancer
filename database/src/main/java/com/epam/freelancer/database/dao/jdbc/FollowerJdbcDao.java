@@ -1,11 +1,5 @@
 package com.epam.freelancer.database.dao.jdbc;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.epam.freelancer.database.dao.FollowerDao;
 import com.epam.freelancer.database.model.Follower;
 
@@ -66,10 +60,6 @@ public class FollowerJdbcDao extends GenericJdbcDao<Follower, Integer>
 		}
 		return followers;
 	}
-public class FollowerJdbcDao extends GenericJdbcDao<Follower, Integer> implements FollowerDao {
-    public FollowerJdbcDao() throws Exception {
-        super(Follower.class);
-    }
 
     @Override
     public List<Follower> getProjectFollowers(Integer id) {
