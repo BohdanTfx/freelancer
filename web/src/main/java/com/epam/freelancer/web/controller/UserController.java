@@ -562,10 +562,10 @@ public class UserController extends HttpServlet {
     }
 
     private void getOrderById(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String param = request.getParameter("custId");
+        String param = request.getParameter("orderId");
         if (param != null) {
             try {
-                Integer orderId = Integer.parseInt(request.getParameter("orderId"));
+                Integer orderId = Integer.parseInt(param);
                 Ordering order = orderingService.findById(orderId);
                 sendResp(order, response);
             } catch (Exception e) {
@@ -575,10 +575,10 @@ public class UserController extends HttpServlet {
     }
 
     private void getFollowersByOrderId(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String param = request.getParameter("custId");
+        String param = request.getParameter("orderId");
         if (param != null) {
             try {
-                Integer orderId = Integer.parseInt(request.getParameter("orderId"));
+                Integer orderId = Integer.parseInt(param);
                 List<Developer> developers = orderingService.findOrderFollowers(orderId);
                 developers.forEach(dev -> dev.setPassword(null));
                 sendListResp(developers, response);
