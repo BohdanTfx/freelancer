@@ -28,8 +28,26 @@ public class DeveloperQA implements BaseEntity<Integer> {
     @Column
     private Integer version;
     private Test test;
+    private boolean isPassed;
+    private boolean isOutOfDate;
 
     public DeveloperQA() {
+    }
+
+    public boolean isPassed() {
+        return isPassed;
+    }
+
+    public void setIsPassed(boolean isPassed) {
+        this.isPassed = isPassed;
+    }
+
+    public boolean isOutOfDate() {
+        return isOutOfDate;
+    }
+
+    public void setIsOutOfDate(boolean isOutOfDate) {
+        this.isOutOfDate = isOutOfDate;
     }
 
     public Integer getDevId() {
@@ -145,6 +163,8 @@ public class DeveloperQA implements BaseEntity<Integer> {
                 ", isDeleted=" + isDeleted +
                 ", version=" + version +
                 ", test=" + test +
+                ", isPassed=" + isPassed +
+                ", isOutOfDate=" + isOutOfDate +
                 '}';
     }
 }
