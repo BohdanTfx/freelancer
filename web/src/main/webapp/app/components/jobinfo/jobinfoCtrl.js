@@ -65,7 +65,7 @@ angular.module('FreelancerApp')
                 rate += fbs[i].rate;
             }
             rate /= fbs.length;
-            rate = jparseInt(rate, 10);
+            rate = parseInt(rate, 10);
             $scope.custRate = rate;
         };
     });
