@@ -2,22 +2,27 @@ package com.epam.freelancer.business.service;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 import com.epam.freelancer.business.util.ValidationParametersBuilder;
+import com.epam.freelancer.business.util.ValidationParametersBuilder.Parameters;
 import com.epam.freelancer.database.dao.ContactDao;
 import com.epam.freelancer.database.dao.CustomerDao;
+import com.epam.freelancer.database.dao.FollowerDao;
 import com.epam.freelancer.database.dao.GenericDao;
 import com.epam.freelancer.database.dao.jdbc.DAOManager;
 import com.epam.freelancer.database.model.Contact;
 import com.epam.freelancer.database.model.Customer;
+import com.epam.freelancer.database.model.Follower;
 
 /**
  * Created by Максим on 18.01.2016.
  */
 public class CustomerService extends UserService<Customer> {
 	private GenericDao<Contact, Integer> contactDao;
+	private GenericDao<Follower, Integer> followerDao;
 
 	public CustomerService() {
 		super(DAOManager.getInstance()
@@ -89,6 +94,12 @@ public class CustomerService extends UserService<Customer> {
 				.getConnectionPool());
 	}
 
+	public void setFollowerDao(GenericDao<Follower, Integer> followerDao) {
+		this.followerDao = followerDao;
+		this.followerDao.setConnectionPool(DAOManager.getInstance()
+				.getConnectionPool());
+	}
+
 	public Contact getContactByCustomerId(Integer id) {
 		return ((ContactDao) contactDao).getContactByCustId(id);
 	}
@@ -99,5 +110,51 @@ public class CustomerService extends UserService<Customer> {
 
 	public void deleteContact(Contact contact) {
 		contactDao.delete(contact);
+	}
+
+	public List<Follower> findInvitations(Integer customerId) {
+		return ((FollowerDao) followerDao).getCustomerInvitation(customerId);
+	}
+
+	public Follower hireDeveloper(Map<String, String[]> data) {
+		if (!isDataValid(prepareFollowerData(data)))
+			throw new RuntimeException("Validation exception in follower");
+
+		Follower follower = new Follower();
+		String[] value = data.get("dev_id");
+		follower.setDevId(value != null ? Integer.parseInt(value[0]) : null);
+		value = data.get("cust_id");
+		follower.setCustId(value != null ? Integer.parseInt(value[0]) : null);
+		value = data.get("order_id");
+		follower.setOrderId(value != null ? Integer.parseInt(value[0]) : null);
+		value = data.get("author");
+		follower.setAuthor(value != null ? value[0] : null);
+		value = data.get("message");
+		follower.setMessage(value != null ? value[0] : null);
+
+		return followerDao.save(follower);
+	}
+
+	private Map<Parameters, String> prepareFollowerData(
+			Map<String, String[]> data)
+	{
+		Map<ValidationParametersBuilder.Parameters, String> map = new HashMap<>();
+		map.put(ValidationParametersBuilder.createParameters(true).isInteger(
+				true), data.get("dev_id") == null ? null
+				: data.get("dev_id")[0]);
+		map.put(ValidationParametersBuilder.createParameters(true).isInteger(
+				true), data.get("cust_id") == null ? null
+				: data.get("cust_id")[0]);
+		map.put(ValidationParametersBuilder.createParameters(true).isInteger(
+				true),
+				data.get("order_id") == null ? null : data.get("order_id")[0]);
+		map.put(ValidationParametersBuilder.createParameters(false)
+				.maxLength(6),
+				data.get("message") == null ? null : data.get("message")[0]);
+		map.put(ValidationParametersBuilder.createParameters(false)
+				.notEmptyString(true).pattern("(customer)"),
+				data.get("author") == null ? null : data.get("author")[0]);
+
+		return map;
 	}
 }

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.epam.freelancer.business.util.ValidationParametersBuilder;
-import com.epam.freelancer.database.dao.DeveloperDao;
 import com.epam.freelancer.database.dao.DeveloperQADao;
 import com.epam.freelancer.database.dao.GenericDao;
 import com.epam.freelancer.database.dao.jdbc.DAOManager;

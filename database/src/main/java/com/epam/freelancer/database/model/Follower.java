@@ -13,6 +13,8 @@ public class Follower implements BaseEntity<Integer> {
 	private Integer id;
 	@Column(name = "dev_id")
 	private Integer devId;
+	@Column(name = "cust_id")
+	private Integer custId;
 	@Column
 	private String message;
 	@Column(name = "order_id")
@@ -21,8 +23,13 @@ public class Follower implements BaseEntity<Integer> {
 	private Boolean isDeleted;
 	@Column
 	private Integer version;
+	@Column(name="is_hired")
+	private Boolean isHired;
+	@Column
+	private String author;
 	private Ordering order;
 	private Developer developer;
+	private Customer customer;
 
 	public Follower() {
 	}
@@ -134,5 +141,45 @@ public class Follower implements BaseEntity<Integer> {
 
 	public void setDeveloper(Developer developer) {
 		this.developer = developer;
+	}
+
+	public Integer getCustId() {
+		return custId;
+	}
+
+	public void setCustId(Integer custId) {
+		this.custId = custId;
+	}
+
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
+	public Boolean getIsHired() {
+		return isHired;
+	}
+
+	public void setIsHired(Boolean isHired) {
+		this.isHired = isHired;
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	public String getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
 	}
 }
