@@ -111,13 +111,14 @@
                                     </button>
                                 </div>
                                 <br/>
+                                <hr/>
 
                                 <p class="devpub-emptyComment" ng-if="emptyComm">{{noneFeed}}</p>
 
                                 <div ng-repeat="feed in feeds">
-                                    <br/>
+                                    <span ng-if="$index != 0"><br/></span>
 
-                                    <div class="feed devpub-feed"
+                                    <div class="feed"
                                          style="background-image: url('{{feed.customer.imgUrl}}')"></div>
                                     <p>
                                         <em>{{feed.customer.fname}} {{feed.customer.lname}}</em>
@@ -125,12 +126,9 @@
 
                                     <p>{{feed.comment}}</p>
                                     <ul class="list-inline ratings" title="Ratings">
-                                        <li ng-repeat="i in getNumber(feed.rate)">
-                                            <a href="#">
-                                        <span
-                                                class="fa fa-star fa-lg"></span>
-                                            </a>
-                                        </li>
+                                        <uib-rating ng-model="feed.rate" max="5" readonly="true"
+                                                    on-leave="overStar = null" titles="['one','two','three']"
+                                                    aria-labelledby="default-rating"></uib-rating>
                                     </ul>
 
                                     <br/>
