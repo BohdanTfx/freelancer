@@ -90,6 +90,8 @@ angular
 							data.content = content;
 						if (isNotEmpty(pagination))
 							data.page = pagination;
+
+						$scope.ordersLoading = true;
 						$http
 								.post(
 										"/user/orders/filter",
@@ -105,6 +107,8 @@ angular
 											that.fillPagination(data.pages,
 													$scope);
 											that.fillOrders(data.items, $scope);
+
+											$scope.ordersLoading = false;
 										})
 								.error(function(data, status, headers, config) {
 									that.fillPagination(data.pages, $scope);

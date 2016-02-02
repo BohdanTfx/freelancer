@@ -58,7 +58,7 @@ angular.module('FreelancerApp')
                 else {
                     $scope.hourly = undefined;
                 }
-                $scope.regDate = data.regDate.substring(0, 12);
+                $scope.regDate = data.regDate;
                 if (typeof data.overview != 'undefined') {
                     $scope.overview = data.overview;
                     $scope.overHead = 'Overview';

@@ -107,7 +107,11 @@
 			{{step.text}} </md-option> </md-select> </md-input-container>
 		</div>
 		<div id="ordersArea">
-			<div class="panel panel-info" ng-repeat="order in orders">
+			<div class="col-xs-12 cabinet-top" ng-if="ordersLoading">
+				<div class="load-animation"></div>
+			</div>
+			<div class="panel panel-info" ng-repeat="order in orders"
+				ng-if="ordersLoading == false">
 				<div class="panel-heading">
 					<div class="panel-title">{{order.title}}</div>
 				</div>

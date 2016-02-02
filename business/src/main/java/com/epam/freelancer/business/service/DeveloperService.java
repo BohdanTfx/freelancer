@@ -8,7 +8,16 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.epam.freelancer.business.util.ValidationParametersBuilder;
-import com.epam.freelancer.database.dao.*;
+import com.epam.freelancer.business.util.ValidationParametersBuilder.Parameters;
+import com.epam.freelancer.database.dao.ContactDao;
+import com.epam.freelancer.database.dao.DevTechManyToManyDao;
+import com.epam.freelancer.database.dao.DeveloperDao;
+import com.epam.freelancer.database.dao.FollowerDao;
+import com.epam.freelancer.database.dao.FollowerManyToManyDao;
+import com.epam.freelancer.database.dao.GenericDao;
+import com.epam.freelancer.database.dao.GenericManyToManyDao;
+import com.epam.freelancer.database.dao.WorkerDao;
+import com.epam.freelancer.database.dao.WorkerManyToManyDao;
 import com.epam.freelancer.database.dao.jdbc.DAOManager;
 import com.epam.freelancer.database.model.Contact;
 import com.epam.freelancer.database.model.Developer;
@@ -23,9 +32,10 @@ import com.epam.freelancer.database.model.Worker;
 public class DeveloperService extends UserService<Developer> {
 	private GenericManyToManyDao<Developer, Ordering, Worker, Integer> workerMTMDao;
 	private GenericManyToManyDao<Developer, Technology, Worker, Integer> devMTMtechDao;
-	private	GenericManyToManyDao<Developer, Ordering, Follower, Integer> followerMTMDevDao;
+	private GenericManyToManyDao<Developer, Ordering, Follower, Integer> followerMTMDevDao;
 	private GenericDao<Worker, Integer> workerDao;
 	private GenericDao<Contact, Integer> contactDao;
+	private GenericDao<Follower, Integer> followerDao;
 
 	public DeveloperService() {
 		super(DAOManager.getInstance().getDAO(
@@ -98,44 +108,42 @@ public class DeveloperService extends UserService<Developer> {
 	}
 
 	public List<Ordering> getDeveloperSubscribedProjects(Integer id) {
-        return ((FollowerManyToManyDao) followerMTMDevDao).getDevSubscribedProjects(id);
+		return ((FollowerManyToManyDao) followerMTMDevDao)
+				.getDevSubscribedProjects(id);
 
-    }
+	}
 
-    public List<Developer> getDevelopersByIdOrder(Integer id){
-        return workerMTMDao.getBasedOnSecond(id);
-    }
+	public List<Developer> getDevelopersByIdOrder(Integer id) {
+		return workerMTMDao.getBasedOnSecond(id);
+	}
 
-//    public List<Worker> getWorkersByIdOrder(Integer id){
-//        return workerMTMDao.;
-//    }
+	public void setFollowerMTMDevDao(
+			GenericManyToManyDao<Developer, Ordering, Follower, Integer> followerMTMDevDao)
+	{
+		this.followerMTMDevDao = followerMTMDevDao;
+		this.followerMTMDevDao.setConnectionPool(DAOManager.getInstance()
+				.getConnectionPool());
+	}
 
-    public void setFollowerMTMDevDao(GenericManyToManyDao<Developer, Ordering, Follower, Integer> followerMTMDevDao) {
-        this.followerMTMDevDao = followerMTMDevDao;
-        this.followerMTMDevDao.setConnectionPool(DAOManager.getInstance()
-                .getConnectionPool());
+	public void setWorkerMTMDao(
+			GenericManyToManyDao<Developer, Ordering, Worker, Integer> workerMTMDao)
+	{
+		this.workerMTMDao = workerMTMDao;
+		this.workerMTMDao.setConnectionPool(DAOManager.getInstance()
+				.getConnectionPool());
+	}
 
-    }
+	public void setWorkerDao(GenericDao<Worker, Integer> workerDao) {
+		this.workerDao = workerDao;
+		this.workerDao.setConnectionPool(DAOManager.getInstance()
+				.getConnectionPool());
+	}
 
-
-    public void setWorkerMTMDao(
-            GenericManyToManyDao<Developer, Ordering, Worker, Integer> workerMTMDao) {
-        this.workerMTMDao = workerMTMDao;
-        this.workerMTMDao.setConnectionPool(DAOManager.getInstance()
-                .getConnectionPool());
-    }
-
-    public void setWorkerDao(GenericDao<Worker, Integer> workerDao) {
-        this.workerDao = workerDao;
-        this.workerDao.setConnectionPool(DAOManager.getInstance()
-                .getConnectionPool());
-    }
-
-    public void setContactDao(GenericDao<Contact, Integer> contactDao) {
-        this.contactDao = contactDao;
-        this.contactDao.setConnectionPool(DAOManager.getInstance()
-                .getConnectionPool());
-    }
+	public void setContactDao(GenericDao<Contact, Integer> contactDao) {
+		this.contactDao = contactDao;
+		this.contactDao.setConnectionPool(DAOManager.getInstance()
+				.getConnectionPool());
+	}
 
 	public void setDevMTMtechDao(
 			GenericManyToManyDao<Developer, Technology, Worker, Integer> devMTMtechDao)
@@ -145,31 +153,29 @@ public class DeveloperService extends UserService<Developer> {
 				.getConnectionPool());
 	}
 
-
-
     public Worker createWorker(Worker worker) {
         return workerDao.save(worker);
     }
 
-    public void deleteWorker(Worker worker) {
-        workerDao.delete(worker);
-    }
+	public void deleteWorker(Worker worker) {
+		workerDao.delete(worker);
+	}
 
-    public Worker updateWorker(Worker worker) {
-        return workerDao.update(worker);
-    }
+	public Worker updateWorker(Worker worker) {
+		return workerDao.update(worker);
+	}
 
-    public Worker getWorkerById(Integer id) {
-        return workerDao.getById(id);
-    }
+	public Worker getWorkerById(Integer id) {
+		return workerDao.getById(id);
+	}
 
-    public List<Worker> getAllWorkers() {
-        return workerDao.getAll();
-    }
+	public List<Worker> getAllWorkers() {
+		return workerDao.getAll();
+	}
 
-    public Contact getContactByDevId(Integer id) {
-        return ((ContactDao) contactDao).getContactByDevId(id);
-    }
+	public Contact getContactByDevId(Integer id) {
+		return ((ContactDao) contactDao).getContactByDevId(id);
+	}
 
     public Worker getWorkerByDevIdAndOrderId(Integer idDev,Integer idOrder) {
         return ((WorkerDao) workerDao).getWorkerByDevIdAndOrderId(idDev,idOrder);
@@ -179,13 +185,64 @@ public class DeveloperService extends UserService<Developer> {
         return contactDao.update(contact);
     }
 
-    public void deleteContact(Contact contact) {
-        contactDao.delete(contact);
-    }
+	public void deleteContact(Contact contact) {
+		contactDao.delete(contact);
+	}
 
 	public List<Technology> getTechnologiesByDevId(Integer id) {
 		return ((DevTechManyToManyDao) devMTMtechDao)
 				.getTechnologiesByDevId(id);
 	}
 
+	public void setFollowerDao(GenericDao<Follower, Integer> followerDao) {
+		this.followerDao = followerDao;
+		this.followerDao.setConnectionPool(DAOManager.getInstance()
+				.getConnectionPool());
+	}
+
+	public List<Follower> findDeveloperFollowings(Integer developerId) {
+		return ((FollowerDao) followerDao).getDeveloperFollowings(developerId);
+	}
+
+	public Follower createFollowing(Map<String, String[]> data) {
+		if (!isDataValid(prepareFollowerData(data)))
+			throw new RuntimeException("Validation exception in follower");
+
+		Follower follower = new Follower();
+		String[] value = data.get("dev_id");
+		follower.setDevId(value != null ? Integer.parseInt(value[0]) : null);
+		value = data.get("cust_id");
+		follower.setCustId(value != null ? Integer.parseInt(value[0]) : null);
+		value = data.get("order_id");
+		follower.setOrderId(value != null ? Integer.parseInt(value[0]) : null);
+		value = data.get("author");
+		follower.setAuthor(value != null ? value[0] : null);
+		value = data.get("message");
+		follower.setMessage(value != null ? value[0] : null);
+		
+		return followerDao.save(follower);
+	}
+
+	private Map<Parameters, String> prepareFollowerData(
+			Map<String, String[]> data)
+	{
+		Map<ValidationParametersBuilder.Parameters, String> map = new HashMap<>();
+		map.put(ValidationParametersBuilder.createParameters(true).isInteger(
+				true), data.get("dev_id") == null ? null
+				: data.get("dev_id")[0]);
+		map.put(ValidationParametersBuilder.createParameters(true).isInteger(
+				true), data.get("cust_id") == null ? null
+				: data.get("cust_id")[0]);
+		map.put(ValidationParametersBuilder.createParameters(true).isInteger(
+				true),
+				data.get("order_id") == null ? null : data.get("order_id")[0]);
+		map.put(ValidationParametersBuilder.createParameters(false)
+				.maxLength(6),
+				data.get("message") == null ? null : data.get("message")[0]);
+		map.put(ValidationParametersBuilder.createParameters(false)
+				.notEmptyString(true).pattern("(dev)"),
+				data.get("author") == null ? null : data.get("author")[0]);
+
+		return map;
+	}
 }
