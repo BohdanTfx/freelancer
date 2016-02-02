@@ -31,9 +31,11 @@ public class UserController extends HttpServlet {
     private Linkedin linkedin;
     private ObjectMapper mapper;
     private Paginator paginator;
+
     public UserController() {
         init();
     }
+
     @Override
     public void init() {
         LOG.info(getClass().getSimpleName() + " - " + " loaded");
@@ -268,8 +270,7 @@ public class UserController extends HttpServlet {
                 if (developer != null) {
                     developer.setPassword(null);
                     sendResp(developer, response);
-                }
-                else
+                } else
                     response.sendError(404);
             } catch (Exception e) {
                 response.sendError(500);
@@ -561,23 +562,44 @@ public class UserController extends HttpServlet {
     }
 
     private void getOrderById(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Integer orderId = Integer.parseInt(request.getParameter("orderId"));
-        Ordering order = orderingService.findById(orderId);
-        sendResp(order, response);
+        String param = request.getParameter("custId");
+        if (param != null) {
+            try {
+                Integer orderId = Integer.parseInt(request.getParameter("orderId"));
+                Ordering order = orderingService.findById(orderId);
+                sendResp(order, response);
+            } catch (Exception e) {
+                response.sendError(500);
+            }
+        }
     }
 
-    private void getFollowersByOrderId(HttpServletRequest request, HttpServletResponse respons) throws IOException {
-        Integer orderId = Integer.parseInt(request.getParameter("orderId"));
-        List<Developer> developers = orderingService.findOrderFollowers(orderId);
-        developers.forEach(dev -> dev.setPassword(null));
-        sendListResp(developers, respons);
+    private void getFollowersByOrderId(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String param = request.getParameter("custId");
+        if (param != null) {
+            try {
+                Integer orderId = Integer.parseInt(request.getParameter("orderId"));
+                List<Developer> developers = orderingService.findOrderFollowers(orderId);
+                developers.forEach(dev -> dev.setPassword(null));
+                sendListResp(developers, response);
+            } catch (Exception e) {
+                response.sendError(500);
+            }
+        }
     }
 
-    private void getCustomerById(HttpServletRequest request, HttpServletResponse respons) throws IOException {
-        Integer custId = Integer.parseInt(request.getParameter("custId"));
-        Customer customer = customerService.findById(custId);
-        customer.setPassword(null);
-        sendResp(customer, respons);
+    private void getCustomerById(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String param = request.getParameter("custId");
+        if (param != null) {
+            try {
+                Integer custId = Integer.parseInt(param);
+                Customer customer = customerService.findById(custId);
+                customer.setPassword(null);
+                sendResp(customer, response);
+            } catch (Exception e) {
+                response.sendError(500);
+            }
+        }
     }
 
     private void getFeedbacksByIdForCust(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -589,7 +611,7 @@ public class UserController extends HttpServlet {
                 List<Feedback> feedbacks = fs.findFeedbacksByCustId(id);
                 sendListResp(feedbacks, response);
 
-            }catch (Exception e) {
+            } catch (Exception e) {
                 response.sendError(500);
             }
         }
@@ -602,7 +624,7 @@ public class UserController extends HttpServlet {
                 Integer id = Integer.parseInt(param);
                 List<Technology> technologies = orderingService.findOrderingTechnologies(id);
                 sendListResp(technologies, response);
-            }catch (Exception e) {
+            } catch (Exception e) {
                 response.sendError(500);
             }
         }
