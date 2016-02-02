@@ -16,6 +16,7 @@ import com.epam.freelancer.business.service.TestService;
 import com.epam.freelancer.business.util.CookieManager;
 import com.epam.freelancer.database.dao.*;
 import com.epam.freelancer.database.dao.jdbc.*;
+import com.epam.freelancer.database.model.Follower;
 
 public final class ApplicationContext {
 	private Map<String, Object> beans = new ConcurrentHashMap<>();
@@ -55,9 +56,9 @@ public final class ApplicationContext {
 		orderingService.setOrderingTechnoloyManyToManyDao(DAOManager
 				.getInstance().getManyToManyDAO(
 						OrderingTechnologyManyToManyDao.class.getSimpleName()));
-		orderingService.setFollowerManyToManyDao(DAOManager
-				.getInstance().getManyToManyDAO(
-						FollowerManyToManyDao.class.getSimpleName()));
+		orderingService.setFollowerDao(DAOManager
+				.getInstance().getDAO(
+						FollowerDao.class.getSimpleName()));
 		addBean("orderingService", orderingService);
 
 		addBean("questionService", new QuestionService());
@@ -104,6 +105,8 @@ public final class ApplicationContext {
 					new DeveloperJdbcDao());
 			daoManager.addDao(DeveloperQADao.class.getSimpleName(),
 					new DeveloperQAJdbcDao());
+			daoManager.addDao(FollowerDao.class.getSimpleName(),
+					new FollowerJdbcDao());
 			daoManager.addDao(DevTechManyToManyDao.class.getSimpleName(),
 					new DevTechManyToManyJdbcDao());
 			daoManager.addDao(FollowerManyToManyDao.class.getSimpleName(),

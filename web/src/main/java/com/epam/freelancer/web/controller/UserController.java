@@ -677,14 +677,15 @@ public class UserController extends HttpServlet implements Responsable {
         if (param != null) {
             try {
                 Integer orderId = Integer.parseInt(param);
-                List<Developer> developers =
+                List<Follower> followers =
                         orderingService.findOrderFollowers(orderId);
-                developers.forEach(dev ->
+                followers.forEach(follower ->
                 {
-                    dev.setPassword(null);
-                    dev.setSalt(null);
+                    follower.setDeveloper(developerService.findById(follower.getDevId()));
+                    follower.getDeveloper().setPassword(null);
+                    follower.getDeveloper().setSalt(null);
                 });
-                sendResponse(response, developers, mapper);
+                sendResponse(response, followers, mapper);
             } catch (Exception e) {
                 response.sendError(500);
             }
