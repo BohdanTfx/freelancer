@@ -144,7 +144,6 @@ public class DeveloperController extends HttpServlet {
             for (DeveloperQA developerQA : developerQAs) {
                 developerQA.getTest().setTechnology(technologyService.findById(developerQA.getTestId()));
             }
-            System.out.println(developerQAs);
             sendListResp(developerQAs, response);
         } catch (Exception e) {
             response.sendError(500);

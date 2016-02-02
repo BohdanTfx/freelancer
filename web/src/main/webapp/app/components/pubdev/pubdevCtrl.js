@@ -84,7 +84,6 @@ angular.module('FreelancerApp')
                     $scope.emptyTest = true;
                 }
             }).error(function () {
-                alert('error');
             });
 
         pubdevAPI.getContById($scope.query).success(
