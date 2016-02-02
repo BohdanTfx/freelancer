@@ -70,7 +70,7 @@ public class Customer implements UserEntity {
     }
 
     public String getLang() {
-        return lang != null ? locale.toLanguageTag() : null;
+        return locale != null ? locale.toLanguageTag() : null;
     }
 
     public void setLang(String lang) {
@@ -78,6 +78,7 @@ public class Customer implements UserEntity {
             this.lang = null;
             return;
         }
+        this.lang = lang;
         String[] langCode = lang.split("-");
         if (langCode.length == 2)
             this.locale = new Locale(langCode[0], langCode[1]);

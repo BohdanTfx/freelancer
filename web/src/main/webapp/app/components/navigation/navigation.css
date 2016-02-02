@@ -34,10 +34,14 @@ height:100vh;
 }
 
 .menu-offset{
-    padding-left: 3.4em;
+    padding-left: 3.2em;
 }
 .menu-header-offset{
     padding-top: 2em;
+}
+
+.menu-header-offset-unlog{
+    padding-top: 6em;
 }
 
 .home-btn:active{
