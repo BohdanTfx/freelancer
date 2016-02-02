@@ -8,6 +8,12 @@ import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -19,6 +25,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+/**
+ * Created by Максим on 22.01.2016.
+ */
+import com.epam.freelancer.business.service.*;
+import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
+
+import com.epam.freelancer.business.context.ApplicationContext;
+import com.epam.freelancer.database.model.*;
+import com.epam.freelancer.web.json.model.Quest;
+import com.google.gson.Gson;
+
 
 /**
  * Created by Максим on 22.01.2016.
@@ -67,6 +87,9 @@ public class DeveloperController extends HttpServlet {
                     break;
                 case "dev/getTestByDevId":
                     getTestByDevId(request, response);
+                case "dev/personal":
+                    fillPersonalPage(request, response);
+                    break;
 
                 default:
 
@@ -87,6 +110,12 @@ public class DeveloperController extends HttpServlet {
             switch (path) {
                 case "dev/getresults":
                     sendResults(request, response);
+                    break;
+                case "dev/sendpersonaldata":
+                    updatePersonalData(request, response);
+                    break;
+                case "dev/uploadImage":
+                    uploadImage(request, response);
                     break;
                 default:
 
@@ -326,5 +355,126 @@ public class DeveloperController extends HttpServlet {
         response.getWriter().flush();
         response.getWriter().close();
     }
+
+    private void fillPersonalPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        List<Technology>    technologies = null;
+        HttpSession         session = null;
+        Developer           developer = null;
+        Contact             contact = null;
+        String              developerJson;
+        String              devTechsJson;
+        String              resultJson;
+        String              contactJson;
+        String              allTechsJson;
+
+        List<String> listTechs = new ArrayList<>();
+
+        session             = request.getSession();
+
+        try {
+
+            developer = (Developer) session.getAttribute("user");
+            technologies = developerService.
+                    getTechnologiesByDevId(developer.getId());
+
+            System.out.println(technologies);
+
+            contact = developerService.getContactByDevId(developer.getId());
+
+            System.out.println(contact);
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOG.error("Error when get data from developer table" + e.getMessage());
+        }
+
+        devTechsJson        = new Gson().toJson(technologies);
+        developerJson       = new Gson().toJson(developer);
+        contactJson         = new Gson().toJson(contact);
+
+        technologies        = technologyService.findAll();
+
+        for(Technology tech : technologies){
+            listTechs.add(tech.getName());
+        }
+
+        allTechsJson        = new Gson().toJson(listTechs);
+        System.out.println("ALL TECHNOLOGIES" + allTechsJson);
+
+        resultJson = "{\"dev\":" + developerJson + ",\"techs\":" + devTechsJson +",\"contacts\":" + contactJson + ",\"allTechs\":" + allTechsJson +"}";
+
+        if(devTechsJson.length() == 2){
+            resultJson = "{\"dev\":" + developerJson + ",\"contacts\":" + contactJson + ",\"allTechs\":" + allTechsJson +"}";
+        } if(contactJson.length() == 0) {
+            resultJson = "{\"dev\":" + developerJson + ",\"techs\":" + devTechsJson + ",\"allTechs\":" + allTechsJson +"}";
+        } if(contactJson.length() == 0 && devTechsJson.length() == 2) {
+            resultJson = "{\"dev\":" + developerJson + ",\"allTechs\":" + allTechsJson +"}";
+        }
+
+
+
+
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(resultJson);
+    }
+
+    private void updatePersonalData(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        Developer   developer = null;
+        Contact     contact;
+        String      developerJson;
+        String      technologiesJson;
+        String      contactJson;
+
+        List<Technology> technologies;
+
+        SimpleDateFormat format = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a");
+        mapper.setDateFormat(format);
+
+        developerJson = request.getParameter("developer");
+        System.out.println(developerJson);
+
+        try {
+            developer = mapper.readValue(developerJson, Developer.class);
+
+        } catch(Exception e){
+            LOG.warn("Some problem with mapper");
+        }
+
+        System.out.println(developer);
+
+        technologiesJson = request.getParameter("technologies");
+        System.out.println(technologiesJson);
+
+        System.out.println(technologiesJson.length());
+
+        if(technologiesJson.length() != 0) {
+            technologies = mapper.readValue(technologiesJson, new TypeReference<List<Technology>>() {});
+            System.out.println(technologies);
+        }
+
+
+            contactJson = request.getParameter("contact");
+            System.out.println(contactJson);
+
+        if(contactJson.length() != 0 ) {
+            contact = mapper.readValue(contactJson, Contact.class);
+            System.out.println(contact);
+        }
+
+    }
+
+    private void uploadImage(HttpServletRequest request, HttpServletResponse response){
+        String  imageJson;
+
+        System.out.println("Test");
+
+        imageJson = request.getParameter("image");
+        System.out.println(imageJson);
+
+    }
+
 
 }

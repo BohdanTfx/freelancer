@@ -24,6 +24,7 @@ public class Developer implements UserEntity {
     private String lname;
     @Column
     private Double hourly;
+    @Column
     private Integer zone;
     private Locale locale;
     @Column

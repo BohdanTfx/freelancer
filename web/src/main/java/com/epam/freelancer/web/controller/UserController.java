@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.epam.freelancer.database.model.*;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -27,14 +28,6 @@ import com.epam.freelancer.business.service.OrderingService;
 import com.epam.freelancer.business.service.TechnologyService;
 import com.epam.freelancer.business.util.SendMessageToEmail;
 import com.epam.freelancer.business.util.SmsSender;
-import com.epam.freelancer.database.model.Admin;
-import com.epam.freelancer.database.model.Contact;
-import com.epam.freelancer.database.model.Customer;
-import com.epam.freelancer.database.model.Developer;
-import com.epam.freelancer.database.model.Feedback;
-import com.epam.freelancer.database.model.Ordering;
-import com.epam.freelancer.database.model.Technology;
-import com.epam.freelancer.database.model.UserEntity;
 import com.epam.freelancer.security.provider.AuthenticationProvider;
 import com.epam.freelancer.web.json.model.JsonPaginator;
 import com.epam.freelancer.web.social.Linkedin;
@@ -691,14 +684,15 @@ public class UserController extends HttpServlet implements Responsable {
         if (param != null) {
             try {
                 Integer orderId = Integer.parseInt(param);
-                List<Developer> developers =
+                List<Follower> followers =
                         orderingService.findOrderFollowers(orderId);
-                developers.forEach(dev ->
+                followers.forEach(follower ->
                 {
-                    dev.setPassword(null);
-                    dev.setSalt(null);
+                    follower.setDeveloper(developerService.findById(follower.getDevId()));
+                    follower.getDeveloper().setPassword(null);
+                    follower.getDeveloper().setSalt(null);
                 });
-                sendResponse(response, developers, mapper);
+                sendResponse(response, followers, mapper);
             } catch (Exception e) {
                 response.sendError(500);
             }

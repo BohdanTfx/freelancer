@@ -1,1 +1,286 @@
-heeeey {{myvalue}}
+<div class="container" style="padding-top: 50px;">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="well panel panel-default">
+                <div class="panel-body">
+                    <p class="row">
+                    <h1 style="text-align: center">Profile developer</h1>
+                    <div class="col-xs-6 col-sm-4 text-center">
+                        <ANY ng-switch="editClass">
+                            <ANY ng-switch-when="editClass">
+                                <div class="ih-item circle">
+                                    <img class="center-block img-thumbnail img-responsive" src="{{img}}">
+                                </div>
+                            </ANY>
+                            <ANY ng-switch-when="">
+                                <div class="ih-item circle effect19">
+                                    <a href="" ng-click="" class="button" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'"
+                                       ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100"
+                                       ngf-resize="{width: 640, height: 480}">
+                                        <div class="img">
+                                            <img class="center-block img-thumbnail img-responsive" src="{{img}}">
+                                        </div>
+                                        <div class="info">
+                                            <h3>upload</h3>
+                                            <p>asfzxc</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </ANY>
+                        </ANY>
+
+                        <ul class="list-inline ratings text-center" title="Ratings">
+                            <li><a href="#"><span class="fa fa-star fa-lg"></span></a></li>
+                            <li><a href="#"><span class="fa fa-star fa-lg"></span></a></li>
+                            <li><a href="#"><span class="fa fa-star fa-lg"></span></a></li>
+                            <li><a href="#"><span class="fa fa-star fa-lg"></span></a></li>
+                            <li><a href="#"><span class="fa fa-star fa-lg"></span></a></li>
+                        </ul>
+
+
+                    </div>
+                    <div class="col-xs-8 col-sm-8 text-right">
+
+                    </div>
+
+                    <div class="col-xs-8 col-sm-8">
+                        <p>
+                            <strong class="col-xs-8 col-sm-4 per-pad">Name:</strong>
+                        <form name="fname">
+                            <md-input-container  class="col-xs-6 col-sm-6 box-none">
+                                <input name="fname" ng-class="editClass" ng-readonly="editClass == 'editClass'" ng-model="dev.fname" required>
+                            </md-input-container>
+                                        <span ng-if="editClass === ''">
+                                        <span ng-show="fname.fname.$valid" class="ng-hide per-glyphicon glyphicon-ok per-val"></span>
+                                        <span ng-hide="fname.fname.$valid" class="ng-hide per-glyphicon glyphicon-remove per-er" ></span>
+                                    </span>
+                        </form>
+
+                        </p>
+                        <p>
+                            <strong class="col-xs-12 col-sm-4">Surname:</strong>
+                        <form name="lname">
+                            <md-input-container  class="col-xs-6 col-sm-6 box-none">
+                                <input name="lname" ng-class="editClass" ng-readonly="editClass == 'editClass'" ng-model="dev.lname" required>
+                            </md-input-container>
+                        </form>
+                                    <span ng-if="editClass === ''">
+                                        <span ng-show="lname.lname.$valid" class="ng-hide per-glyphicon glyphicon-ok per-val"></span>
+                                        <span ng-hide="lname.lname.$valid" class="ng-hide per-glyphicon glyphicon-remove per-er"></span>
+                                    </span>
+                        </p>
+                        <p>
+                            <strong class="col-xs-12 col-sm-4">Position: </strong>
+                        <form name="position">
+                            <md-input-container  class="col-xs-6 col-sm-6 box-none">
+                                <input name="position" type="text" ng-class="editClass" ng-readonly="editClass == 'editClass'" ng-model="dev.position" required>
+                            </md-input-container>
+                        </form>
+                                    <span ng-if="editClass === ''">
+                                        <span ng-show="position.position.$valid" class="ng-hide per-glyphicon glyphicon-ok per-val"></span>
+                                        <span ng-hide="position.position.$valid" class="ng-hide per-glyphicon glyphicon-remove per-er"></span>
+                                    </span>
+                        </p>
+                        <p>
+                            <strong class="col-xs-12 col-sm-4">E-mail: </strong>
+                        <form name="email">
+                            <md-input-container  class="col-xs-6 col-sm-6 box-none">
+                                <input name="email" type="email" ng-class="editClass" ng-readonly="editClass == 'editClass'" ng-model="dev.email">
+                            </md-input-container>
+                        </form>
+                                    <span ng-if="editClass === ''">
+                                        <span ng-show="email.email.$valid" class="ng-hide per-glyphicon glyphicon-ok per-val"></span>
+                                        <span ng-hide="email.email.$valid" class="ng-hide per-glyphicon glyphicon-remove per-er"></span>
+                                    </span>
+                        </p>
+                        <p>
+                            <strong class="col-xs-12 col-sm-4">Pay: </strong>
+                        <form name="hourly">
+                            <md-input-container class="col-xs-6 col-sm-6 box-none">
+                                <input name="hourly" ng-class="editClass" ng-readonly="editClass == 'editClass'" ng-model="dev.hourly" class="col-xs-12 col-sm-6 per-control" type="number" step="0.1" required>
+
+                            </md-input-container>
+                        </form>
+                                    <span ng-if="editClass === ''">
+                                        <span ng-show="hourly.hourly.$valid" class="ng-hide per-glyphicon glyphicon-ok per-val "></span>
+                                        <span ng-hide="hourly.hourly.$valid" class="ng-hide per-glyphicon glyphicon-remove per-er"></span>
+                                    </span>
+                        </p>
+                        <p>
+                            <strong class="col-xs-12 col-sm-4">Registration Date: </strong>
+                        <form name="regDate">
+                            <md-input-container class="col-xs-6 col-sm-6 box-none">
+                                <input name="regDate" ng-class="editClass" ng-readonly="editClass == ''" value="{{dev.regDate | date:'M/d/yyyy'}}" disabled>
+                            </md-input-container>
+                        </form>
+                                    <span ng-if="editClass === ''">
+                                        <span ng-show="regDate.regDate.$valid" class="ng-hide per-glyphicon glyphicon-ok per-val"></span>
+                                        <span ng-hide="regDate.regDate.$valid" class="ng-hide per-glyphicon glyphicon-remove per-er"></span>
+                                    </span>
+                        </p>
+                        <p>
+                            <strong class="col-xs-12 col-sm-4">Phone: </strong>
+                        <form>
+                            <md-input-container class="col-xs-6 col-sm-6 box-none">
+                                <input name="phone" type="text" ng-pattern="patternPhone" ng-class="editClass" ng-readonly="editClass == 'editClass'" ng-model="cont.phone">
+                            </md-input-container>
+                        </form>
+                                    <span ng-if="editClass === ''">
+                                        <span ng-message="pattern"  class="ng-hide per-glyphicon glyphicon-ok per-val"></span>
+                                        <span ng-message="pattern" class="ng-hide per-glyphicon glyphicon-remove per-er"></span>
+                                    </span>
+                        </p>
+                        <p>
+                            <strong class="col-xs-12 col-sm-4">Skype: </strong>
+                        <form name="skype">
+                            <md-input-container class="col-xs-6 col-sm-6 box-none">
+                                <input name="skype" ng-class="editClass" ng-readonly="editClass == 'editClass'" ng-model="cont.skype" class="box-none" required>
+                            </md-input-container>
+                        </form>
+                                    <span ng-if="editClass === ''">
+                                        <span ng-show="skype.skype.$valid" class="ng-hide per-glyphicon glyphicon-ok per-val"></span>
+                                        <span ng-hide="skype.skype.$valid" class="ng-hide per-glyphicon glyphicon-remove per-er"></span>
+                                    </span>
+                        </p>
+                        <p>
+                            <strong class="col-xs-12 col-sm-4">Time zone: </strong>
+                            <!--<form name="zone">-->
+                            <!--<input name="zone" ng-class="editClass" ng-readonly="editClass == 'editClass'" ng-model="dev.zone" class="col-xs-12 col-sm-6" required>-->
+                            <!--</form>-->
+
+                            <md-input-container class="col-xs-6 col-sm-6 box-none">
+                                <md-select ng-class="editClass" ng-disabled="editClass != ''" ng-init="dev.zone" ng-model="dev.zone">
+                                    <md-option ng-repeat="zone in timeZones" value="{{zone.zone}}">
+                                        {{zone.title}}
+                                    </md-option>
+                                </md-select>
+                            </md-input-container>
+
+                            <!--<span ng-if="editClass === ''">-->
+                            <!--<span ng-show="zone.zone.$valid" class="ng-hide per-glyphicon glyphicon-ok per-val"></span>-->
+                            <!--<span ng-hide="zone.zone.$valid" class="ng-hide per-glyphicon glyphicon-remove per-er"></span>-->
+                            <!--</span>-->
+                        </p>
+                        <p>
+                            <strong class="col-xs-8 col-sm-4">Language: </strong>
+
+                            <md-input-container class="col-xs-6 col-sm-6 box-none" >
+
+                                <md-select ng-model="dev.lang" ng-class="editClass" ng-disabled="editClass != ''">
+                                    <md-option value="en">English</md-option>
+                                    <md-option value="uk-UA">Ukraine</md-option>
+                                </md-select>
+                            </md-input-container>
+
+                        </p>
+
+                        <ANY ng-switch="editClass">
+                            <ANY ng-switch-when="editClass">
+                                <p>
+                                    <strong class="col-xs-6 col-sm-4">Skills: </strong>
+                                <p class="col-xs-12 col-sm-8 form-group">
+                                                <span ng-repeat="tech in techs">
+                                                <span class="label label-info tags">{{tech.name}}</span>
+                                                </span>
+                                </p>
+                                </p>
+                            </ANY>
+                            <ANY ng-switch-when="">
+                                <p>
+                                    <strong class="col-xs-6 col-sm-4">Skills: </strong>
+                                    <!--<tags-input ng-model="techs" add-on-paste="true" class="col-xs-12 col-sm-6 form-group">-->
+                                    <!--<auto-complete source="allTechs"></auto-complete>-->
+                                    <!--</tags-input>-->
+
+                                    <!--{{techs}}-->
+                                    <!--<tags-input ng-model="testTech"-->
+                                    <!--display-property="name"-->
+                                    <!--placeholder="Add a tags"-->
+                                    <!--replace-spaces-with-dashes="false"-->
+                                    <!--template="tag-template">-->
+                                    <!--<auto-complete source="loadTechs($query)"-->
+                                    <!--min-length="0"-->
+                                    <!--load-on-focus="true"-->
+                                    <!--load-on-empty="true"-->
+                                    <!--max-results-to-show="32"-->
+                                    <!--template="autocomplete-template"></auto-complete>-->
+                                    <!--</tags-input>-->
+
+                                    <!--<script type="text/ng-template" id="tag-template">-->
+                                    <!--<div class="tag-template">-->
+                                    <!--<div class="right-panel">-->
+                                    <!--<span>{{$getDisplayText()}}</span>-->
+                                    <!--<a class="remove-button" ng-click="$removeTag()">&#10006;</a>-->
+                                    <!--</div>-->
+                                    <!--</div>-->
+                                    <!--</script>-->
+
+                                    <!--<script type="text/ng-template" id="autocomplete-template">-->
+                                    <!--<div class="autocomplete-template">-->
+                                    <!--<div class="right-panel">-->
+                                    <!--<span ng-bind-html="$highlight($getDisplayText())"></span>-->
+                                    <!--</div>-->
+                                    <!--</div>-->
+                                    <!--</script>-->
+
+
+                                </p>
+                            </ANY>
+                        </ANY>
+
+
+
+                        <p style="clear: both;">
+                            <strong class="col-xs-12 col-sm-4">Description: </strong>
+                            <md-input-container class="col-xs-6 col-sm-6">
+                                <textarea cols="120" name="name" ng-class="editClass" ng-readonly="editClass == 'editClass'" ng-model="dev.overview"></textarea>
+                            </md-input-container>
+                        </p>
+                    </div>
+
+
+                    <div class="col-xs-12 col-sm-8">
+
+
+                    </div>
+
+                    <!--/col-->
+                    <div class="clearfix"></div>
+                    <div class="col-xs-12 col-sm-12" style="padding-top: 10px;">
+
+                    </div>
+                    <div ng-hide="hide" class="col-xs-12 col-sm-12">
+
+                        <button class="btn btn-lg btn-success btn-block btn-primary" type="submit" ng-click="enableEditor()">
+                            <span class="fa fa-edit"></span> Edit
+                        </button>
+                    </div>
+                    <!--/col-->
+                    <div ng-show="hide" class="col-xs-12 col-sm-6">
+
+                        <button type="submit" class="btn btn-lg btn-primary btn-block" ng-click="save()" >
+                            <span class="fa fa-floppy-o"></span> Save
+                        </button>
+
+                    </div>
+                    <div ng-show="hide" class="col-xs-12 col-sm-6">
+
+                        <button class="btn btn-lg btn-info btn-block btn-warning" ng-click="disableEditor()">
+                            <span class="fa fa-remove"></span> Cancel
+                        </button>
+                    </div>
+                    <!--/col-->
+
+
+                    <!--/col-->
+                </div>
+                <!--/row-->
+            </div>
+            <!--/panel-body-->
+        </div>
+        <!--/panel-->
+    </div>
+    <!--/col-->
+</div>
+<!--/row-->
+</div>
