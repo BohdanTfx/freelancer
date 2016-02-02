@@ -151,6 +151,8 @@ public class Test implements BaseEntity<Integer> {
                 ", secPerQuest=" + secPerQuest +
                 ", isDeleted=" + isDeleted +
                 ", version=" + version +
+                ", technology=" + technology +
+                ", questions=" + questions +
                 '}';
     }
 }

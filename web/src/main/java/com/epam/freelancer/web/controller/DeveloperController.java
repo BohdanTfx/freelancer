@@ -132,10 +132,14 @@ public class DeveloperController extends HttpServlet {
             TestService ts = (TestService) ApplicationContext.getInstance().getBean("testService");
             DeveloperQAService dQAs = (DeveloperQAService) ApplicationContext.getInstance().getBean("developerQAService");
             List<DeveloperQA> developerQAs = dQAs.findAllByDevId(devId);
-            System.out.println(developerQAs);
             for (DeveloperQA developerQA : developerQAs) {
                 developerQA.setTest(ts.findById(developerQA.getTestId()));
             }
+            TechnologyService technologyService = (TechnologyService) ApplicationContext.getInstance().getBean("technologyService");
+            for (DeveloperQA developerQA : developerQAs) {
+                developerQA.getTest().setTechnology(technologyService.findById(developerQA.getTestId()));
+            }
+            System.out.println(developerQAs);
             sendListResp(developerQAs, response);
         } catch (Exception e) {
             response.sendError(500);
