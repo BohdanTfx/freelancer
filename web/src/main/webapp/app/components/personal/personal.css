@@ -1,0 +1,232 @@
+.editClass{
+    border: none !important;
+    background: none !important;
+}
+.per-select{
+    display: block !important;
+    float: none !important;
+    padding-left: 0px;
+    padding-top: 0px;
+}
+.per-img {
+    border-radius: 50%;
+    max-width: 50% !important;
+}
+.per-label{
+.col-xs-12;
+.col-sm-4;
+}
+.per-pad {
+    padding-top: 10px;
+}
+.ng-hide {
+    /* this is just another form of hiding an element */
+    display: block !important;
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+}
+.per-er{
+    margin-top: 5px;
+    margin-bottom: 25px;
+    color: red;
+}
+.per-val{
+    margin-top: 5px;
+    margin-bottom: 25px;
+    color: green;
+}
+
+.per-group {
+    width: 1%;
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 1;
+    color: #555;
+    text-align: center;
+    border: 1px solid;
+    /*border-radius: 4px;*/
+}
+
+.per-glyphicon {
+    /*position: relative;*/
+    top: 1px;
+    display: inline-block;
+    font-family: 'Glyphicons Halflings';
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+
+
+.has-feedback .form-control-feedback {
+    top: 25px;
+    right: 0;
+}
+.form-horizontal .has-feedback .form-control-feedback {
+    top: 0;
+    right: 15px;
+}
+
+#productForm .inputGroupContainer .form-control-feedback,
+#productForm .selectContainer .form-control-feedback {
+    top: 0;
+    right: -15px;
+}
+#profileForm .form-control-feedback {
+    top: 35px;
+    right: 0px;
+}
+
+.ih-item {
+    position: relative;
+    -webkit-transition: all 0.35s ease-in-out;
+    -moz-transition: all 0.35s ease-in-out;
+    transition: all 0.35s ease-in-out;
+}
+
+.ih-item,
+.ih-item * {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.ih-item a {
+    color: #333;
+}
+.ih-item a:hover {
+    text-decoration: none;
+}
+.ih-item img {
+    width: 100%;
+    height: 100%;
+}
+
+.ih-item.circle {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+}
+.ih-item.circle .img {
+    position: relative;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+}
+
+.ih-item.circle .img img {
+    border-radius: 50%;
+}
+.ih-item.circle .info {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    border-radius: 50%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+}
+
+.ih-item.circle.effect19.colored .info {
+    background: #1a4a72;
+    background: rgba(26, 74, 114, 0.6);
+}
+.ih-item.circle.effect19 .info {
+    background: #333333;
+    background: rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    -webkit-transform: scale(0);
+    -moz-transform: scale(0);
+    -ms-transform: scale(0);
+    -o-transform: scale(0);
+    transform: scale(0);
+    -webkit-transition: all 0.35s ease-in-out;
+    -moz-transition: all 0.35s ease-in-out;
+    transition: all 0.35s ease-in-out;
+}
+.ih-item.circle.effect19 .info h3 {
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 22px;
+    margin: 0 30px;
+    padding: 45px 0 0 0;
+    height: 140px;
+    text-shadow: 0 0 1px white, 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+.ih-item.circle.effect19 .info p {
+    color: #bbb;
+    padding: 10px 5px;
+    font-style: italic;
+    /*margin: 0 30px;*/
+    font-size: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+}
+.ih-item.circle.effect19 a:hover .info {
+    opacity: 1;
+    -webkit-transform: scale(1);
+    -moz-transform: scale(1);
+    -ms-transform: scale(1);
+    -o-transform: scale(1);
+    transform: scale(1);
+}
+
+.box-none {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.tag-template .left-panel {
+    float: left;
+}
+
+.tag-template .left-panel img {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+}
+
+.tag-template .right-panel {
+    float: left;
+    margin-left: 5px;
+}
+
+.autocomplete-template .left-panel {
+    float: left;
+}
+
+.autocomplete-template .left-panel img {
+    width: 48px;
+    height: 48px;
+    vertical-align: middle;
+}
+
+.autocomplete-template .right-panel {
+    float: left;
+    margin-left: 5px;
+    margin-top: 7px;
+}
+
+.autocomplete-template .right-panel span:first-child {
+    font-size: 16px;
+}
+
+.autocomplete-template .right-panel span:nth-child(2) {
+    font-size: 14px;
+    color: gray;
+}
+
+.autocomplete-template .right-panel span:last-child {
+    display: block;
+    font-size: 14px;
+    font-style: italic;
+}
