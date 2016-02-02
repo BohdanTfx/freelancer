@@ -94,3 +94,15 @@
     margin-left: 20px;
     margin-right: 20px;
 }
+
+.devpub-test-name {
+    display: inline;
+}
+
+.devpub-lb-test {
+    font-size: 10px;
+}
+
+.devpub-test-label {
+    display: inline;
+}

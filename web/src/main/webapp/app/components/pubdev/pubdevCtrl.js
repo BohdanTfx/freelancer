@@ -77,6 +77,9 @@ angular.module('FreelancerApp')
             function (data, status, headers, config) {
                 if (data.length != 0) {
                     $scope.qas = data;
+                    $scope.outOfDate = 'Out of date';
+                    $scope.passed = 'Passed';
+                    $scope.notPassed = 'Not passed'
                 } else {
                     $scope.emptyTest = true;
                 }

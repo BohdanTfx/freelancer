@@ -168,12 +168,24 @@
                                 <p class="devpub-emptyTest" ng-if="emptyTest">There is no test</p>
 
                                 <div ng-repeat="qa in qas">
-                                    <h2>{{qa.test.name}}</h2>
+                                    <h3 class="devpub-test-name">{{qa.test.name}}</h3>
 
-                                    <p>Rate: {{qa.rate}} / 100</p>
+                                    <p ng-if="qa.isExpire" class="devpub-test-label"><span
+                                            class="label label-danger devpub-lb devpub-lb-test">{{outOfDate}}</span></p>
 
-                                    <p><span class="label label-success devpub-lb">{{qa.test.technology.name}}</span>
-                                    </p>
+                                    <p ng-if="qa.isPassed" class="devpub-test-label"><span
+                                            class="label label-primary devpub-lb devpub-lb-test">{{passed}}</span></p>
+
+                                    <p ng-if="qa.isPassed != true" class="devpub-test-label"><span
+                                            class="label label-danger devpub-lb devpub-lb-test">{{notPassed}}</span></p>
+
+                                    <div class="devpub-clear-div">
+                                        <p>Point: {{qa.rate}} / 100</p>
+
+                                        <p><span
+                                                class="label label-success devpub-lb">{{qa.test.technology.name}}</span>
+                                        </p>
+                                    </div>
                                     <md-divider></md-divider>
                                 </div>
 
