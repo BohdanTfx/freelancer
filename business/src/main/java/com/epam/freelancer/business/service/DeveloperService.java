@@ -16,6 +16,7 @@ import com.epam.freelancer.database.dao.FollowerDao;
 import com.epam.freelancer.database.dao.FollowerManyToManyDao;
 import com.epam.freelancer.database.dao.GenericDao;
 import com.epam.freelancer.database.dao.GenericManyToManyDao;
+import com.epam.freelancer.database.dao.WorkerDao;
 import com.epam.freelancer.database.dao.WorkerManyToManyDao;
 import com.epam.freelancer.database.dao.jdbc.DAOManager;
 import com.epam.freelancer.database.model.Contact;
@@ -122,7 +123,6 @@ public class DeveloperService extends UserService<Developer> {
 		this.followerMTMDevDao = followerMTMDevDao;
 		this.followerMTMDevDao.setConnectionPool(DAOManager.getInstance()
 				.getConnectionPool());
-
 	}
 
 	public void setWorkerMTMDao(
@@ -153,9 +153,9 @@ public class DeveloperService extends UserService<Developer> {
 				.getConnectionPool());
 	}
 
-	public Worker createWorker(Worker worker) {
-		return workerDao.save(worker);
-	}
+    public Worker createWorker(Worker worker) {
+        return workerDao.save(worker);
+    }
 
 	public void deleteWorker(Worker worker) {
 		workerDao.delete(worker);
@@ -177,9 +177,13 @@ public class DeveloperService extends UserService<Developer> {
 		return ((ContactDao) contactDao).getContactByDevId(id);
 	}
 
-	public Contact updateContact(Contact contact) {
-		return contactDao.update(contact);
-	}
+    public Worker getWorkerByDevIdAndOrderId(Integer idDev,Integer idOrder) {
+        return ((WorkerDao) workerDao).getWorkerByDevIdAndOrderId(idDev,idOrder);
+    }
+
+    public Contact updateContact(Contact contact) {
+        return contactDao.update(contact);
+    }
 
 	public void deleteContact(Contact contact) {
 		contactDao.delete(contact);

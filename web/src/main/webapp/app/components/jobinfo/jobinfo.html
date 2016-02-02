@@ -1,41 +1,132 @@
-<div class="job-info">
-    <md-toolbar class="md-primary">
-        <div class="md-toolbar-tools">
-            <h2 class="md-flex">{{order.title}}</h2>
-        </div>
-    </md-toolbar>
+<div class="container-top">
+    <div class="row">
+        <div class="job-info">
+            <div class="col-md-12">
+                <div class="well panel panel-default">
+                    <div class="panel-body">
+                        <div class="col-sm-8 col-xs-12 hr">
+                            <h2><em>{{order.title}}</em></h2>
 
-    <md-content flex layout-padding>
-        <div class="col-xs-8 col-sm-10">
-            <p>{{order.descr}}</p>
-            <ul class="list-unstyled">
-                <li>Date: {{order.date | date:'dd/MM/yyyy'}}</li>
-                <li>Payment: {{order.payType}}, {{order.payment | number:2}} $</li>
-                <li>Time zone: {{order.zone}}</li>
-            </ul>
-        </div>
-        <div class="col-xs-4 col-sm-2">
-            <md-button
-                ng-click="submitAnswers()"
-                class="md-raised md-primary btn-pass-test">Subscribe
-            </md-button>
-            <div class="form-group">
-                <label class="control-label">Customer</label>
-                <div class="col-xs-12">
-                    <div class="label form-control">
-                        <div>{{customer.name}} {{customer.last_name}}</div>
-                        <ul class="list-unstyled">
-                            <li>Email: {{customer.email}}</li>
-                            <li>Zone: {{customer.zone}}</li>
-                            <li class="form-group">
-                                <label class="control-label">On site since</label>
-                                <div class="form-control">{{customer.regDate}}</div>
-                            </li>
-                        </ul>
+                            <p class="position">
+                            <h5>{{position}}</h5>
+                            <h4 class="details">Details</h4>
+
+                            <p>{{order.descr}}</p>
+
+                            <p>
+                            <ul class="list-unstyled">
+                                <li><strong>Date:</strong> {{order.date | date:'dd/MM/yyyy'}}</li>
+                                <li><strong>Payment:</strong> {{order.payType}}, {{order.payment | number:2}} $</li>
+                                <li ng-show="order.zone"><strong>Time zone:</strong> {{order.zone}}</li>
+                                <li><strong>Technologies:</strong>
+                                    <span ng-switch on="techs.length == 0">
+                                        <span ng-switch-when="true">unknown</span>
+                                        <span ng-switch-when="false">
+                                            <span ng-repeat="tech in techs">
+                                                <span class="label label-success lb">{{tech.name}}</span>
+                                            </span>
+                                        </span>
+                                    </span>
+                                </li>
+                            </ul>
+                            </p>
+                        </div>
+
+                        <div class="col-sm-4 col-xs-12 right-side">
+                            <br/>
+                            <div class="btn btn-block btn-primary" ng-click="subscribe()">
+                                <span class="glyphicon glyphicon-thumbs-up"></span>
+                                Subscribe
+                            </div>
+                            <div class="col-lg-5 col-sm-12 hidden-xs">
+                                <div class="user" style="background-image: url('https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSmt5i-ru168WMldKAgcExrQIEKzlys0qTjjAA13TmHf5COlixX')"></div>
+                            </div>
+                            <div class="col-lg-7 col-sm-12">
+                                <h2><em>{{customer.fname}} {{customer.lname}}</em></h2>
+                                <ul class="list-inline ratings" title="Ratings">
+                                    <li ng-repeat="i in getNumber(custRate)">
+                                        <span class="fa fa-star fa-lg"></span>
+                                    </li>
+                                </ul>
+                                <md-divider></md-divider>
+                                <ul class="list-unstyled">
+                                    <li>Email: {{customer.email}}</li>
+                                    <li>
+                                        On site since<br/>
+                                        {{customer.regDate | date:'dd/MM/yyyy'}}
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
+
+                    <md-content>
+                        <md-tabs md-dynamic-height md-border-bottom>
+                            <md-tab label="Feedbacks about customer">
+                                <div class="tab-pane fade in active" id="menu1">
+                                    <br/>
+
+                                    <p class="noFeedbacks" ng-if="noFeedbacks">There is no feedbacks about customer</p>
+
+                                    <div ng-repeat="feedback in feedbacks">
+                                        <br/>
+
+                                        <div class="feedback" style="background-image: url('../../../images/role/developer.png')"></div>
+
+                                        <p>
+                                            <em>{{feedback.developer.fname}} {{feedback.developer.lname}}</em>
+                                        </p>
+
+                                        <p>{{feedback.comment}}</p>
+
+                                        <ul class="list-inline ratings" title="Ratings">
+                                            <li ng-repeat="i in getNumber(feedback.rate)">
+                                                <span class="fa fa-star fa-lg"></span>
+                                            </li>
+                                        </ul>
+
+                                        <br/>
+                                        <md-divider></md-divider>
+                                    </div>
+                                </div>
+                            </md-tab>
+                            <md-tab label="Customer projects history">
+                                <md-content class="md-padding">
+                                    <p class="emptyHistory" ng-if="emptyHistory">Customer hadn't any projects</p>
+
+                                    <div ng-repeat="project in custProjects">
+                                        <h4 class="tit">
+                                            <em>{{project.title}}</em>
+                                        </h4>
+
+                                        <div class="descr">
+                                            <p>{{project.descr}}</p>
+                                            <p>
+                                                <span ng-repeat="tech in project.technologies">
+                                                    <span class="label label-success lb">{{tech.name}}</span>
+                                                </span>
+                                            </p>
+                                            <p>
+                                                {{project.startedDate.substring(0, 12)}} - {{project.endedDate.substring(0,
+                                                12)}}
+                                            </p>
+                                        </div>
+                                        <md-divider></md-divider>
+                                    </div>
+
+                                </md-content>
+                            </md-tab>
+                        </md-tabs>
+                    </md-content>
                 </div>
             </div>
         </div>
+    </div>
 
-    </md-content>
+    <!--/panel-body-->
+    <!--/panel-->
+</div>
+<!--/col-->
+</div>
+<!--/row-->
 </div>

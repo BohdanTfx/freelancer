@@ -38,9 +38,9 @@ public final class ApplicationContext {
 				.getManyToManyDAO(DevTechManyToManyDao.class.getSimpleName()));
 		developerService.setWorkerDao(daoManager.getDAO(WorkerDao.class
 				.getSimpleName()));
-		developerService.setContactDao(daoManager.getDAO(ContactDao.class
-				.getSimpleName()));
 		developerService.setFollowerDao(daoManager.getDAO(FollowerDao.class
+				.getSimpleName()));
+		developerService.setContactDao(daoManager.getDAO(ContactDao.class
 				.getSimpleName()));
 		developerService.setFollowerMTMDevDao(daoManager
 				.getManyToManyDAO(FollowerManyToManyDao.class.getSimpleName()));
@@ -48,6 +48,8 @@ public final class ApplicationContext {
 		addBean("adminService", new AdminService());
 		CustomerService customerService = new CustomerService();
 		customerService.setContactDao(daoManager.getDAO(ContactDao.class
+				.getSimpleName()));
+		customerService.setOrderingDao(daoManager.getDAO(OrderingDao.class
 				.getSimpleName()));
 		addBean("customerService", customerService);
 		addBean("feedbackService", new FeedbackService());

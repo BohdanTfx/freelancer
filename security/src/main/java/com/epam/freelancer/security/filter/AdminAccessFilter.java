@@ -26,15 +26,13 @@ public class AdminAccessFilter implements Filter {
 	private String userName;
 
 	public void init(FilterConfig config) throws ServletException {
-		authenticationProvider = new AuthenticationProvider();
-		ApplicationContext.getInstance().addBean("authenticationProvider",
-				authenticationProvider);
+		/*authenticationProvider = (AuthenticationProvider) ApplicationContext.getInstance().getBean("authenticationProvider");
 		adminService = (AdminService) ApplicationContext.getInstance()
 				.getBean("adminService");
 		EnvironmentVariablesManager manager = EnvironmentVariablesManager
 				.getInstance();
 		cookieAutoAuthName = manager.getVar("cookie.user.remember");
-		userName = manager.getVar("user.admin");
+		userName = manager.getVar("user.admin");*/
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response,

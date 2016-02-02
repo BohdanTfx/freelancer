@@ -12,16 +12,19 @@ import com.epam.freelancer.database.dao.ContactDao;
 import com.epam.freelancer.database.dao.CustomerDao;
 import com.epam.freelancer.database.dao.FollowerDao;
 import com.epam.freelancer.database.dao.GenericDao;
+import com.epam.freelancer.database.dao.OrderingDao;
 import com.epam.freelancer.database.dao.jdbc.DAOManager;
 import com.epam.freelancer.database.model.Contact;
 import com.epam.freelancer.database.model.Customer;
 import com.epam.freelancer.database.model.Follower;
+import com.epam.freelancer.database.model.Ordering;
 
 /**
  * Created by Максим on 18.01.2016.
  */
 public class CustomerService extends UserService<Customer> {
 	private GenericDao<Contact, Integer> contactDao;
+	private GenericDao<Ordering, Integer> orderingDao;
 	private GenericDao<Follower, Integer> followerDao;
 
 	public CustomerService() {
@@ -110,6 +113,16 @@ public class CustomerService extends UserService<Customer> {
 
 	public void deleteContact(Contact contact) {
 		contactDao.delete(contact);
+	}
+
+	public void setOrderingDao(GenericDao<Ordering, Integer> orderingDao) {
+		this.orderingDao = orderingDao;
+		orderingDao.setConnectionPool(DAOManager.getInstance()
+				.getConnectionPool());
+	}
+
+	public List<Ordering> getProjectsPublicHistory(Integer custId) {
+		return ((OrderingDao) orderingDao).getCustomerPublicHistory(custId);
 	}
 
 	public List<Follower> findInvitations(Integer customerId) {

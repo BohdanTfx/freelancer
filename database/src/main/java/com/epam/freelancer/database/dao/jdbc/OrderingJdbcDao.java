@@ -76,6 +76,26 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 	}
 
 	@Override
+	public List<Ordering> getCustomerPublicHistory(Integer custId) {
+		String query = "SELECT * FROM " + table + " WHERE customer_id = ? AND ended = 1 AND private = 0";
+		List<Ordering> orders = new ArrayList<>();
+		try (Connection connection = connectionPool.getConnection();
+			 PreparedStatement statement = connection
+					 .prepareStatement(query)) {
+			statement.setInt(1, custId);
+			try (ResultSet set = statement.executeQuery()) {
+				while (set.next()) {
+					Ordering order = transformer.getObject(set);
+					orders.add(order);
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return orders;
+	}
+
+	@Override
 	public List<Ordering> filterAll(Map<String, Object> parameters,
 			Integer start, Integer step)
 	{

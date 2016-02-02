@@ -118,7 +118,7 @@ public class OrderingService extends GenericService<Ordering, Integer> {
 		this.followerMTMDao = followerMTMDao;
 	}
 
-	public List<Developer> findOrderFollowers(Integer orderId){
+	public List<Developer> findOrderFollowers(Integer orderId) {
 		return followerMTMDao.getBasedOnSecond(orderId);
 	}
 }

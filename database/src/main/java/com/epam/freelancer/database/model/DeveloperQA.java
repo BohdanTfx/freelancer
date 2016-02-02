@@ -62,6 +62,8 @@ public class DeveloperQA implements BaseEntity<Integer> {
 
     public void setExpire(Date expire) {
         this.expire = expire;
+        Date today = new Date(System.currentTimeMillis());
+        isExpire = expire.after(today) ? false : true;
     }
 
     public Boolean getIsExpire() {
@@ -69,7 +71,11 @@ public class DeveloperQA implements BaseEntity<Integer> {
     }
 
     public void setIsExpire(Boolean isExpire) {
-        this.isExpire = isExpire;
+        if(isExpire == null){
+            this.isExpire = isExpire;
+        }else{
+            this.isExpire = false;
+        }
     }
 
     @Override

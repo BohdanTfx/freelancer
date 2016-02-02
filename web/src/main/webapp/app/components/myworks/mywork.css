@@ -9,3 +9,37 @@
 .hidden-icons-title{
    display: inline-block;
 }
+
+.project-block {
+    height: 120px;
+    overflow: hidden;
+    background-color: #F5F5F5;
+    margin: 0;
+    border-radius: 5px;
+}
+
+.project-block-title {
+    width: 100%;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.project-block-descr {
+    width: 100%;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    padding-bottom: 5px;
+}
+
+.project-block-info{
+    margin-bottom: 5%;
+}
+
+.project-block-tech{
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}

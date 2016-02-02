@@ -149,6 +149,7 @@ public class Developer implements UserEntity {
             this.lang = null;
             return;
         }
+        this.lang = lang;
         String[] langCode = lang.split("-");
         if (langCode.length == 2)
             this.locale = new Locale(langCode[0], langCode[1]);

@@ -1,5 +1,15 @@
 package com.epam.freelancer.web.controller;
 
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.log4j.Logger;
+
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.service.CustomerService;
 import com.epam.freelancer.business.service.FeedbackService;
@@ -8,14 +18,6 @@ import com.epam.freelancer.business.service.TestService;
 import com.epam.freelancer.database.model.Customer;
 import com.epam.freelancer.database.model.Feedback;
 import com.google.gson.Gson;
-import org.apache.log4j.Logger;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
 
 /**
  * Created by Максим on 22.01.2016.
