@@ -190,6 +190,8 @@ angular
 																	}, 1000);
 														}
 													});
+
+									$scope.emailInputNgModel = ngModel;
 								}
 							}
 						} ]).directive(

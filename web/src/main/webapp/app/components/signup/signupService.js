@@ -40,6 +40,9 @@ angular
 												$scope.signup = true;
 												$scope.role = localStorage
 														.getItem("role");
+
+												that.triggerEmailValidation(
+														$http, $scope);
 											})
 									.error(
 											function(data, status, headers,
@@ -94,6 +97,14 @@ angular
 													});
 										});
 					}
+
+					this.triggerEmailValidation = function($http, $scope) {
+						var email = $scope.user.email;
+						if (email.match(/^.+@.+\..+$/)) {
+							that.checkEmail($http,
+									$scope.emailInputNgModel, email);
+						}
+					};
 				});
 
 function getUrlVars() {
