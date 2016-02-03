@@ -86,6 +86,7 @@
 								$rootScope.name = data.fname;
 								$rootScope.lastName = data.lname;
 								$rootScope.role = data.role;
+                                $rootScope.id = data.id;
 								$rootScope.logged = true;
 							}).error(function() {
 							});

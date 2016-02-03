@@ -72,21 +72,21 @@ angular.module('FreelancerApp')
 
 
         $scope.sendSms = function () {
-            $scope.sms = 'sms';
-            var data = 'phone=' + $scope.phone + '&sms=' + $scope.sms;
+            var data = 'phone=' + $scope.phone + '&order_id=' + $scope.hireord +
+                '&dev_id=' + $scope.query + "&message=" + $scope.hiremes + '&cust_id=' + $rootScope.id + '&author=customer';
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
             $http.post('/user/sms', data).success(function () {
                 Notification
                     .success({
-                        title : 'Success',
-                        message : 'Now you are follow ' + $rootScope.name
+                        title: 'Success!',
+                        message: 'You are followed him.'
                     });
             }).error(function () {
                 Notification
                     .error({
-                        title : 'Error',
-                        message : 'Error, while sending sms. Please try again. Possibly, your phone number not valid/'
+                        title: 'Error!',
+                        message: 'Error. Please try again.'
                     });
             });
         };

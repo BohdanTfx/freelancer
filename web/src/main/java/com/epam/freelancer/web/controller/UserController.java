@@ -184,7 +184,6 @@ public class UserController extends HttpServlet implements Responsable {
                     break;
                 case "user/orders/getcustomerhistory":
                     getCustomerHistory(request, response);
-
                     break;
                 default:
             }
@@ -217,7 +216,6 @@ public class UserController extends HttpServlet implements Responsable {
 
     public void logout(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        System.out.println("LOGOUT");
         LOG.info(getClass().getSimpleName() + " - " + "logout");
         UserEntity userEntity = (UserEntity) request.getSession().getAttribute(
                 "user");
@@ -235,7 +233,6 @@ public class UserController extends HttpServlet implements Responsable {
             throws IOException {
         HttpSession session = request.getSession();
         UserEntity ue = (UserEntity) session.getAttribute("user");
-        System.out.println(ue + " session");
         if (ue != null) {
             sendResponse(response, ue, mapper);
         } else {
@@ -247,29 +244,36 @@ public class UserController extends HttpServlet implements Responsable {
     public void sendSms(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         String phone = request.getParameter("phone");
-        String sms = request.getParameter("sms");
+        String author = request.getParameter("author");
         HttpSession session = request.getSession();
         UserEntity ue = (UserEntity) session.getAttribute("user");
 
-        if (sms == null || phone == null) {
-            response.sendError(500);
+        if (ue == null || phone == null || author == null) {
+            response.sendError(303);
             return;
         }
 
-        if (ue == null || "".equals(sms) || "".equals(phone)) {
-            response.sendError(500);
-            return;
-        }
+        String sms = "This customer, " + ue.getFname() + " " + ue.getLname() + ", would like to hire you. See details in your cabinet.";
 
         String[] str = new SmsSender().sendSms(phone, sms, ue.getFname());
 
+
+        int smsRes = 0;
         try {
             int res = Integer.parseInt(str[1]);
             if (res < 0) {
-                response.sendError(500);
+                smsRes = 1;
             }
         } catch (Exception e) {
-            response.sendError(500);
+            smsRes = 1;
+        }
+
+        if ("dev".equals(author)) {
+            DeveloperService ds = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
+            ds.createFollowing(request.getParameterMap());
+        } else {
+            CustomerService cs = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
+            cs.hireDeveloper(request.getParameterMap());
         }
     }
 
@@ -567,10 +571,6 @@ public class UserController extends HttpServlet implements Responsable {
         boolean remember = "true".equals(request.getParameter("remember"));
         String email = request.getParameter("username");
         String password = request.getParameter("password");
-
-        System.out.println(email);
-        System.out.println(password);
-        System.out.println(remember);
 
         if (email == null || "".equals(email)) {
             response.sendError(404);

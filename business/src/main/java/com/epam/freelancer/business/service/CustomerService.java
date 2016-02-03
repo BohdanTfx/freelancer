@@ -4,6 +4,7 @@ import com.epam.freelancer.business.util.ValidationParametersBuilder;
 import com.epam.freelancer.business.util.ValidationParametersBuilder.Parameters;
 import com.epam.freelancer.database.dao.*;
 import com.epam.freelancer.database.dao.jdbc.DAOManager;
+import com.epam.freelancer.database.dao.jdbc.FollowerJdbcDao;
 import com.epam.freelancer.database.model.Contact;
 import com.epam.freelancer.database.model.Customer;
 import com.epam.freelancer.database.model.Follower;
@@ -25,10 +26,15 @@ public class CustomerService extends UserService<Customer> {
 
 	public CustomerService() {
 		super(DAOManager.getInstance()
-				.getDAO(CustomerDao.class.getSimpleName()));
-		DAOManager daoManager = DAOManager.getInstance();
+                .getDAO(CustomerDao.class.getSimpleName()));
+        DAOManager daoManager = DAOManager.getInstance();
 		genericDao.setConnectionPool(daoManager.getConnectionPool());
-	}
+        try {
+            followerDao = new FollowerJdbcDao();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 	@Override
 	public Customer create(Map<String, String[]> data) {

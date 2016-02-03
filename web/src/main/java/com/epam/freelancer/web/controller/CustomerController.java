@@ -2,9 +2,7 @@ package com.epam.freelancer.web.controller;
 
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.service.*;
-import com.epam.freelancer.database.model.Contact;
-import com.epam.freelancer.database.model.Customer;
-import com.epam.freelancer.database.model.Feedback;
+import com.epam.freelancer.database.model.*;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -75,12 +73,33 @@ public class CustomerController extends HttpServlet implements Responsable {
                 case "cust/getRateForCust":
                     getRateForCust(request, response);
                     break;
+                case "cust/getAvailableCustOrders":
+                    getAvailableCustOrders(request, response);
+                    break;
                 default:
             }
         } catch (Exception e) {
             e.printStackTrace();
             LOG.fatal(getClass().getSimpleName() + " - " + "doPost");
         }
+    }
+
+    public void getAvailableCustOrders(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        UserEntity ue = (UserEntity) session.getAttribute("user");
+        String devId = request.getParameter("id");
+
+        if (ue == null) {
+            response.setStatus(304);
+            return;
+        }
+
+        OrderingService os = (OrderingService) ApplicationContext.getInstance().getBean("orderingService");
+        List<Ordering> orderings = os.getAvailableCustOrders(ue.getId());
+
+        System.out.println(orderings);
+
+        sendResponse(response, orderings, mapper);
     }
 
     public void getContForCust(HttpServletRequest request, HttpServletResponse response) throws IOException {
