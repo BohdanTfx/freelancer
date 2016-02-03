@@ -43,6 +43,18 @@ import com.epam.freelancer.web.social.model.LinkedinProfile;
 import com.epam.freelancer.web.util.Paginator;
 import com.epam.freelancer.web.util.SignInType;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 public class UserController extends HttpServlet implements Responsable {
 	public static final Logger LOG = Logger.getLogger(UserController.class);
 	private static final long serialVersionUID = -2356506023594947745L;
@@ -77,7 +89,7 @@ public class UserController extends HttpServlet implements Responsable {
 		technologyService = (TechnologyService) ApplicationContext
 				.getInstance().getBean("technologyService");
 		userManager = (UserManager) ApplicationContext.getInstance().getBean(
-				"userManager");
+                "userManager");
 		customerService = (CustomerService) ApplicationContext.getInstance()
 				.getBean("customerService");
 		developerService = (DeveloperService) ApplicationContext.getInstance()
@@ -104,7 +116,7 @@ public class UserController extends HttpServlet implements Responsable {
 				return;
 			case "user/signup/linkedin":
 				sendResponse(response, getLinkedInProfile(request, response),
-						mapper);
+                        mapper);
 				return;
 			case "user/signin/linkedin":
 				signIn(request, response, SignInType.LINKEDIN);
@@ -117,19 +129,19 @@ public class UserController extends HttpServlet implements Responsable {
 		}
 	}
 
-	private LinkedinProfile getLinkedInProfile(HttpServletRequest request,
-			HttpServletResponse response)
-	{
-		String oauthVerifier = request.getParameter("verifier");
-		try {
-			linkedin.loadData(oauthVerifier);
-			return linkedin.getProfile();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+    private LinkedinProfile getLinkedInProfile(HttpServletRequest request,
+                                               HttpServletResponse response)
+    {
+        String oauthVerifier = request.getParameter("verifier");
+        try {
+            linkedin.loadData(oauthVerifier);
+            return linkedin.getProfile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-		return null;
-	}
+        return null;
+    }
 
 	private void configSocials(HttpServletRequest request,
 			HttpServletResponse response)
@@ -140,87 +152,85 @@ public class UserController extends HttpServlet implements Responsable {
 		sendResponse(response, result, mapper);
 	}
 
-	@Override
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException
-	{
-		try {
-			switch (FrontController.getPath(request)) {
-			case "user/signin":
-				signIn(request, response, SignInType.MANUAL);
-				return;
-			case "user/create":
-				create(request, response);
-				return;
-			case "user/getById":
-				getById(request, response);
-				return;
-			case "user/getTechById":
-				getTechById(request, response);
-				return;
-			case "user/getContById":
-				getContById(request, response);
-				return;
-			case "user/getPortById":
-				getPortfolioById(request, response);
-				return;
-			case "user/getRate":
-				getRate(request, response);
-				return;
-			case "user/getFeed":
-				getFeedbackByIdForDev(request, response);
-				return;
-			case "user/send":
-				send(request, response);
-				return;
-			case "user/comment":
-				comment(request, response);
-				return;
-			case "user/sms":
-				sendSms(request, response);
-				return;
-			case "user/isAuth":
-				isAuth(request, response);
-				return;
-			case "user/logout":
-				logout(request, response);
-				return;
-			case "user/orders/filter":
-				filterOrders(request, response);
-				break;
-			case "user/orders/limits":
-				sendResponse(response, orderingService.findPaymentLimits(),
-						mapper);
-				break;
-			case "user/orders/tech":
-				sendResponse(response, technologyService.findAll(), mapper);
-				break;
-			case "user/orders/getorderbyid":
-				getOrderById(request, response);
-				break;
-			case "user/orders/getfollowersbyorderid":
-				getFollowersByOrderId(request, response);
-				break;
-			case "user/orders/getcustomerbyid":
-				getCustomerById(request, response);
-				break;
-			case "user/orders/getcustomerfeedbacks":
-				getFeedbacksByIdForCust(request, response);
-				break;
-			case "user/orders/getordertechs":
-				getOrderTechs(request, response);
-				break;
-			case "user/orders/getcustomerhistory":
-				getCustomerHistory(request, response);
+    @Override
+    protected void doPost(HttpServletRequest request,
+                          HttpServletResponse response) throws ServletException, IOException {
+        try {
+            switch (FrontController.getPath(request)) {
+                case "user/signin":
+                    signIn(request, response);
+                    return;
+                case "user/create":
+                    create(request, response);
+                    return;
+                case "user/getById":
+                    getById(request, response);
+                    return;
+                case "user/getTechById":
+                    getTechById(request, response);
+                    return;
+                case "user/getContById":
+                    getContById(request, response);
+                    return;
+                case "user/getPortById":
+                    getPortfolioById(request, response);
+                    return;
+                case "user/getRate":
+                    getRate(request, response);
+                    return;
+                case "user/getFeed":
+                    getFeedbackByIdForDev(request, response);
+                    return;
+                case "user/send":
+                    send(request, response);
+                    return;
+                case "user/comment":
+                    comment(request, response);
+                    return;
+                case "user/sms":
+                    sendSms(request, response);
+                    return;
+                case "user/isAuth":
+                    isAuth(request, response);
+                    return;
+                case "user/logout":
+                    logout(request, response);
+                    return;
+                case "user/orders/filter":
+                    filterOrders(request, response);
+                    break;
+                case "user/orders/limits":
+                    sendResponse(response, orderingService.findPaymentLimits(),
+                            mapper);
+                    break;
+                case "user/orders/tech":
+                    sendResponse(response, technologyService.findAll(), mapper);
+                    break;
+                case "user/order":
+                    getOrderById(request, response);
+                    break;
+                case "user/order/followers":
+                    getFollowersByOrderId(request,
+                            response);
+                    break;
+                case "user/order/techs":
+                    getOrderTechs(request, response);
+                    break;
 
-				break;
-			default:
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			LOG.fatal(getClass().getSimpleName() + " - " + "doPost");
-		}
-	}
+                case "user/order/subscribe":
+                    subscribe(request, response);
+                    break;
+                case "user/order/unsubscribe":
+                    unsubscribe(request, response);
+                    break;
+
+                default:
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOG.fatal(getClass().getSimpleName() + " - " + "doPost");
+        }
+    }
 
 	private void filterOrders(HttpServletRequest request,
 			HttpServletResponse response)
@@ -459,24 +469,31 @@ public class UserController extends HttpServlet implements Responsable {
 		}
 	}
 
-	public void getPortfolioById(HttpServletRequest request,
-			HttpServletResponse response) throws IOException
-	{
-		String param = request.getParameter("id");
-		if (param != null) {
-			try {
-				Integer id = Integer.parseInt(param);
-				List<Ordering> orderings = developerService.getDeveloperPortfolio(id);
-				for (Ordering ordering : orderings) {
-					ordering.setTechnologies(orderingService
-							.findOrderingTechnologies(ordering.getId()));
-				}
-					sendResponse(response, orderings, mapper);
-			} catch (Exception e) {
-				response.sendError(500);
-			}
-		}
-	}
+    public void getPortfolioById(HttpServletRequest request,
+                                 HttpServletResponse response) throws IOException {
+        String param = request.getParameter("id");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                DeveloperService ds = (DeveloperService) ApplicationContext
+                        .getInstance().getBean("developerService");
+                OrderingService orderingService = (OrderingService) ApplicationContext
+                        .getInstance().getBean("orderingService");
+                List<Ordering> orderings = ds.getDeveloperPortfolio(id);
+                for (Ordering ordering : orderings) {
+                    ordering.setTechnologies(orderingService
+                            .findOrderingTechnologies(ordering.getId()));
+                }
+                if (orderings != null) {
+                    sendResponse(response, orderings, mapper);
+                } else {
+                    response.sendError(500);
+                }
+            } catch (Exception e) {
+                response.sendError(500);
+            }
+        }
+    }
 
 	public void getRate(HttpServletRequest request, HttpServletResponse response)
 			throws IOException
@@ -721,23 +738,80 @@ public class UserController extends HttpServlet implements Responsable {
 		}
 	}
 
-	private void getCustomerHistory(HttpServletRequest request,
-			HttpServletResponse response) throws IOException
-	{
-		String param = request.getParameter("custId");
-		if (param != null) {
-			try {
-				Integer id = Integer.parseInt(param);
-				List<Ordering> orders = customerService
-						.getProjectsPublicHistory(id);
-				for (Ordering ordering : orders) {
-					ordering.setTechnologies(orderingService
-							.findOrderingTechnologies(ordering.getId()));
-				}
-					sendResponse(response, orders, mapper);
-			} catch (Exception e) {
-				response.sendError(500);
-			}
-		}
-	}
+    private void getFollowersByOrderId(HttpServletRequest
+                                               request, HttpServletResponse response) throws IOException {
+        String param = request.getParameter("orderId");
+        if (param != null) {
+            try {
+                Integer orderId = Integer.parseInt(param);
+                List<Follower> followers =
+                        orderingService.findOrderFollowers(orderId);
+                followers.forEach(follower ->
+                {
+                    follower.setDeveloper(developerService.findById(follower.getDevId()));
+                    follower.getDeveloper().setPassword(null);
+                    follower.getDeveloper().setSalt(null);
+                });
+                sendResponse(response, followers, mapper);
+            } catch (Exception e) {
+                response.sendError(500);
+            }
+        }
+    }
+
+    private void getOrderTechs(HttpServletRequest request,
+                               HttpServletResponse response) throws IOException {
+        String param = request.getParameter("orderId");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                List<Technology> technologies =
+                        orderingService.findOrderingTechnologies(id);
+                sendResponse(response, technologies, mapper);
+
+            } catch (Exception e) {
+                response.sendError(500);
+            }
+        }
+    }
+
+    private void subscribe(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        String order_id = request.getParameter("orderId");
+        String message = request.getParameter("message");
+        HttpSession session = request.getSession();
+        UserEntity ue = (UserEntity) session.getAttribute("user");
+        if (ue == null) {
+            response.sendError(404);
+            return;
+        }
+        if (order_id == null || order_id.isEmpty()) {
+            response.sendError(500);
+            return;
+        }
+        Integer orderId;
+        try {
+            orderId = Integer.parseInt(order_id);
+        } catch (NumberFormatException e) {
+            response.sendError(500);
+            return;
+        }
+        Follower follower = developerService.subscribeOnProject(ue.getId(), orderId, message);
+        follower.setDeveloper((Developer)ue);
+        sendResponse(response, follower, mapper);
+
+    }
+
+    private void unsubscribe(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String follower_id = request.getParameter("followerId");
+
+        try {
+            developerService.unsubscribeFromProject(Integer.parseInt(follower_id));
+        } catch (NumberFormatException e) {
+            response.sendError(500);
+            return;
+        }
+
+    }
+
 }
