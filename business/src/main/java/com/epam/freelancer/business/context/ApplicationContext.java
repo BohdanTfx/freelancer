@@ -43,6 +43,8 @@ public final class ApplicationContext {
 				.getSimpleName()));
 		customerService.setOrderingDao(daoManager.getDAO(OrderingDao.class
 				.getSimpleName()));
+		customerService.setFollowerDao(daoManager.getDAO(FollowerDao.class
+				.getSimpleName()));
 		addBean("customerService", customerService);
 		addBean("feedbackService", new FeedbackService());
 
@@ -50,10 +52,9 @@ public final class ApplicationContext {
 		orderingService.setOrderingTechnoloyManyToManyDao(DAOManager
 				.getInstance().getManyToManyDAO(
 						OrderingTechnologyManyToManyDao.class.getSimpleName()));
-		orderingService.setFollowerDao(DAOManager
-                .getInstance().getDAO(
-                        FollowerDao.class.getSimpleName()));
-        addBean("orderingService", orderingService);
+		orderingService.setFollowerDao(DAOManager.getInstance().getDAO(
+				FollowerDao.class.getSimpleName()));
+		addBean("orderingService", orderingService);
 
 		addBean("questionService", new QuestionService());
 		addBean("testService", new TestService());
