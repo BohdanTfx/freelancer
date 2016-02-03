@@ -41,6 +41,7 @@ angular.module('FreelancerApp')
         custpubAPI.getOrdPubHist($scope.query).success(
             function (data, status, headers, config) {
                 console.log(data);
+                $scope.orders = data;
             }).error(function () {
 
             });

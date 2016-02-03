@@ -132,62 +132,55 @@
                                 </div>
                             </div>
                         </md-tab>
-                        <md-tab label="Portfolio">
+                        <md-tab label="History">
                             <md-content class="md-padding">
-                                <p class="cust-emptyPort" ng-if="emptyPort">He has no portfolio</p>
+                                <p class="cust-emptyPort" ng-if="emptyPort">He has no project</p>
 
-                                <div ng-repeat="port in ports">
-                                    <h4 class="tit">
-                                        <em>{{port.title}}</em>
-                                    </h4>
+                                <div ng-repeat="order in orders">
+                                    <h4>{{order.title}}</h4>
 
-                                    <div class="descr">
-                                        <p>{{port.descr}}</p>
+                                    <p>{{order.descr}}</p>
 
-                                        <p>
-                                    <span ng-repeat="tech in port.technologies">
-                                        <span class="label label-success cust-lb">{{tech.name}}</span>
-                                    </span>
-                                        </p>
+                                    <p>{{order.startedDate | date:'longDate'}} - {{order.endedDate |
+                                        date:'longDate'}}</p>
 
-                                        <p>
-                                            {{port.startedDate | date:'longDate'}} - {{port.endedDate |
-                                            date:'longDate'}}
-                                        </p>
-                                    </div>
+                                    <p>
+                                      <span ng-repeat="tech in order.technologies"
+                                            class="label label-success cust-lb">{{tech.name}}</span>
+                                    </p>
                                     <md-divider></md-divider>
                                 </div>
 
                             </md-content>
                         </md-tab>
-                        <md-tab label="Test">
-                            <md-content class="md-padding">
-                                <p class="cust-emptyTest" ng-if="emptyTest">There is no test</p>
+                        <!-- <md-tab label="Test">
+                             <md-content class="md-padding">
+                                 <p class="cust-emptyTest" ng-if="emptyTest">There is no test</p>
 
-                                <div ng-repeat="qa in qas">
-                                    <h3 class="cust-test-name">{{qa.test.name}}</h3>
+                                 <div ng-repeat="qa in qas">
+                                     <h3 class="cust-test-name">{{qa.test.name}}</h3>
 
-                                    <p ng-if="qa.isExpire" class="cust-test-label"><span
-                                            class="label label-danger cust-lb cust-lb-test">{{outOfDate}}</span></p>
+                                     <p ng-if="qa.isExpire" class="cust-test-label"><span
+                                             class="label label-danger cust-lb cust-lb-test">{{outOfDate}}</span></p>
 
-                                    <p ng-if="qa.isPassed" class="cust-test-label"><span
-                                            class="label label-primary cust-lb cust-lb-test">{{passed}}</span></p>
+                                     <p ng-if="qa.isPassed" class="cust-test-label"><span
+                                             class="label label-primary cust-lb cust-lb-test">{{passed}}</span></p>
 
-                                    <p ng-if="qa.isPassed != true" class="cust-test-label"><span
-                                            class="label label-danger cust-lb cust-lb-test">{{notPassed}}</span></p>
+                                     <p ng-if="qa.isPassed != true" class="cust-test-label"><span
+                                             class="label label-danger cust-lb cust-lb-test">{{notPassed}}</span></p>
 
-                                    <div class="cust-clear-div">
-                                        <p>Point: {{qa.rate}} / 100</p>
+                                     <div class="cust-clear-div">
+                                         <p>Point: {{qa.rate}} / 100</p>
 
-                                        <p><span
-                                                class="label label-success cust-lb">{{qa.test.technology.name}}</span>
-                                        </p>
-                                    </div>
-                                    <md-divider></md-divider>
-                                </div>
+                                         <p><span
+                                                 class="label label-success cust-lb">{{qa.test.technology.name}}</span>
+                                         </p>
+                                     </div>
+                                     <md-divider></md-divider>
+                                 </div>
 
-                            </md-content>
-                        </md-tab>
+                             </md-content>
+                         </md-tab>-->
                     </md-tabs>
                 </md-content>
             </div>
