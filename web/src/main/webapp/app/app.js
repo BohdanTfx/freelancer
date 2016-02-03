@@ -49,7 +49,8 @@
 					controller : 'testCtrl'
 				}).state('home', {
 					url : '/home',
-					templateUrl : 'app/components/home/home.html'
+					templateUrl : 'app/components/home/home.html',
+					controller : 'homeCtrl'
 				}).state('auth', {
 					url : '/auth',
 					templateUrl : 'app/components/authentication/auth.html',
