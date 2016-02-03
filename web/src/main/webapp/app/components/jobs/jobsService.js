@@ -143,9 +143,9 @@ angular
 						if (localStep !== undefined && localStep != null)
 							return localStep;
 						else {
-							localStorage.setItem("freelancerOrdersStep",
-									$scope.itesStep.number);
-							return $scope.itesStep.number;
+							var step = $scope.itesStep | 10;
+							localStorage.setItem("freelancerOrdersStep", step);
+							return step;
 						}
 					}
 				});
