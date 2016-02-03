@@ -12,6 +12,10 @@ angular.module('FreelancerApp')
             $scope.followers = data;
             if (data.length == 0) {
                 $scope.noFollowers = true;
+            }else{
+                for(var i in $scope.followers){
+                    $scope.setDevRating($scope.followers[i]);
+                }
             }
         }).error(function () {
             alert(404);
@@ -42,6 +46,7 @@ angular.module('FreelancerApp')
 
             orderAPI.getCustomerHistory($scope.order.customerId).success(function (data) {
                 $scope.custProjects = data;
+                $log.log(data);
                 if(data.length == 0) {
                     $scope.emptyHistory = true;
                 }
@@ -59,6 +64,16 @@ angular.module('FreelancerApp')
             }
 
             return ratings;
+        };
+
+        $scope.setDevRating = function (follower) {
+            orderAPI.getRateById(follower.devId).success(
+                function (data, status, headers, config) {
+                    console.log("rate in func = " + data);
+                    follower.rate = data;
+                }).error(function () {
+                    follower.rate = 0;
+                });
         };
 
         $scope.calcCustRate = function () {

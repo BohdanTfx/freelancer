@@ -36,5 +36,10 @@ angular.module('FreelancerApp')
         dataFactory.getCustomerHistory = function (custId) {
             return $http.post(urlCustHistory+ custId);
         };
+
+        var urlDevRate = '/user/getRate?id=';
+        dataFactory.getRateById = function (id) {
+            return $http.post(urlDevRate + id);
+        };
         return dataFactory;
     });
