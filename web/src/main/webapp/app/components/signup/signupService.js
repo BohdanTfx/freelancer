@@ -16,7 +16,7 @@ angular
 							ngModel.$setValidity('emailAvailable', data);
 						}).error(function(data, status, headers, config) {
 						});
-                    };
+					}
 
 					this.initSocial = function($http, $scope) {
 						var linkedinVerifier = getUrlVars();
@@ -41,8 +41,6 @@ angular
 												$scope.role = localStorage
 														.getItem("role");
 
-                                                that.triggerEmailValidation(
-                                                    $http, $scope);
 											})
 									.error(
 											function(data, status, headers,
@@ -57,9 +55,9 @@ angular
 						}
 
 						$http
-								.get("/user/signup/social", {
+								.get("/user/social", {
 									params : {
-										callbackUrl : document.URL
+										callbackUrlLinkedIn : document.URL
 									}
 								})
 								.success(
@@ -74,14 +72,14 @@ angular
 														message : 'An error occurred while registering. Please try again.'
 													});
 										});
-                    };
+					}
 
 					this.createUser = function($http, user) {
 						var config = {
 							headers : {
 								'Content-Type' : 'application/x-www-form-urlencoded;charset=utf-8;'
 							}
-                        };
+						}
 						$http
 								.post("/user/create", user, config)
 								.success(
@@ -96,15 +94,15 @@ angular
 														message : 'An error occurred while registering. Please try again.'
 													});
 										});
-                    };
+					}
 
-                    this.triggerEmailValidation = function ($http, $scope) {
-                        var email = $scope.user.email;
-                        if (email.match(/^.+@.+\..+$/)) {
-                            that.checkEmail($http,
-                                $scope.emailInputNgModel, email);
-                        }
-                    };
+					this.triggerEmailValidation = function($http, $scope) {
+						var email = $scope.user.email;
+						if (email.match(/^.+@.+\..+$/)) {
+							that.checkEmail($http, $scope.emailInputNgModel,
+									email);
+						}
+					};
 				});
 
 function getUrlVars() {

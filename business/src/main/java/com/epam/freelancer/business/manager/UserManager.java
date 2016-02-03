@@ -2,6 +2,8 @@ package com.epam.freelancer.business.manager;
 
 import java.util.Map;
 
+import com.epam.freelancer.business.encode.Encryption;
+import com.epam.freelancer.business.encode.SHA256Util;
 import com.epam.freelancer.business.service.AdminService;
 import com.epam.freelancer.business.service.CustomerService;
 import com.epam.freelancer.business.service.DeveloperService;
@@ -95,5 +97,15 @@ public class UserManager {
 
 	public void setAdminService(AdminService adminService) {
 		this.adminService = adminService;
+	}
+
+	public boolean validCredentials(String login, String inputPass,
+			UserEntity ue)
+	{
+		String hashPass = new Encryption(new SHA256Util()).crypt(inputPass,
+				ue.getSalt());
+
+		return login.equals(ue.getEmail()) && hashPass.equals(ue.getPassword());
+
 	}
 }

@@ -1,132 +1,229 @@
 'use strict';
 
-angular.module('FreelancerApp')
-    .factory('AuthenticationService',
-    ['Base64', '$http', '$rootScope', '$cookieStore', '$timeout',
-        function (Base64, $http, $rootScope, $cookieStore, $timeout) {
-            var service = {};
+angular
+		.module('FreelancerApp')
+		.factory(
+				'AuthenticationService',
+				[
+						'Base64',
+						'$http',
+						'$rootScope',
+						'$cookieStore',
+						'$timeout',
+						'Notification',
+						'$location',
+						function(Base64, $http, $rootScope, $cookieStore,
+								$timeout, Notification, $location) {
+							var service = {};
 
-            service.Login = function (username, password, remember, callback) {
+							service.Login = function(username, password,
+									remember, callback) {
 
-                var data = 'username=' + username + '&password=' + password + '&remember=' + remember;
-                $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+								var data = 'email=' + username + '&password='
+										+ password + '&remember=' + remember;
+								$http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
-                return $http.post('/user/signin', data);
-            };
+								return $http.post('/user/signin', data);
+							};
 
-            service.SetCredentials = function (fname, lname, role) {
-                //var authdata = Base64.encode(username + ':' + password);
+							service.SetCredentials = function(fname, lname,
+									role) {
+								// var authdata = Base64.encode(username + ':' +
+								// password);
 
-                $rootScope.globals = {
-                    currentUser: {
-                        fname: fname,
-                        lname: lname,
-                        role: role
-                    }
-                };
+								$rootScope.globals = {
+									currentUser : {
+										fname : fname,
+										lname : lname,
+										role : role
+									}
+								};
 
+								// $http.defaults.headers.common['Authorization']
+								// = 'Basic ' + authdata; // jshint ignore:line
+								// $cookieStore.put('freelancerRememberMeCookieAng',
+								// $rootScope.globals);
+							};
 
-                //$http.defaults.headers.common['Authorization'] = 'Basic ' + authdata; // jshint ignore:line
-                //$cookieStore.put('freelancerRememberMeCookieAng', $rootScope.globals);
-            };
+							service.ClearCredentials = function() {
+								$http({
+									url : '/user/logout',
+									method : "POST"
+								}).success(function() {
+									console.log('scu logout');
+								}).error(function() {
+									console.log('err logout');
+								});
+								$rootScope.globals = {};
+							};
 
-            service.ClearCredentials = function () {
-                $http({
-                    url: '/user/logout',
-                    method: "POST"
-                }).success(function () {
-                    console.log('scu logout');
-                }).error(function () {
-                    console.log('err logout');
-                });
-                $rootScope.globals = {};
-            };
+							service.initSocial = function($scope) {
+								var linkedinVerifier = getUrlVars();
+								if (linkedinVerifier !== undefined
+										&& linkedinVerifier.oauth_verifier !== undefined) {
+									$http
+											.get(
+													"/user/signin/linkedin",
+													{
+														params : {
+															verifier : linkedinVerifier.oauth_verifier,
+															email : $scope.user.email,
+															password : $scope.user.password,
+															remember : $scope.user.remember
+														}
+													})
+											.success(
+													function(response, status,
+															headers, config) {
+														Notification.success({
+															title : 'Success!',
+															message : 'Ok.'
+														});
 
-            return service;
-        }])
+														service.SetCredentials(
+																response.fname,
+																response.lname,
+																response.role);
+														$location.path('/');
+													})
+											.error(
+													function(data, status,
+															headers, config) {
+														if (status == 400) {
+															$scope.showError = true;
+															$scope.errorTitle = 'Error!';
+															$scope.errorDescription = 'Invalid credentials';
+														} else {
+															Notification
+																	.error({
+																		title : 'Error!',
+																		message : 'An error occurred while registering. Please try again.'
+																	});
+															location
+																	.replace('/#/auth');
+														}
+													});
+									return;
+								}
 
-    .factory('Base64', function () {
-        /* jshint ignore:start */
+								$http
+										.get(
+												"/user/social",
+												{
+													params : {
+														callbackUrlLinkedIn : document.URL
+													}
+												})
+										.success(
+												function(data, status, headers,
+														config) {
+													$scope.linkedinUrl = data.linkedinUrl;
+												})
+										.error(
+												function(data, status, headers,
+														config) {
+													if (status == 400) {
+														$scope.showError = true;
+														$scope.errorTitle = 'Error!';
+														$scope.errorDescription = 'Invalid credentials';
+													} else {
+														Notification
+																.error({
+																	title : 'Error!',
+																	message : 'An error occurred while registering. Please try again.'
+																});
+													}
+												});
+							}
 
-        var keyStr = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+							return service;
+						} ])
 
-        return {
-            encode: function (input) {
-                var output = "";
-                var chr1, chr2, chr3 = "";
-                var enc1, enc2, enc3, enc4 = "";
-                var i = 0;
+		.factory(
+				'Base64',
+				function() {
+					/* jshint ignore:start */
 
-                do {
-                    chr1 = input.charCodeAt(i++);
-                    chr2 = input.charCodeAt(i++);
-                    chr3 = input.charCodeAt(i++);
+					var keyStr = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 
-                    enc1 = chr1 >> 2;
-                    enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
-                    enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
-                    enc4 = chr3 & 63;
+					return {
+						encode : function(input) {
+							var output = "";
+							var chr1, chr2, chr3 = "";
+							var enc1, enc2, enc3, enc4 = "";
+							var i = 0;
 
-                    if (isNaN(chr2)) {
-                        enc3 = enc4 = 64;
-                    } else if (isNaN(chr3)) {
-                        enc4 = 64;
-                    }
+							do {
+								chr1 = input.charCodeAt(i++);
+								chr2 = input.charCodeAt(i++);
+								chr3 = input.charCodeAt(i++);
 
-                    output = output +
-                        keyStr.charAt(enc1) +
-                        keyStr.charAt(enc2) +
-                        keyStr.charAt(enc3) +
-                        keyStr.charAt(enc4);
-                    chr1 = chr2 = chr3 = "";
-                    enc1 = enc2 = enc3 = enc4 = "";
-                } while (i < input.length);
+								enc1 = chr1 >> 2;
+								enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+								enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+								enc4 = chr3 & 63;
 
-                return output;
-            },
+								if (isNaN(chr2)) {
+									enc3 = enc4 = 64;
+								} else if (isNaN(chr3)) {
+									enc4 = 64;
+								}
 
-            decode: function (input) {
-                var output = "";
-                var chr1, chr2, chr3 = "";
-                var enc1, enc2, enc3, enc4 = "";
-                var i = 0;
+								output = output + keyStr.charAt(enc1)
+										+ keyStr.charAt(enc2)
+										+ keyStr.charAt(enc3)
+										+ keyStr.charAt(enc4);
+								chr1 = chr2 = chr3 = "";
+								enc1 = enc2 = enc3 = enc4 = "";
+							} while (i < input.length);
 
-                // remove all characters that are not A-Z, a-z, 0-9, +, /, or =
-                var base64test = /[^A-Za-z0-9\+\/\=]/g;
-                if (base64test.exec(input)) {
-                    window.alert("There were invalid base64 characters in the input text.\n" +
-                        "Valid base64 characters are A-Z, a-z, 0-9, '+', '/',and '='\n" +
-                        "Expect errors in decoding.");
-                }
-                input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+							return output;
+						},
 
-                do {
-                    enc1 = keyStr.indexOf(input.charAt(i++));
-                    enc2 = keyStr.indexOf(input.charAt(i++));
-                    enc3 = keyStr.indexOf(input.charAt(i++));
-                    enc4 = keyStr.indexOf(input.charAt(i++));
+						decode : function(input) {
+							var output = "";
+							var chr1, chr2, chr3 = "";
+							var enc1, enc2, enc3, enc4 = "";
+							var i = 0;
 
-                    chr1 = (enc1 << 2) | (enc2 >> 4);
-                    chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
-                    chr3 = ((enc3 & 3) << 6) | enc4;
+							// remove all characters that are not A-Z, a-z, 0-9,
+							// +, /, or =
+							var base64test = /[^A-Za-z0-9\+\/\=]/g;
+							if (base64test.exec(input)) {
+								window
+										.alert("There were invalid base64 characters in the input text.\n"
+												+ "Valid base64 characters are A-Z, a-z, 0-9, '+', '/',and '='\n"
+												+ "Expect errors in decoding.");
+							}
+							input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
 
-                    output = output + String.fromCharCode(chr1);
+							do {
+								enc1 = keyStr.indexOf(input.charAt(i++));
+								enc2 = keyStr.indexOf(input.charAt(i++));
+								enc3 = keyStr.indexOf(input.charAt(i++));
+								enc4 = keyStr.indexOf(input.charAt(i++));
 
-                    if (enc3 != 64) {
-                        output = output + String.fromCharCode(chr2);
-                    }
-                    if (enc4 != 64) {
-                        output = output + String.fromCharCode(chr3);
-                    }
+								chr1 = (enc1 << 2) | (enc2 >> 4);
+								chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+								chr3 = ((enc3 & 3) << 6) | enc4;
 
-                    chr1 = chr2 = chr3 = "";
-                    enc1 = enc2 = enc3 = enc4 = "";
+								output = output + String.fromCharCode(chr1);
 
-                } while (i < input.length);
+								if (enc3 != 64) {
+									output = output + String.fromCharCode(chr2);
+								}
+								if (enc4 != 64) {
+									output = output + String.fromCharCode(chr3);
+								}
 
-                return output;
-            }
-        };
+								chr1 = chr2 = chr3 = "";
+								enc1 = enc2 = enc3 = enc4 = "";
 
-        /* jshint ignore:end */
-    });
+							} while (i < input.length);
+
+							return output;
+						}
+					};
+
+					/* jshint ignore:end */
+				});

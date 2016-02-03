@@ -195,11 +195,6 @@
     transform: scale(1);
 }
 
-.box-none {
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
 .tag-template .left-panel {
     float: left;
 }

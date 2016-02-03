@@ -15,7 +15,6 @@ import org.apache.log4j.Logger;
 
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.service.DeveloperService;
-import com.epam.freelancer.business.util.EnvironmentVariablesManager;
 import com.epam.freelancer.security.provider.AuthenticationProvider;
 
 public class DeveloperAccessFilter implements Filter {
@@ -23,17 +22,14 @@ public class DeveloperAccessFilter implements Filter {
 			.getLogger(DeveloperAccessFilter.class);
 	private DeveloperService developerService;
 	private AuthenticationProvider authenticationProvider;
-	private String cookieAutoAuthName;
-	private String userName;
+	private String cookieAutoAuthName = "freelancerRememberMeCookie";
+	private String userName = "user";
 
 	public void init(FilterConfig config) throws ServletException {
-		authenticationProvider = new AuthenticationProvider();
+		authenticationProvider = AuthenticationProvider
+				.createAuthenticationProvider();
 		developerService = (DeveloperService) ApplicationContext.getInstance()
 				.getBean("developerService");
-		EnvironmentVariablesManager manager = EnvironmentVariablesManager
-				.getInstance();
-		cookieAutoAuthName = manager.getVar("cookie.user.remember");
-		userName = manager.getVar("user.developer");
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response,
@@ -43,9 +39,9 @@ public class DeveloperAccessFilter implements Filter {
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
-		/*if (authenticationProvider.provideAccess(cookieAutoAuthName, userName,
+		if (authenticationProvider.provideAccess(cookieAutoAuthName, userName,
 				"login", developerService, httpServletRequest,
-				httpServletResponse))*/
+				httpServletResponse))
 			chain.doFilter(request, response);
 	}
 
