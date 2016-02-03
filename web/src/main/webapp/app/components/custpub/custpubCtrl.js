@@ -4,6 +4,12 @@ angular.module('FreelancerApp')
 
         $scope.query = $stateParams.custId;
 
+        if ($rootScope.role == 'developer') {
+            $scope.show = true;
+        } else {
+            $scope.show = false;
+        }
+
         $http.post('/user/isAuth').success(function (data) {
             console.log(data);
             $scope.mesEmail = data.email;
@@ -47,7 +53,7 @@ angular.module('FreelancerApp')
                         $scope.feeds = data;
 
                         for (var i = 0; i < $scope.feeds.length; i++) {
-                            if (typeof $scope.feeds[i].developer.imgUrl == 'undefined')
+                            if (typeof $scope.feeds[i].developer.imgUrl == 'undefined' || $scope.feeds[i].developer.imgUrl == null)
                                 $scope.feeds[i].developer.imgUrl = 'images/profile/no-profile-img-head.gif';
                         }
                     }
@@ -137,8 +143,10 @@ angular.module('FreelancerApp')
         };
 
         $scope.comment = function (rate, feedback) {
+            alert(rate);
+            alert(feedback);
             if (rate != 0) {
-                var data = 'comment=' + feedback + '&id=' + $scope.id + '&rate=' + rate;
+                var data = 'comment=' + feedback + '&id=' + $scope.id + '&rate=' + rate + '&role=dev';
                 $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
             } else {
                 $scope.comerr = 'Error, bad value.';
@@ -164,4 +172,27 @@ angular.module('FreelancerApp')
                 $scope.comsuc = undefined;
             }
         };
+
+        $scope.getNumber = function (count) {
+
+            var ratings = [];
+
+            for (var i = 0; i < count; i++) {
+                ratings.push(i)
+            }
+
+            return ratings;
+        };
+
+        $scope.rate = 1;
+        $scope.max = 5;
+        $scope.isReadonly = false;
+
+        $scope.ratingStates = [
+            {stateOn: 'glyphicon-ok-sign', stateOff: 'glyphicon-ok-circle'},
+            {stateOn: 'glyphicon-star', stateOff: 'glyphicon-star-empty'},
+            {stateOn: 'glyphicon-heart', stateOff: 'glyphicon-ban-circle'},
+            {stateOn: 'glyphicon-heart'},
+            {stateOff: 'glyphicon-off'}
+        ];
     });

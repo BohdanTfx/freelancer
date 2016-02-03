@@ -53,13 +53,6 @@
                         <br/>
                         <span class="cust-sp">{{hourly}}</span>
                         </p>
-                        <p>
-                            Technologies:
-                            <br/>
-                            <span ng-repeat="tech in techs">
-                                <span class="label label-success cust-lb">{{tech.name}}</span>
-                            </span>
-                        </p>
 
                         <p>
                         </p>
@@ -122,9 +115,9 @@
                                     <span ng-if="$index != 0"><br/></span>
 
                                     <div class="feed"
-                                         style="background-image: url('{{feed.customer.imgUrl}}')"></div>
+                                         style="background-image: url('{{feed.developer.imgUrl}}')"></div>
                                     <p>
-                                        <em>{{feed.customer.fname}} {{feed.customer.lname}}</em>
+                                        <em>{{feed.developer.fname}} {{feed.developer.lname}}</em>
                                     </p>
 
                                     <p>{{feed.comment}}</p>

@@ -178,7 +178,7 @@ angular.module('FreelancerApp')
 
         $scope.comment = function (rate, feedback) {
             if (rate != 0) {
-                var data = 'comment=' + feedback + '&id=' + $scope.id + '&rate=' + rate;
+                var data = 'comment=' + feedback + '&id=' + $scope.id + '&rate=' + rate + '&role=customer';
                 $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
             } else {
                 $scope.comerr = 'Error, bad value.';

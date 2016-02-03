@@ -275,8 +275,15 @@ public class UserController extends HttpServlet implements Responsable {
 
     public void comment(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
+        String author = request.getParameter("role");
         String rate = request.getParameter("rate");
-        String dev_id = request.getParameter("id");
+        String dev_id = null;
+        String cust_id = null;
+        if (author.equals("customer"))
+            dev_id = request.getParameter("id");
+        else
+            cust_id = request.getParameter("id");
+
         String comment = request.getParameter("comment");
         HttpSession session = request.getSession();
         UserEntity ue = (UserEntity) session.getAttribute("user");
@@ -285,7 +292,7 @@ public class UserController extends HttpServlet implements Responsable {
             return;
         }
 
-        if (comment == null || rate == null || dev_id == null) {
+        if (comment == null || rate == null) {
             response.sendError(500);
             return;
         }
@@ -295,8 +302,10 @@ public class UserController extends HttpServlet implements Responsable {
             return;
         }
 
-        String cust_id = ue.getId().toString();
-        String author = "customer";
+        if (author.equals("customer"))
+            cust_id = ue.getId().toString();
+        else
+            dev_id = ue.getId().toString();
 
         if ("".equals(dev_id) || "".equals(cust_id) || "".equals(comment)
                 || "".equals(rate) || "".equals(author)) {
@@ -473,7 +482,7 @@ public class UserController extends HttpServlet implements Responsable {
                 Integer id = Integer.parseInt(param);
                 FeedbackService fs = (FeedbackService) ApplicationContext
                         .getInstance().getBean("feedbackService");
-                List<Feedback> feedbacks = fs.findFeedbacksByDevId(id);
+                List<Feedback> feedbacks = fs.findFeedbacksByDevIdForHim(id);
                 CustomerService customerService = (CustomerService) ApplicationContext
                         .getInstance().getBean("customerService");
                 for (Feedback f : feedbacks) {

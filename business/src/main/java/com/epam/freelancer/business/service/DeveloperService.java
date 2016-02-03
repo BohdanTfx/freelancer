@@ -1,30 +1,13 @@
 package com.epam.freelancer.business.service;
 
-import java.sql.Timestamp;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 import com.epam.freelancer.business.util.ValidationParametersBuilder;
 import com.epam.freelancer.business.util.ValidationParametersBuilder.Parameters;
-import com.epam.freelancer.database.dao.ContactDao;
-import com.epam.freelancer.database.dao.DevTechManyToManyDao;
-import com.epam.freelancer.database.dao.DeveloperDao;
-import com.epam.freelancer.database.dao.FollowerDao;
-import com.epam.freelancer.database.dao.FollowerManyToManyDao;
-import com.epam.freelancer.database.dao.GenericDao;
-import com.epam.freelancer.database.dao.GenericManyToManyDao;
-import com.epam.freelancer.database.dao.WorkerDao;
-import com.epam.freelancer.database.dao.WorkerManyToManyDao;
+import com.epam.freelancer.database.dao.*;
 import com.epam.freelancer.database.dao.jdbc.DAOManager;
-import com.epam.freelancer.database.model.Contact;
-import com.epam.freelancer.database.model.Developer;
-import com.epam.freelancer.database.model.Follower;
-import com.epam.freelancer.database.model.Ordering;
-import com.epam.freelancer.database.model.Technology;
-import com.epam.freelancer.database.model.Worker;
+import com.epam.freelancer.database.model.*;
+
+import java.sql.Timestamp;
+import java.util.*;
 
 /**
  * Created by Максим on 18.01.2016.
@@ -46,8 +29,8 @@ public class DeveloperService extends UserService<Developer> {
 
 	@Override
 	public Developer create(Map<String, String[]> data) {
-		if (!isDataValid(prepareData(data)))
-			throw new RuntimeException("Validation exception");
+        /*if (!isDataValid(prepareData(data)))
+			throw new RuntimeException("Validation exception");*/
 
 		Developer entity = new Developer();
 		String[] value = data.get("first_name");
@@ -86,8 +69,8 @@ public class DeveloperService extends UserService<Developer> {
 		map.put(ValidationParametersBuilder.createParameters(false)
 				.maxLength(50).minLength(1),
 				data.get("last_name") == null ? null
-						: data.get("las3t_name")[0]);
-		map.put(ValidationParametersBuilder.createParameters(false)
+                        : data.get("last_name")[0]);
+        map.put(ValidationParametersBuilder.createParameters(false)
 				.maxLength(140).minLength(8),
 				data.get("password") == null ? null : data.get("password")[0]);
 		map.put(ValidationParametersBuilder

@@ -1,23 +1,19 @@
 package com.epam.freelancer.business.service;
 
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
 import com.epam.freelancer.business.util.ValidationParametersBuilder;
 import com.epam.freelancer.business.util.ValidationParametersBuilder.Parameters;
-import com.epam.freelancer.database.dao.ContactDao;
-import com.epam.freelancer.database.dao.CustomerDao;
-import com.epam.freelancer.database.dao.FollowerDao;
-import com.epam.freelancer.database.dao.GenericDao;
-import com.epam.freelancer.database.dao.OrderingDao;
+import com.epam.freelancer.database.dao.*;
 import com.epam.freelancer.database.dao.jdbc.DAOManager;
 import com.epam.freelancer.database.model.Contact;
 import com.epam.freelancer.database.model.Customer;
 import com.epam.freelancer.database.model.Follower;
 import com.epam.freelancer.database.model.Ordering;
+
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by Максим on 18.01.2016.
@@ -36,8 +32,9 @@ public class CustomerService extends UserService<Customer> {
 
 	@Override
 	public Customer create(Map<String, String[]> data) {
-		if (!isDataValid(prepareData(data)))
-			throw new RuntimeException("Validation exception");
+        /*if (!isDataValid(prepareData(data)))
+			throw new RuntimeException("Validation exception");*/
+
 		Customer entity = new Customer();
 		String[] value = data.get("first_name");
 		entity.setFname(value != null ? value[0] : null);

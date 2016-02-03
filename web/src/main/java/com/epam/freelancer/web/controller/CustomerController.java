@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -136,6 +137,7 @@ public class CustomerController extends HttpServlet implements Responsable {
                 for (Feedback f : feedbacks) {
                     f.setDeveloper(ds.findById(f.getDevId()));
                 }
+                Collections.reverse(feedbacks);
 
                 sendResponse(response, feedbacks, mapper);
 
