@@ -6,17 +6,29 @@
     left: -9999px;
 }
 
+.order-not-found {
+    font-size: 48px;
+    text-align: center;
+    color: #ccc;
+    font-weight: bold;
+}
+
 .job-info .list-unstyled {
     padding-left: 0px;
     list-style: outside none none;
 }
 
 .job-info p > a {
-    cursor: default;
+    cursor: hand;
 }
 
 .job-info ul li {
     margin-bottom: 10px;
+}
+
+.job-info .btn-warn {
+    background-color:#FF5722;
+    border: #FFF;
 }
 
 .job-info .right-side {

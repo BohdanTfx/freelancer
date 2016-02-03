@@ -228,4 +228,20 @@ public class DeveloperService extends UserService<Developer> {
 
 		return map;
 	}
+
+	public Follower subscribeOnProject(Integer devId, Integer orderId, String message){
+		Follower follower = new Follower();
+		follower.setDevId(devId);
+		follower.setOrderId(orderId);
+		follower.setAuthor("dev");
+		if(!message.isEmpty())
+			follower.setMessage(message);
+		return followerDao.save(follower);
+	}
+
+	public void unsubscribeFromProject(Integer followerId){
+		Follower follower = new Follower();
+		follower.setId(followerId);
+		followerDao.delete(follower);
+	}
 }

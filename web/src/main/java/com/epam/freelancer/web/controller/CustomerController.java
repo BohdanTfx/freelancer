@@ -2,9 +2,7 @@ package com.epam.freelancer.web.controller;
 
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.service.*;
-import com.epam.freelancer.database.model.Contact;
-import com.epam.freelancer.database.model.Customer;
-import com.epam.freelancer.database.model.Feedback;
+import com.epam.freelancer.database.model.*;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -74,6 +72,9 @@ public class CustomerController extends HttpServlet implements Responsable {
                     break;
                 case "cust/getRateForCust":
                     getRateForCust(request, response);
+                    break;
+                case "cust/history":
+                    getCustomerHistory(request, response);
                     break;
                 default:
             }
@@ -226,5 +227,31 @@ public class CustomerController extends HttpServlet implements Responsable {
 
         contact = mapper.readValue(contactJson, Contact.class);
         System.out.println(contact);
+    }
+
+    private void getCustomerHistory(HttpServletRequest
+                                            request, HttpServletResponse response) throws IOException {
+        String param = request.getParameter("custId");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                CustomerService customerService = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
+                List<Ordering> orders = customerService.getProjectsPublicHistory(id);
+                OrderingService orderingService = (OrderingService) ApplicationContext.getInstance().getBean("orderingService");
+                for (Ordering ordering : orders) {
+                    ordering.setTechnologies
+                            (orderingService
+                                    .findOrderingTechnologies
+                                            (ordering.getId()));
+                }
+                if (orders != null) {
+                    sendResponse(response, orders, mapper);
+                } else {
+                    response.sendError(500);
+                }
+            } catch (Exception e) {
+                response.sendError(500);
+            }
+        }
     }
 }

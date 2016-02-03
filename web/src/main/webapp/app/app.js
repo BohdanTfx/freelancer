@@ -83,6 +83,7 @@
 							$rootScope.logged = false;
 							$http.post('/user/isAuth').success(function(data) {
 								console.log(data);
+								$rootScope.id = data.id;
 								$rootScope.name = data.fname;
 								$rootScope.lastName = data.lname;
 								$rootScope.role = data.role;

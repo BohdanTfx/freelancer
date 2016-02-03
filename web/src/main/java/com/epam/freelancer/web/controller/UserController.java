@@ -165,27 +165,24 @@ public class UserController extends HttpServlet implements Responsable {
                 case "user/orders/tech":
                     sendResponse(response, technologyService.findAll(), mapper);
                     break;
-                case "user/orders/getorderbyid":
+                case "user/order":
                     getOrderById(request, response);
                     break;
-                case "user/orders/getfollowersbyorderid":
+                case "user/order/followers":
                     getFollowersByOrderId(request,
                             response);
                     break;
-                case "user/orders/getcustomerbyid":
-                    getCustomerById(request, response);
-                    break;
-                case "user/orders/getcustomerfeedbacks":
-                    getFeedbacksByIdForCust(request,
-                            response);
-                    break;
-                case "user/orders/getordertechs":
+                case "user/order/techs":
                     getOrderTechs(request, response);
                     break;
-                case "user/orders/getcustomerhistory":
-                    getCustomerHistory(request, response);
 
+                case "user/order/subscribe":
+                    subscribe(request, response);
                     break;
+                case "user/order/unsubscribe":
+                    unsubscribe(request, response);
+                    break;
+
                 default:
             }
         } catch (Exception e) {
@@ -701,53 +698,6 @@ public class UserController extends HttpServlet implements Responsable {
         }
     }
 
-    private void getCustomerById(HttpServletRequest
-                                         request, HttpServletResponse response) throws IOException {
-        String param = request.getParameter("custId");
-        if (param != null) {
-            try {
-                Integer custId = Integer.parseInt(param);
-                Customer customer =
-                        customerService.findById(custId);
-                customer.setPassword(null);
-                customer.setSalt(null);
-                sendResponse(response, customer, mapper);
-            } catch (Exception e) {
-                response.sendError(500);
-            }
-        }
-    }
-
-    private void getFeedbacksByIdForCust
-            (HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-        String param = request.getParameter("custId");
-        if (param != null) {
-            try {
-                Integer id = Integer.parseInt(param);
-                FeedbackService fs = (FeedbackService)
-                        ApplicationContext.getInstance().getBean
-                                ("feedbackService");
-                List<Feedback> feedbacks =
-                        fs.findFeedbacksByCustIdForHim(id);
-
-                for (Feedback feedback : feedbacks) {
-                    Developer developer =
-                            developerService.findById(feedback.getDevId());
-                    developer.setPassword(null);
-                    developer.setSalt(null);
-                    feedback.setDeveloper(developer);
-                }
-
-                sendResponse(response, feedbacks, mapper);
-
-
-            } catch (Exception e) {
-                response.sendError(500);
-            }
-        }
-    }
-
     private void getOrderTechs(HttpServletRequest request,
                                HttpServletResponse response) throws IOException {
         String param = request.getParameter("orderId");
@@ -764,28 +714,43 @@ public class UserController extends HttpServlet implements Responsable {
         }
     }
 
-    private void getCustomerHistory(HttpServletRequest
-                                            request, HttpServletResponse response) throws IOException {
-        String param = request.getParameter("custId");
-        if (param != null) {
-            try {
-                Integer id = Integer.parseInt(param);
-                List<Ordering> orders =
-                        customerService.getProjectsPublicHistory(id);
-                for (Ordering ordering : orders) {
-                    ordering.setTechnologies
-                            (orderingService
-                                    .findOrderingTechnologies
-                                            (ordering.getId()));
-                }
-                if (orders != null) {
-                    sendResponse(response, orders, mapper);
-                } else {
-                    response.sendError(500);
-                }
-            } catch (Exception e) {
-                response.sendError(500);
-            }
+    private void subscribe(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        String order_id = request.getParameter("orderId");
+        String message = request.getParameter("message");
+        HttpSession session = request.getSession();
+        UserEntity ue = (UserEntity) session.getAttribute("user");
+        if (ue == null) {
+            response.sendError(404);
+            return;
         }
+        if (order_id == null || order_id.isEmpty()) {
+            response.sendError(500);
+            return;
+        }
+        Integer orderId;
+        try {
+            orderId = Integer.parseInt(order_id);
+        } catch (NumberFormatException e) {
+            response.sendError(500);
+            return;
+        }
+        Follower follower = developerService.subscribeOnProject(ue.getId(), orderId, message);
+        follower.setDeveloper((Developer)ue);
+        sendResponse(response, follower, mapper);
+
     }
+
+    private void unsubscribe(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String follower_id = request.getParameter("followerId");
+
+        try {
+            developerService.unsubscribeFromProject(Integer.parseInt(follower_id));
+        } catch (NumberFormatException e) {
+            response.sendError(500);
+            return;
+        }
+
+    }
+
 }
