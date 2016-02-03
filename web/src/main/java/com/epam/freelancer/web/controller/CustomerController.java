@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Created by Максим on 22.01.2016.
  */
-public class CustomerController extends HttpServlet {
+public class CustomerController extends HttpServlet implements Responsable {
     public static final Logger LOG = Logger.getLogger(CustomerController.class);
     private static final long serialVersionUID = -2356506023594947745L;
 
@@ -91,7 +91,7 @@ public class CustomerController extends HttpServlet {
                 Contact contact = cs.getContactByCustomerId(id);
 
                 if (contact != null) {
-                    sendResp(contact, response);
+                    sendResponse(response, contact, mapper);
                 } else
                     response.sendError(404);
             } catch (Exception e) {
@@ -114,7 +114,7 @@ public class CustomerController extends HttpServlet {
 
                 if (customer != null) {
                     customer.setPassword(null);
-                    sendResp(customer, response);
+                    sendResponse(response, customer, mapper);
                 } else
                     response.sendError(404);
             } catch (Exception e) {
@@ -137,7 +137,8 @@ public class CustomerController extends HttpServlet {
                 for (Feedback f : feedbacks) {
                     f.setDeveloper(ds.findById(f.getDevId()));
                 }
-                sendListResp(feedbacks, response);
+
+                sendResponse(response, feedbacks, mapper);
 
             }catch (Exception e) {
                 response.sendError(500);
@@ -159,7 +160,7 @@ public class CustomerController extends HttpServlet {
 
                 rate = rate / feedbacks.size();
 
-                sendResp(rate, response);
+                sendResponse(response, rate, mapper);
 
             } catch (Exception e) {
                 response.sendError(500);
@@ -225,27 +226,4 @@ public class CustomerController extends HttpServlet {
         contact = mapper.readValue(contactJson, Contact.class);
         System.out.println(contact);
     }
-
-    private void sendResp(Object ue, HttpServletResponse response) throws IOException {
-        String json = new Gson().toJson(ue);
-
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().write(json);
-        response.getWriter().flush();
-        response.getWriter().close();
-    }
-
-    private void sendListResp(List<?> list, HttpServletResponse response) throws IOException {
-        String json = new Gson().toJson(list);
-
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.getWriter().write(json);
-        response.getWriter().flush();
-        response.getWriter().close();
-    }
-
 }
