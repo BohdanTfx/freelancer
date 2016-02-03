@@ -1,13 +1,13 @@
 package com.epam.freelancer.business.service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.epam.freelancer.business.util.ValidationParametersBuilder;
 import com.epam.freelancer.database.dao.FeedbackDao;
 import com.epam.freelancer.database.dao.jdbc.DAOManager;
 import com.epam.freelancer.database.model.Feedback;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Максим on 18.01.2016.
@@ -68,6 +68,14 @@ public class FeedbackService extends GenericService<Feedback, Integer> {
 
     public List<Feedback> findFeedbacksByDevId(Integer id) {
         return ((FeedbackDao) genericDao).getFeedbacksByDevId(id);
+    }
+
+    public List<Feedback> findFeedbacksByDevIdForHim(Integer id) {
+        return ((FeedbackDao) genericDao).getFeedbacksByDevIdForHim(id);
+    }
+
+    public List<Feedback> findFeedbacksByCustIdForHim(Integer id) {
+        return ((FeedbackDao) genericDao).getFeedbacksByCustIdForHim(id);
     }
 
     public Integer getAvgRate(Integer dev_id) {

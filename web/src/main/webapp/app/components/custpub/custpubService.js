@@ -22,6 +22,10 @@ angular.module('FreelancerApp')
             return $http.post('/cust/getRateForCust?id=' + id);
         };
 
+        dataFactory.getOrdPubHist = function (id) {
+            return $http.post('/user/orders/getcustomerhistory?custId=' + id);
+        };
+
 
 
         return dataFactory;

@@ -1,0 +1,108 @@
+.cust-not-found {
+    position: relative;
+    float: left;
+    top: 0;
+    left: 0;
+}
+
+.cust-noneOver {
+    font-size: 32px;
+    color: #ccc;
+}
+
+.cust-noneOverAlign {
+    text-align: center;
+}
+
+.cust-user {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    margin: 15px;
+    float: left;
+}
+
+.feed {
+    display: inline-block;
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    margin: 15px;
+    float: left;
+}
+
+.cust-right-side {
+    text-align: center;
+}
+
+.cust-comm-div {
+    margin: 10px;
+}
+
+.cust-overview {
+    clear: both;
+}
+
+.cust-emptyComment {
+    font-size: 48px;
+    text-align: center;
+    color: #ccc;
+    font-weight: bold;
+}
+
+.cust-free-not-found {
+    font-size: 48px;
+    text-align: center;
+    color: #ccc;
+    font-weight: bold;
+}
+
+.cust-emptyPort {
+    margin-top: 70px;
+    margin-bottom: 70px;
+    font-size: 48px;
+    text-align: center;
+    color: #ccc;
+    font-weight: bold;
+}
+
+.cust-emptyTest {
+    margin-top: 70px;
+    margin-bottom: 70px;
+    font-size: 48px;
+    text-align: center;
+    color: #ccc;
+    font-weight: bold;
+}
+
+.cust-sp {
+    clear: both;
+}
+
+.cust-lb {
+    padding: 5px;
+}
+
+.cust-feed-cont {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.cust-test-name {
+    display: inline;
+}
+
+.cust-lb-test {
+    font-size: 10px;
+}
+
+.cust-test-label {
+    display: inline;
+}

@@ -103,7 +103,6 @@ public class CustomerController extends HttpServlet implements Responsable {
         }
     }
 
-
     public void getCustById(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String param = request.getParameter("id");
         if (param != null) {
@@ -132,7 +131,7 @@ public class CustomerController extends HttpServlet implements Responsable {
             try {
                 Integer id = Integer.parseInt(param);
                 FeedbackService fs = (FeedbackService) ApplicationContext.getInstance().getBean("feedbackService");
-                List<Feedback> feedbacks = fs.findFeedbacksByCustId(id);
+                List<Feedback> feedbacks = fs.findFeedbacksByCustIdForHim(id);
                 DeveloperService ds = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
                 for (Feedback f : feedbacks) {
                     f.setDeveloper(ds.findById(f.getDevId()));

@@ -720,7 +720,7 @@ public class UserController extends HttpServlet implements Responsable {
                         ApplicationContext.getInstance().getBean
                                 ("feedbackService");
                 List<Feedback> feedbacks =
-                        fs.findFeedbacksByCustId(id);
+                        fs.findFeedbacksByCustIdForHim(id);
 
                 for (Feedback feedback : feedbacks) {
                     Developer developer =

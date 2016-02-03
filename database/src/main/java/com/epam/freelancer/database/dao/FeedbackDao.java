@@ -15,4 +15,7 @@ public interface FeedbackDao extends GenericDao<Feedback, Integer> {
 
     Integer getAvgRate(Integer dev_id);
 
+    List<Feedback> getFeedbacksByCustIdForHim(Integer id);
+
+    List<Feedback> getFeedbacksByDevIdForHim(Integer id);
 }
