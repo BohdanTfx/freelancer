@@ -9,7 +9,8 @@ angular
 						'$cookieStore',
 						'AuthenticationService',
 						function($scope, $rootScope, $location, $cookieStore,
-								AuthenticationService) {
+								AuthenticationService, $http) {
+							$scope.user = {};
 							$scope.doClose = function() {
 								$scope.showError = false;
 							}
@@ -22,9 +23,9 @@ angular
 
 							$scope.login = function() {
 								AuthenticationService
-										.Login($scope.username,
-												$scope.password,
-												$scope.remember)
+										.Login($scope.user.email,
+												$scope.user.password,
+												$scope.user.remember)
 										.success(
 												function(response) {
 													AuthenticationService
@@ -42,4 +43,6 @@ angular
 													$scope.errorDescription = 'Invalid credentials';
 												})
 							};
+
+							AuthenticationService.initSocial($scope);
 						} ]);

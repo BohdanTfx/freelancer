@@ -64,12 +64,16 @@
 				characters long.</div>
 		</div>
 		</md-input-container>
-		<md-checkbox layout-gt-sm="column" name="remember" id="remember"
-			ng-model="user.remember"> Remember me
-		<div class="md-label">
-			<span class="ng-binding ng-scope"></span>
+		<div class="col-xs-12">
+			<md-checkbox md-no-ink name="remember" id="remember"
+				ng-model="user.remember" class="md-primary"> Remember
+			me </md-checkbox>
+			<div class="pull-right">
+				<h5 class="inline-block box-none">
+					<a href="/#/forgot">Forgot password?</a>
+				</h5>
+			</div>
 		</div>
-		</md-checkbox>
 		<div class="col-xs-12">
 			<md-button class="md-raised md-primary full-width margin-center"
 				type="submit"> <strong>Sign In</strong> </md-button>

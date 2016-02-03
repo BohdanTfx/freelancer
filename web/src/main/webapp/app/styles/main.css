@@ -1866,7 +1866,6 @@ ul, li {
 	}
 	.main-menu .navbar-collapse>.navigation>li, .main-menu .navbar-collapse>.navigation>li>ul>li,
 		.main-menu .navbar-collapse>.navigation>li>ul>li>ul>li {
-		border-top: 1px solid rgba(255, 255, 255, 1) !important;
 		opacity: 1 !important;
 		top: 0px !important;
 		left: 0px !important;
@@ -1881,17 +1880,6 @@ ul, li {
 		line-height: 22px;
 		color: #ffffff;
 		text-align: left;
-	}
-	.main-menu .navbar-collapse>.navigation>li>a:hover, .main-menu .navbar-collapse>.navigation>li>a:active,
-		.main-menu .navbar-collapse>.navigation>li>a:focus {
-		background: #11c3f0;
-	}
-	.main-menu .navbar-collapse>.navigation>li:hover>a, .main-menu .navbar-collapse>.navigation>li>ul>li:hover>a,
-		.main-menu .navbar-collapse>.navigation>li>ul>li>ul>li:hover>a,
-		.main-menu .navbar-collapse>.navigation>li.current>a, .main-menu .navbar-collapse>.navigation>li.current-menu-item>a
-		{
-		background: #11c3f0;
-		color: #ffffff !important;
 	}
 	.main-menu .navbar-collapse>.navigation li.dropdown .dropdown-btn {
 		display: block;
@@ -2023,7 +2011,6 @@ ul, li {
 	}
 	.main-menu .navbar-collapse>.navigation>li, .main-menu .navbar-collapse>.navigation>li>ul>li,
 		.main-menu .navbar-collapse>.navigation>li>ul>li>ul>li {
-		border-top: 1px solid rgba(255, 255, 255, 1) !important;
 		opacity: 1 !important;
 		top: 0px !important;
 		left: 0px !important;
@@ -2038,17 +2025,6 @@ ul, li {
 		line-height: 22px;
 		color: #ffffff;
 		text-align: left;
-	}
-	.main-menu .navbar-collapse>.navigation>li>a:hover, .main-menu .navbar-collapse>.navigation>li>a:active,
-		.main-menu .navbar-collapse>.navigation>li>a:focus {
-		background: #11c3f0;
-	}
-	.main-menu .navbar-collapse>.navigation>li:hover>a, .main-menu .navbar-collapse>.navigation>li>ul>li:hover>a,
-		.main-menu .navbar-collapse>.navigation>li>ul>li>ul>li:hover>a,
-		.main-menu .navbar-collapse>.navigation>li.current>a, .main-menu .navbar-collapse>.navigation>li.current-menu-item>a
-		{
-		background: #11c3f0;
-		color: #ffffff !important;
 	}
 	.main-menu .navbar-collapse>.navigation li.dropdown .dropdown-btn {
 		display: block;
