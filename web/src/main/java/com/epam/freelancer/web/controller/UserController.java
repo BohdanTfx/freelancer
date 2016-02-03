@@ -332,33 +332,45 @@ public class UserController extends HttpServlet implements Responsable {
             throws IOException {
         String email = request.getParameter("email");
         String message = request.getParameter("message");
-        String changeEmail = request.getParameter("changeEmail");
+        String subject = request.getParameter("subject");
+
+        if (email == null || message == null) {
+            response.sendError(304);
+            return;
+        }
+
+        if ("undefined".equals(email) || "undefined".equals(message)) {
+            response.sendError(304);
+            return;
+        }
 
         HttpSession session = request.getSession();
         UserEntity ue = (UserEntity) session.getAttribute("user");
+
         if (ue == null) {
-            response.sendError(500);
+            response.sendError(304);
             return;
         }
-        String from = ue.getEmail();
-        if (changeEmail != null && !"".equals(changeEmail)
-                && !changeEmail.equals(from)) {
-            from = changeEmail;
-        }
-        String fromPass = ue.getPassword();
 
-        if ("".equals(email) || "".equals(message)) {
-            response.sendError(500);
-        }
-
+        String fromAdmin = "onlineshopjava@gmail.com";
+        String fromAdminPass = "ForTestOnly";
         String[] to = new String[]{email};
-        String name = "Feedback from " + ue.getFname() + " " + ue.getLname();
 
-        boolean bool = SendMessageToEmail.sendFromGMail(from, fromPass, to,
-                name, message);
-        if (!bool) {
-            response.sendError(500);
-        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean res = false;
+                try {
+                    res = SendMessageToEmail.sendFromGMail(fromAdmin, fromAdminPass, to, subject, message);
+                    if (!res) {
+                        response.sendError(304);
+                        return;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     public void getById(HttpServletRequest request, HttpServletResponse response)
