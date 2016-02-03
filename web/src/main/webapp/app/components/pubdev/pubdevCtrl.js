@@ -1,5 +1,5 @@
 angular.module('FreelancerApp')
-    .controller('pubdevCtrl', function ($scope, pubdevAPI, $log, $http, $location, $filter, $stateParams, $rootScope) {
+    .controller('pubdevCtrl', function ($scope, pubdevAPI, $log, $http, $location, $filter, $stateParams, $rootScope, Notification) {
         console.log($stateParams.devName, $stateParams.devId + ' state');
 
         $scope.userrole = $rootScope.role;
@@ -134,7 +134,7 @@ angular.module('FreelancerApp')
                         $scope.feeds = data;
 
                         for (var i = 0; i < $scope.feeds.length; i++) {
-                            if (typeof $scope.feeds[i].customer.imgUrl == 'undefined')
+                            if (typeof $scope.feeds[i].customer.imgUrl == 'undefined' || $scope.feeds[i].customer.imgUrl == null)
                                 $scope.feeds[i].customer.imgUrl = 'images/profile/no-profile-img-head.gif';
                         }
                     }
@@ -156,9 +156,17 @@ angular.module('FreelancerApp')
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
             $http.post('/user/sms', data).success(function () {
-                $scope.smssuc = 'Sms sent successfully.';
+                Notification
+                    .success({
+                        title: 'Success!',
+                        message: 'Sms sent successfully. Please try again.'
+                    });
             }).error(function () {
-                $scope.smserr = 'Error, while sending sms.';
+                Notification
+                    .error({
+                        title: 'Error!',
+                        message: 'Error while sending sms. Please try again.'
+                    });
             });
         };
 
@@ -168,10 +176,18 @@ angular.module('FreelancerApp')
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
             $http.post('/user/send', data).success(function () {
-                $scope.messuc = 'Message sent successfully.';
+                Notification
+                    .success({
+                        title: 'Success!',
+                        message: 'The message was successfully sent. Please try again.'
+                    });
                 $scope.dataLoading = false;
             }).error(function () {
-                $scope.messerr = 'Error, while sending message.';
+                Notification
+                    .error({
+                        title: 'Error!',
+                        message: 'Error while sending message. Please try again.'
+                    });
                 $scope.dataLoading = false;
             });
         };
@@ -181,27 +197,38 @@ angular.module('FreelancerApp')
                 var data = 'comment=' + feedback + '&id=' + $scope.id + '&rate=' + rate + '&role=customer';
                 $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
             } else {
-                $scope.comerr = 'Error, bad value.';
-                $scope.comsuc = undefined;
+                Notification
+                    .error({
+                        title: 'Error',
+                        message: 'Rate cant be 0. Please try again.'
+                    });
                 return;
             }
             if (typeof feedback != 'undefined' && typeof rate != 'undefined') {
                 $http.post('/user/comment', data).success(function () {
-                    $scope.comsuc = 'Comment sent successfully.';
-                    $scope.comerr = undefined;
-
                     $scope.feed();
                     $scope.rating();
 
                     $scope.noneFeed = undefined;
+                    Notification
+                        .success({
+                            title: 'Success!',
+                            message: 'Feedback was successfully sent . Please try again.'
+                        });
 
                 }).error(function () {
-                    $scope.comerr = 'Error, bad value.';
-                    $scope.comsuc = undefined;
+                    Notification
+                        .error({
+                            title: 'Error!',
+                            message: 'Something went bad. Please try again.'
+                        });
                 });
             } else {
-                $scope.comerr = 'Error, bad value.';
-                $scope.comsuc = undefined;
+                Notification
+                    .error({
+                        title: 'Error!',
+                        message: 'Fields or field are/is empty. Please try again.'
+                    });
             }
         };
 

@@ -1,5 +1,5 @@
 angular.module('FreelancerApp')
-    .controller('custpubCtrl', function ($scope, custpubAPI, $log, $http, $location, $filter, $stateParams, $rootScope) {
+    .controller('custpubCtrl', function ($scope, custpubAPI, $log, $http, $location, $filter, $stateParams, $rootScope, Notification) {
         console.log($stateParams.custName, $stateParams.custId + ' state');
 
         $scope.query = $stateParams.custId;
@@ -77,9 +77,17 @@ angular.module('FreelancerApp')
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
             $http.post('/user/sms', data).success(function () {
-                $scope.smssuc = 'Sms sent successfully.';
+                Notification
+                    .success({
+                        title : 'Success',
+                        message : 'Now you are follow ' + $rootScope.name
+                    });
             }).error(function () {
-                $scope.smserr = 'Error, while sending sms.';
+                Notification
+                    .error({
+                        title : 'Error',
+                        message : 'Error, while sending sms. Please try again. Possibly, your phone number not valid/'
+                    });
             });
         };
 
@@ -135,28 +143,42 @@ angular.module('FreelancerApp')
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
             $http.post('/user/send', data).success(function () {
-                $scope.messuc = 'Message sent successfully.';
+                Notification
+                    .success({
+                        title : 'Success',
+                        message : 'Your email was successfully sent to '+ $rootScope.name
+                    });
                 $scope.dataLoading = false;
             }).error(function () {
-                $scope.messerr = 'Error, while sending message.';
+                Notification
+                    .error({
+                        title : 'Error',
+                        message : 'An error occurred while sending email to ' +$rootScope.name + '. Please try again.'
+                    });
                 $scope.dataLoading = false;
             });
         };
 
         $scope.comment = function (rate, feedback) {
-            alert(rate);
-            alert(feedback);
             if (rate != 0) {
                 var data = 'comment=' + feedback + '&id=' + $scope.id + '&rate=' + rate + '&role=dev';
                 $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
             } else {
-                $scope.comerr = 'Error, bad value.';
+                Notification
+                    .error({
+                        title : 'Error',
+                        message : 'Rating cant be 0'
+                    });
                 $scope.comsuc = undefined;
                 return;
             }
             if (typeof feedback != 'undefined' && typeof rate != 'undefined') {
                 $http.post('/user/comment', data).success(function () {
-                    $scope.comsuc = 'Comment sent successfully.';
+                    Notification
+                        .success({
+                            title : 'Success',
+                            message : 'Feedback was successfully added.'
+                        });
                     $scope.comerr = undefined;
 
                     $scope.feed();
@@ -164,12 +186,21 @@ angular.module('FreelancerApp')
 
                     $scope.noneFeed = undefined;
 
+
                 }).error(function () {
-                    $scope.comerr = 'Error, bad value.';
+                    Notification
+                        .error({
+                            title : 'Error',
+                            message : 'Please, input message and try again'
+                        });
                     $scope.comsuc = undefined;
                 });
             } else {
-                $scope.comerr = 'Error, bad value.';
+                Notification
+                    .error({
+                        title : 'Error',
+                        message : 'Error, while sending feedback.'
+                    });
                 $scope.comsuc = undefined;
             }
         };

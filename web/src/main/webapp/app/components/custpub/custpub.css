@@ -107,3 +107,12 @@
 .cust-test-label {
     display: inline;
 }
+
+.cust-over {
+    margin: 10px;
+}
+
+.cust-pos-name {
+    font-family: normal;
+    font-weight: bold;
+}

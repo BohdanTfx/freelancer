@@ -26,7 +26,7 @@
                         <h5>{{position}}</h5>
                         <h4 class="cust-overview">{{overHead}}</h4>
 
-                        <p>{{overview}}</p>
+                        <p class="cust-over">{{overview}}</p>
 
                         <div class="cust-noneOverAlign">
                             <p class="cust-noneOver">{{noneOver}}</p>
@@ -42,8 +42,7 @@
                         <div ng-if="show" class="btn btn-block btn-primary" ng-click="sendSms()">
                                     <span
                                             class="glyphicon glyphicon-thumbs-up"></span>
-                            Hire
-                            me
+                            Follow me
                         </div>
                         </p>
                         Rate:
@@ -116,8 +115,8 @@
 
                                     <div class="feed"
                                          style="background-image: url('{{feed.developer.imgUrl}}')"></div>
-                                    <p>
-                                        <em>{{feed.developer.fname}} {{feed.developer.lname}}</em>
+                                    <p class="cust-pos-name">
+                                        {{feed.developer.fname}} {{feed.developer.lname}}
                                     </p>
 
                                     <p>{{feed.comment}}</p>

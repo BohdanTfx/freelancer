@@ -96,13 +96,18 @@
 }
 
 .devpub-test-name {
-    display: inline;
-}
 
+}
 .devpub-lb-test {
     font-size: 10px;
+    width: 10%;
 }
 
-.devpub-test-label {
-    display: inline;
+.pubdev-over {
+    margin:10px;
+}
+
+.pubdev-pos-name {
+    font-family: normal;
+    font-weight: bold;
 }
