@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('FreelancerApp')
-    .factory('pubdevAPI', function ($http, config) {
+    .factory('custpubAPI', function ($http, config) {
         var urlBase = '/cust/',
             dataFactory = {};
 
@@ -13,6 +13,15 @@ angular.module('FreelancerApp')
         dataFactory.getFeedForCust = function (id) {
             return $http.post('/cust/getFeedForCust?id=' + id);
         };
+
+        dataFactory.getContForCust = function (id) {
+            return $http.post('/cust/getContForCust?id=' + id);
+        };
+
+        dataFactory.getRateForCust = function (id) {
+            return $http.post('/cust/getRateForCust?id=' + id);
+        };
+
 
 
         return dataFactory;

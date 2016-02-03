@@ -4,8 +4,6 @@ angular.module('FreelancerApp')
 
         $scope.userrole = $rootScope.role;
 
-        alert($scope.userrole);
-
         if ($scope.userrole == 'developer') {
             $scope.show = false;
         } else {

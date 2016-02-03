@@ -58,6 +58,10 @@
 					url : '/public/:devName/:devId',
 					templateUrl : 'app/components/pubdev/pubdev.html',
 					controller : 'pubdevCtrl'
+                }).state('custpub', {
+                    url: '/public/customer/:custName/:custId',
+                    templateUrl: 'app/components/custpub/custpub.html',
+                    controller: 'custpubCtrl'
 				});
 
 				$locationProvider.html5Mode(false);

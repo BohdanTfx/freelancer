@@ -8,12 +8,6 @@ import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,15 +24,6 @@ import java.util.Map;
 /**
  * Created by Максим on 22.01.2016.
  */
-import com.epam.freelancer.business.service.*;
-import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
-
-import com.epam.freelancer.business.context.ApplicationContext;
-import com.epam.freelancer.database.model.*;
-import com.epam.freelancer.web.json.model.Quest;
-import com.google.gson.Gson;
 
 
 /**
@@ -357,7 +343,7 @@ public class DeveloperController extends HttpServlet {
     }
 
     private void fillPersonalPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        List<Technology>    technologies = null;
+   /*     List<Technology>    technologies = null;
         HttpSession         session = null;
         Developer           developer = null;
         Contact             contact = null;
@@ -417,7 +403,7 @@ public class DeveloperController extends HttpServlet {
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(resultJson);
+        response.getWriter().write(resultJson);*/
     }
 
     private void updatePersonalData(HttpServletRequest request, HttpServletResponse response) throws IOException {
