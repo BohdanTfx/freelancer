@@ -2,6 +2,7 @@ package com.epam.freelancer.web.controller;
 
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.service.*;
+import com.epam.freelancer.business.util.SendMessageToEmail;
 import com.epam.freelancer.database.model.*;
 import com.epam.freelancer.web.json.model.Quest;
 import com.google.gson.Gson;
@@ -29,7 +30,6 @@ public class DeveloperController extends HttpServlet implements Responsable {
 	private ObjectMapper mapper;
 	private DeveloperQAService developerQAService;
 	private DeveloperService developerService;
-	private CustomerService customerService;
 
 	public DeveloperController() {
 		testService = (TestService) ApplicationContext.getInstance().getBean(
@@ -41,8 +41,6 @@ public class DeveloperController extends HttpServlet implements Responsable {
 				.getInstance().getBean("developerQAService");
 		developerService = (DeveloperService) ApplicationContext.getInstance()
 				.getBean("developerService");
-		customerService = (CustomerService) ApplicationContext.getInstance()
-				.getBean("customerService");
 	}
 
 	@Override
@@ -118,6 +116,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
 	{
 		HttpSession session = request.getSession();
 		UserEntity user = (UserEntity) session.getAttribute("user");
+
 		List<Ordering> allProjects = developerService
 				.getDeveloperPortfolio(user.getId());
 		List<Ordering> devSubscribedProjects = developerService
@@ -267,7 +266,6 @@ public class DeveloperController extends HttpServlet implements Responsable {
 		HttpSession session = request.getSession();
 		UserEntity user = (UserEntity) session.getAttribute("user");
 		Integer orderId = Integer.parseInt(request.getParameter("order_id"));
-
 		Worker worker = developerService.getWorkerByDevIdAndOrderId(
 				user.getId(), orderId);
 		List<Developer> developers = developerService
