@@ -198,8 +198,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
 	}
 
 	private void fillTestPage(HttpServletRequest request,
-			HttpServletResponse response) throws IOException
-	{
+			HttpServletResponse response) throws IOException{
 		HttpSession session = request.getSession();
 		UserEntity user = (UserEntity) session.getAttribute("user");
 		List<DeveloperQA> devQAs = developerQAService.findAllByDevId(user
@@ -220,17 +219,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
 		for (DeveloperQA developerQA : devQAs) {
 			developerQA.setTest(testMap.get(developerQA.getTestId()));
 		}
-		for (int i = 0; i < tests.size(); i++) {
-			for (DeveloperQA developerQA : devQAs) {
-				if (developerQA.getTest().equals(tests.get(i))
-						&& !developerQA.getIsExpire())
-				{
-					tests.remove(developerQA.getTest());
-					i--;
-					break;
-				}
-			}
-		}
+
 		String devQAsJson = new Gson().toJson(devQAs);
 		String testsJson = new Gson().toJson(tests);
 		String resultJson = "{\"devQAs\":" + devQAsJson + ",\"tests\":"

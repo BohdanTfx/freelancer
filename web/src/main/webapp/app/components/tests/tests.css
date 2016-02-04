@@ -2,6 +2,16 @@
     font-size: 18px;
 }
 
+.tests-tabs .panel-heading{
+    padding: 0px 15px;
+    background: white;
+    border: none;
+}
+
+.tests-tabs .panel-default {
+    padding: 7.5px;
+}
+
 .tests-tabs a:hover {
     text-decoration: none;
 }
@@ -61,6 +71,7 @@ md-tabs .md-tab .md-ripple-container {
 }
 
 .testItem .btn {
+    width: 95px;
     padding: 5px 10px;
     line-height: 16px;
     float: right;
@@ -126,11 +137,13 @@ md-tabs .md-tab .md-ripple-container {
 }
 
 .green-color {
+    text-shadow: none;
     font-size: 18px;
     color: #449d44;
 }
 
 .red-color{
+    text-shadow: none;
     font-size: 18px;
     color: brown;
 }

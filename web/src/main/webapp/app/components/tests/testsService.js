@@ -8,7 +8,5 @@ angular.module('FreelancerApp')
         dataFactory.getAllTests = function () {
             return $http.get(urlBase);
         };
-
-
         return dataFactory;
     });

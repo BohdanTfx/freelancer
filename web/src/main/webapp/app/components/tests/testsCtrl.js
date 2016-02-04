@@ -1,10 +1,14 @@
 angular.module('FreelancerApp')
-    .controller('testsCtrl', function ($scope, testsAPI, $log) {
+    .controller('testsCtrl', function ($scope, testsAPI, $log, $interval) {
 
-        testsAPI.getAllTests().success(function(data){
+        $scope.passedTest = false;
+        $scope.allowedTest = false;
+
+        testsAPI.getAllTests().success(function (data) {
             $log.log(data);
             $scope.devQAs = data.devQAs;
-            $scope.tests= data.tests;
+            $scope.tests = data.tests;
+            $scope.testsDivision();
         }).error(function () {
             alert(404);
         });
@@ -12,8 +16,8 @@ angular.module('FreelancerApp')
         $scope.sortField = undefined;
         $scope.reverse = false;
 
-        $scope.sort = function(fieldName){
-            if($scope.sortField === fieldName){
+        $scope.sort = function (fieldName) {
+            if ($scope.sortField === fieldName) {
                 $scope.reverse = !$scope.reverse;
             } else {
                 $scope.sortField = fieldName;
@@ -27,4 +31,44 @@ angular.module('FreelancerApp')
         $scope.isSortDown = function (fieldName) {
             return $scope.sortField === fieldName && $scope.reverse;
         };
+
+        $scope.testsDivision = function (tests) {
+            var passedTests = [];
+            var newTests = [];
+            for (var i = 0; i < $scope.tests.length; i++) {
+                var p = false;
+                for (var j = 0; j < $scope.devQAs.length; j++) {
+                    if ($scope.tests[i].id == $scope.devQAs[j].testId) {
+                        if($scope.devQAs[j].isExpire == false){
+                            $scope.tests[i].repass = new Date($scope.devQAs[j].expire) - new Date;
+                        }
+                        p = true;
+                        break;
+                    }
+                }
+                if (p) {
+                    if ($scope.devQAs[j].isExpire)
+                        $scope.tests[i].status = 'expired';
+                    else{
+                        $scope.tests[i].status = 'passed';
+                    }
+                    passedTests.push($scope.tests[i]);
+                } else {
+                    $scope.tests[i].status = 'new';
+                    newTests.push($scope.tests[i]);
+                }
+            }
+            $scope.passedTestList = passedTests;
+            $scope.newTestsList = newTests;
+        }
+
+        $scope.testListCtrl = function () {
+            if ($scope.passedTest == $scope.allowedTest) {
+                $scope.tests = $scope.passedTestList.concat($scope.newTestsList);
+            } else if ($scope.passedTest == true) {
+                $scope.tests = $scope.passedTestList;
+            } else {
+                $scope.tests = $scope.newTestsList;
+            }
+        }
     });
