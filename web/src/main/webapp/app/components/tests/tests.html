@@ -153,18 +153,17 @@
                                        placeholder="&#xF002;" style="font-family:Arial, FontAwesome">
                             </div>
                             <div class="form-group col-md-6 col-xs-12 tests-checkbox-pass">
-                                <md-checkbox ng-model="passedTest" ng-change="testListCtrl()"
+                                <md-checkbox ng-model="smt.passedTest"ng-change="testListCtrl()"
                                              class="md-warn" flex>
-                                    Passed
+                                    Passed {{passedTest}}
                                 </md-checkbox>
-                                <md-checkbox ng-model="allowedTest" ng-change="testListCtrl()"
+                                <md-checkbox ng-model="smt.allowedTest" ng-change="testListCtrl()"
                                              class="md-warn" flex>
-                                    Allowed
+                                    Allowed {{allowedTest}}
                                 </md-checkbox>
                             </div>
                         </div>
                         <div class="tests-tab">
-
                             <!--start header-->
                             <div class="tests-title" ng-if="tests.length != 0">
                                 <div class="panel panel-default">
