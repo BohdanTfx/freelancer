@@ -20,3 +20,10 @@
 md-input-container>label+md-icon.fa {
 	font-size: 1.8em;
 }
+
+.order-technology .multiSelectItem>.acol>label {
+	transform: none;
+	position: relative;
+	color: black;
+	font-weight: bold;
+}

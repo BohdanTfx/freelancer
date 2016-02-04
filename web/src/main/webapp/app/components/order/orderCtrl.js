@@ -2,10 +2,26 @@ angular
 		.module('FreelancerApp')
 		.controller(
 				'orderCtrl',
-				function($scope, orderService, $log, $http) {
+				function($scope, orderService, $log, $http, Notification) {
 					$scope.createOrder = function() {
-						
+						var techValidation = orderService
+								.validateTechnologies($scope.selectedTechnologies);
+						if (techValidation != 'ok') {
+							Notification
+									.error({
+										title : 'Error!',
+										message : $scope.TechnologyValidator[techValidation]
+									});
+							return;
+						}
+
+						alert('order created');
 					}
+
+					$scope.TechnologyValidator = {};
+					$scope.TechnologyValidator.empty = 'Please, select few technology';
+					$scope.TechnologyValidator.small = 'Selected technologies are not enougth. Please select a bit more.';
+					$scope.TechnologyValidator.big = 'You have selected too many technologies. Please, be short.'
 
 					$scope.getCurrentZone = function() {
 						var offset = new Date().getTimezoneOffset(), o = Math
