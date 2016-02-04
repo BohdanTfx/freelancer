@@ -42,8 +42,10 @@ public final class ApplicationContext {
 		customerService.setContactDao(daoManager.getDAO(ContactDao.class
 				.getSimpleName()));
 		customerService.setOrderingDao(daoManager.getDAO(OrderingDao.class
-				.getSimpleName()));
-		addBean("customerService", customerService);
+                .getSimpleName()));
+        customerService.setFollowerDao(daoManager.getDAO(FollowerDao.class
+                .getSimpleName()));
+        addBean("customerService", customerService);
 		addBean("feedbackService", new FeedbackService());
 
 		OrderingService orderingService = new OrderingService();
@@ -132,7 +134,10 @@ public final class ApplicationContext {
 			daoManager.addDao(
 					OrderingTechnologyManyToManyDao.class.getSimpleName(),
 					new OrderingTechnologyManyToManyJdbcDao());
-		} catch (Exception e) {
+            daoManager.addDao(
+                    FollowerDao.class.getSimpleName(),
+                    new FollowerJdbcDao());
+        } catch (Exception e) {
 			e.printStackTrace();
 		}
 

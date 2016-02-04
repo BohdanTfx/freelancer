@@ -23,9 +23,21 @@ angular.module('FreelancerApp')
                     $scope.skype = 'Skype: ' + data.skype;
                 else
                     $scope.skype = undefined;
+                $scope.phone = data.phone;
             }).error(function () {
 
             });
+
+        custpubAPI.getAvailableCustOrders($scope.query).success(function (data) {
+            console.log(data);
+            if (typeof data == 'undefined' || data == null || data.length == 0)
+                $scope.follow = true;
+            else {
+                $scope.avords = data;
+                $scope.follow = false;
+            }
+        }).error(function () {
+        });
 
         custpubAPI.getRateForCust($scope.query).success(
             function (data, status, headers, config) {
@@ -73,7 +85,7 @@ angular.module('FreelancerApp')
 
         $scope.sendSms = function () {
             var data = 'phone=' + $scope.phone + '&order_id=' + $scope.hireord +
-                '&dev_id=' + $scope.query + "&message=" + $scope.hiremes + '&cust_id=' + $rootScope.id + '&author=customer';
+                '&dev_id=' + $scope.query + "&message=" + $scope.hiremes + '&cust_id=' + $rootScope.id + '&author=dev';
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
             $http.post('/user/sms', data).success(function () {

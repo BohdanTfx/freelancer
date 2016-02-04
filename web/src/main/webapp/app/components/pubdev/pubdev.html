@@ -172,23 +172,31 @@
                                 <div ng-repeat="qa in qas">
                                     <h3 class="devpub-test-name">{{qa.test.name}}</h3>
 
-                                    <p ng-if="qa.isExpire" class="devpub-test-label"><span
-                                            class="label label-danger devpub-lb devpub-lb-tes devpub-out">{{outOfDate}}</span>
-                                    </p>
+                                    <div>
+                                        <div class="qa-left">
+                                            <div class="devpub-clear-div">
+                                                <p>Point: {{qa.rate}} / 100</p>
 
-                                    <p ng-if="qa.isPassed != false" class="devpub-test-label"><span
-                                            class="label label-primary devpub-lb devpub-lb-test">{{passed}}</span></p>
+                                                <p><span
+                                                        class="label label-success devpub-lb">{{qa.test.technology.name}}</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="qa-right">
+                                            <p ng-if="qa.isExpire" class="devpub-test-label"><span
+                                                    class="label label-danger devpub-lb devpub-lb-tes devpub-out">{{outOfDate}}</span>
+                                            </p>
 
-                                    <p ng-if="qa.isPassed != true" class="devpub-test-label"><span
-                                            class="label label-danger devpub-lb devpub-lb-test">{{notPassed}}</span></p>
+                                            <p ng-if="qa.isPassed != false" class="devpub-test-label"><span
+                                                    class="label label-primary devpub-lb devpub-lb-test">{{passed}}</span>
+                                            </p>
 
-                                    <div class="devpub-clear-div">
-                                        <p>Point: {{qa.rate}} / 100</p>
-
-                                        <p><span
-                                                class="label label-success devpub-lb">{{qa.test.technology.name}}</span>
-                                        </p>
+                                            <p ng-if="qa.isPassed != true" class="devpub-test-label"><span
+                                                    class="label label-danger devpub-lb devpub-lb-test">{{notPassed}}</span>
+                                            </p>
                                     </div>
+                                    </div>
+
                                     <md-divider></md-divider>
                                 </div>
 

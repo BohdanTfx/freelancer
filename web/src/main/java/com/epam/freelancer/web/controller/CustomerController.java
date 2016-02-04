@@ -87,19 +87,26 @@ public class CustomerController extends HttpServlet implements Responsable {
     public void getAvailableCustOrders(HttpServletRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession();
         UserEntity ue = (UserEntity) session.getAttribute("user");
-        String devId = request.getParameter("id");
+        String from = request.getParameter("from");
 
         if (ue == null) {
             response.setStatus(304);
             return;
         }
 
-        OrderingService os = (OrderingService) ApplicationContext.getInstance().getBean("orderingService");
-        List<Ordering> orderings = os.getAvailableCustOrders(ue.getId());
 
-        System.out.println(orderings);
+        if (!"dev".equals(from)) {
+            OrderingService os = (OrderingService) ApplicationContext.getInstance().getBean("orderingService");
+            List<Ordering> orderings = os.getAvailableCustOrders(ue.getId());
 
-        sendResponse(response, orderings, mapper);
+            sendResponse(response, orderings, mapper);
+        } else {
+            String custId = request.getParameter("id");
+            OrderingService os = (OrderingService) ApplicationContext.getInstance().getBean("orderingService");
+            List<Ordering> orderings = os.getAvailableCustOrders(Integer.parseInt(custId));
+
+            sendResponse(response, orderings, mapper);
+        }
     }
 
     public void getContForCust(HttpServletRequest request, HttpServletResponse response) throws IOException {

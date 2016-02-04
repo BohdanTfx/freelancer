@@ -252,28 +252,25 @@ public class UserController extends HttpServlet implements Responsable {
             response.sendError(303);
             return;
         }
+        String sms = null;
 
-        String sms = "This customer, " + ue.getFname() + " " + ue.getLname() + ", would like to hire you. See details in your cabinet.";
+        if ("dev".equals(author)) {
+            sms = "This freelancer, " + ue.getFname() + " " + ue.getLname() + ", followed you. See details in your cabinet.";
+
+        } else
+            sms = "This customer, " + ue.getFname() + " " + ue.getLname() + ", would like to hire you. See details in your cabinet.";
 
         String[] str = new SmsSender().sendSms(phone, sms, ue.getFname());
 
-
-        int smsRes = 0;
-        try {
-            int res = Integer.parseInt(str[1]);
-            if (res < 0) {
-                smsRes = 1;
-            }
-        } catch (Exception e) {
-            smsRes = 1;
+        Follower f = null;
+        if ("customer".equals(author)) {
+            f = developerService.createFollowing(request.getParameterMap());//wrong
+        } else {
+            f = customerService.hireDeveloper(request.getParameterMap());//ok
         }
 
-        if ("dev".equals(author)) {
-            DeveloperService ds = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
-            ds.createFollowing(request.getParameterMap());
-        } else {
-            CustomerService cs = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
-            cs.hireDeveloper(request.getParameterMap());
+        if (f == null) {
+            response.sendError(303);
         }
     }
 

@@ -188,8 +188,8 @@ public class DeveloperService extends UserService<Developer> {
 	}
 
 	public Follower createFollowing(Map<String, String[]> data) {
-		if (!isDataValid(prepareFollowerData(data)))
-			throw new RuntimeException("Validation exception in follower");
+        /*if (!isDataValid(prepareFollowerData(data)))
+			throw new RuntimeException("Validation exception in follower");*/
 
 		Follower follower = new Follower();
 		String[] value = data.get("dev_id");

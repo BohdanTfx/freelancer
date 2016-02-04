@@ -4,7 +4,6 @@ import com.epam.freelancer.business.util.ValidationParametersBuilder;
 import com.epam.freelancer.business.util.ValidationParametersBuilder.Parameters;
 import com.epam.freelancer.database.dao.*;
 import com.epam.freelancer.database.dao.jdbc.DAOManager;
-import com.epam.freelancer.database.dao.jdbc.FollowerJdbcDao;
 import com.epam.freelancer.database.model.Contact;
 import com.epam.freelancer.database.model.Customer;
 import com.epam.freelancer.database.model.Follower;
@@ -29,11 +28,6 @@ public class CustomerService extends UserService<Customer> {
                 .getDAO(CustomerDao.class.getSimpleName()));
         DAOManager daoManager = DAOManager.getInstance();
 		genericDao.setConnectionPool(daoManager.getConnectionPool());
-        try {
-            followerDao = new FollowerJdbcDao();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
 	@Override
@@ -133,8 +127,8 @@ public class CustomerService extends UserService<Customer> {
 	}
 
 	public Follower hireDeveloper(Map<String, String[]> data) {
-		if (!isDataValid(prepareFollowerData(data)))
-			throw new RuntimeException("Validation exception in follower");
+        /*if (!isDataValid(prepareFollowerData(data)))
+			throw new RuntimeException("Validation exception in follower");*/
 
 		Follower follower = new Follower();
 		String[] value = data.get("dev_id");

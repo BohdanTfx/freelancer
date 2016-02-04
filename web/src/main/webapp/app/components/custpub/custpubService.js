@@ -26,7 +26,9 @@ angular.module('FreelancerApp')
             return $http.post('/user/orders/getcustomerhistory?custId=' + id);
         };
 
-
+        dataFactory.getAvailableCustOrders = function (id) {
+            return $http.post('/cust/getAvailableCustOrders?id=' + id + '&from=dev');
+        };
 
         return dataFactory;
     });
