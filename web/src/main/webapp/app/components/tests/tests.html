@@ -7,7 +7,7 @@
                         <md-content class="md-padding">
 
                             <!--start header-->
-                            <div class="history-title">
+                            <div class="history-title" ng-if="devQAs.length != 0">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <div class="row">
@@ -52,7 +52,7 @@
 
                             <!--start body-->
                             <div ng-if="devQAs.length == 0">
-                                <h3>You didn't pass any tests</h3>
+                                <h5>You didn't pass any tests</h5>
                             </div>
                             <div ng-if="devQAs.length != 0">
                                 <div class="history-body" ng-repeat="devQA in devQAs | orderBy:sortField:reverse">
@@ -140,7 +140,7 @@
                 </md-tab>
                 <md-tab label="Tests list">
                     <md-content class="md-padding">
-                        <div class="row filter">
+                        <div class="row filter" ng-if="tests.length != 0">
                             <div class="form-group col-md-6 col-xs-12">
                                 <label for="test_name">Search by test name:</label>
                                 <input type="text" ng-model="search.name" class="form-control" id="test_name"
@@ -152,11 +152,21 @@
                                        id="tech_name"
                                        placeholder="&#xF002;" style="font-family:Arial, FontAwesome">
                             </div>
+                            <div class="form-group col-md-6 col-xs-12 tests-checkbox-pass">
+                                <md-checkbox ng-model="passedTest" ng-change="testListCtrl()"
+                                             class="md-warn" flex>
+                                    Passed
+                                </md-checkbox>
+                                <md-checkbox ng-model="allowedTest" ng-change="testListCtrl()"
+                                             class="md-warn" flex>
+                                    Allowed
+                                </md-checkbox>
+                            </div>
                         </div>
                         <div class="tests-tab">
 
                             <!--start header-->
-                            <div class="tests-title">
+                            <div class="tests-title" ng-if="tests.length != 0">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <div class="row">
@@ -197,7 +207,7 @@
                             <!--start body-->
 
                             <div ng-if="tests.length == 0">
-                                <h3>We don't have any tests for you now. Check it later</h3>
+                                <h5>We don't have any tests for you now. Check it later</h5>
                             </div>
                             <div ng-if="tests.length != 0">
                                 <div class="tests-body" ng-repeat="test in tests | orderBy:sortField:reverse
@@ -215,8 +225,17 @@
                                                     {{test.passScore}} %
                                                 </div>
                                                 <div class="col-md-2 col-sm-2 col-xs-3">
-                                                    <a class="btn btn-primary btn-pass-test vertical-align-center"
-                                                       href="/#/tests/{{test.id}}">Pass test</a>
+                                                    <a ng-hide="test.status == 'passed'" class="btn btn-primary btn-pass-test vertical-align-center"
+                                                       href="/#/tests/{{test.id}}">
+                                                        <span ng-show="test.status == 'new'">Pass test</span>
+                                                        <span ng-show="test.status == 'expired'">Repass test</span>
+                                                    </a>
+                                                    <a ng-show="test.status == 'passed'" ng-disabled="true" class="btn btn-primary btn-pass-test vertical-align-center">
+                                                        <span>Repass test</span>
+                                                        <md-tooltip md-visible="true" md-direction="top">
+                                                            Repass unblock in {{test.repass | date:"d 'day(s)' h 'hour(s)' mm 'min(s)'"}}
+                                                        </md-tooltip>
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>

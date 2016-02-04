@@ -52,7 +52,8 @@
 }
 
 .test-result {
-    margin: 25px 0;
+    margin: auto;
+    align-items: center;
 }
 
 .test_page .test-result table {

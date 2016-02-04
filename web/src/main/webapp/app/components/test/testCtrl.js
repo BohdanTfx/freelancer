@@ -1,5 +1,4 @@
 angular.module('FreelancerApp')
-
     .controller('testCtrl', function ($scope, testAPI, $stateParams, $log, $interval) {
 
         $scope.testFinished = false;
