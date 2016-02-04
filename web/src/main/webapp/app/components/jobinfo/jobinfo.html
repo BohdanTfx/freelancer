@@ -1,11 +1,25 @@
-<div class="container-top">
+<div class="container-top" ng-show="noOrder">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="well panel panel-default">
+                <div class="panel-body fl-left">
+                    <h2 class="order-not-found">Order not found</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div class="container-top" ng-hide="noOrder">
     <div class="row">
         <div class="job-info">
             <div class="col-md-12">
                 <div class="well panel panel-default">
                     <div class="panel-body">
+
                         <div class="col-sm-8 col-xs-12 hr">
-                            <h2><em>{{order.title}}</em></h2>
+                            <h2><em><span class="fa fa-briefcase"></span> {{order.title}}</em></h2>
 
                             <p class="position">
                             <h5>{{position}}</h5>
@@ -15,12 +29,12 @@
 
                             <p>
                             <ul class="list-unstyled">
-                                <li><strong>Date:</strong> {{order.date | date:'dd/MM/yyyy'}}</li>
+                                <li><strong>Date:</strong> {{order.date | date:'MMM d, y'}}</li>
                                 <li><strong>Payment:</strong> {{order.payType}}, {{order.payment | number:2}} $</li>
                                 <li ng-show="order.zone"><strong>Time zone:</strong> {{order.zone}}</li>
                                 <li><strong>Technologies:</strong>
                                     <span ng-switch on="techs.length == 0">
-                                        <span ng-switch-when="true">unknown</span>
+                                        <span ng-switch-when="true">none</span>
                                         <span ng-switch-when="false">
                                             <span ng-repeat="tech in techs">
                                                 <span class="label label-success lb">{{tech.name}}</span>
@@ -34,26 +48,26 @@
 
                         <div class="col-sm-4 col-xs-12 right-side">
                             <br/>
-                            <div class="btn btn-block btn-primary" ng-click="subscribe()">
-                                <span class="glyphicon glyphicon-thumbs-up"></span>
-                                Subscribe
-                            </div>
+
+                            <h4 style="display: inline-block">Customer</h4>
+
                             <div class="col-lg-5 col-sm-12 hidden-xs">
-                                <div class="user" style="background-image: url('https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSmt5i-ru168WMldKAgcExrQIEKzlys0qTjjAA13TmHf5COlixX')"></div>
+                                <div class="user"
+                                     style="background-image: url('https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSmt5i-ru168WMldKAgcExrQIEKzlys0qTjjAA13TmHf5COlixX')"></div>
                             </div>
                             <div class="col-lg-7 col-sm-12">
                                 <h2><em>{{customer.fname}} {{customer.lname}}</em></h2>
                                 <ul class="list-inline ratings" title="Ratings">
-                                    <li ng-repeat="i in getNumber(custRate)">
-                                        <span class="fa fa-star fa-lg"></span>
-                                    </li>
+                                    <uib-rating ng-model="custRate" max="5" readonly="true"
+                                                on-leave="overStar = null" titles="['1','2','3','4','5']"
+                                                aria-labelledby="default-rating"></uib-rating>
                                 </ul>
                                 <md-divider></md-divider>
                                 <ul class="list-unstyled">
-                                    <li>Email: {{customer.email}}</li>
+                                    <li>Skype: {{customer.contact.skype}}</li>
                                     <li>
                                         On site since<br/>
-                                        {{customer.regDate | date:'dd/MM/yyyy'}}
+                                        {{customer.regDate | date:'MMM d, y'}}
                                     </li>
                                 </ul>
                             </div>
@@ -62,37 +76,110 @@
 
                     <md-content>
                         <md-tabs md-dynamic-height md-border-bottom>
-                            <md-tab label="Feedbacks about customer">
-                                <div class="tab-pane fade in active" id="menu1">
-                                    <br/>
+                            <md-tab label="Followers">
+                                <md-content class="md-padding">
+                                    <div class="tab-pane fade in active">
 
-                                    <p class="noFeedbacks" ng-if="noFeedbacks">There is no feedbacks about customer</p>
 
-                                    <div ng-repeat="feedback in feedbacks">
-                                        <br/>
+                                        <div ng-if="isDev" class="form-group devpub-comm-div">
+                                            <div ng-hide="user.subscribed">
+                                                <textarea type="text" class="form-control" ng-model="message" rows="2"
+                                                          placeholder="Message ..."
+                                                          required></textarea>
+                                                <br/>
+                                                <button type="button" ng-click="subscribe(message)"
+                                                        class="btn btn-primary pull-right">
+                                                    Subscribe
+                                                </button>
+                                            </div>
+                                            <div ng-show="user.subscribed">
+                                                <button type="button" ng-click="unsubscribe()"
+                                                        class="btn btn-primary btn-warn pull-right">
+                                                    Unsubscribe
+                                                </button>
+                                            </div>
 
-                                        <div class="feedback" style="background-image: url('../../../images/role/developer.png')"></div>
+                                            <br/>
+                                            <hr/>
+                                        </div>
 
-                                        <p>
-                                            <em>{{feedback.developer.fname}} {{feedback.developer.lname}}</em>
-                                        </p>
 
-                                        <p>{{feedback.comment}}</p>
+                                        <p class="noFollowers" ng-if="noFollowers">There are no followers on this
+                                            project</p>
 
-                                        <ul class="list-inline ratings" title="Ratings">
-                                            <li ng-repeat="i in getNumber(feedback.rate)">
-                                                <span class="fa fa-star fa-lg"></span>
-                                            </li>
-                                        </ul>
+                                        <div ng-repeat="follower in followers">
+                                            <div class="row">
+                                                <div class="col-sm-9">
+                                                    <br/>
 
-                                        <br/>
-                                        <md-divider></md-divider>
+                                                    <div class="follower"
+                                                         style="background-image: url('../../../images/role/developer.png')"></div>
+
+                                                    <p>
+                                                        <a ng-href="/#/public/dev-name/{{follower.developer.id}}"><em>{{follower.developer.fname}}
+                                                            {{follower.developer.lname}}</em></a>
+                                                    </p>
+
+                                                    <p>{{follower.message}}</p>
+
+                                                </div>
+                                                <div class="col-sm-3 text-center">
+                                                    <br/>
+                                                    <span>Developer rate</span>
+                                                    <ul class="list-inline ratings" title="Ratings">
+                                                        <uib-rating ng-model="follower.rate" max="5" readonly="true"
+                                                                    on-leave="overStar = null"
+                                                                    titles="['1','2','3','4','5']"
+                                                                    aria-labelledby="default-rating"></uib-rating>
+                                                    </ul>
+                                                    <span>Rate:</span>
+                                                    <span ng-if="follower.developer.hourly==undefined">unknown</span>
+                                                    <span ng-if="follower.developer.hourly!=undefined"><span
+                                                            class="fa fa-usd"></span>{{follower.developer.hourly}}&#47hr</span>
+
+                                                </div>
+                                            </div>
+                                            <br/>
+                                            <md-divider></md-divider>
+                                        </div>
                                     </div>
-                                </div>
+                                </md-content>
+                            </md-tab>
+                            <md-tab label="Feedbacks about customer">
+                                <md-content class="md-padding">
+                                    <div class="tab-pane fade in active" id="menu1">
+
+                                        <p class="noFeedbacks" ng-if="noFeedbacks">There are no feedbacks about
+                                            customer</p>
+
+                                        <div ng-repeat="feedback in feedbacks">
+                                            <br/>
+
+                                            <div class="feedback"
+                                                 style="background-image: url('../../../images/role/developer.png')"></div>
+
+                                            <p>
+                                                <a ng-href="/public/dev-name/{{developer.id}}"><em>{{feedback.developer.fname}}
+                                                    {{feedback.developer.lname}}</em></a>
+                                            </p>
+
+                                            <p>{{feedback.comment}}</p>
+
+                                            <ul class="list-inline ratings" title="Ratings">
+                                                <uib-rating ng-model="feedback.rate" max="5" readonly="true"
+                                                            on-leave="overStar = null" titles="['1','2','3','4','5']"
+                                                            aria-labelledby="default-rating"></uib-rating>
+                                            </ul>
+
+                                            <br/>
+                                            <md-divider></md-divider>
+                                        </div>
+                                    </div>
+                                </md-content>
                             </md-tab>
                             <md-tab label="Customer projects history">
                                 <md-content class="md-padding">
-                                    <p class="emptyHistory" ng-if="emptyHistory">Customer hadn't any projects</p>
+                                    <p class="emptyHistory" ng-if="emptyHistory">Customer didn't have any projects</p>
 
                                     <div ng-repeat="project in custProjects">
                                         <h4 class="tit">
@@ -101,15 +188,15 @@
 
                                         <div class="descr">
                                             <p>{{project.descr}}</p>
+
                                             <p>
                                                 <span ng-repeat="tech in project.technologies">
                                                     <span class="label label-success lb">{{tech.name}}</span>
                                                 </span>
                                             </p>
-                                            <p>
-                                                {{project.startedDate.substring(0, 12)}} - {{project.endedDate.substring(0,
-                                                12)}}
-                                            </p>
+
+                                            <p>{{project.startedDate | date: 'MMM d, y'}} - {{project.endedDate
+                                                | date: 'MMM d, y'}}</p>
                                         </div>
                                         <md-divider></md-divider>
                                     </div>

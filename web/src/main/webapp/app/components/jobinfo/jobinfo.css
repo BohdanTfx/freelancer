@@ -6,13 +6,29 @@
     left: -9999px;
 }
 
+.order-not-found {
+    font-size: 48px;
+    text-align: center;
+    color: #ccc;
+    font-weight: bold;
+}
+
 .job-info .list-unstyled {
     padding-left: 0px;
     list-style: outside none none;
 }
 
+.job-info p > a {
+    cursor: hand;
+}
+
 .job-info ul li {
     margin-bottom: 10px;
+}
+
+.job-info .btn-warn {
+    background-color:#FF5722;
+    border: #FFF;
 }
 
 .job-info .right-side {
@@ -27,7 +43,7 @@
     margin-bottom: 15px;
 }
 
-.job-info .details {
+        .job-info .details {
     clear: both;
 }
 
@@ -52,5 +68,17 @@
     background-position: center center;
     background-size: cover;
     margin: 15px;
+    float: left;
+}
+
+.job-info .follower {
+    display: inline-block;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    margin: auto 15px auto 15px;
     float: left;
 }

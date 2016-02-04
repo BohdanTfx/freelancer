@@ -1,32 +1,35 @@
 package com.epam.freelancer.security.filter;
 
-import com.epam.freelancer.business.context.ApplicationContext;
-import com.epam.freelancer.business.service.CustomerService;
-import com.epam.freelancer.business.util.EnvironmentVariablesManager;
-import com.epam.freelancer.security.provider.AuthenticationProvider;
-import org.apache.log4j.Logger;
+import java.io.IOException;
 
-import javax.servlet.*;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
+import org.apache.log4j.Logger;
+
+import com.epam.freelancer.business.context.ApplicationContext;
+import com.epam.freelancer.business.service.CustomerService;
+import com.epam.freelancer.security.provider.AuthenticationProvider;
 
 public class CustomerAccessFilter implements Filter {
 	public static final Logger LOG = Logger
 			.getLogger(CustomerAccessFilter.class);
 	private CustomerService customerService;
 	private AuthenticationProvider authenticationProvider;
-	private String cookieAutoAuthName;
-	private String userName;
+	private String cookieAutoAuthName = "freelancerRememberMeCookie";
+	private String userName = "customer";
 
 	public void init(FilterConfig config) throws ServletException {
-		/*authenticationProvider = (AuthenticationProvider) ApplicationContext.getInstance().getBean("authenticationProvider");
+		authenticationProvider = AuthenticationProvider
+				.createAuthenticationProvider();
 		customerService = (CustomerService) ApplicationContext.getInstance()
 				.getBean("customerService");
-		EnvironmentVariablesManager manager = EnvironmentVariablesManager
-				.getInstance();
-		cookieAutoAuthName = manager.getVar("cookie.user.remember");
-		userName = manager.getVar("user.customer");*/
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response,
@@ -35,11 +38,11 @@ public class CustomerAccessFilter implements Filter {
 		LOG.info(getClass().getSimpleName() + " - " + "doFilter");
 		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-/*
-        if (authenticationProvider.provideAccess(cookieAutoAuthName, userName,
+
+		if (authenticationProvider.provideAccess(cookieAutoAuthName, userName,
 				"login", customerService, httpServletRequest,
-				httpServletResponse))*/
-        chain.doFilter(request, response);
+				httpServletResponse))
+			chain.doFilter(request, response);
 	}
 
 	public void destroy() {

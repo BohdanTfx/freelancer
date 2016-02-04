@@ -27,14 +27,12 @@ angular
 					}
 
 					$scope.resetInputs = function() {
-						$scope.user = {
-							first_name : "",
-							last_name : "",
-							email : "",
-							password : "",
-							passwordconfirm : "",
-							zone : $scope.getCurrentZone()
-						}
+						$scope.user.first_name = "";
+						$scope.user.last_name = "";
+						$scope.user.email = "";
+						$scope.user.password = "";
+						$scope.user.passwordconfirm = "";
+						$scope.user.zone = $scope.getCurrentZone();
 					}
 
 					signupAPI.initSocial($http, $scope);
@@ -190,6 +188,8 @@ angular
 																	}, 1000);
 														}
 													});
+
+									$scope.emailInputNgModel = ngModel;
 								}
 							}
 						} ]).directive(

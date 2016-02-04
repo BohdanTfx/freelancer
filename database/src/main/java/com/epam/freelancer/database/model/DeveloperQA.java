@@ -28,9 +28,19 @@ public class DeveloperQA implements BaseEntity<Integer> {
     @Column
     private Integer version;
     private Test test;
+    private boolean isPassed;
 
     public DeveloperQA() {
     }
+
+    public boolean isPassed() {
+        return isPassed;
+    }
+
+    public void setIsPassed(boolean isPassed) {
+        this.isPassed = isPassed;
+    }
+
 
     public Integer getDevId() {
         return devId;
@@ -150,6 +160,8 @@ public class DeveloperQA implements BaseEntity<Integer> {
                 ", isExpire=" + isExpire +
                 ", isDeleted=" + isDeleted +
                 ", version=" + version +
+                ", test=" + test +
+                ", isPassed=" + isPassed +
                 '}';
     }
 }

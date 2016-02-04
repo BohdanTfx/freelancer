@@ -40,6 +40,7 @@ angular
 												$scope.signup = true;
 												$scope.role = localStorage
 														.getItem("role");
+
 											})
 									.error(
 											function(data, status, headers,
@@ -54,9 +55,9 @@ angular
 						}
 
 						$http
-								.get("/user/signup/social", {
+								.get("/user/social", {
 									params : {
-										callbackUrl : document.URL
+										callbackUrlLinkedIn : document.URL
 									}
 								})
 								.success(
@@ -94,6 +95,14 @@ angular
 													});
 										});
 					}
+
+					this.triggerEmailValidation = function($http, $scope) {
+						var email = $scope.user.email;
+						if (email.match(/^.+@.+\..+$/)) {
+							that.checkEmail($http, $scope.emailInputNgModel,
+									email);
+						}
+					};
 				});
 
 function getUrlVars() {

@@ -1,22 +1,24 @@
 package com.epam.freelancer.business.service;
 
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.epam.freelancer.business.util.ValidationParametersBuilder;
+import com.epam.freelancer.database.dao.FollowerDao;
+import com.epam.freelancer.database.dao.GenericDao;
 import com.epam.freelancer.database.dao.GenericManyToManyDao;
 import com.epam.freelancer.database.dao.OrderingDao;
 import com.epam.freelancer.database.dao.jdbc.DAOManager;
 import com.epam.freelancer.database.model.*;
+
+import java.sql.Timestamp;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Максим on 19.01.2016.
  */
 public class OrderingService extends GenericService<Ordering, Integer> {
 	private GenericManyToManyDao<Ordering, Technology, Worker, Integer> orderingTechnoloyManyToManyDao;
-	private GenericManyToManyDao<Developer, Ordering, Follower, Integer> followerMTMDao;
+	private GenericDao<Follower, Integer> followerDao;
 
 	public OrderingService() {
 		super(DAOManager.getInstance()
@@ -114,11 +116,12 @@ public class OrderingService extends GenericService<Ordering, Integer> {
 		return orderingTechnoloyManyToManyDao.getBasedOnFirst(orderId);
 	}
 
-	public void setFollowerManyToManyDao(GenericManyToManyDao<Developer, Ordering, Follower, Integer> followerMTMDao) {
-		this.followerMTMDao = followerMTMDao;
+	public void setFollowerDao(GenericDao<Follower, Integer> followerDao) {
+		this.followerDao = followerDao;
+		followerDao.setConnectionPool(DAOManager.getInstance().getConnectionPool());
 	}
 
-	public List<Developer> findOrderFollowers(Integer orderId) {
-		return followerMTMDao.getBasedOnSecond(orderId);
+	public List<Follower> findOrderFollowers(Integer orderId) {
+		return ((FollowerDao)followerDao).getProjectFollowers(orderId);
 	}
 }

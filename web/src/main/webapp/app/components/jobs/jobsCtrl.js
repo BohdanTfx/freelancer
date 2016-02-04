@@ -7,13 +7,17 @@ angular
 				function($scope, jobsAPI, $log, $http) {
 					$scope.filter = {}
 					$scope.hourly = {};
+					$scope.ordersLoading = true;
+					$scope.filterButtonStyle = 'fa-angle-double-down';
 
 					$scope.filterToggle = function() {
 						if (filterOpen) {
 							$scope.filterState = '';
+							$scope.filterButtonStyle = 'fa-angle-double-down';
 							filterOpen = false;
 						} else {
 							$scope.filterState = 'in';
+							$scope.filterButtonStyle = 'fa-angle-double-up';
 							filterOpen = true;
 						}
 					}
@@ -28,7 +32,8 @@ angular
 						number : 15,
 						text : "Show 15 items on page"
 					} ];
-					$scope.itesStep = $scope.itemsPerPage[1];
+					$scope.itesStep = $scope.itemsPerPage[jobsAPI
+							.getStep($scope) / 5 - 1];
 
 					$scope.timeZones = [
 							{
@@ -154,6 +159,12 @@ angular
 							} ];
 
 					$scope.doFilter = function() {
+						jobsAPI.loadOrders($scope, $http);
+					}
+
+					$scope.changeStep = function() {
+						localStorage.setItem("freelancerOrdersStep",
+								$scope.itesStep.number);
 						jobsAPI.loadOrders($scope, $http);
 					}
 

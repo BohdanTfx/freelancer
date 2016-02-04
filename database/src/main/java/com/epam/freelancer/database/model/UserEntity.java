@@ -26,6 +26,10 @@ public interface UserEntity extends BaseEntity<Integer> {
 
 	String getLname();
 
+	void setRole(String role);
+
+	String getRole();
+
 	void setLname(String lname);
 
 	String getLang();

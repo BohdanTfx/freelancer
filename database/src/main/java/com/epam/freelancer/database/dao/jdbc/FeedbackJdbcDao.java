@@ -31,6 +31,18 @@ public class FeedbackJdbcDao extends GenericJdbcDao<Feedback, Integer> implement
     }
 
     @Override
+    public List<Feedback> getFeedbacksByCustIdForHim(Integer id) {
+        String query = "SELECT * FROM " + table + " WHERE cust_id = ? AND author = 'dev'";
+        return getFeedbacksByQuery(query, id);
+    }
+
+    @Override
+    public List<Feedback> getFeedbacksByDevIdForHim(Integer id) {
+        String query = "SELECT * FROM " + table + " WHERE dev_id = ? AND author = 'customer'";
+        return getFeedbacksByQuery(query, id);
+    }
+
+    @Override
     public Integer getAvgRate(Integer dev_id) {
         Integer avg = null;
         try (Connection connection = connectionPool.getConnection();

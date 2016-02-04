@@ -59,6 +59,10 @@
 					url : '/public/:devName/:devId',
 					templateUrl : 'app/components/pubdev/pubdev.html',
 					controller : 'pubdevCtrl'
+                }).state('custpub', {
+                    url: '/public/customer/:custName/:custId',
+                    templateUrl: 'app/components/custpub/custpub.html',
+                    controller: 'custpubCtrl'
 				});
 
 				$locationProvider.html5Mode(false);
@@ -80,6 +84,7 @@
 							$rootScope.logged = false;
 							$http.post('/user/isAuth').success(function(data) {
 								console.log(data);
+								$rootScope.id = data.id;
 								$rootScope.name = data.fname;
 								$rootScope.lastName = data.lname;
 								$rootScope.role = data.role;

@@ -11,9 +11,11 @@ import com.epam.freelancer.web.json.model.JsonPaginator;
 import com.epam.freelancer.web.social.Linkedin;
 import com.epam.freelancer.web.social.model.LinkedinProfile;
 import com.epam.freelancer.web.util.Paginator;
+import com.epam.freelancer.web.util.SignInType;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
+import org.scribe.exceptions.OAuthException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -28,88 +30,104 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class UserController extends HttpServlet implements Responsable {
-    public static final Logger LOG = Logger.getLogger(UserController.class);
-    private static final long serialVersionUID = -2356506023594947745L;
-    private OrderingService orderingService;
-    private CustomerService customerService;
-    private DeveloperService developerService;
-    private TechnologyService technologyService;
-    private UserManager userManager;
-    private Linkedin linkedin;
-    private ObjectMapper mapper;
-    private Paginator paginator;
+	public static final Logger LOG = Logger.getLogger(UserController.class);
+	private static final long serialVersionUID = -2356506023594947745L;
+	private AuthenticationProvider authenticationProvider;
+	private FeedbackService feedbackService;
+	private OrderingService orderingService;
+    private AdminService adminService;
+	private CustomerService customerService;
+	private DeveloperService developerService;
+	private TechnologyService technologyService;
+	private UserManager userManager;
+	private Linkedin linkedin;
+	private ObjectMapper mapper;
+	private Paginator paginator;
 
-    public UserController() {
-        init();
-    }
+	public UserController() {
+		init();
+	}
 
-    @Override
-    public void init() {
-        LOG.info(getClass().getSimpleName() + " - " + " loaded");
-        linkedin = new Linkedin();
-        mapper = new ObjectMapper();
-        paginator = new Paginator();
-        try {
-            linkedin.initKeys("/social.properties");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        orderingService = (OrderingService) ApplicationContext.getInstance()
-                .getBean("orderingService");
-        technologyService = (TechnologyService) ApplicationContext
-                .getInstance().getBean("technologyService");
-        userManager = (UserManager) ApplicationContext.getInstance().getBean(
+	@Override
+	public void init() {
+		LOG.info(getClass().getSimpleName() + " - " + " loaded");
+		linkedin = new Linkedin();
+		mapper = new ObjectMapper();
+		paginator = new Paginator();
+		try {
+			linkedin.initKeys("/social.properties");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		orderingService = (OrderingService) ApplicationContext.getInstance()
+				.getBean("orderingService");
+		technologyService = (TechnologyService) ApplicationContext
+				.getInstance().getBean("technologyService");
+		userManager = (UserManager) ApplicationContext.getInstance().getBean(
                 "userManager");
-        customerService = (CustomerService) ApplicationContext.getInstance()
-                .getBean("customerService");
-        developerService = (DeveloperService) ApplicationContext.getInstance()
-                .getBean("developerService");
-    }
+        adminService= (AdminService) ApplicationContext.getInstance()
+                .getBean("adminService");
+		customerService = (CustomerService) ApplicationContext.getInstance()
+				.getBean("customerService");
+		developerService = (DeveloperService) ApplicationContext.getInstance()
+				.getBean("developerService");
+		authenticationProvider = AuthenticationProvider
+				.createAuthenticationProvider();
+		feedbackService = (FeedbackService) ApplicationContext
+				.getInstance().getBean("feedbackService");
+	}
 
-    @Override
-    protected void doGet(HttpServletRequest request,
-                         HttpServletResponse response) throws ServletException, IOException {
-        LOG.info(getClass().getSimpleName() + " - " + "doGet");
-        try {
-            switch (FrontController.getPath(request)) {
-                case "user/email":
-                    sendResponse(response, userManager.isEmailAvailable(request
-                            .getParameter("email")), mapper);
-                    return;
-                case "user/signup/social":
-                    configSocials(request, response);
-                    return;
-                case "user/signup/linkedin":
-                    linkedinSignUp(request, response);
-                    return;
-                default:
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            LOG.fatal(getClass().getSimpleName() + " - " + "doGet");
-        }
-    }
+	@Override
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException
+	{
+		LOG.info(getClass().getSimpleName() + " - " + "doGet");
+		try {
+			switch (FrontController.getPath(request)) {
+			case "user/email":
+				sendResponse(response, userManager.isEmailAvailable(request
+						.getParameter("email")), mapper);
+				return;
+			case "user/social":
+				configSocials(request, response);
+				return;
+			case "user/signup/linkedin":
+				sendResponse(response, getLinkedInProfile(request, response),
+                        mapper);
+				return;
+			case "user/signin/linkedin":
+				signIn(request, response, SignInType.LINKEDIN);
+				return;
+			default:
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.fatal(getClass().getSimpleName() + " - " + "doGet");
+		}
+	}
 
-    private void linkedinSignUp(HttpServletRequest request,
-                                HttpServletResponse response) {
+    private LinkedinProfile getLinkedInProfile(HttpServletRequest request,
+                                               HttpServletResponse response)
+    {
         String oauthVerifier = request.getParameter("verifier");
         try {
             linkedin.loadData(oauthVerifier);
-            LinkedinProfile linkedinProfile = linkedin.getProfile();
-
-            sendResponse(response, linkedinProfile, mapper);
+            return linkedin.getProfile();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return null;
     }
 
-    private void configSocials(HttpServletRequest request,
-                               HttpServletResponse response) {
-        String callbackUrl = request.getParameter("callbackUrl");
-        Map<String, Object> result = new HashMap<>();
-        result.put("linkedinUrl", linkedin.getAuthentificationUrl(callbackUrl));
-        sendResponse(response, result, mapper);
-    }
+	private void configSocials(HttpServletRequest request,
+			HttpServletResponse response)
+	{
+		String callbackUrl = request.getParameter("callbackUrlLinkedIn");
+		Map<String, Object> result = new HashMap<>();
+		result.put("linkedinUrl", linkedin.getAuthentificationUrl(callbackUrl));
+		sendResponse(response, result, mapper);
+	}
 
     @Override
     protected void doPost(HttpServletRequest request,
@@ -117,7 +135,7 @@ public class UserController extends HttpServlet implements Responsable {
         try {
             switch (FrontController.getPath(request)) {
                 case "user/signin":
-                    signIn(request, response);
+                    signIn(request, response, SignInType.MANUAL);
                     return;
                 case "user/create":
                     create(request, response);
@@ -165,27 +183,35 @@ public class UserController extends HttpServlet implements Responsable {
                 case "user/orders/tech":
                     sendResponse(response, technologyService.findAll(), mapper);
                     break;
-                case "user/orders/getorderbyid":
+                case "user/order":
                     getOrderById(request, response);
                     break;
-                case "user/orders/getfollowersbyorderid":
+                case "user/order/followers":
                     getFollowersByOrderId(request,
                             response);
                     break;
-                case "user/orders/getcustomerbyid":
-                    getCustomerById(request, response);
-                    break;
-                case "user/orders/getcustomerfeedbacks":
-                    getFeedbacksByIdForCust(request,
-                            response);
-                    break;
-                case "user/orders/getordertechs":
+                case "user/order/techs":
                     getOrderTechs(request, response);
                     break;
-                case "user/orders/getcustomerhistory":
-                    getCustomerHistory(request, response);
-
+                case "user/order/subscribe":
+                    subscribe(request, response);
                     break;
+                case "user/order/unsubscribe":
+                    unsubscribe(request, response);
+                    break;
+                case "user/type":
+                    getUserById(request,response);
+                    break;
+                case "user/customer/history":
+                    getCustomerHistory(request,response);
+                    break;
+                case "user/customer/feedbacks":
+                    getFeedbacksByIdForCust(request,response);
+                    break;
+                case "user/contact":
+                    getUserContact(request, response);
+                    break;
+
                 default:
             }
         } catch (Exception e) {
@@ -194,30 +220,30 @@ public class UserController extends HttpServlet implements Responsable {
         }
     }
 
-    private void filterOrders(HttpServletRequest request,
-                              HttpServletResponse response) {
-        try {
-            JsonPaginator result = mapper.readValue(request.getReader()
-                    .readLine(), JsonPaginator.class);
-            List<Ordering> orderings = orderingService.filterElements(result
-                    .getContent(), result.getPage().getStart()
-                    * result.getPage().getStep(), result.getPage().getStep());
+	private void filterOrders(HttpServletRequest request,
+			HttpServletResponse response)
+	{
+		try {
+			JsonPaginator result = mapper.readValue(request.getReader()
+					.readLine(), JsonPaginator.class);
+			List<Ordering> orderings = orderingService.filterElements(result
+					.getContent(), result.getPage().getStart()
+					* result.getPage().getStep(), result.getPage().getStep());
 
-            for (Ordering ordering : orderings) {
-                ordering.setTechnologies(orderingService
-                        .findOrderingTechnologies(ordering.getId()));
-            }
+			for (Ordering ordering : orderings) {
+				ordering.setTechnologies(orderingService
+						.findOrderingTechnologies(ordering.getId()));
+			}
 
-            paginator.next(result.getPage(), response, orderingService
-                    .getFilteredObjectNumber(result.getContent()), orderings);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+			paginator.next(result.getPage(), response, orderingService
+					.getFilteredObjectNumber(result.getContent()), orderings);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
     public void logout(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        System.out.println("LOGOUT");
         LOG.info(getClass().getSimpleName() + " - " + "logout");
         UserEntity userEntity = (UserEntity) request.getSession().getAttribute(
                 "user");
@@ -228,14 +254,12 @@ public class UserController extends HttpServlet implements Responsable {
         if (userEntity != null) {
             request.getSession().invalidate();
         }
-        // response.sendRedirect(request.getContextPath() + "/");
     }
 
     public void isAuth(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         HttpSession session = request.getSession();
         UserEntity ue = (UserEntity) session.getAttribute("user");
-        System.out.println(ue + " session");
         if (ue != null) {
             sendResponse(response, ue, mapper);
         } else {
@@ -247,36 +271,50 @@ public class UserController extends HttpServlet implements Responsable {
     public void sendSms(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         String phone = request.getParameter("phone");
-        String sms = request.getParameter("sms");
+        String author = request.getParameter("author");
         HttpSession session = request.getSession();
         UserEntity ue = (UserEntity) session.getAttribute("user");
 
-        if (sms == null || phone == null) {
-            response.sendError(500);
+        if (ue == null || phone == null || author == null) {
+            response.sendError(303);
             return;
         }
 
-        if (ue == null || "".equals(sms) || "".equals(phone)) {
-            response.sendError(500);
-            return;
-        }
+        String sms = "This customer, " + ue.getFname() + " " + ue.getLname() + ", would like to hire you. See details in your cabinet.";
 
         String[] str = new SmsSender().sendSms(phone, sms, ue.getFname());
 
+
+        int smsRes = 0;
         try {
             int res = Integer.parseInt(str[1]);
             if (res < 0) {
-                response.sendError(500);
+                smsRes = 1;
             }
         } catch (Exception e) {
-            response.sendError(500);
+            smsRes = 1;
+        }
+
+        if ("customer".equals(author)) {
+            DeveloperService ds = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
+            ds.createFollowing(request.getParameterMap());
+        } else {
+            CustomerService cs = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
+            cs.hireDeveloper(request.getParameterMap());
         }
     }
 
     public void comment(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
+        String author = request.getParameter("role");
         String rate = request.getParameter("rate");
-        String dev_id = request.getParameter("id");
+        String dev_id = null;
+        String cust_id = null;
+        if (author.equals("customer"))
+            dev_id = request.getParameter("id");
+        else
+            cust_id = request.getParameter("id");
+
         String comment = request.getParameter("comment");
         HttpSession session = request.getSession();
         UserEntity ue = (UserEntity) session.getAttribute("user");
@@ -285,7 +323,7 @@ public class UserController extends HttpServlet implements Responsable {
             return;
         }
 
-        if (comment == null || rate == null || dev_id == null) {
+        if (comment == null || rate == null) {
             response.sendError(500);
             return;
         }
@@ -295,8 +333,10 @@ public class UserController extends HttpServlet implements Responsable {
             return;
         }
 
-        String cust_id = ue.getId().toString();
-        String author = "customer";
+        if (author.equals("customer"))
+            cust_id = ue.getId().toString();
+        else
+            dev_id = ue.getId().toString();
 
         if ("".equals(dev_id) || "".equals(cust_id) || "".equals(comment)
                 || "".equals(rate) || "".equals(author)) {
@@ -323,33 +363,45 @@ public class UserController extends HttpServlet implements Responsable {
             throws IOException {
         String email = request.getParameter("email");
         String message = request.getParameter("message");
-        String changeEmail = request.getParameter("changeEmail");
+        String subject = request.getParameter("subject");
+
+        if (email == null || message == null) {
+            response.sendError(304);
+            return;
+        }
+
+        if ("undefined".equals(email) || "undefined".equals(message)) {
+            response.sendError(304);
+            return;
+        }
 
         HttpSession session = request.getSession();
         UserEntity ue = (UserEntity) session.getAttribute("user");
+
         if (ue == null) {
-            response.sendError(500);
+            response.sendError(304);
             return;
         }
-        String from = ue.getEmail();
-        if (changeEmail != null && !"".equals(changeEmail)
-                && !changeEmail.equals(from)) {
-            from = changeEmail;
-        }
-        String fromPass = ue.getPassword();
 
-        if ("".equals(email) || "".equals(message)) {
-            response.sendError(500);
-        }
-
+        String fromAdmin = "onlineshopjava@gmail.com";
+        String fromAdminPass = "ForTestOnly";
         String[] to = new String[]{email};
-        String name = "Feedback from " + ue.getFname() + " " + ue.getLname();
 
-        boolean bool = SendMessageToEmail.sendFromGMail(from, fromPass, to,
-                name, message);
-        if (!bool) {
-            response.sendError(500);
-        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean res = false;
+                try {
+                    res = SendMessageToEmail.sendFromGMail(fromAdmin, fromAdminPass, to, subject, message);
+                    if (!res) {
+                        response.sendError(304);
+                        return;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     public void getById(HttpServletRequest request, HttpServletResponse response)
@@ -473,7 +525,7 @@ public class UserController extends HttpServlet implements Responsable {
                 Integer id = Integer.parseInt(param);
                 FeedbackService fs = (FeedbackService) ApplicationContext
                         .getInstance().getBean("feedbackService");
-                List<Feedback> feedbacks = fs.findFeedbacksByDevId(id);
+                List<Feedback> feedbacks = fs.findFeedbacksByDevIdForHim(id);
                 CustomerService customerService = (CustomerService) ApplicationContext
                         .getInstance().getBean("customerService");
                 for (Feedback f : feedbacks) {
@@ -493,183 +545,125 @@ public class UserController extends HttpServlet implements Responsable {
         }
     }
 
-    public void create(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException {
-        String requestData = request.getReader().readLine();
-        Map<String, String> data = mapper.readValue(requestData,
-                new TypeReference<Map<String, String>>() {
-                });
-        String role = data.get("role");
-        if (role == null || role.isEmpty()) {
-            response.sendError(HttpServletResponse.SC_MULTIPLE_CHOICES);
-            return;
-        }
+	private void create(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException
+	{
+		String requestData = request.getReader().readLine();
+		Map<String, String> data = mapper.readValue(requestData,
+				new TypeReference<Map<String, String>>() {
+				});
+		String role = data.get("role");
+		if (role == null || role.isEmpty()) {
+			response.sendError(HttpServletResponse.SC_MULTIPLE_CHOICES);
+			return;
+		}
 
-        if (!userManager.isEmailAvailable(data.get("email"))) {
-            response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
-            return;
-        }
+		if (!userManager.isEmailAvailable(data.get("email"))) {
+			response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
+			return;
+		}
 
-        try {
-            userManager
-                    .createUser(
-                            data.entrySet()
-                                    .stream()
-                                    .collect(
-                                            Collectors.toMap(Map.Entry::getKey,
-                                                    e -> new String[]{e
-                                                            .getValue()})),
-                            role);
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-        }
+		try {
+			userManager
+					.createUser(
+							data.entrySet()
+									.stream()
+									.collect(
+											Collectors.toMap(Map.Entry::getKey,
+													e -> new String[] { e
+															.getValue() })),
+							role);
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+		}
 
-        response.setStatus(200);
-    }
+		response.setStatus(200);
+	}
 
-    private boolean isAvailable(String email) {
-        boolean result = false;
-        if (((AdminService) ApplicationContext.getInstance().getBean(
-                "adminService")).emailAvailable(email)
-                && ((DeveloperService) ApplicationContext.getInstance()
-                .getBean("developerService")).emailAvailable(email)
-                && ((CustomerService) ApplicationContext.getInstance().getBean(
-                "customerService")).emailAvailable(email)) {
-            result = true;
-        }
-        return result;
-    }
+	private void signIn(HttpServletRequest request,
+			HttpServletResponse response, SignInType type)
+			throws ServletException, IOException
+	{
+		boolean remember = "true".equals(request.getParameter("remember"));
+		String email = null;
+		switch (type) {
+		case MANUAL:
+			email = request.getParameter("email");
+			break;
+		case LINKEDIN:
+			try {
+				email = getLinkedInProfile(request, response).getEmailAddress();
+			} catch (OAuthException e) {
+				e.printStackTrace();
+				response.sendError(HttpServletResponse.SC_CONFLICT);
+			}
+			break;
+		case GOOGLE:
+			break;
+		}
+		if (email == null || "".equals(email)) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
 
-    public void signIn(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        boolean remember = "true".equals(request.getParameter("remember"));
-        String email = request.getParameter("username");
-        String password = request.getParameter("password");
+		UserEntity userEntity = userManager.findUserByEmail(email);
+		if (userEntity == null)
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+					"Invalid credentials");
 
-        System.out.println(email);
-        System.out.println(password);
-        System.out.println(remember);
+		String password = request.getParameter("password");
+		switch (type) {
+		case MANUAL:
+			if (password == null
+					|| !userManager.validCredentials(email, password,
+							userEntity))
+			{
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+						"Invalid credentials");
+				return;
+			}
+		case LINKEDIN:
+		case GOOGLE:
+			request.getSession().setAttribute("user", userEntity);
+			userEntity.setRole(getRole(userEntity));
 
-        if (email == null || "".equals(email)) {
-            response.sendError(404);
-            return;
-        }
+			if (remember)
+				authenticationProvider.loginAndRemember(response,
+						"freelancerRememberMeCookie", userEntity);
+			else
+				authenticationProvider.invalidateUserCookie(response,
+						"freelancerRememberMeCookie", userEntity);
 
-        if (email == null || "".equals(email)) {
-            response.sendError(404);
-            return;
-        }
+			sendResponse(response, userEntity, mapper);
+		}
+	}
+	
+	private String getRole(UserEntity userEntity) {
+		String result = null;
+		if (userEntity instanceof Developer)
+			result = "developer";
+		if (userEntity instanceof Customer)
+			result = "customer";
+		if (userEntity instanceof Admin)
+			result = "admin";
+		return result;
+	}
 
-        HttpSession session = request.getSession();
-        ApplicationContext.getInstance().addBean("authenticationProvider",
-                new AuthenticationProvider());
-        AuthenticationProvider authenticationProvider = (AuthenticationProvider) ApplicationContext
-                .getInstance().getBean("authenticationProvider");
-
-        DeveloperService ds = (DeveloperService) ApplicationContext
-                .getInstance().getBean("developerService");
-        Developer developer = ds.findByEmail(email);
-
-        boolean authorized = false;
-
-        if (developer != null) {
-            if (ds.validCredentials(email, password, developer)) {
-                session.setAttribute("user", developer);
-                developer.setRole("developer");
-                authorized = true;
-                if (remember) {
-                    authenticationProvider.loginAndRemember(response,
-                            "freelancerRememberMeCookie", developer);
-                    sendResponse(response, developer, mapper);
-                    return;
-                } else {
-                    authenticationProvider.invalidateUserCookie(response,
-                            "freelancerRememberMeCookie", developer);
-                    sendResponse(response, developer, mapper);
-                    return;
-                }
-            } else {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                        "Invalid credentials");
-                response.flushBuffer();
-                return;
-            }
-        }
-
-        CustomerService cs = (CustomerService) ApplicationContext.getInstance()
-                .getBean("customerService");
-        Customer customer = cs.findByEmail(email);
-
-        if (customer != null) {
-            if (cs.validCredentials(email, password, customer)) {
-                session.setAttribute("user", customer);
-                customer.setRole("customer");
-                authorized = true;
-                if (remember) {
-                    authenticationProvider.loginAndRemember(response,
-                            "freelancerRememberMeCookie", customer);
-                    sendResponse(response, customer, mapper);
-                    return;
-                } else {
-                    authenticationProvider.invalidateUserCookie(response,
-                            "freelancerRememberMeCookie", customer);
-                    sendResponse(response, customer, mapper);
-                    return;
-                }
-            } else {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                        "Invalid credentials");
-                response.flushBuffer();
-                return;
-            }
-        }
-
-        AdminService as = (AdminService) ApplicationContext.getInstance()
-                .getBean("adminService");
-        Admin admin = as.findByEmail(email);
-
-        if (admin != null) {
-            if (as.validCredentials(email, password, admin)) {
-                session.setAttribute("user", admin);
-                admin.setRole("admin");
-                authorized = true;
-                if (remember) {
-                    authenticationProvider.loginAndRemember(response,
-                            "freelancerRememberMeCookie", admin);
-                    sendResponse(response, admin, mapper);
-                } else {
-                    authenticationProvider.invalidateUserCookie(response,
-                            "freelancerRememberMeCookie", admin);
-                    sendResponse(response, admin, mapper);
-                }
-            } else {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                        "Invalid credentials");
-                response.flushBuffer();
-            }
-        } else if (!authorized) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                    "Invalid credentials");
-            response.flushBuffer();
-            return;
-        }
-    }
-
-    private void getOrderById(HttpServletRequest request,
-                              HttpServletResponse response) throws IOException {
-        String param = request.getParameter("orderId");
-        if (param != null) {
-            try {
-                Integer orderId = Integer.parseInt(param);
-                Ordering order = orderingService.findById
-                        (orderId);
-                sendResponse(response, order, mapper);
-            } catch (Exception e) {
-                response.sendError(500);
-            }
-        }
-    }
+	private void getOrderById(HttpServletRequest request,
+			HttpServletResponse response) throws IOException
+	{
+		String param = request.getParameter("orderId");
+		if (param != null) {
+			try {
+				Integer orderId = Integer.parseInt(param);
+				Ordering order = orderingService.findById(orderId);
+				sendResponse(response, order, mapper);
+			} catch (Exception e) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			}
+		}
+	}
 
     private void getFollowersByOrderId(HttpServletRequest
                                                request, HttpServletResponse response) throws IOException {
@@ -677,63 +671,17 @@ public class UserController extends HttpServlet implements Responsable {
         if (param != null) {
             try {
                 Integer orderId = Integer.parseInt(param);
-                List<Developer> developers =
+                List<Follower> followers =
                         orderingService.findOrderFollowers(orderId);
-                developers.forEach(dev ->
+                followers.forEach(follower ->
                 {
-                    dev.setPassword(null);
-                    dev.setSalt(null);
+                    follower.setDeveloper(developerService.findById(follower.getDevId()));
+                    follower.getDeveloper().setPassword(null);
+                    follower.getDeveloper().setSalt(null);
                 });
-                sendResponse(response, developers, mapper);
+                sendResponse(response, followers, mapper);
             } catch (Exception e) {
-                response.sendError(500);
-            }
-        }
-    }
-
-    private void getCustomerById(HttpServletRequest
-                                         request, HttpServletResponse response) throws IOException {
-        String param = request.getParameter("custId");
-        if (param != null) {
-            try {
-                Integer custId = Integer.parseInt(param);
-                Customer customer =
-                        customerService.findById(custId);
-                customer.setPassword(null);
-                customer.setSalt(null);
-                sendResponse(response, customer, mapper);
-            } catch (Exception e) {
-                response.sendError(500);
-            }
-        }
-    }
-
-    private void getFeedbacksByIdForCust
-            (HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-        String param = request.getParameter("custId");
-        if (param != null) {
-            try {
-                Integer id = Integer.parseInt(param);
-                FeedbackService fs = (FeedbackService)
-                        ApplicationContext.getInstance().getBean
-                                ("feedbackService");
-                List<Feedback> feedbacks =
-                        fs.findFeedbacksByCustId(id);
-
-                for (Feedback feedback : feedbacks) {
-                    Developer developer =
-                            developerService.findById(feedback.getDevId());
-                    developer.setPassword(null);
-                    developer.setSalt(null);
-                    feedback.setDeveloper(developer);
-                }
-
-                sendResponse(response, feedbacks, mapper);
-
-
-            } catch (Exception e) {
-                response.sendError(500);
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             }
         }
     }
@@ -749,9 +697,121 @@ public class UserController extends HttpServlet implements Responsable {
                 sendResponse(response, technologies, mapper);
 
             } catch (Exception e) {
-                response.sendError(500);
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             }
         }
+    }
+
+    private void subscribe(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        String order_id = request.getParameter("orderId");
+        String message = request.getParameter("message");
+        HttpSession session = request.getSession();
+        UserEntity ue = (UserEntity) session.getAttribute("user");
+        if (ue == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+        if (order_id == null || order_id.isEmpty()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+        Integer orderId;
+        try {
+            orderId = Integer.parseInt(order_id);
+        } catch (NumberFormatException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+        Follower follower = developerService.subscribeOnProject(ue.getId(), orderId, message);
+        follower.setDeveloper((Developer)ue);
+        sendResponse(response, follower, mapper);
+
+    }
+
+    private void unsubscribe(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String follower_id = request.getParameter("followerId");
+
+        try {
+            developerService.unsubscribeFromProject(Integer.parseInt(follower_id));
+        } catch (NumberFormatException e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
+    }
+
+
+    private void getUserContact(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String paramId = request.getParameter("id");
+        String role = request.getParameter("role");
+
+        if(paramId==null || "".equals(paramId) || !paramId.matches("[0-9]")){
+            response.sendError(HttpServletResponse.SC_CONFLICT);
+            return;
+        }
+        Integer id = Integer.parseInt(paramId);
+
+        try {
+            Contact contact = null;
+            switch (role){
+                case "dev":
+                    contact = developerService.getContactByDevId(id);
+                    break;
+                case "customer":
+                    contact = customerService.getContactByCustomerId(id);
+                    break;
+            }
+            if (contact != null) {
+                contact.setPhone(null);
+                contact.setVersion(null);
+                contact.setDeleted(null);
+
+                sendResponse(response, contact, mapper);
+            } else
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        }
+
+    }
+
+    private void getUserById(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String paramId = request.getParameter("id");
+        String role = request.getParameter("role");
+
+        if(paramId==null || "".equals(paramId) || !paramId.matches("[0-9]")){
+            response.sendError(HttpServletResponse.SC_CONFLICT);
+            return;
+        }
+        Integer id = Integer.parseInt(paramId);
+
+            try {
+                UserEntity userEntity = null;
+                switch (role){
+                    case "admin":
+                        userEntity = adminService.findById(id);
+                        break;
+                    case "dev":
+                        userEntity = developerService.findById(id);
+                        break;
+                    case "customer":
+                        userEntity = customerService.findById(id);
+                        break;
+                }
+                if (userEntity != null) {
+                    userEntity.setPassword(null);
+                    userEntity.setEmail(null);
+                    userEntity.setSalt(null);
+                    userEntity.setUuid(null);
+                    userEntity.setRegUrl(null);
+
+                    sendResponse(response, userEntity, mapper);
+                } else
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            } catch (Exception e) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            }
     }
 
     private void getCustomerHistory(HttpServletRequest
@@ -760,8 +820,7 @@ public class UserController extends HttpServlet implements Responsable {
         if (param != null) {
             try {
                 Integer id = Integer.parseInt(param);
-                List<Ordering> orders =
-                        customerService.getProjectsPublicHistory(id);
+                List<Ordering> orders = customerService.getProjectsPublicHistory(id);
                 for (Ordering ordering : orders) {
                     ordering.setTechnologies
                             (orderingService
@@ -771,11 +830,34 @@ public class UserController extends HttpServlet implements Responsable {
                 if (orders != null) {
                     sendResponse(response, orders, mapper);
                 } else {
-                    response.sendError(500);
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST);
                 }
             } catch (Exception e) {
-                response.sendError(500);
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             }
         }
     }
+
+    private void getFeedbacksByIdForCust(HttpServletRequest request,
+                                        HttpServletResponse response) throws IOException
+    {
+        String param = request.getParameter("id");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                List<Feedback> feedbacks = feedbackService
+                        .findFeedbacksByCustIdForHim(id);
+                for (Feedback f : feedbacks) {
+                    f.setDeveloper(developerService.findById(f.getDevId()));
+                }
+                Collections.reverse(feedbacks);
+
+                sendResponse(response, feedbacks, mapper);
+
+            } catch (Exception e) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            }
+        }
+    }
+
 }

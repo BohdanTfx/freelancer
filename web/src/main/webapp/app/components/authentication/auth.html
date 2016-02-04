@@ -1,34 +1,83 @@
-<br/>
-<br/>
-<br/>
-<br/>
-<div class="login-form col-md-6 col-md-offset-3">
-    <form name="form" ng-submit="login()" role="form">
-        <md-content md-theme="docs-dark" layout-gt-sm="column" layout-padding>
-            <h4><strong>Sign In</strong></h4>
-            <md-divider></md-divider>
-            <div>
-                <span style="color: firebrick">{{error}}</span>
-                <md-input-container layout-gt-sm="column">
-                    <label>Email</label>
-                    <input ng-model="username" name="username" id="username" required/>
-                </md-input-container>
-                <md-input-container layout-gt-sm="column">
-                    <label>Password</label>
-                    <input type="password" ng-model="password" name="password" id="password" required/>
-                </md-input-container>
-                <md-checkbox layout-gt-sm="column" name="remember" id="remember" ng-model="remember">Remember me
-                    <div class="md-label"><span class="ng-binding ng-scope">
-          </span></div>
-                </md-checkbox>
-            </div>
-            <button aria-label="Primary" class="md-raised md-primary md-button md-ink-ripple" type="submit"><strong>Sign
-                In</strong><span class="ng-scope"></span>
+<div class="login-form col-sm-6 col-sm-offset-3">
+	<md-content layout-padding class="animated fadeInLeftBig">
+	<form name="loginForm" ng-submit="loginForm.$valid && login()"
+		novalidate>
+		<div class="col-xs-12 social-buttons">
+			<div class="col-xs-6">
+				<a class="btn btn-block btn-social btn-google-plus"> <i
+					class="fa fa-google-plus"></i> Sign in with Google
+				</a>
+			</div>
+			<div class="col-xs-6">
+				<a href="{{linkedinUrl}}"
+					class="btn btn-block btn-social btn-linkedin"> <i
+					class="fa fa-linkedin"></i> Sign in with LinkedIn
+				</a>
+			</div>
+		</div>
 
-                <div style="" class="md-ripple-container"></div>
-            </button>
-        </md-content>
-    </form>
+		<div class="col-xs-12">
+			<div class="separator">
+				<span class="separator-text">or</span>
+			</div>
+		</div>
+
+		<div class="col-xs-12">
+			<div ng-if="showError"
+				class="alert alert-message alert-message-danger animated fadeInDownBig">
+				<span ng-click="doClose()" class="close">
+					<i class="fa fa-times"></i>
+				</span>
+				<h4>{{errorTitle}}</h4>
+				<p>{{errorDescription}}</p>
+			</div>
+		</div>
+
+		<md-input-container class="col-xs-12"
+			md-is-error="loginForm.email.$invalid && (loginForm.$submitted || loginForm.email.$dirty)">
+		<label>Email</label> <input ng-required="true" type="email"
+			name="email" ng-model="user.email" ng-minlength="10"
+			ng-change="checkEmail()" md-maxlength="100"
+			ng-pattern="/^.+@.+\..+$/" />
+		<div ng-messages="loginForm.email.$error"
+			ng-if="loginForm.$submitted || loginForm.email.$touched">
+			<div ng-message="required">This is required.</div>
+			<div ng-message="md-maxlength">The name has to be less than 50
+				characters long.</div>
+			<div ng-message="minlength">The name has to be more than 8
+				characters long.</div>
+			<div ng-message="pattern">The name has to be more than 8
+				characters long.</div>
+		</div>
+		</md-input-container>
+		<md-input-container class="col-xs-12"
+			md-is-error="loginForm.password.$invalid && (loginForm.$submitted || loginForm.password.$dirty)">
+		<label>Password</label> <input md-maxlength="50"
+			name="password" type="password" ng-required="true"
+			ng-model="user.password">
+		<div ng-messages="loginForm.password.$error"
+			ng-if="loginForm.$submitted || loginForm.password.$touched">
+			<div ng-message="required">This is required.</div>
+			<div ng-message="md-maxlength">The name has to be less than 50
+				characters long.</div>
+			<div ng-message="minlength">The name has to be more than 8
+				characters long.</div>
+		</div>
+		</md-input-container>
+		<div class="col-xs-12">
+			<md-checkbox md-no-ink name="remember" id="remember"
+				ng-model="user.remember" class="md-primary"> Remember
+			me </md-checkbox>
+			<div class="pull-right">
+				<h5 class="inline-block box-none">
+					<a href="/#/forgot">Forgot password?</a>
+				</h5>
+			</div>
+		</div>
+		<div class="col-xs-12">
+			<md-button class="md-raised md-primary full-width margin-center"
+				type="submit"> <strong>Sign In</strong> </md-button>
+		</div>
+	</form>
+	</md-content>
 </div>
-
-

@@ -83,13 +83,15 @@ angular
 						var pagination = {};
 						pagination.start = $scope.itemListStart | 0;
 						pagination.last = last;
-						pagination.step = $scope.itesStep.number;
+						pagination.step = that.getStep($scope);
 
 						var data = {};
 						if (isNotEmpty(content))
 							data.content = content;
 						if (isNotEmpty(pagination))
 							data.page = pagination;
+
+						$scope.ordersLoading = true;
 						$http
 								.post(
 										"/user/orders/filter",
@@ -105,6 +107,8 @@ angular
 											that.fillPagination(data.pages,
 													$scope);
 											that.fillOrders(data.items, $scope);
+
+											$scope.ordersLoading = false;
 										})
 								.error(function(data, status, headers, config) {
 									that.fillPagination(data.pages, $scope);
@@ -131,6 +135,18 @@ angular
 					}
 					this.fillOrders = function(data, $scope) {
 						$scope.orders = data;
+					}
+
+					this.getStep = function($scope) {
+						var localStep = localStorage
+							.getItem("freelancerOrdersStep");
+						if (localStep !== undefined && localStep != null)
+							return localStep;
+						else {
+							var step = $scope.itesStep | 10;
+							localStorage.setItem("freelancerOrdersStep", step);
+							return step;
+						}
 					}
 				});
 

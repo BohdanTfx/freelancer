@@ -49,6 +49,7 @@
           href="bower_components/angularjs-slider-master/rzslider.min.css">
     <link rel="stylesheet" href="bower_components/angular-bootstrap/ui-bootstrap-csp.css"/>
     <link rel="stylesheet" href="bower_components/angular-ui-notification-master/angular-ui-notification.min.css"/>
+    <link rel="stylesheet" href="bower_components/angular-bootstrap/ui-bootstrap-tpls-0.14.0.min.js"/>
     <link rel="stylesheet" href="app/styles/Animate.css">
     <link rel="stylesheet" href="app/styles/font-awesome.min.css">
     <link rel="stylesheet" href="app/styles/hover.min.css">
@@ -62,9 +63,12 @@
     <link rel="stylesheet" href="app/components/home/homeSlider.css">
     <link rel="stylesheet" href="app/components/test/test.css">
     <link rel="stylesheet" href="app/components/pubdev/pubdev.css">
+    <link rel="stylesheet" href="app/components/personal/personal.css">
 
     <link rel="stylesheet" href="app/components/jobinfo/jobinfo.css">
     <link rel="stylesheet" href="app/components/myworks/mywork.css">
+
+    <link rel="stylesheet" href="app/components/custpub/custpub.css">
 
 
 </head>
@@ -107,7 +111,7 @@
                                 <i class="fa fa-sign-in"></i>Sign In
                             </a></li>
                             <li class="hvr-underline-from-center" ng-switch-when="false"><a
-                                    href="#/chooserole">
+                                    href="#/signup">
                                 <i class="fa fa-user-plus"></i>Sign Up
                             </a></li>
 
@@ -270,7 +274,12 @@
 <script src="app/components/jobs/jobsService.js"></script>
 <script src="app/components/signup/signupCtrl.js"></script>
 <script src="app/components/signup/signupService.js"></script>
+
 <script src="app/components/personal/personalCtrl.js"></script>
+<script src="app/components/personal/personalService.js"></script>
+
+<script src="app/components/tests/testsCtrl.js"></script>
+<script src="app/components/tests/testsService.js"></script>
 <script src="app/components/tests/testsCtrl.js"></script>
 <script src="app/components/tests/testsService.js"></script>
 <script src="app/components/authentication/authCtrl.js"></script>
@@ -287,6 +296,9 @@
 
 <script src="app/components/jobinfo/jobinfoCtrl.js"></script>
 <script src="app/components/jobinfo/jobinfoService.js"></script>
+
+<script src="app/components/custpub/custpubCtrl.js"></script>
+<script src="app/components/custpub/custpubService.js"></script>
 <!-- endinject -->
 
 

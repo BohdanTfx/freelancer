@@ -4,12 +4,12 @@
 			<div class="panel-heading" id="filterHeader"
 				ng-click="filterToggle()">
 				<div class="panel-title">
-					<label>Filter</label>
+					<label><i class="fa fa-wrench"></i> Filter</label>
 					<div class="pull-right">
 						<button
 							class="btn btn-warning order-open-filter-btn animated slideInUp"
 							data-tooltip="yes" title="Open filter" data-placement="left">
-							<i class="fa fa-angle-double-down fa-2x"></i>
+							<i class="fa {{filterButtonStyle}} fa-2x"></i>
 						</button>
 					</div>
 				</div>
@@ -102,12 +102,16 @@
 			</div>
 			<md-input-container class="pull-right box-none">
 			<label>Order per page</label> <md-select ng-model="itesStep"
-				ng-change="doFilter()" class="inner-elements-color-blue-light">
+				ng-change="changeStep()" class="inner-elements-color-blue-light">
 			<md-option ng-repeat="step in itemsPerPage" ng-value="step">
 			{{step.text}} </md-option> </md-select> </md-input-container>
 		</div>
 		<div id="ordersArea">
-			<div class="panel panel-info" ng-repeat="order in orders">
+			<div class="col-xs-12 cabinet-top" ng-if="ordersLoading">
+				<div class="load-animation"></div>
+			</div>
+			<div class="panel panel-info" ng-repeat="order in orders"
+				ng-if="ordersLoading == false">
 				<div class="panel-heading">
 					<div class="panel-title">{{order.title}}</div>
 				</div>
@@ -119,7 +123,7 @@
 								<label for="name" class="control-label">Date</label>
 								<div class="col-xs-12">
 									<div class="label label-warning form-control">
-										{{order.date | date:'MMMM dd, yyyy'}}</div>
+										{{order.date | date:'mediumDate'}}</div>
 								</div>
 							</div>
 							<div class="form-group">
