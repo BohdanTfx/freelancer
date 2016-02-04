@@ -78,21 +78,49 @@
 						$rootScope.logout = function() {
 							AuthenticationService.ClearCredentials();
 						};
-						$rootScope.$on('$locationChangeStart', function(event,
-								next, current, $scope) {
+                        $rootScope.checking = function (data) {
+                            var path = $location.path();
+                            if (typeof data.id != 'undefined') {
+                                switch (path) {
+                                    case '/auth':
+                                        $location.path('/');
+                                        break;
+                                    case '/signup':
+                                        $location.path('/');
+                                        break;
+                                }
+                            } else {
+                                if (path.indexOf('/orders') > -1) {
+                                    $location.path('/');
+                                }
+                                if (path.indexOf('/personal') > -1) {
+                                    $location.path('/');
+                                }
+                                if (path.indexOf('/myworks') > -1) {
+                                    $location.path('/');
+                                }
+                                if (path.indexOf('/tests') > -1) {
+                                    $location.path('/');
+                                }
+                                if (path.indexOf('/public') > -1) {
+                                    $location.path('/');
+                                }
+                            }
+                        };
+                        $rootScope.$on('$locationChangeStart', function (event, next, current, $scope) {
 							$rootScope.globals = {};
 							$rootScope.logged = false;
 							$http.post('/user/isAuth').success(function(data) {
-								console.log(data);
 								$rootScope.id = data.id;
 								$rootScope.name = data.fname;
 								$rootScope.lastName = data.lname;
 								$rootScope.role = data.role;
-                                $rootScope.id = data.id;
 								$rootScope.logged = true;
+
+                                $rootScope.checking($rootScope);
 							}).error(function() {
+                                $rootScope.checking($rootScope);
 							});
-							console.log('rootScope ' + $rootScope.globals);
 						});
 					} ]);
 

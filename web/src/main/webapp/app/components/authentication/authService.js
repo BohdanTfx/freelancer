@@ -50,11 +50,11 @@ angular
 									url : '/user/logout',
 									method : "POST"
 								}).success(function() {
-									console.log('scu logout');
 								}).error(function() {
-									console.log('err logout');
 								});
 								$rootScope.globals = {};
+
+                                $location.path('/');
 							};
 
 							service.initSocial = function($scope) {
@@ -134,7 +134,7 @@ angular
 																});
 													}
 												});
-							}
+                            };
 
 							return service;
 						} ])
