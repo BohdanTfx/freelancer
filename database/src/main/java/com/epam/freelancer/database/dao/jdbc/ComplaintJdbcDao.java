@@ -7,7 +7,7 @@ import com.epam.freelancer.database.model.Complaint;
  * Created by spock on 04.02.16.
  */
 public class ComplaintJdbcDao extends GenericJdbcDao<Complaint, Integer> implements ComplaintDao {
-    public ComplaintJdbcDao(Class<Complaint> class1) throws Exception {
-        super(class1);
+    public ComplaintJdbcDao() throws Exception {
+        super(Complaint.class);
     }
 }

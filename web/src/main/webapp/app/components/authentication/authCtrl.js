@@ -13,10 +13,12 @@ angular
 							$scope.user = {};
 							$scope.doClose = function() {
 								$scope.showError = false;
-							}
+                            };
 
-							if (typeof $cookieStore
-									.get('freelancerRememberMeCookieAng') !== 'undefined') {
+
+                            f(typeof $cookieStore
+                                    .get('freelancerRememberMeCookieAng') !== 'undefined');
+                            {
 								$location.path('/');
 								return;
 							}

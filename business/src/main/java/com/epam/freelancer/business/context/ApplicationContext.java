@@ -25,27 +25,27 @@ public final class ApplicationContext {
 
 		DeveloperService developerService = new DeveloperService();
 		developerService.setWorkerMTMDao(daoManager
-				.getManyToManyDAO(WorkerManyToManyDao.class.getSimpleName()));
-		developerService.setDevMTMtechDao(daoManager
-				.getManyToManyDAO(DevTechManyToManyDao.class.getSimpleName()));
-		developerService.setWorkerDao(daoManager.getDAO(WorkerDao.class
-				.getSimpleName()));
-		developerService.setFollowerDao(daoManager.getDAO(FollowerDao.class
-				.getSimpleName()));
-		developerService.setContactDao(daoManager.getDAO(ContactDao.class
-				.getSimpleName()));
-		developerService.setFollowerMTMDevDao(daoManager
-				.getManyToManyDAO(FollowerManyToManyDao.class.getSimpleName()));
-		addBean("developerService", developerService);
+                .getManyToManyDAO(WorkerManyToManyDao.class.getSimpleName()));
+        developerService.setDevMTMtechDao(daoManager
+                .getManyToManyDAO(DevTechManyToManyDao.class.getSimpleName()));
+        developerService.setWorkerDao(daoManager.getDAO(WorkerDao.class
+                .getSimpleName()));
+        developerService.setFollowerDao(daoManager.getDAO(FollowerDao.class
+                .getSimpleName()));
+        developerService.setContactDao(daoManager.getDAO(ContactDao.class
+                .getSimpleName()));
+        developerService.setFollowerMTMDevDao(daoManager
+                .getManyToManyDAO(FollowerManyToManyDao.class.getSimpleName()));
+        addBean("developerService", developerService);
 		addBean("adminService", new AdminService());
 		CustomerService customerService = new CustomerService();
 		customerService.setContactDao(daoManager.getDAO(ContactDao.class
-				.getSimpleName()));
-		customerService.setOrderingDao(daoManager.getDAO(OrderingDao.class
-				.getSimpleName()));
-		customerService.setFollowerDao(daoManager.getDAO(FollowerDao.class
-				.getSimpleName()));
-		addBean("customerService", customerService);
+                .getSimpleName()));
+        customerService.setOrderingDao(daoManager.getDAO(OrderingDao.class
+                .getSimpleName()));
+        customerService.setFollowerDao(daoManager.getDAO(FollowerDao.class
+                .getSimpleName()));
+        addBean("customerService", customerService);
 		addBean("feedbackService", new FeedbackService());
 
 		OrderingService orderingService = new OrderingService();
@@ -53,8 +53,8 @@ public final class ApplicationContext {
 				.getInstance().getManyToManyDAO(
 						OrderingTechnologyManyToManyDao.class.getSimpleName()));
 		orderingService.setFollowerDao(DAOManager.getInstance().getDAO(
-				FollowerDao.class.getSimpleName()));
-		addBean("orderingService", orderingService);
+                FollowerDao.class.getSimpleName()));
+        addBean("orderingService", orderingService);
 
 		addBean("questionService", new QuestionService());
 		addBean("testService", new TestService());
@@ -63,18 +63,18 @@ public final class ApplicationContext {
 		testService.setQuestionDao(daoManager.getDAO(QuestionDao.class
 				.getSimpleName()));
 		testService.setTestMTMquestDao(daoManager
-				.getManyToManyDAO(TestQuestionManyToManyDao.class
-						.getSimpleName()));
-		testService.setAnswerDao(daoManager.getDAO(AnswerDao.class
-				.getSimpleName()));
-		addBean("testService", testService);
+                .getManyToManyDAO(TestQuestionManyToManyDao.class
+                        .getSimpleName()));
+        testService.setAnswerDao(daoManager.getDAO(AnswerDao.class
+                .getSimpleName()));
+        addBean("testService", testService);
 
 		DeveloperQAService developerQAService = new DeveloperQAService();
 		developerQAService.setTechnologyDao(daoManager
 				.getDAO(TechnologyDao.class.getSimpleName()));
 		developerQAService.setTestDao(daoManager.getDAO(TestDao.class
-				.getSimpleName()));
-		addBean("developerQAService", developerQAService);
+                .getSimpleName()));
+        addBean("developerQAService", developerQAService);
 
 		TechnologyService technologyService = new TechnologyService();
 		technologyService.setOrderingTechnoloyManyToManyDao(DAOManager
@@ -88,7 +88,8 @@ public final class ApplicationContext {
 		userManager.setAdminService((AdminService) getBean("adminService"));
 		addBean("userManager", userManager);
 		addBean("cookieManager", new CookieManager());
-	}
+        addBean("complaintService", new ComplaintService());
+    }
 
 	private void initDAO() {
 		DAOManager daoManager = DAOManager.getInstance();
@@ -136,6 +137,9 @@ public final class ApplicationContext {
             daoManager.addDao(
                     FollowerDao.class.getSimpleName(),
                     new FollowerJdbcDao());
+            daoManager.addDao(
+                    ComplaintDao.class.getSimpleName(),
+                    new ComplaintJdbcDao());
         } catch (Exception e) {
 			e.printStackTrace();
 		}
