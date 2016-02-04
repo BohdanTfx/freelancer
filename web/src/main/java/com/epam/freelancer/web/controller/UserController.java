@@ -147,7 +147,7 @@ public class UserController extends HttpServlet implements Responsable {
                     comment(request, response);
                     return;
                 case "user/sms":
-                    sendSms(request, response);
+                    sendSmsAndFollowOrHire(request, response);
                     return;
                 case "user/isAuth":
                     isAuth(request, response);
@@ -241,7 +241,7 @@ public class UserController extends HttpServlet implements Responsable {
         }
     }
 
-    public void sendSms(HttpServletRequest request, HttpServletResponse response)
+    public void sendSmsAndFollowOrHire(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         String phone = request.getParameter("phone");
         String author = request.getParameter("author");
@@ -264,9 +264,9 @@ public class UserController extends HttpServlet implements Responsable {
 
         Follower f = null;
         if ("customer".equals(author)) {
-            f = developerService.createFollowing(request.getParameterMap());//wrong
+            f = developerService.createFollowing(request.getParameterMap());
         } else {
-            f = customerService.hireDeveloper(request.getParameterMap());//ok
+            f = customerService.hireDeveloper(request.getParameterMap());
         }
 
         if (f == null) {
