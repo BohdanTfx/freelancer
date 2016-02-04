@@ -201,7 +201,7 @@ public class UserController extends HttpServlet implements Responsable {
                 case "user/customer/history":
                     getCustomerHistory(request, response);
                     break;
-                case "cust/getAvailableCustOrders":
+                case "user/getAvailableCustOrders":
                     getAvailableCustOrders(request, response);
                     break;
                 case "user/customer/feedbacks":
