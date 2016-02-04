@@ -192,7 +192,7 @@ public class UserController extends HttpServlet implements Responsable {
 				sendResponse(response, orderingService.findPaymentLimits(),
 						mapper);
 				break;
-			case "user/orders/tech":
+			case "user/technologies":
 				sendResponse(response, technologyService.findAll(), mapper);
 				break;
 			case "user/orders/getorderbyid":

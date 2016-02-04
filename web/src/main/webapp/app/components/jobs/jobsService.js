@@ -34,7 +34,7 @@ angular
 					}
 
 					this.loadTechnologies = function($scope, $http) {
-						$http.post("/user/orders/tech").success(
+						$http.post("/user/technologies").success(
 								function(data, status, headers, config) {
 									$scope.tech = data;
 								}).error(
