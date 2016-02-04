@@ -38,7 +38,7 @@ angular.module('FreelancerApp')
             return $scope.sortField === fieldName && $scope.reverse;
         };
 
-        $scope.showTabDialog = function(ev,projectInfo,subscribePage) {
+        $scope.showTabDialog = function(ev,projectInfo) {
             myworksAPI.getCustomerById(projectInfo.customerId).success(
                 function (data){
                     $scope.customer = data.cust;
@@ -56,7 +56,7 @@ angular.module('FreelancerApp')
                                 parent: angular.element(document.body),
                                 targetEvent: ev,
                                 locals: {project:projectInfo ,customer: $scope.customer,workers:$scope.workers,
-                                    subscribePage:subscribePage,workerInfo:$scope.workerInfo},
+                                    workerInfo:$scope.workerInfo},
                                 clickOutsideToClose:true
                             })
                                 .then(function(answer) {
@@ -69,16 +69,17 @@ angular.module('FreelancerApp')
 
                         }
                     ).error(function(){
-                            alert('Herer');
+                            alert(404);
                         });
                 }
 
             ).error(function(){
-                    alert("2herwrwr");
+                    alert(404);
                 });
 
         };
-    });
+
+     });
 
 
 angular.module('FreelancerApp').filter('dateFormat', function ($filter) {
@@ -91,11 +92,10 @@ angular.module('FreelancerApp').filter('dateFormat', function ($filter) {
     };
 });
 
-function DialogController($scope, $mdDialog, project,customer,workers,subscribePage,workerInfo) {
+function DialogController($scope, $mdDialog, project,customer,workers,workerInfo) {
     $scope.project = project;
     $scope.customer = customer;
     $scope.workers = workers;
-    $scope.subscribePage = subscribePage;
     $scope.workerInfo = workerInfo;
 
    if($scope.project.endedDate==null){

@@ -1,5 +1,5 @@
 <md-dialog>
-    <form>
+    <div class="mywork">
         <md-toolbar>
             <div class="md-toolbar-tools">
                 <small> {{project.title}}</small>
@@ -9,7 +9,7 @@
                 </md-button>
             </div>
         </md-toolbar>
-        <md-dialog-content style="max-width:800px;max-height:810px;min-width: 650px; ">
+        <md-dialog-content style="min-width:500px ;min-height:50%;">
             <md-tabs md-dynamic-height md-border-bottom>
                 <md-tab label="Details">
                     <md-content class="md-padding">
@@ -50,17 +50,10 @@
                                 </span>
                                 </span><br/>
                                 <span><strong>Payment type:</strong> {{project.payType}}</span><br/>
+                                <span> <strong>Payment</strong> {{workerInfo.newHourly | number:1}} $</span><br>
+                                <span><strong>Worked time:</strong> {{workerInfo.sumHours}} h</span><br/>
 
-                                <span ng-switch="subscribePage">
-                                <span ng-switch-when="true">
-                                    <strong>Payment:</strong> {{project.payment | number:1}} $<br/>
-                                </span>
 
-                                <span ng-switch-when="false">
-                                    <strong>Payment</strong> {{workerInfo.newHourly | number:1}} $<br>
-                                    <span><strong>Worked time:</strong> {{workerInfo.sumHours}} h</span><br/>
-                                </span>
-                                 </span>
                             </div>
                         </div>
                     </md-content>
@@ -68,29 +61,43 @@
                 <md-tab label="Members">
                     <md-content class="md-padding">
 
-                        <div style="width:600px;min-height:50%;">
-                            <!--<h2>Customer</h2>-->
-                            <!--<h3><span style="margin-left: 5%;">{{customer.fname}}  {{customer.lname}}</span></h3>-->
-
-                            <div class="panel panel-success">
+                        <div style="min-width:500px ;min-height:50%;">
+                            <div class="panel panel-success panel-unit">
                                 <div class="panel-heading">Customer</div>
                                 <div class="panel-body">
-                                    {{customer.fname}}  {{customer.lname}}
+
+                                    <div>
+                                        <img class="unit-cust-image" src="../../../images/role/customer.png"
+                                             alt=""/>
+                                        {{customer.fname}}
+                                        {{customer.lname}}
+                                    </div>
+
                                 </div>
                             </div>
 
 
                             <hr/>
-                            <div ng-if="subscribePage!=true">
-                                   <div class="panel panel-info">
-                                    <div class="panel-heading">Developers</div>
-                                    <div  class="panel-body">
-                                        <div ng-repeat="devWorker in workers">
-                                        {{devWorker.fname}} {{devWorker.lname}}
+
+                            <div class="panel panel-info panel-unit">
+                                <div class="panel-heading">Developers</div>
+                                <div class="panel-body">
+                                    <div ng-repeat="devWorker in workers">
+
+                                        <div class="members-unit-dev" tex>
+                                            <div class="unit-foto">
+                                                <img style="width: 100%" src="../../../images/role/customer.png"
+                                                     alt=""/>
+                                            </div>
+                                            <div class="unit-name-dev">
+                                                {{devWorker.fname}}
+                                                <br> {{devWorker.lname}}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                        </div>
                    </md-content>
                 </md-tab>
@@ -103,5 +110,5 @@
                 Got it
             </md-button>
         </md-dialog-actions>
-    </form>
+    </div>
 </md-dialog>
