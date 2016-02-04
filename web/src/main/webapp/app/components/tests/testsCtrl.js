@@ -38,7 +38,7 @@ angular.module('FreelancerApp')
                 var p = false;
                 for (var j = 0; j < $scope.devQAs.length; j++) {
                     if ($scope.tests[i].id == $scope.devQAs[j].testId) {
-                        if($scope.devQAs[j].isExpire == false){
+                        if ($scope.devQAs[j].isExpire == false) {
                             $scope.tests[i].repass = new Date($scope.devQAs[j].expire) - new Date;
                         }
                         p = true;
@@ -48,7 +48,7 @@ angular.module('FreelancerApp')
                 if (p) {
                     if ($scope.devQAs[j].isExpire)
                         $scope.tests[i].status = 'expired';
-                    else{
+                    else {
                         $scope.tests[i].status = 'passed';
                     }
                     passedTests.push($scope.tests[i]);
@@ -62,7 +62,7 @@ angular.module('FreelancerApp')
         }
 
         $scope.testListCtrl = function () {
-            console.log("a: " + $scope.smt.allowedTest + " p:" +$scope.smt.passedTest);
+            console.log("a: " + $scope.smt.allowedTest + " p:" + $scope.smt.passedTest);
             if ($scope.smt.passedTest == $scope.smt.allowedTest) {
                 $scope.tests = $scope.passedTestList.concat($scope.newTestsList);
                 console.log(1);
