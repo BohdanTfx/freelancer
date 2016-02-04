@@ -118,7 +118,6 @@ public class DeveloperController extends HttpServlet implements Responsable {
 	{
 		HttpSession session = request.getSession();
 		UserEntity user = (UserEntity) session.getAttribute("user");
-		System.out.println("USer" + user);
 		List<Ordering> allProjects = developerService
 				.getDeveloperPortfolio(user.getId());
 		List<Ordering> devSubscribedProjects = developerService
@@ -149,17 +148,11 @@ public class DeveloperController extends HttpServlet implements Responsable {
 					.findTechnolodyByOrderingId(order.getId()));
 		}
 
-		String devFinishedWorksJson = new Gson().toJson(devFinishedProjects);
-		String devProjectsInProcessJson = new Gson()
-				.toJson(devProjectsInProcess);
-		String devSubscribedWorksJson = new Gson()
-				.toJson(devSubscribedProjects);
-		String resultJson = "{\"processedWorks\":" + devProjectsInProcessJson
-				+ ",\"finishedWorks\":" + devFinishedWorksJson
-				+ ",\"subscribedWorks\":" + devSubscribedWorksJson + "}";
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(resultJson);
+		Map<String,List> resultMap = new HashMap<>();
+		resultMap.put("finishedWorks",devFinishedProjects);
+		resultMap.put("subscribedWorks",devSubscribedProjects);
+		resultMap.put("processedWorks",devProjectsInProcess);
+		sendResponse(response,resultMap,mapper);
 	}
 
 	public void getTestByDevId(HttpServletRequest request,
@@ -261,11 +254,11 @@ public class DeveloperController extends HttpServlet implements Responsable {
 		CustomerService customerService = (CustomerService) ApplicationContext
 				.getInstance().getBean("customerService");
 		Customer cust = customerService.findById(custId);
-		String custJson = new Gson().toJson(cust);
-		String resultJson = "{\"cust\":" + custJson + "}";
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(resultJson);
+		Map<String,Customer> resultMap = new HashMap<>();
+		resultMap.put("cust",cust);
+
+		sendResponse(response,resultMap,mapper);
+
 	}
 
 	private void sendWorkersByIdOrder(HttpServletRequest request,
@@ -281,14 +274,12 @@ public class DeveloperController extends HttpServlet implements Responsable {
 				.getDevelopersByIdOrder(orderId);
 		if (developers.contains(worker))
 			developers.remove(worker);
-		String devListJson = new Gson().toJson(developers);
-		String workerInfoJson = new Gson().toJson(worker);
-		String resultJson = "{\"workers\":" + devListJson + ", \"workerInfo\":"
-				+ workerInfoJson + "}";
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(resultJson);
 
+		Map<String,Object> resultMap = new HashMap<>();
+		resultMap.put("workers",developers);
+		resultMap.put("workerInfo",worker);
+
+		sendResponse(response,resultMap,mapper);
 	}
 
 	private void sendResults(HttpServletRequest request,
