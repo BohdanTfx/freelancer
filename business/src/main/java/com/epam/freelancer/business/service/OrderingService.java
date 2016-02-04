@@ -40,23 +40,18 @@ public class OrderingService extends GenericService<Ordering, Integer> {
 		value = data.get("descr");
 		order.setDescr(value != null ? value[0] : null);
 		value = data.get("customer_id");
-		Integer integer = value != null ? Integer.parseInt(value[0]) : null;
-		if (integer == null)
-			throw new RuntimeException("Validation exception");
-		order.setCustomerId(integer);
+		order.setCustomerId(Integer.parseInt(value[0]));
 		order.setDate(new Timestamp(new java.util.Date().getTime()));
 		value = data.get("payment");
-		Double doub = value != null ? Double.parseDouble(value[0]) : null;
-		if (doub == null)
-			throw new RuntimeException("Validation exception");
+		order.setPayment(Double.parseDouble(value[0]));
 		order.setStarted(false);
 		order.setEnded(false);
 		value = data.get("private");
-		Boolean bool = value != null ? Boolean.parseBoolean(value[0]) : null;
-		if (bool == null)
-			throw new RuntimeException("Validation exception");
-		order.setPriv(bool);
-		order = genericDao.save(order);
+		order.setPrivate(Boolean.parseBoolean(value[0]));
+//		order = genericDao.save(order);
+		
+
+		
 		return order;
 	}
 
@@ -65,21 +60,27 @@ public class OrderingService extends GenericService<Ordering, Integer> {
 	{
 		Map<ValidationParametersBuilder.Parameters, String> map = new HashMap<>();
 		map.put(ValidationParametersBuilder.createParameters(false)
-				.minLength(5).maxLength(120), data.get("title") == null ? null
+				.minLength(10).maxLength(120), data.get("title") == null ? null
 				: data.get("title")[0]);
 		map.put(ValidationParametersBuilder.createParameters(false).pattern(
 				"(hourly)|(fixed)"),
 				data.get("pay_type") == null ? null : data.get("pay_type")[0]);
+		map.put(ValidationParametersBuilder.createParameters(false).pattern(
+				"(true)|(false)"),
+				data.get("private") == null ? null : data.get("private")[0]);
 		map.put(ValidationParametersBuilder.createParameters(false)
-				.minLength(5).maxLength(3000), data.get("descr") == null ? null
-				: data.get("descr")[0]);
+				.minLength(50).maxLength(3000),
+				data.get("descr") == null ? null : data.get("descr")[0]);
 		map.put(ValidationParametersBuilder.createParameters(true)
 				.isInteger(true).min(1.00),
 				data.get("customer_id") == null ? null : data
 						.get("customer_id")[0]);
 		map.put(ValidationParametersBuilder.createParameters(true)
-				.isInteger(false).min(0.00), data.get("payment") == null ? null
+				.isInteger(true).min(0.00), data.get("payment") == null ? null
 				: data.get("payment")[0]);
+		map.put(ValidationParametersBuilder.createParameters(true)
+				.isInteger(true).min(-12.0).max(13.0),
+				data.get("zone") == null ? null : data.get("zone")[0]);
 
 		return map;
 	}
@@ -118,10 +119,11 @@ public class OrderingService extends GenericService<Ordering, Integer> {
 
 	public void setFollowerDao(GenericDao<Follower, Integer> followerDao) {
 		this.followerDao = followerDao;
-		followerDao.setConnectionPool(DAOManager.getInstance().getConnectionPool());
+		followerDao.setConnectionPool(DAOManager.getInstance()
+				.getConnectionPool());
 	}
 
 	public List<Follower> findOrderFollowers(Integer orderId) {
-		return ((FollowerDao)followerDao).getProjectFollowers(orderId);
+		return ((FollowerDao) followerDao).getProjectFollowers(orderId);
 	}
 }

@@ -4,9 +4,12 @@ angular
 				'orderCtrl',
 				function($scope, orderService, $log, $http, Notification) {
 					$scope.order = {};
+					$scope.order['private'] = false;
+
 					$scope.createOrder = function() {
+						var self = this;
 						var techValidation = orderService
-								.validateTechnologies($scope.order.selectedTechnologies);
+								.validateTechnologies($scope.order.technologies);
 						if (techValidation != 'ok') {
 							Notification
 									.error({
@@ -15,8 +18,27 @@ angular
 									});
 							return;
 						}
-
-						alert('order created');
+						orderService
+								.createOrder($scope.order)
+								.success(
+										function(data, status, headers, config) {
+											Notification
+													.success({
+														title : 'Order created!',
+														message : 'Order "'
+																+ $scope.order.title
+																+ '" successfully added!'
+													});
+											self.resetInputs();
+										})
+								.error(
+										function(data, status, headers, config) {
+											Notification
+													.error({
+														title : 'Error!',
+														message : 'Some errors occurred while creating order. Please reload page and try again.'
+													});
+										});
 					}
 
 					$scope.resetInputs = function() {
@@ -25,10 +47,11 @@ angular
 						$scope.order.pay_type = "";
 						$scope.order.payment = "";
 						$scope.order.zone = $scope.getCurrentZone();
-						angular.forEach($scope.technologies,
-								function(value, key) {
-									value['ticked'] = false;
-								});
+						$scope.order['private'] = false;
+						angular.forEach($scope.technologies, function(value,
+								key) {
+							value['ticked'] = false;
+						});
 					}
 
 					$scope.TechnologyValidator = {};

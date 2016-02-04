@@ -27,3 +27,7 @@ md-input-container>label+md-icon.fa {
 	color: black;
 	font-weight: bold;
 }
+
+.order-private-icon>label+md-icon.fa {
+	margin-top: -7px;
+}

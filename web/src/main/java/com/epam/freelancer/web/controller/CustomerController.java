@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -13,16 +15,19 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.service.CustomerService;
 import com.epam.freelancer.business.service.DeveloperService;
 import com.epam.freelancer.business.service.FeedbackService;
+import com.epam.freelancer.business.service.OrderingService;
 import com.epam.freelancer.business.service.TechnologyService;
 import com.epam.freelancer.business.service.TestService;
 import com.epam.freelancer.database.model.Contact;
 import com.epam.freelancer.database.model.Customer;
 import com.epam.freelancer.database.model.Feedback;
+import com.epam.freelancer.database.model.UserEntity;
 import com.google.gson.Gson;
 
 /**
@@ -33,6 +38,7 @@ public class CustomerController extends HttpServlet implements Responsable {
 	private static final long serialVersionUID = -2356506023594947745L;
 	private CustomerService customerService;
 	private FeedbackService feedbackService;
+	private OrderingService orderingService;
 	private TestService testService;
 	private DeveloperService developerService;
 	private TechnologyService technologyService;
@@ -50,6 +56,8 @@ public class CustomerController extends HttpServlet implements Responsable {
 				.getBean("developerService");
 		feedbackService = (FeedbackService) ApplicationContext.getInstance()
 				.getBean("feedbackService");
+		orderingService = (OrderingService) ApplicationContext.getInstance()
+				.getBean("orderingService");
 	}
 
 	@Override
@@ -90,12 +98,40 @@ public class CustomerController extends HttpServlet implements Responsable {
 			case "cust/getRateForCust":
 				getRateForCust(request, response);
 				break;
+			case "cust/order/create":
+				createOrder(request, response);
+				break;
 			default:
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOG.fatal(getClass().getSimpleName() + " - " + "doPost");
 		}
+	}
+
+	private void createOrder(HttpServletRequest request,
+			HttpServletResponse response) throws IOException
+	{
+		UserEntity customer = (UserEntity) request.getSession().getAttribute(
+				"user");
+		try {
+			String requestData = request.getReader().readLine();
+			Map<String, String> data = mapper.readValue(requestData,
+					new TypeReference<Map<String, String>>() {
+					});
+			data.put("customer_id", customer.getId().toString());
+			orderingService.create(data
+					.entrySet()
+					.stream()
+					.collect(
+							Collectors.toMap(Map.Entry::getKey,
+									e -> new String[] { e.getValue() })));
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
+			return;
+		}
+		response.sendError(HttpServletResponse.SC_OK);
 	}
 
 	public void getContForCust(HttpServletRequest request,

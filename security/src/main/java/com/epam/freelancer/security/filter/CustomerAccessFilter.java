@@ -23,7 +23,7 @@ public class CustomerAccessFilter implements Filter {
 	private CustomerService customerService;
 	private AuthenticationProvider authenticationProvider;
 	private String cookieAutoAuthName = "freelancerRememberMeCookie";
-	private String userName = "user";
+	private String userName = "customer";
 
 	public void init(FilterConfig config) throws ServletException {
 		authenticationProvider = AuthenticationProvider

@@ -23,7 +23,7 @@ public class DeveloperAccessFilter implements Filter {
 	private DeveloperService developerService;
 	private AuthenticationProvider authenticationProvider;
 	private String cookieAutoAuthName = "freelancerRememberMeCookie";
-	private String userName = "user";
+	private String userName = "developer";
 
 	public void init(FilterConfig config) throws ServletException {
 		authenticationProvider = AuthenticationProvider

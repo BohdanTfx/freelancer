@@ -6,7 +6,6 @@ angular
 				'orderService',
 				function($http) {
 					var self = this;
-					$http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
 					this.loadTechnologies = function() {
 						return $http.post("/user/technologies");
@@ -20,5 +19,25 @@ angular
 						if (selectedTechnologies.length > 15)
 							return 'big';
 						return 'ok';
+					}
+
+					this.createOrder = function(order) {
+						var config = {
+							headers : {
+								'Content-Type' : 'application/x-www-form-urlencoded;charset=utf-8;'
+							}
+						}
+						order.technologies = self.convertOrderTechnologies(
+								order.technologies).join();
+						return $http.post("/cust/order/create", order, config);
+					}
+
+					this.convertOrderTechnologies = function(technologies) {
+						var techs = [];
+						angular.forEach(technologies, function(value, key) {
+							techs.push(value['id']);
+						});
+
+						return techs;
 					}
 				});
