@@ -37,24 +37,24 @@
             <div class="test-result" ng-switch-when="true">
                 <table class="col-md-8 col-md-offset-2 text-center">
                     <tr>
-                        <td class="col-md-6"><i class="fa fa-line-chart"></i> Your score</td>
-                        <td class="col-md-6">{{result.rate | number : 2}} %</td>
+                        <td class="col-md-8"><i class="fa fa-line-chart"></i> Your score</td>
+                        <td class="col-md-4">{{result.rate | number : 2}} %</td>
                     </tr>
                     <tr class="results_border_bottom">
-                        <td class="col-md-6"><i class="fa fa-bar-chart"></i> Min pass score</td>
-                        <td class="col-md-6">{{test.passScore}} %</td>
+                        <td class="col-md-8"><i class="fa fa-bar-chart"></i> Min pass score</td>
+                        <td class="col-md-4">{{test.passScore}} %</td>
                     </tr>
                     <tr>
-                        <td class="col-md-6"><i class="fa fa-check-circle"></i> Fully correct answers</td>
-                        <td class="col-md-6">{{result.success}}</td>
+                        <td class="col-md-8"><i class="fa fa-check-circle"></i> Fully correct answers</td>
+                        <td class="col-md-4">{{result.success}}</td>
                     </tr>
                     <tr>
-                        <td class="col-md-6"><i class="fa fa-exclamation-circle"></i> Partly correct answers</td>
-                        <td class="col-md-6">{{result.partlyCorrect}}</td>
+                        <td class="col-md-8"><i class="fa fa-exclamation-circle"></i> Partly correct answers</td>
+                        <td class="col-md-4">{{result.partlyCorrect}}</td>
                     </tr>
                     <tr>
-                        <td class="col-md-6"><i class="fa fa-minus-circle"></i> Fully incorrect answers</td>
-                        <td class="col-md-6">{{result.errors}}</td>
+                        <td class="col-md-8"><i class="fa fa-minus-circle"></i> Fully incorrect answers</td>
+                        <td class="col-md-4">{{result.errors}}</td>
                     </tr>
                 </table>
             </div>
