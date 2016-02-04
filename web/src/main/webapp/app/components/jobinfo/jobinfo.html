@@ -64,7 +64,7 @@
                                 </ul>
                                 <md-divider></md-divider>
                                 <ul class="list-unstyled">
-                                    <li>Email: {{customer.email}}</li>
+                                    <li>Skype: {{customer.contact.skype}}</li>
                                     <li>
                                         On site since<br/>
                                         {{customer.regDate | date:'MMM d, y'}}
@@ -104,7 +104,7 @@
                                         </div>
 
 
-                                        <p class="noFollowers" ng-if="noFollowers">There is no followers on this
+                                        <p class="noFollowers" ng-if="noFollowers">There are no followers on this
                                             project</p>
 
                                         <div ng-repeat="follower in followers">
@@ -149,7 +149,7 @@
                                 <md-content class="md-padding">
                                     <div class="tab-pane fade in active" id="menu1">
 
-                                        <p class="noFeedbacks" ng-if="noFeedbacks">There is no feedbacks about
+                                        <p class="noFeedbacks" ng-if="noFeedbacks">There are no feedbacks about
                                             customer</p>
 
                                         <div ng-repeat="feedback in feedbacks">

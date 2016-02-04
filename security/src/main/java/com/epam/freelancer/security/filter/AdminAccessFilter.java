@@ -22,7 +22,7 @@ public class AdminAccessFilter implements Filter {
 	private AdminService adminService;
 	private AuthenticationProvider authenticationProvider;
 	private String cookieAutoAuthName = "freelancerRememberMeCookie";
-	private String userName = "user";
+	private String userName = "admin";
 
 	public void init(FilterConfig config) throws ServletException {
 		authenticationProvider = (AuthenticationProvider) ApplicationContext

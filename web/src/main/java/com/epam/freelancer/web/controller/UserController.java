@@ -1,47 +1,21 @@
 package com.epam.freelancer.web.controller;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
-import org.scribe.exceptions.OAuthException;
-
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.manager.UserManager;
-import com.epam.freelancer.business.service.CustomerService;
-import com.epam.freelancer.business.service.DeveloperService;
-import com.epam.freelancer.business.service.FeedbackService;
-import com.epam.freelancer.business.service.OrderingService;
-import com.epam.freelancer.business.service.TechnologyService;
+import com.epam.freelancer.business.service.*;
 import com.epam.freelancer.business.util.SendMessageToEmail;
 import com.epam.freelancer.business.util.SmsSender;
-import com.epam.freelancer.database.model.Admin;
-import com.epam.freelancer.database.model.Contact;
-import com.epam.freelancer.database.model.Customer;
-import com.epam.freelancer.database.model.Developer;
-import com.epam.freelancer.database.model.Feedback;
-import com.epam.freelancer.database.model.Follower;
-import com.epam.freelancer.database.model.Ordering;
-import com.epam.freelancer.database.model.Technology;
-import com.epam.freelancer.database.model.UserEntity;
+import com.epam.freelancer.database.model.*;
 import com.epam.freelancer.security.provider.AuthenticationProvider;
 import com.epam.freelancer.web.json.model.JsonPaginator;
 import com.epam.freelancer.web.social.Linkedin;
 import com.epam.freelancer.web.social.model.LinkedinProfile;
 import com.epam.freelancer.web.util.Paginator;
 import com.epam.freelancer.web.util.SignInType;
+import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
+import org.scribe.exceptions.OAuthException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -61,6 +35,7 @@ public class UserController extends HttpServlet implements Responsable {
 	private AuthenticationProvider authenticationProvider;
 	private FeedbackService feedbackService;
 	private OrderingService orderingService;
+    private AdminService adminService;
 	private CustomerService customerService;
 	private DeveloperService developerService;
 	private TechnologyService technologyService;
@@ -90,6 +65,8 @@ public class UserController extends HttpServlet implements Responsable {
 				.getInstance().getBean("technologyService");
 		userManager = (UserManager) ApplicationContext.getInstance().getBean(
                 "userManager");
+        adminService= (AdminService) ApplicationContext.getInstance()
+                .getBean("adminService");
 		customerService = (CustomerService) ApplicationContext.getInstance()
 				.getBean("customerService");
 		developerService = (DeveloperService) ApplicationContext.getInstance()
@@ -158,7 +135,7 @@ public class UserController extends HttpServlet implements Responsable {
         try {
             switch (FrontController.getPath(request)) {
                 case "user/signin":
-                    signIn(request, response);
+                    signIn(request, response, SignInType.MANUAL);
                     return;
                 case "user/create":
                     create(request, response);
@@ -216,12 +193,23 @@ public class UserController extends HttpServlet implements Responsable {
                 case "user/order/techs":
                     getOrderTechs(request, response);
                     break;
-
                 case "user/order/subscribe":
                     subscribe(request, response);
                     break;
                 case "user/order/unsubscribe":
                     unsubscribe(request, response);
+                    break;
+                case "user/type":
+                    getUserById(request,response);
+                    break;
+                case "user/customer/history":
+                    getCustomerHistory(request,response);
+                    break;
+                case "user/customer/feedbacks":
+                    getFeedbacksByIdForCust(request,response);
+                    break;
+                case "user/contact":
+                    getUserContact(request, response);
                     break;
 
                 default:
@@ -254,220 +242,236 @@ public class UserController extends HttpServlet implements Responsable {
 		}
 	}
 
-	public void logout(HttpServletRequest request, HttpServletResponse response)
-			throws IOException
-	{
-		LOG.info(getClass().getSimpleName() + " - " + "logout");
-		UserEntity userEntity = (UserEntity) request.getSession().getAttribute(
-				"user");
-		authenticationProvider.invalidateUserCookie(response,
-				"freelancerRememberMeCookie", userEntity);
-		if (userEntity != null) {
-			request.getSession().invalidate();
-		}
-	}
+    public void logout(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        LOG.info(getClass().getSimpleName() + " - " + "logout");
+        UserEntity userEntity = (UserEntity) request.getSession().getAttribute(
+                "user");
+        AuthenticationProvider authenticationProvider = (AuthenticationProvider) ApplicationContext
+                .getInstance().getBean("authenticationProvider");
+        authenticationProvider.invalidateUserCookie(response,
+                "freelancerRememberMeCookie", userEntity);
+        if (userEntity != null) {
+            request.getSession().invalidate();
+        }
+    }
 
-	public void isAuth(HttpServletRequest request, HttpServletResponse response)
-			throws IOException
-	{
-		HttpSession session = request.getSession();
-		UserEntity ue = (UserEntity) session.getAttribute("user");
-		System.out.println(ue + " session");
-		if (ue != null) {
-			sendResponse(response, ue, mapper);
-		} else {
-			response.sendError(500);
-			return;
-		}
-	}
+    public void isAuth(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        HttpSession session = request.getSession();
+        UserEntity ue = (UserEntity) session.getAttribute("user");
+        if (ue != null) {
+            sendResponse(response, ue, mapper);
+        } else {
+            response.sendError(500);
+            return;
+        }
+    }
 
-	public void sendSms(HttpServletRequest request, HttpServletResponse response)
-			throws IOException
-	{
-		String phone = request.getParameter("phone");
-		String sms = request.getParameter("sms");
-		HttpSession session = request.getSession();
-		UserEntity ue = (UserEntity) session.getAttribute("user");
+    public void sendSms(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        String phone = request.getParameter("phone");
+        String author = request.getParameter("author");
+        HttpSession session = request.getSession();
+        UserEntity ue = (UserEntity) session.getAttribute("user");
 
-		if (sms == null || phone == null) {
-			response.sendError(500);
-			return;
-		}
+        if (ue == null || phone == null || author == null) {
+            response.sendError(303);
+            return;
+        }
 
-		if (ue == null || "".equals(sms) || "".equals(phone)) {
-			response.sendError(500);
-			return;
-		}
+        String sms = "This customer, " + ue.getFname() + " " + ue.getLname() + ", would like to hire you. See details in your cabinet.";
 
-		String[] str = new SmsSender().sendSms(phone, sms, ue.getFname());
+        String[] str = new SmsSender().sendSms(phone, sms, ue.getFname());
 
-		try {
-			int res = Integer.parseInt(str[1]);
-			if (res < 0) {
-				response.sendError(500);
-			}
-		} catch (Exception e) {
-			response.sendError(500);
-		}
-	}
 
-	public void comment(HttpServletRequest request, HttpServletResponse response)
-			throws IOException
-	{
-		String author = request.getParameter("role");
-		String rate = request.getParameter("rate");
-		String dev_id = null;
-		String cust_id = null;
-		if (author.equals("customer"))
-			dev_id = request.getParameter("id");
-		else
-			cust_id = request.getParameter("id");
+        int smsRes = 0;
+        try {
+            int res = Integer.parseInt(str[1]);
+            if (res < 0) {
+                smsRes = 1;
+            }
+        } catch (Exception e) {
+            smsRes = 1;
+        }
 
-		String comment = request.getParameter("comment");
-		HttpSession session = request.getSession();
-		UserEntity ue = (UserEntity) session.getAttribute("user");
-		if (ue == null) {
-			response.sendError(404);
-			return;
-		}
+        if ("customer".equals(author)) {
+            DeveloperService ds = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
+            ds.createFollowing(request.getParameterMap());
+        } else {
+            CustomerService cs = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
+            cs.hireDeveloper(request.getParameterMap());
+        }
+    }
 
-		if (comment == null || rate == null) {
-			response.sendError(500);
-			return;
-		}
+    public void comment(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        String author = request.getParameter("role");
+        String rate = request.getParameter("rate");
+        String dev_id = null;
+        String cust_id = null;
+        if (author.equals("customer"))
+            dev_id = request.getParameter("id");
+        else
+            cust_id = request.getParameter("id");
 
-		if ("".equals(comment)) {
-			response.sendError(500);
-			return;
-		}
+        String comment = request.getParameter("comment");
+        HttpSession session = request.getSession();
+        UserEntity ue = (UserEntity) session.getAttribute("user");
+        if (ue == null) {
+            response.sendError(404);
+            return;
+        }
 
-		if (author.equals("customer"))
-			cust_id = ue.getId().toString();
-		else
-			dev_id = ue.getId().toString();
+        if (comment == null || rate == null) {
+            response.sendError(500);
+            return;
+        }
 
-		if ("".equals(dev_id) || "".equals(cust_id) || "".equals(comment)
-				|| "".equals(rate) || "".equals(author))
-		{
-			response.sendError(500);
-			return;
-		}
-		if (comment.contains("<")) {
-			response.sendError(500);
-			return;
-		}
-		FeedbackService feedbackService = (FeedbackService) ApplicationContext
-				.getInstance().getBean("feedbackService");
-		Map<String, String[]> map = new HashMap<>();
-		map.put("dev_id", new String[] { dev_id });
-		map.put("cust_id", new String[] { cust_id });
-		map.put("comment", new String[] { comment });
-		map.put("rate", new String[] { rate });
-		map.put("author", new String[] { author });
+        if ("".equals(comment)) {
+            response.sendError(500);
+            return;
+        }
 
-		feedbackService.create(map);
-	}
+        if (author.equals("customer"))
+            cust_id = ue.getId().toString();
+        else
+            dev_id = ue.getId().toString();
 
-	public void send(HttpServletRequest request, HttpServletResponse response)
-			throws IOException
-	{
-		String email = request.getParameter("email");
-		String message = request.getParameter("message");
-		String changeEmail = request.getParameter("changeEmail");
+        if ("".equals(dev_id) || "".equals(cust_id) || "".equals(comment)
+                || "".equals(rate) || "".equals(author)) {
+            response.sendError(500);
+            return;
+        }
+        if (comment.contains("<")) {
+            response.sendError(500);
+            return;
+        }
+        FeedbackService feedbackService = (FeedbackService) ApplicationContext
+                .getInstance().getBean("feedbackService");
+        Map<String, String[]> map = new HashMap<>();
+        map.put("dev_id", new String[]{dev_id});
+        map.put("cust_id", new String[]{cust_id});
+        map.put("comment", new String[]{comment});
+        map.put("rate", new String[]{rate});
+        map.put("author", new String[]{author});
 
-		HttpSession session = request.getSession();
-		UserEntity ue = (UserEntity) session.getAttribute("user");
-		if (ue == null) {
-			response.sendError(500);
-			return;
-		}
-		String from = ue.getEmail();
-		if (changeEmail != null && !"".equals(changeEmail)
-				&& !changeEmail.equals(from))
-		{
-			from = changeEmail;
-		}
-		String fromPass = ue.getPassword();
+        feedbackService.create(map);
+    }
 
-		if ("".equals(email) || "".equals(message)) {
-			response.sendError(500);
-		}
+    public void send(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        String email = request.getParameter("email");
+        String message = request.getParameter("message");
+        String subject = request.getParameter("subject");
 
-		String[] to = new String[] { email };
-		String name = "Feedback from " + ue.getFname() + " " + ue.getLname();
+        if (email == null || message == null) {
+            response.sendError(304);
+            return;
+        }
 
-		boolean bool = SendMessageToEmail.sendFromGMail(from, fromPass, to,
-				name, message);
-		if (!bool) {
-			response.sendError(500);
-		}
-	}
+        if ("undefined".equals(email) || "undefined".equals(message)) {
+            response.sendError(304);
+            return;
+        }
 
-	public void getById(HttpServletRequest request, HttpServletResponse response)
-			throws IOException
-	{
-		String param = request.getParameter("id");
-		if (param != null) {
-			try {
-				Integer id = Integer.parseInt(param);
-				Developer developer = developerService.findById(id);
+        HttpSession session = request.getSession();
+        UserEntity ue = (UserEntity) session.getAttribute("user");
 
-				if (developer != null) {
-					developer.setPassword(null);
-					sendResponse(response, developer, mapper);
-				} else
-					response.sendError(404);
-			} catch (Exception e) {
-				response.sendError(500);
-			}
-		} else {
-			response.sendError(404);
-			return;
-		}
-	}
+        if (ue == null) {
+            response.sendError(304);
+            return;
+        }
 
-	public void getTechById(HttpServletRequest request,
-			HttpServletResponse response) throws IOException
-	{
-		String param = request.getParameter("id");
-		if (param != null) {
-			try {
-				Integer id = Integer.parseInt(param);
-				List<Technology> list = developerService.getTechnologiesByDevId(id);
-				if (list != null)
-					sendResponse(response, list, mapper);
-				else
-					response.sendError(404);
-			} catch (Exception e) {
-				response.sendError(500);
-			}
-		} else {
-			response.sendError(404);
-			return;
-		}
-	}
+        String fromAdmin = "onlineshopjava@gmail.com";
+        String fromAdminPass = "ForTestOnly";
+        String[] to = new String[]{email};
 
-	public void getContById(HttpServletRequest request,
-			HttpServletResponse response) throws IOException
-	{
-		String param = request.getParameter("id");
-		if (param != null) {
-			try {
-				Integer id = Integer.parseInt(param);
-				Contact contact = developerService.getContactByDevId(id);
-				if (contact != null) {
-					sendResponse(response, contact, mapper);
-				} else {
-					response.sendError(404);
-				}
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean res = false;
+                try {
+                    res = SendMessageToEmail.sendFromGMail(fromAdmin, fromAdminPass, to, subject, message);
+                    if (!res) {
+                        response.sendError(304);
+                        return;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
 
-			} catch (Exception e) {
-				response.sendError(500);
-			}
-		} else {
-			response.setStatus(404);
-		}
-	}
+    public void getById(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        String param = request.getParameter("id");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                DeveloperService ds = (DeveloperService) ApplicationContext
+                        .getInstance().getBean("developerService");
+                Developer developer = ds.findById(id);
+
+                if (developer != null) {
+                    developer.setPassword(null);
+                    sendResponse(response, developer, mapper);
+                } else
+                    response.sendError(404);
+            } catch (Exception e) {
+                response.sendError(500);
+            }
+        } else {
+            response.sendError(404);
+            return;
+        }
+    }
+
+    public void getTechById(HttpServletRequest request,
+                            HttpServletResponse response) throws IOException {
+        String param = request.getParameter("id");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                DeveloperService ds = (DeveloperService) ApplicationContext
+                        .getInstance().getBean("developerService");
+                List<Technology> list = ds.getTechnologiesByDevId(id);
+                if (list != null)
+                    sendResponse(response, list, mapper);
+                else
+                    response.sendError(404);
+            } catch (Exception e) {
+                response.sendError(500);
+            }
+        } else {
+            response.sendError(404);
+            return;
+        }
+    }
+
+    public void getContById(HttpServletRequest request,
+                            HttpServletResponse response) throws IOException {
+        String param = request.getParameter("id");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                DeveloperService ds = (DeveloperService) ApplicationContext
+                        .getInstance().getBean("developerService");
+                Contact contact = ds.getContactByDevId(id);
+                if (contact != null) {
+                    sendResponse(response, contact, mapper);
+                } else {
+                    response.sendError(404);
+                }
+
+            } catch (Exception e) {
+                response.sendError(500);
+            }
+        } else {
+            response.setStatus(404);
+        }
+    }
 
     public void getPortfolioById(HttpServletRequest request,
                                  HttpServletResponse response) throws IOException {
@@ -495,49 +499,53 @@ public class UserController extends HttpServlet implements Responsable {
         }
     }
 
-	public void getRate(HttpServletRequest request, HttpServletResponse response)
-			throws IOException
-	{
-		String param = request.getParameter("id");
-		if (param != null) {
-			try {
-				Integer id = Integer.parseInt(param);
-				Integer avg = feedbackService.getAvgRate(id);
-				sendResponse(response, avg, mapper);
-			} catch (Exception e) {
-				response.sendError(500);
-			}
-		} else {
-			response.sendError(404);
-		}
-	}
+    public void getRate(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        String param = request.getParameter("id");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                FeedbackService fs = (FeedbackService) ApplicationContext
+                        .getInstance().getBean("feedbackService");
+                Integer avg = fs.getAvgRate(id);
+                sendResponse(response, avg, mapper);
+            } catch (Exception e) {
+                response.sendError(500);
+            }
+        } else {
+            response.sendError(404);
+        }
+    }
 
-	public void getFeedbackByIdForDev(HttpServletRequest request,
-			HttpServletResponse response) throws IOException
-	{
-		String param = request.getParameter("id");
-		if (param != null) {
-			try {
-				Integer id = Integer.parseInt(param);
-				List<Feedback> feedbacks = feedbackService.findFeedbacksByDevIdForHim(id);
-				for (Feedback f : feedbacks) {
-					Customer customer = customerService.findById(f
-							.getCustomerId());
-					customer.setPassword(null);
-					customer.setSalt(null);
-					f.setCustomer(customer);
-				}
-				Collections.reverse(feedbacks);
-				sendResponse(response, feedbacks, mapper);
-			} catch (Exception e) {
-				response.sendError(500);
-			}
-		} else {
-			response.sendError(404);
-		}
-	}
+    public void getFeedbackByIdForDev(HttpServletRequest request,
+                                      HttpServletResponse response) throws IOException {
+        String param = request.getParameter("id");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                FeedbackService fs = (FeedbackService) ApplicationContext
+                        .getInstance().getBean("feedbackService");
+                List<Feedback> feedbacks = fs.findFeedbacksByDevIdForHim(id);
+                CustomerService customerService = (CustomerService) ApplicationContext
+                        .getInstance().getBean("customerService");
+                for (Feedback f : feedbacks) {
+                    Customer customer = customerService.findById(f
+                            .getCustomerId());
+                    customer.setPassword(null);
+                    customer.setSalt(null);
+                    f.setCustomer(customer);
+                }
+                Collections.reverse(feedbacks);
+                sendResponse(response, feedbacks, mapper);
+            } catch (Exception e) {
+                response.sendError(500);
+            }
+        } else {
+            response.sendError(404);
+        }
+    }
 
-	public void create(HttpServletRequest request, HttpServletResponse response)
+	private void create(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException
 	{
 		String requestData = request.getReader().readLine();
@@ -573,7 +581,7 @@ public class UserController extends HttpServlet implements Responsable {
 		response.setStatus(200);
 	}
 
-	public void signIn(HttpServletRequest request,
+	private void signIn(HttpServletRequest request,
 			HttpServletResponse response, SignInType type)
 			throws ServletException, IOException
 	{
@@ -652,88 +660,7 @@ public class UserController extends HttpServlet implements Responsable {
 				Ordering order = orderingService.findById(orderId);
 				sendResponse(response, order, mapper);
 			} catch (Exception e) {
-				response.sendError(500);
-			}
-		}
-	}
-
-	private void getFollowersByOrderId(HttpServletRequest request,
-			HttpServletResponse response) throws IOException
-	{
-		String param = request.getParameter("orderId");
-		if (param != null) {
-			try {
-				Integer orderId = Integer.parseInt(param);
-				List<Follower> followers = orderingService
-						.findOrderFollowers(orderId);
-				followers.forEach(follower -> {
-					follower.setDeveloper(developerService.findById(follower
-							.getDevId()));
-					follower.getDeveloper().setPassword(null);
-					follower.getDeveloper().setSalt(null);
-				});
-				sendResponse(response, followers, mapper);
-			} catch (Exception e) {
-				response.sendError(500);
-			}
-		}
-	}
-
-	private void getCustomerById(HttpServletRequest request,
-			HttpServletResponse response) throws IOException
-	{
-		String param = request.getParameter("custId");
-		if (param != null) {
-			try {
-				Integer custId = Integer.parseInt(param);
-				Customer customer = customerService.findById(custId);
-				customer.setPassword(null);
-				customer.setSalt(null);
-				sendResponse(response, customer, mapper);
-			} catch (Exception e) {
-				response.sendError(500);
-			}
-		}
-	}
-
-	private void getFeedbacksByIdForCust(HttpServletRequest request,
-			HttpServletResponse response) throws IOException
-	{
-		String param = request.getParameter("custId");
-		if (param != null) {
-			try {
-				Integer id = Integer.parseInt(param);
-				List<Feedback> feedbacks = feedbackService.findFeedbacksByCustIdForHim(id);
-
-				for (Feedback feedback : feedbacks) {
-					Developer developer = developerService.findById(feedback
-							.getDevId());
-					developer.setPassword(null);
-					developer.setSalt(null);
-					feedback.setDeveloper(developer);
-				}
-
-				sendResponse(response, feedbacks, mapper);
-
-			} catch (Exception e) {
-				response.sendError(500);
-			}
-		}
-	}
-
-	private void getOrderTechs(HttpServletRequest request,
-			HttpServletResponse response) throws IOException
-	{
-		String param = request.getParameter("orderId");
-		if (param != null) {
-			try {
-				Integer id = Integer.parseInt(param);
-				List<Technology> technologies = orderingService
-						.findOrderingTechnologies(id);
-				sendResponse(response, technologies, mapper);
-
-			} catch (Exception e) {
-				response.sendError(500);
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			}
 		}
 	}
@@ -754,7 +681,7 @@ public class UserController extends HttpServlet implements Responsable {
                 });
                 sendResponse(response, followers, mapper);
             } catch (Exception e) {
-                response.sendError(500);
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             }
         }
     }
@@ -770,7 +697,7 @@ public class UserController extends HttpServlet implements Responsable {
                 sendResponse(response, technologies, mapper);
 
             } catch (Exception e) {
-                response.sendError(500);
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             }
         }
     }
@@ -782,18 +709,18 @@ public class UserController extends HttpServlet implements Responsable {
         HttpSession session = request.getSession();
         UserEntity ue = (UserEntity) session.getAttribute("user");
         if (ue == null) {
-            response.sendError(404);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
         if (order_id == null || order_id.isEmpty()) {
-            response.sendError(500);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
         Integer orderId;
         try {
             orderId = Integer.parseInt(order_id);
         } catch (NumberFormatException e) {
-            response.sendError(500);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
         Follower follower = developerService.subscribeOnProject(ue.getId(), orderId, message);
@@ -808,10 +735,129 @@ public class UserController extends HttpServlet implements Responsable {
         try {
             developerService.unsubscribeFromProject(Integer.parseInt(follower_id));
         } catch (NumberFormatException e) {
-            response.sendError(500);
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
 
+    }
+
+
+    private void getUserContact(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String paramId = request.getParameter("id");
+        String role = request.getParameter("role");
+
+        if(paramId==null || "".equals(paramId) || !paramId.matches("[0-9]")){
+            response.sendError(HttpServletResponse.SC_CONFLICT);
+            return;
+        }
+        Integer id = Integer.parseInt(paramId);
+
+        try {
+            Contact contact = null;
+            switch (role){
+                case "dev":
+                    contact = developerService.getContactByDevId(id);
+                    break;
+                case "customer":
+                    contact = customerService.getContactByCustomerId(id);
+                    break;
+            }
+            if (contact != null) {
+                contact.setPhone(null);
+                contact.setVersion(null);
+                contact.setDeleted(null);
+
+                sendResponse(response, contact, mapper);
+            } else
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        }
+
+    }
+
+    private void getUserById(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String paramId = request.getParameter("id");
+        String role = request.getParameter("role");
+
+        if(paramId==null || "".equals(paramId) || !paramId.matches("[0-9]")){
+            response.sendError(HttpServletResponse.SC_CONFLICT);
+            return;
+        }
+        Integer id = Integer.parseInt(paramId);
+
+            try {
+                UserEntity userEntity = null;
+                switch (role){
+                    case "admin":
+                        userEntity = adminService.findById(id);
+                        break;
+                    case "dev":
+                        userEntity = developerService.findById(id);
+                        break;
+                    case "customer":
+                        userEntity = customerService.findById(id);
+                        break;
+                }
+                if (userEntity != null) {
+                    userEntity.setPassword(null);
+                    userEntity.setEmail(null);
+                    userEntity.setSalt(null);
+                    userEntity.setUuid(null);
+                    userEntity.setRegUrl(null);
+
+                    sendResponse(response, userEntity, mapper);
+                } else
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            } catch (Exception e) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            }
+    }
+
+    private void getCustomerHistory(HttpServletRequest
+                                            request, HttpServletResponse response) throws IOException {
+        String param = request.getParameter("custId");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                List<Ordering> orders = customerService.getProjectsPublicHistory(id);
+                for (Ordering ordering : orders) {
+                    ordering.setTechnologies
+                            (orderingService
+                                    .findOrderingTechnologies
+                                            (ordering.getId()));
+                }
+                if (orders != null) {
+                    sendResponse(response, orders, mapper);
+                } else {
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                }
+            } catch (Exception e) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            }
+        }
+    }
+
+    private void getFeedbacksByIdForCust(HttpServletRequest request,
+                                        HttpServletResponse response) throws IOException
+    {
+        String param = request.getParameter("id");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                List<Feedback> feedbacks = feedbackService
+                        .findFeedbacksByCustIdForHim(id);
+                for (Feedback f : feedbacks) {
+                    f.setDeveloper(developerService.findById(f.getDevId()));
+                }
+                Collections.reverse(feedbacks);
+
+                sendResponse(response, feedbacks, mapper);
+
+            } catch (Exception e) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            }
+        }
     }
 
 }

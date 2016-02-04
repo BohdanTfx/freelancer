@@ -29,7 +29,13 @@ angular.module('FreelancerApp')
         function getData() {
             orderAPI.getCustomerById($scope.order.customerId).success(function (data) {
                 $scope.customer = data;
-            }).error(function () {
+            }).error(function (e) {
+                alert(404);
+            });
+
+            orderAPI.getCustomerContactById($scope.order.customerId).success(function (data) {
+                $scope.customer.contact = data;
+            }).error(function (e) {
                 alert(404);
             });
 

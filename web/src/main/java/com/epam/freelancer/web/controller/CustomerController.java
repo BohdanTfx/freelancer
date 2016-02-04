@@ -1,12 +1,11 @@
 package com.epam.freelancer.web.controller;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.List;
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.service.*;
-import com.epam.freelancer.database.model.*;
+import com.epam.freelancer.database.model.Contact;
+import com.epam.freelancer.database.model.Customer;
+import com.epam.freelancer.database.model.Feedback;
+import com.epam.freelancer.database.model.Ordering;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -20,20 +19,6 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.List;
-
-import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
-
-import com.epam.freelancer.business.context.ApplicationContext;
-import com.epam.freelancer.business.service.CustomerService;
-import com.epam.freelancer.business.service.DeveloperService;
-import com.epam.freelancer.business.service.FeedbackService;
-import com.epam.freelancer.business.service.TechnologyService;
-import com.epam.freelancer.business.service.TestService;
-import com.epam.freelancer.database.model.Contact;
-import com.epam.freelancer.database.model.Customer;
-import com.epam.freelancer.database.model.Feedback;
-import com.google.gson.Gson;
 
 /**
  * Created by Максим on 22.01.2016.
@@ -262,27 +247,6 @@ public class CustomerController extends HttpServlet implements Responsable {
 
     private void getCustomerHistory(HttpServletRequest
                                             request, HttpServletResponse response) throws IOException {
-        String param = request.getParameter("custId");
-        if (param != null) {
-            try {
-                Integer id = Integer.parseInt(param);
-                CustomerService customerService = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
-                List<Ordering> orders = customerService.getProjectsPublicHistory(id);
-                OrderingService orderingService = (OrderingService) ApplicationContext.getInstance().getBean("orderingService");
-                for (Ordering ordering : orders) {
-                    ordering.setTechnologies
-                            (orderingService
-                                    .findOrderingTechnologies
-                                            (ordering.getId()));
-                }
-                if (orders != null) {
-                    sendResponse(response, orders, mapper);
-                } else {
-                    response.sendError(500);
-                }
-            } catch (Exception e) {
-                response.sendError(500);
-            }
-        }
+        //method for private history
     }
 }

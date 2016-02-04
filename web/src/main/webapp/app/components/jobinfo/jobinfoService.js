@@ -2,37 +2,43 @@
 
 angular.module('FreelancerApp')
     .factory('orderAPI', function ($http, config) {
-        var urlBase = 'user/order?orderId=',
+        var urlBase = '/user/order?orderId=',
             dataFactory = {};
 
         dataFactory.getOrderById = function (orderId) {
             return $http.post(urlBase + orderId);
         };
 
-        var urlFollowers = 'user/order/followers?orderId=';
+        var urlFollowers = '/user/order/followers?orderId=';
         dataFactory.getFollowers = function (orderId) {
             return $http.post(urlFollowers + orderId);
         };
 
-        var urlCust = 'cust/getCustById?id=';
+        var urlCust = '/user/type?role=customer&id=';
 
         dataFactory.getCustomerById = function (customerId) {
             return $http.post(urlCust + customerId);
         };
 
-        var urlFeedbacks = 'cust/getFeedForCust?id=';
+        var urlContact = '/user/contact?role=customer&id=';
+
+        dataFactory.getCustomerContactById = function (customerId) {
+            return $http.post(urlContact + customerId);
+        };
+
+        var urlFeedbacks = '/user/customer/feedbacks?id=';
 
         dataFactory.getCustomerFeedbacks = function (customerId) {
             return $http.post(urlFeedbacks + customerId);
         };
 
-        var urlTechs = 'user/order/techs?orderId=';
+        var urlTechs = '/user/order/techs?orderId=';
 
         dataFactory.getOrderTechs = function (orderId) {
             return $http.post(urlTechs + orderId);
         };
 
-        var urlCustHistory = 'cust/history?custId=';
+        var urlCustHistory = '/user/customer/history?custId=';
         dataFactory.getCustomerHistory = function (custId) {
             return $http.post(urlCustHistory+ custId);
         };
