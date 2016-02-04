@@ -43,20 +43,10 @@ public class Ordering implements BaseEntity<Integer> {
 	private Integer version;
 	@Column
 	private Integer zone;
-    @Column(name = "complaint")
-    private Integer complaint;
-    private List<Technology> technologies = new ArrayList<>();
+	private List<Technology> technologies = new ArrayList<>();
 
-    public Integer getComplaint() {
-        return complaint;
-    }
-
-    public void setComplaint(Integer complaint) {
-        this.complaint = complaint;
-    }
-
-    public String getTitle() {
-        return title;
+	public String getTitle() {
+		return title;
 	}
 
 	public void setTitle(String title) {
@@ -238,7 +228,6 @@ public class Ordering implements BaseEntity<Integer> {
                 ", isDeleted=" + isDeleted +
                 ", version=" + version +
                 ", zone=" + zone +
-                ", complaint=" + complaint +
                 ", technologies=" + technologies +
                 '}';
     }
