@@ -29,10 +29,10 @@ public class CustomerService extends UserService<Customer> {
 
 	public CustomerService() {
 		super(DAOManager.getInstance()
-				.getDAO(CustomerDao.class.getSimpleName()));
-		DAOManager daoManager = DAOManager.getInstance();
+                .getDAO(CustomerDao.class.getSimpleName()));
+        DAOManager daoManager = DAOManager.getInstance();
 		genericDao.setConnectionPool(daoManager.getConnectionPool());
-	}
+    }
 
 	@Override
 	public Customer create(Map<String, String[]> data) {
@@ -131,8 +131,8 @@ public class CustomerService extends UserService<Customer> {
 	}
 
 	public Follower hireDeveloper(Map<String, String[]> data) {
-		if (!isDataValid(prepareFollowerData(data)))
-			throw new RuntimeException("Validation exception in follower");
+        /*if (!isDataValid(prepareFollowerData(data)))
+			throw new RuntimeException("Validation exception in follower");*/
 
 		Follower follower = new Follower();
 		String[] value = data.get("dev_id");

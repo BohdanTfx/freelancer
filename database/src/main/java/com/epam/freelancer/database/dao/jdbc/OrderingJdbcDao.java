@@ -1,14 +1,14 @@
 package com.epam.freelancer.database.dao.jdbc;
 
+import com.epam.freelancer.database.dao.OrderingDao;
+import com.epam.freelancer.database.model.Ordering;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import com.epam.freelancer.database.dao.OrderingDao;
-import com.epam.freelancer.database.model.Ordering;
 
 /**
  * Created by ������ on 17.01.2016.
@@ -31,7 +31,7 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 				+ " Where pay_type Like ?";
 		try (Connection connection = connectionPool.getConnection();
 				PreparedStatement statement = connection
-						.prepareStatement(query);) {
+						.prepareStatement(query)) {
 			statement.setString(1, paymentType);
 			try (ResultSet set = statement.executeQuery()) {
 				if (set.next())
@@ -42,6 +42,30 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 		}
 		return null;
 	}
+
+    @Override
+    public List<Ordering> getAvailableCustOrders(Integer custId) {
+        List<Ordering> orderings = new ArrayList<>();
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection
+                     .prepareStatement("SELECT * FROM ordering WHERE started = 0 AND ended = 0 AND customer_id = ? ;")
+        ) {
+            statement.setObject(1, custId);
+            ResultSet set = statement.executeQuery();
+            while(set.next()) {
+                Ordering o = new Ordering();
+                o.setId(set.getInt("id"));
+                o.setTitle(set.getString("title"));
+
+                orderings.add(o);
+            }
+                return orderings;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return orderings;
+    }
 
 	@Override
 	public Integer getFilteredObjectNumber(Map<String, Object> parameters) {

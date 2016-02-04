@@ -3,6 +3,7 @@ angular.module('FreelancerApp')
         console.log($stateParams.devName, $stateParams.devId + ' state');
 
         $scope.userrole = $rootScope.role;
+        $scope.hireord = '';
 
         if ($scope.userrole == 'developer') {
             $scope.show = false;
@@ -97,8 +98,11 @@ angular.module('FreelancerApp')
         pubdevAPI.getContById($scope.query).success(
             function (data, status, headers, config) {
                 console.log(data);
-                if (typeof data.skype != 'undefined')
+                if (typeof data.skype != 'undefined') {
                     $scope.skype = 'Skype: ' + data.skype;
+                    $scope.phone = data.phone;
+                }
+
                 else
                     $scope.skype = undefined;
             }).error(function () {
@@ -151,15 +155,15 @@ angular.module('FreelancerApp')
         $scope.feed();
 
         $scope.sendSms = function () {
-            $scope.sms = 'sms';
-            var data = 'phone=' + $scope.phone + '&sms=' + $scope.sms;
+            var data = 'phone=' + $scope.phone + '&order_id=' + $scope.hireord +
+                '&dev_id=' + $scope.query + "&message=" + $scope.hiremes + '&cust_id=' + $rootScope.id + '&author=customer';
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
             $http.post('/user/sms', data).success(function () {
                 Notification
                     .success({
                         title: 'Success!',
-                        message: 'Sms sent successfully. Please try again.'
+                        message: 'Freelancer will see your invitation.'
                     });
             }).error(function () {
                 Notification
@@ -170,16 +174,27 @@ angular.module('FreelancerApp')
             });
         };
 
+        pubdevAPI.getAvailableCustOrders($scope.query).success(function (data) {
+            console.log(data);
+            if (typeof data == 'undefined' || data == null || data.length == 0)
+                $scope.hire = true;
+            else {
+                $scope.avords = data;
+                $scope.hire = false;
+            }
+        }).error(function () {
+        });
+
         $scope.send = function () {
             $scope.dataLoading = true;
-            var data = 'message=' + $scope.mes + '&email=' + $scope.email + '&changeEmail=' + $scope.mesEmail;
+            var data = 'message=' + $scope.mes + '&email=' + $scope.email + '&subject=Customer sent you message: ' + $rootScope.name + ' ' + $rootScope.lastName;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
             $http.post('/user/send', data).success(function () {
                 Notification
                     .success({
                         title: 'Success!',
-                        message: 'The message was successfully sent. Please try again.'
+                        message: 'The message sent successfully'
                     });
                 $scope.dataLoading = false;
             }).error(function () {
@@ -200,7 +215,7 @@ angular.module('FreelancerApp')
                 Notification
                     .error({
                         title: 'Error',
-                        message: 'Rate cant be 0. Please try again.'
+                        message: 'Rate cant be 0. Please, try again.'
                     });
                 return;
             }

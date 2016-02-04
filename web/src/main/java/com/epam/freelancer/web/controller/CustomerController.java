@@ -6,6 +6,7 @@ import com.epam.freelancer.database.model.Contact;
 import com.epam.freelancer.database.model.Customer;
 import com.epam.freelancer.database.model.Feedback;
 import com.epam.freelancer.database.model.Ordering;
+import com.epam.freelancer.database.model.*;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -86,6 +87,9 @@ public class CustomerController extends HttpServlet implements Responsable {
                 case "cust/getRateForCust":
                     getRateForCust(request, response);
                     break;
+                case "cust/getAvailableCustOrders":
+                    getAvailableCustOrders(request, response);
+                    break;
                 case "cust/history":
                     getCustomerHistory(request, response);
                     break;
@@ -97,9 +101,32 @@ public class CustomerController extends HttpServlet implements Responsable {
         }
     }
 
-    public void getContForCust(HttpServletRequest request,
-                               HttpServletResponse response) throws IOException
-    {
+    public void getAvailableCustOrders(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        UserEntity ue = (UserEntity) session.getAttribute("user");
+        String from = request.getParameter("from");
+
+        if (ue == null) {
+            response.setStatus(304);
+            return;
+        }
+
+
+        if (!"dev".equals(from)) {
+            OrderingService os = (OrderingService) ApplicationContext.getInstance().getBean("orderingService");
+            List<Ordering> orderings = os.getAvailableCustOrders(ue.getId());
+
+            sendResponse(response, orderings, mapper);
+        } else {
+            String custId = request.getParameter("id");
+            OrderingService os = (OrderingService) ApplicationContext.getInstance().getBean("orderingService");
+            List<Ordering> orderings = os.getAvailableCustOrders(Integer.parseInt(custId));
+
+            sendResponse(response, orderings, mapper);
+        }
+    }
+
+    public void getContForCust(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String param = request.getParameter("id");
         if (param != null) {
             try {
@@ -141,9 +168,7 @@ public class CustomerController extends HttpServlet implements Responsable {
         }
     }
 
-    public void getFeedbacksByIdForCust(HttpServletRequest request,
-                                        HttpServletResponse response) throws IOException
-    {
+    public void getFeedbacksByIdForCust(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String param = request.getParameter("id");
         if (param != null) {
             try {
@@ -157,15 +182,13 @@ public class CustomerController extends HttpServlet implements Responsable {
 
                 sendResponse(response, feedbacks, mapper);
 
-            } catch (Exception e) {
+            }catch (Exception e) {
                 response.sendError(500);
             }
         }
     }
 
-    public void getRateForCust(HttpServletRequest request,
-                               HttpServletResponse response) throws IOException
-    {
+    public void getRateForCust(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String param = request.getParameter("id");
         if (param != null) {
             try {
@@ -179,6 +202,7 @@ public class CustomerController extends HttpServlet implements Responsable {
 
                 rate = rate / feedbacks.size();
                 sendResponse(response, rate, mapper);
+
             } catch (Exception e) {
                 response.sendError(500);
             }
@@ -206,8 +230,7 @@ public class CustomerController extends HttpServlet implements Responsable {
         contactJson = new Gson().toJson(contact);
         System.out.println(contactJson);
 
-        resultJson = "{\"cust\":" + customerJson + ",\"cont\":" + contactJson
-                + "}";
+        resultJson = "{\"cust\":" + customerJson + ",\"cont\":" + contactJson +"}";
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -232,7 +255,7 @@ public class CustomerController extends HttpServlet implements Responsable {
         try {
             customer = mapper.readValue(customerJson, Customer.class);
 
-        } catch (Exception e) {
+        } catch(Exception e){
             LOG.warn("Some problem with mapper Customer Controller");
         }
 

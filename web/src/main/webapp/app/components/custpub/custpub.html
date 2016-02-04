@@ -39,7 +39,8 @@
                             <span style="color: firebrick">{{smserr}}</span>
                             <span style="color: darkgreen">{{smssuc}}</span>
 
-                        <div ng-if="show" class="btn btn-block btn-primary" ng-click="sendSms()">
+                        <div ng-disabled="follow" ng-if="show" class="btn btn-block btn-primary" data-toggle="modal"
+                             data-target=".bs-example-modal-md1">
                                     <span
                                             class="glyphicon glyphicon-thumbs-up"></span>
                             Follow me
@@ -47,7 +48,7 @@
                         </p>
                         Rate:
                         <uib-rating ng-model="rateq" max="5" readonly="true"
-                                    on-leave="overStar = null" titles="['one','two','three']"
+                                    on-leave="overStar = null" titles="['1','2','3','4','5']"
                                     aria-labelledby="default-rating"></uib-rating>
                         <br/>
                         <span class="cust-sp">{{hourly}}</span>
@@ -205,10 +206,8 @@
             </div>
             <div class="modal-footer">
                 <div class="form-group">
-                    <input type="email" readonly="readonly" class="form-control" ng-model="mesEmail" rows="5"
-                           placeholder="Your email"
-                           required/>
-                    <br/>
+
+                <br/>
 
     <textarea type="text" class="form-control" ng-model="$parent.mes" rows="5" placeholder="Text ..."
               required></textarea>
@@ -225,5 +224,35 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
+</div>
+<div class="modal fade bs-example-modal-md1" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span
+            aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Follow customer</h4>
+            </div>
+            <div class="modal-footer">
+                <div class="form-group">
+                    <select class="form-control" ng-model="hireord">
+                        <option ng-repeat="avord in avords" value="{{avord.id}}">{{avord.title}}</option>
+                    </select>
+                    <br/>
+                    <textarea type="text" class="form-control" ng-model="hiremes" rows="5" placeholder="Text ..."
+                              required></textarea>
+                    <br/>
 
+                    <button type="button" ng-disabled="mesSemdDis" ng-click="sendSms()" class="btn btn-success"
+                            data-dismiss="modal">
+        <span
+                class="glyphicon glyphicon-thumbs-up"></span>
+                        Hire
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

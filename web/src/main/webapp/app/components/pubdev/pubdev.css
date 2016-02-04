@@ -111,3 +111,12 @@
     font-family: normal;
     font-weight: bold;
 }
+
+.qa-left {
+    display: inline-block;
+}
+
+.qa-right {
+    display: inline-block;
+    float: right;
+}

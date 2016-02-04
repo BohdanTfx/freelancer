@@ -5,6 +5,9 @@ angular.module('FreelancerApp')
         var urlBase = '/user/getById',
             dataFactory = {};
 
+        dataFactory.getAvailableCustOrders = function (id) {
+            return $http.post('/cust/getAvailableCustOrders?id=' + id);
+        };
 
         dataFactory.getCustById = function (id) {
             return $http.post('/cust/getCustById?id=' + id);

@@ -16,6 +16,7 @@ public class SendMessageToEmail {
 
     public static final Logger LOG = Logger.getLogger(SendMessageToEmail.class);
 
+
     public static boolean sendFromGMail(String from, String pass, String[] to, String subject, String body) throws IOException {
         Properties props = System.getProperties();
 
@@ -46,6 +47,7 @@ public class SendMessageToEmail {
 
             message.setSubject(subject);
             message.setText(body);
+//            message.setContent(someHtmlMessage, "text/html; charset=utf-8");
 
             Transport transport = session.getTransport("smtp");
 

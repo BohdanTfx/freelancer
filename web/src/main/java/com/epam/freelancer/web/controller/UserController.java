@@ -116,7 +116,6 @@ public class UserController extends HttpServlet implements Responsable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
@@ -165,7 +164,7 @@ public class UserController extends HttpServlet implements Responsable {
                     comment(request, response);
                     return;
                 case "user/sms":
-                    sendSms(request, response);
+                    sendSmsAndFollowOrHire(request, response);
                     return;
                 case "user/isAuth":
                     isAuth(request, response);
@@ -200,13 +199,13 @@ public class UserController extends HttpServlet implements Responsable {
                     unsubscribe(request, response);
                     break;
                 case "user/type":
-                    getUserById(request,response);
+                    getUserById(request, response);
                     break;
                 case "user/customer/history":
-                    getCustomerHistory(request,response);
+                    getCustomerHistory(request, response);
                     break;
                 case "user/customer/feedbacks":
-                    getFeedbacksByIdForCust(request,response);
+                    getFeedbacksByIdForCust(request, response);
                     break;
                 case "user/contact":
                     getUserContact(request, response);
@@ -268,7 +267,7 @@ public class UserController extends HttpServlet implements Responsable {
         }
     }
 
-    public void sendSms(HttpServletRequest request, HttpServletResponse response)
+    public void sendSmsAndFollowOrHire(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         String phone = request.getParameter("phone");
         String author = request.getParameter("author");
@@ -279,30 +278,28 @@ public class UserController extends HttpServlet implements Responsable {
             response.sendError(303);
             return;
         }
+        String sms = null;
 
-        String sms = "This customer, " + ue.getFname() + " " + ue.getLname() + ", would like to hire you. See details in your cabinet.";
+        if ("dev".equals(author)) {
+            sms = "This freelancer, " + ue.getFname() + " " + ue.getLname() + ", followed you. See details in your cabinet.";
+
+        } else
+            sms = "This customer, " + ue.getFname() + " " + ue.getLname() + ", would like to hire you. See details in your cabinet.";
 
         String[] str = new SmsSender().sendSms(phone, sms, ue.getFname());
 
-
-        int smsRes = 0;
-        try {
-            int res = Integer.parseInt(str[1]);
-            if (res < 0) {
-                smsRes = 1;
-            }
-        } catch (Exception e) {
-            smsRes = 1;
+        Follower f = null;
+        if ("customer".equals(author)) {
+            f = developerService.createFollowing(request.getParameterMap());
+        } else {
+            f = customerService.hireDeveloper(request.getParameterMap());
         }
 
-        if ("customer".equals(author)) {
-            DeveloperService ds = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
-            ds.createFollowing(request.getParameterMap());
-        } else {
-            CustomerService cs = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
-            cs.hireDeveloper(request.getParameterMap());
+        if (f == null) {
+            response.sendError(303);
         }
     }
+
 
     public void comment(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
@@ -364,6 +361,7 @@ public class UserController extends HttpServlet implements Responsable {
         String email = request.getParameter("email");
         String message = request.getParameter("message");
         String subject = request.getParameter("subject");
+subject = request.getParameter("subject");
 
         if (email == null || message == null) {
             response.sendError(304);
@@ -566,13 +564,13 @@ public class UserController extends HttpServlet implements Responsable {
 		try {
 			userManager
 					.createUser(
-							data.entrySet()
-									.stream()
-									.collect(
-											Collectors.toMap(Map.Entry::getKey,
-													e -> new String[] { e
-															.getValue() })),
-							role);
+                            data.entrySet()
+                                    .stream()
+                                    .collect(
+                                            Collectors.toMap(Map.Entry::getKey,
+                                                    e -> new String[]{e
+                                                            .getValue()})),
+                            role);
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
@@ -581,89 +579,91 @@ public class UserController extends HttpServlet implements Responsable {
 		response.setStatus(200);
 	}
 
-	private void signIn(HttpServletRequest request,
-			HttpServletResponse response, SignInType type)
-			throws ServletException, IOException
-	{
-		boolean remember = "true".equals(request.getParameter("remember"));
-		String email = null;
-		switch (type) {
-		case MANUAL:
-			email = request.getParameter("email");
-			break;
-		case LINKEDIN:
-			try {
-				email = getLinkedInProfile(request, response).getEmailAddress();
-			} catch (OAuthException e) {
-				e.printStackTrace();
-				response.sendError(HttpServletResponse.SC_CONFLICT);
-			}
-			break;
-		case GOOGLE:
-			break;
-		}
-		if (email == null || "".equals(email)) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-			return;
-		}
+    private boolean isAvailable(String email) {
+        boolean result = false;
+        if (((AdminService) ApplicationContext.getInstance().getBean(
+                "adminService")).emailAvailable(email)
+                && ((DeveloperService) ApplicationContext.getInstance()
+                .getBean("developerService")).emailAvailable(email)
+                && ((CustomerService) ApplicationContext.getInstance().getBean(
+                "customerService")).emailAvailable(email)) {
+            result = true;
+        }
+        return result;
+    }
 
-		UserEntity userEntity = userManager.findUserByEmail(email);
-		if (userEntity == null)
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-					"Invalid credentials");
+    private void signIn(HttpServletRequest request,
+                        HttpServletResponse response, SignInType type)
+            throws ServletException, IOException
+    {
+        boolean remember = "true".equals(request.getParameter("remember"));
+        String email = null;
+        switch (type) {
+            case MANUAL:
+                email = request.getParameter("email");
+                break;
+            case LINKEDIN:
+                try {
+                    email = getLinkedInProfile(request, response).getEmailAddress();
+                } catch (OAuthException e) {
+                    e.printStackTrace();
+                    response.sendError(HttpServletResponse.SC_CONFLICT);
+                }
+                break;
+            case GOOGLE:
+                break;
+        }
+        if (email == null || "".equals(email)) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
 
-		String password = request.getParameter("password");
-		switch (type) {
-		case MANUAL:
-			if (password == null
-					|| !userManager.validCredentials(email, password,
-							userEntity))
-			{
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-						"Invalid credentials");
-				return;
-			}
-		case LINKEDIN:
-		case GOOGLE:
-			request.getSession().setAttribute("user", userEntity);
-			userEntity.setRole(getRole(userEntity));
+        UserEntity userEntity = userManager.findUserByEmail(email);
+        if (userEntity == null)
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                    "Invalid credentials");
 
-			if (remember)
-				authenticationProvider.loginAndRemember(response,
-						"freelancerRememberMeCookie", userEntity);
-			else
-				authenticationProvider.invalidateUserCookie(response,
-						"freelancerRememberMeCookie", userEntity);
+        String password = request.getParameter("password");
+        switch (type) {
+            case MANUAL:
+                if (password == null
+                        || !userManager.validCredentials(email, password,
+                        userEntity))
+                {
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                            "Invalid credentials");
+                    return;
+                }
+            case LINKEDIN:
+            case GOOGLE:
+                request.getSession().setAttribute("user", userEntity);
+                userEntity.setRole(getRole(userEntity));
 
-			sendResponse(response, userEntity, mapper);
-		}
-	}
-	
-	private String getRole(UserEntity userEntity) {
-		String result = null;
-		if (userEntity instanceof Developer)
-			result = "developer";
-		if (userEntity instanceof Customer)
-			result = "customer";
-		if (userEntity instanceof Admin)
-			result = "admin";
-		return result;
-	}
+                if (remember)
+                    authenticationProvider.loginAndRemember(response,
+                            "freelancerRememberMeCookie", userEntity);
+                else
+                    authenticationProvider.invalidateUserCookie(response,
+                            "freelancerRememberMeCookie", userEntity);
 
-	private void getOrderById(HttpServletRequest request,
-			HttpServletResponse response) throws IOException
-	{
-		String param = request.getParameter("orderId");
-		if (param != null) {
-			try {
-				Integer orderId = Integer.parseInt(param);
-				Ordering order = orderingService.findById(orderId);
-				sendResponse(response, order, mapper);
-			} catch (Exception e) {
+                sendResponse(response, userEntity, mapper);
+        }
+    }
+
+    private void getOrderById(HttpServletRequest request,
+                              HttpServletResponse response) throws IOException
+    {
+        String param = request.getParameter("orderId");
+        if (param != null) {
+            try {
+                Integer orderId = Integer.parseInt(param);
+                Ordering order = orderingService.findById(orderId);
+                sendResponse(response, order, mapper);
+            } catch (Exception e) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-			}
-		}
-	}
+            }
+        }
+    }
 
     private void getFollowersByOrderId(HttpServletRequest
                                                request, HttpServletResponse response) throws IOException {
@@ -686,6 +686,23 @@ public class UserController extends HttpServlet implements Responsable {
         }
     }
 
+    private void getCustomerById(HttpServletRequest
+                                         request, HttpServletResponse response) throws IOException {
+        String param = request.getParameter("custId");
+        if (param != null) {
+            try {
+                Integer custId = Integer.parseInt(param);
+                Customer customer =
+                        customerService.findById(custId);
+                customer.setPassword(null);
+                customer.setSalt(null);
+                sendResponse(response, customer, mapper);
+            } catch (Exception e) {
+                response.sendError(500);
+            }
+        }
+    }
+
     private void getOrderTechs(HttpServletRequest request,
                                HttpServletResponse response) throws IOException {
         String param = request.getParameter("orderId");
@@ -696,6 +713,30 @@ public class UserController extends HttpServlet implements Responsable {
                         orderingService.findOrderingTechnologies(id);
                 sendResponse(response, technologies, mapper);
 
+            } catch (Exception e) {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            }
+        }
+    }
+
+    private void getCustomerHistory(HttpServletRequest
+                                            request, HttpServletResponse response) throws IOException {
+        String param = request.getParameter("custId");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                List<Ordering> orders = customerService.getProjectsPublicHistory(id);
+                for (Ordering ordering : orders) {
+                    ordering.setTechnologies
+                            (orderingService
+                                    .findOrderingTechnologies
+                                            (ordering.getId()));
+                }
+                if (orders != null) {
+                    sendResponse(response, orders, mapper);
+                } else {
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                }
             } catch (Exception e) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             }
@@ -741,6 +782,43 @@ public class UserController extends HttpServlet implements Responsable {
 
     }
 
+    private void getUserById(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String paramId = request.getParameter("id");
+        String role = request.getParameter("role");
+
+        if(paramId==null || "".equals(paramId) || !paramId.matches("[0-9]")){
+            response.sendError(HttpServletResponse.SC_CONFLICT);
+            return;
+        }
+        Integer id = Integer.parseInt(paramId);
+
+        try {
+            UserEntity userEntity = null;
+            switch (role){
+                case "admin":
+                    userEntity = adminService.findById(id);
+                    break;
+                case "dev":
+                    userEntity = developerService.findById(id);
+                    break;
+                case "customer":
+                    userEntity = customerService.findById(id);
+                    break;
+            }
+            if (userEntity != null) {
+                userEntity.setPassword(null);
+                userEntity.setEmail(null);
+                userEntity.setSalt(null);
+                userEntity.setUuid(null);
+                userEntity.setRegUrl(null);
+
+                sendResponse(response, userEntity, mapper);
+            } else
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        }
+    }
 
     private void getUserContact(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String paramId = request.getParameter("id");
@@ -774,68 +852,6 @@ public class UserController extends HttpServlet implements Responsable {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
         }
 
-    }
-
-    private void getUserById(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String paramId = request.getParameter("id");
-        String role = request.getParameter("role");
-
-        if(paramId==null || "".equals(paramId) || !paramId.matches("[0-9]")){
-            response.sendError(HttpServletResponse.SC_CONFLICT);
-            return;
-        }
-        Integer id = Integer.parseInt(paramId);
-
-            try {
-                UserEntity userEntity = null;
-                switch (role){
-                    case "admin":
-                        userEntity = adminService.findById(id);
-                        break;
-                    case "dev":
-                        userEntity = developerService.findById(id);
-                        break;
-                    case "customer":
-                        userEntity = customerService.findById(id);
-                        break;
-                }
-                if (userEntity != null) {
-                    userEntity.setPassword(null);
-                    userEntity.setEmail(null);
-                    userEntity.setSalt(null);
-                    userEntity.setUuid(null);
-                    userEntity.setRegUrl(null);
-
-                    sendResponse(response, userEntity, mapper);
-                } else
-                    response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            } catch (Exception e) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            }
-    }
-
-    private void getCustomerHistory(HttpServletRequest
-                                            request, HttpServletResponse response) throws IOException {
-        String param = request.getParameter("custId");
-        if (param != null) {
-            try {
-                Integer id = Integer.parseInt(param);
-                List<Ordering> orders = customerService.getProjectsPublicHistory(id);
-                for (Ordering ordering : orders) {
-                    ordering.setTechnologies
-                            (orderingService
-                                    .findOrderingTechnologies
-                                            (ordering.getId()));
-                }
-                if (orders != null) {
-                    sendResponse(response, orders, mapper);
-                } else {
-                    response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-                }
-            } catch (Exception e) {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            }
-        }
     }
 
     private void getFeedbacksByIdForCust(HttpServletRequest request,

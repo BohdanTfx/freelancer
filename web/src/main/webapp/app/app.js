@@ -56,7 +56,7 @@
 					templateUrl : 'app/components/authentication/auth.html',
 					controller : 'authCtrl'
 				}).state('pubdev', {
-					url : '/public/:devName/:devId',
+                    url: '/public/developer/:devName/:devId',
 					templateUrl : 'app/components/pubdev/pubdev.html',
 					controller : 'pubdevCtrl'
                 }).state('custpub', {
@@ -88,6 +88,7 @@
 								$rootScope.name = data.fname;
 								$rootScope.lastName = data.lname;
 								$rootScope.role = data.role;
+                                $rootScope.id = data.id;
 								$rootScope.logged = true;
 							}).error(function() {
 							});

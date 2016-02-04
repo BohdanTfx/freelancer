@@ -1,12 +1,12 @@
 package com.epam.freelancer.database.model;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.epam.freelancer.database.transformer.annotation.Column;
 import com.epam.freelancer.database.transformer.annotation.Id;
 import com.epam.freelancer.database.transformer.annotation.Table;
+
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by ������ on 16.01.2016.
@@ -206,7 +206,29 @@ public class Ordering implements BaseEntity<Integer> {
 		return technologies;
 	}
 
-	public void setTechnologies(List<Technology> technologies) {
-		this.technologies = technologies;
+    public void setTechnologies(List<Technology> technologies) {
+        this.technologies = technologies;
 	}
+
+    @Override
+    public String toString() {
+        return "Ordering{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", payType='" + payType + '\'' +
+                ", descr='" + descr + '\'' +
+                ", customerId=" + customerId +
+                ", date=" + date +
+                ", payment=" + payment +
+                ", started=" + started +
+                ", startedDate=" + startedDate +
+                ", ended=" + ended +
+                ", endedDate=" + endedDate +
+                ", priv=" + priv +
+                ", isDeleted=" + isDeleted +
+                ", version=" + version +
+                ", zone=" + zone +
+                ", technologies=" + technologies +
+                '}';
+    }
 }

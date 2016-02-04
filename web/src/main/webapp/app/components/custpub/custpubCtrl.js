@@ -23,9 +23,21 @@ angular.module('FreelancerApp')
                     $scope.skype = 'Skype: ' + data.skype;
                 else
                     $scope.skype = undefined;
+                $scope.phone = data.phone;
             }).error(function () {
 
             });
+
+        custpubAPI.getAvailableCustOrders($scope.query).success(function (data) {
+            console.log(data);
+            if (typeof data == 'undefined' || data == null || data.length == 0)
+                $scope.follow = true;
+            else {
+                $scope.avords = data;
+                $scope.follow = false;
+            }
+        }).error(function () {
+        });
 
         custpubAPI.getRateForCust($scope.query).success(
             function (data, status, headers, config) {
@@ -72,21 +84,21 @@ angular.module('FreelancerApp')
 
 
         $scope.sendSms = function () {
-            $scope.sms = 'sms';
-            var data = 'phone=' + $scope.phone + '&sms=' + $scope.sms;
+            var data = 'phone=' + $scope.phone + '&order_id=' + $scope.hireord +
+                '&dev_id=' + $scope.query + "&message=" + $scope.hiremes + '&cust_id=' + $rootScope.id + '&author=dev';
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
             $http.post('/user/sms', data).success(function () {
                 Notification
                     .success({
-                        title : 'Success',
-                        message : 'Now you are follow ' + $rootScope.name
+                        title: 'Success!',
+                        message: 'You are followed him.'
                     });
             }).error(function () {
                 Notification
                     .error({
-                        title : 'Error',
-                        message : 'Error, while sending sms. Please try again. Possibly, your phone number not valid/'
+                        title: 'Error!',
+                        message: 'Error. Please try again.'
                     });
             });
         };
@@ -139,7 +151,7 @@ angular.module('FreelancerApp')
 
         $scope.send = function () {
             $scope.dataLoading = true;
-            var data = 'message=' + $scope.mes + '&email=' + $scope.email + '&changeEmail=' + $scope.mesEmail;
+            var data = 'message=' + $scope.mes + '&email=' + $scope.email + '&subject=Customer sent you message: ' + $rootScope.name + ' ' + $rootScope.lastName;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
             $http.post('/user/send', data).success(function () {

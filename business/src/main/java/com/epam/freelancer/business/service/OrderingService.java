@@ -100,6 +100,10 @@ public class OrderingService extends GenericService<Ordering, Integer> {
 		return map;
 	}
 
+    public List<Ordering> getAvailableCustOrders(Integer custId) {
+        return ((OrderingDao) genericDao).getAvailableCustOrders(custId);
+    }
+
 	public Integer getFilteredObjectNumber(Map<String, Object> parameters) {
 		return ((OrderingDao) genericDao).getFilteredObjectNumber(parameters);
 	}
