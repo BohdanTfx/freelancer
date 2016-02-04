@@ -1,6 +1,5 @@
 angular.module('FreelancerApp')
     .controller('pubdevCtrl', function ($scope, pubdevAPI, $log, $http, $location, $filter, $stateParams, $rootScope, Notification) {
-        console.log($stateParams.devName, $stateParams.devId + ' state');
 
         $scope.userrole = $rootScope.role;
         $scope.hireord = '';
@@ -13,7 +12,6 @@ angular.module('FreelancerApp')
 
         $scope.query = $stateParams.devId;
         $http.post('/user/isAuth').success(function (data) {
-            console.log(data);
             $scope.mesEmail = data.email;
         }).error(function () {
         });
@@ -21,7 +19,6 @@ angular.module('FreelancerApp')
         var getCust = function (cust_id) {
             pubdevAPI.getCustById(cust_id).success(
                 function (data, status, headers, config) {
-                    console.log(data);
                     $scope.cust = data;
                 }).error(function () {
 
@@ -44,7 +41,6 @@ angular.module('FreelancerApp')
                 } else {
                     $scope.freelancerNotFound = true;
                 }
-                console.log(data + ' dev');
                 $scope.id = data.id;
                 if (typeof data.imgUrl == 'undefined' || data.imgUrl == null)
                     $scope.img = 'images/profile/no-profile-img.jpg';
@@ -76,7 +72,6 @@ angular.module('FreelancerApp')
 
         pubdevAPI.getTechById($scope.query).success(
             function (data, status, headers, config) {
-                console.log(data);
                 $scope.techs = data;
             }).error(function () {
 
@@ -97,7 +92,6 @@ angular.module('FreelancerApp')
 
         pubdevAPI.getContById($scope.query).success(
             function (data, status, headers, config) {
-                console.log(data);
                 if (typeof data.skype != 'undefined') {
                     $scope.skype = 'Skype: ' + data.skype;
                     $scope.phone = data.phone;
@@ -111,7 +105,6 @@ angular.module('FreelancerApp')
 
         pubdevAPI.getPortById($scope.query).success(
             function (data, status, headers, config) {
-                console.log(data);
                 if (data.length !== 0)
                     $scope.ports = data;
                 else
@@ -133,7 +126,6 @@ angular.module('FreelancerApp')
         $scope.feed = function () {
             pubdevAPI.getFeed($scope.query).success(
                 function (data, status, headers, config) {
-                    console.log(data);
                     if (data.length !== 0) {
                         $scope.feeds = data;
 
@@ -175,7 +167,6 @@ angular.module('FreelancerApp')
         };
 
         pubdevAPI.getAvailableCustOrders($scope.query).success(function (data) {
-            console.log(data);
             if (typeof data == 'undefined' || data == null || data.length == 0)
                 $scope.hire = true;
             else {

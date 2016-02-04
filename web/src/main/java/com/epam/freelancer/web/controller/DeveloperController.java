@@ -69,8 +69,6 @@ public class DeveloperController extends HttpServlet implements Responsable {
 			case "dev/getworkersbyidorder":
 				sendWorkersByIdOrder(request, response);
 				break;
-			case "dev/getTestByDevId":
-				getTestByDevId(request, response);
 			case "dev/personal":
 				fillPersonalPage(request, response);
 				break;
@@ -160,41 +158,6 @@ public class DeveloperController extends HttpServlet implements Responsable {
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(resultJson);
-	}
-
-	public void getTestByDevId(HttpServletRequest request,
-			HttpServletResponse response) throws IOException
-	{
-		String param = request.getParameter("id");
-
-		try {
-			Integer devId = Integer.parseInt(param);
-			TestService ts = (TestService) ApplicationContext.getInstance()
-					.getBean("testService");
-			DeveloperQAService dQAs = (DeveloperQAService) ApplicationContext
-					.getInstance().getBean("developerQAService");
-			List<DeveloperQA> developerQAs = dQAs.findAllByDevId(devId);
-			for (DeveloperQA developerQA : developerQAs) {
-				developerQA.setTest(ts.findById(developerQA.getTestId()));
-				if (developerQA.getTest().getPassScore() >= developerQA
-						.getRate())
-				{
-					developerQA.setIsPassed(false);
-				} else {
-					developerQA.setIsPassed(true);
-				}
-			}
-			TechnologyService technologyService = (TechnologyService) ApplicationContext
-					.getInstance().getBean("technologyService");
-			for (DeveloperQA developerQA : developerQAs) {
-				developerQA.getTest().setTechnology(
-						technologyService.findById(developerQA.getTestId()));
-			}
-			sendResponse(response, developerQAs, mapper);
-		} catch (Exception e) {
-			response.sendError(500);
-			return;
-		}
 	}
 
 	private void fillTestPage(HttpServletRequest request,

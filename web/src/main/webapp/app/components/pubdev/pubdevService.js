@@ -6,15 +6,15 @@ angular.module('FreelancerApp')
             dataFactory = {};
 
         dataFactory.getAvailableCustOrders = function (id) {
-            return $http.post('/cust/getAvailableCustOrders?id=' + id);
+            return $http.post('/user/getAvailableCustOrders?id=' + id);
         };
 
         dataFactory.getCustById = function (id) {
-            return $http.post('/cust/getCustById?id=' + id);
+            return $http.post('/user/type?role=customer&id=' + id);
         };
 
         dataFactory.getDevById = function (id) {
-            return $http.post('/user/getById?id=' + id);
+            return $http.post('/user/type?role=dev&id=' + id);
         };
 
         dataFactory.getTechById = function (id) {
@@ -38,7 +38,7 @@ angular.module('FreelancerApp')
             return $http.post('/user/getFeed?id=' + id);
         };
         dataFactory.getTestByDevId = function (id) {
-            return $http.get('/dev/getTestByDevId?id=' + id);
+            return $http.post('/user/getTestByDevId?id=' + id);
         };
 
         return dataFactory;

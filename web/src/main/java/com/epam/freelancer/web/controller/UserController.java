@@ -151,9 +151,6 @@ public class UserController extends HttpServlet implements Responsable {
                 case "user/getPortById":
                     getPortfolioById(request, response);
                     return;
-                case "user/getRate":
-                    getRate(request, response);
-                    return;
                 case "user/getFeed":
                     getFeedbackByIdForDev(request, response);
                     return;
@@ -204,13 +201,17 @@ public class UserController extends HttpServlet implements Responsable {
                 case "user/customer/history":
                     getCustomerHistory(request, response);
                     break;
+                case "cust/getAvailableCustOrders":
+                    getAvailableCustOrders(request, response);
+                    break;
                 case "user/customer/feedbacks":
                     getFeedbacksByIdForCust(request, response);
                     break;
                 case "user/contact":
                     getUserContact(request, response);
                     break;
-
+                case "user/getTestByDevId":
+                    getTestByDevId(request, response);
                 default:
             }
         } catch (Exception e) {
@@ -361,7 +362,6 @@ public class UserController extends HttpServlet implements Responsable {
         String email = request.getParameter("email");
         String message = request.getParameter("message");
         String subject = request.getParameter("subject");
-subject = request.getParameter("subject");
 
         if (email == null || message == null) {
             response.sendError(304);
@@ -494,24 +494,6 @@ subject = request.getParameter("subject");
             } catch (Exception e) {
                 response.sendError(500);
             }
-        }
-    }
-
-    public void getRate(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-        String param = request.getParameter("id");
-        if (param != null) {
-            try {
-                Integer id = Integer.parseInt(param);
-                FeedbackService fs = (FeedbackService) ApplicationContext
-                        .getInstance().getBean("feedbackService");
-                Integer avg = fs.getAvgRate(id);
-                sendResponse(response, avg, mapper);
-            } catch (Exception e) {
-                response.sendError(500);
-            }
-        } else {
-            response.sendError(404);
         }
     }
 
@@ -648,6 +630,17 @@ subject = request.getParameter("subject");
 
                 sendResponse(response, userEntity, mapper);
         }
+    }
+
+    private String getRole(UserEntity userEntity) {
+        String result = null;
+        if (userEntity instanceof Developer)
+            result = "developer";
+        if (userEntity instanceof Customer)
+            result = "customer";
+        if (userEntity instanceof Admin)
+            result = "admin";
+        return result;
     }
 
     private void getOrderById(HttpServletRequest request,
@@ -873,6 +866,64 @@ subject = request.getParameter("subject");
             } catch (Exception e) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             }
+        }
+    }
+
+    public void getAvailableCustOrders(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        HttpSession session = request.getSession();
+        UserEntity ue = (UserEntity) session.getAttribute("user");
+        String from = request.getParameter("from");
+
+        if (ue == null) {
+            response.setStatus(304);
+            return;
+        }
+
+
+        if (!"dev".equals(from)) {
+            OrderingService os = (OrderingService) ApplicationContext.getInstance().getBean("orderingService");
+            List<Ordering> orderings = os.getAvailableCustOrders(ue.getId());
+
+            sendResponse(response, orderings, mapper);
+        } else {
+            String custId = request.getParameter("id");
+            OrderingService os = (OrderingService) ApplicationContext.getInstance().getBean("orderingService");
+            List<Ordering> orderings = os.getAvailableCustOrders(Integer.parseInt(custId));
+
+            sendResponse(response, orderings, mapper);
+        }
+    }
+
+    public void getTestByDevId(HttpServletRequest request,
+                               HttpServletResponse response) throws IOException {
+        String param = request.getParameter("id");
+
+        try {
+            Integer devId = Integer.parseInt(param);
+            TestService ts = (TestService) ApplicationContext.getInstance()
+                    .getBean("testService");
+            DeveloperQAService dQAs = (DeveloperQAService) ApplicationContext
+                    .getInstance().getBean("developerQAService");
+            List<DeveloperQA> developerQAs = dQAs.findAllByDevId(devId);
+            for (DeveloperQA developerQA : developerQAs) {
+                developerQA.setTest(ts.findById(developerQA.getTestId()));
+                if (developerQA.getTest().getPassScore() >= developerQA
+                        .getRate()) {
+                    developerQA.setIsPassed(false);
+                } else {
+                    developerQA.setIsPassed(true);
+                }
+            }
+            TechnologyService technologyService = (TechnologyService) ApplicationContext
+                    .getInstance().getBean("technologyService");
+            for (DeveloperQA developerQA : developerQAs) {
+                developerQA.getTest().setTechnology(
+                        technologyService.findById(developerQA.getTestId()));
+            }
+            sendResponse(response, developerQAs, mapper);
+        } catch (Exception e) {
+            response.sendError(500);
+            return;
         }
     }
 

@@ -2,32 +2,31 @@
 
 angular.module('FreelancerApp')
     .factory('custpubAPI', function ($http, config) {
-        var urlBase = '/cust/',
-            dataFactory = {};
+        var dataFactory = {};
 
 
         dataFactory.getCustById = function (id) {
-            return $http.post('/cust/getCustById?id=' + id);
+            return $http.post('/user/type?role=customer&id=' + id);
         };
 
         dataFactory.getFeedForCust = function (id) {
-            return $http.post('/cust/getFeedForCust?id=' + id);
+            return $http.post('/user/customer/feedbacks?id=' + id);
         };
 
         dataFactory.getContForCust = function (id) {
-            return $http.post('/cust/getContForCust?id=' + id);
+            return $http.post('/user/contact?role=customer&id=' + id);
         };
 
         dataFactory.getRateForCust = function (id) {
-            return $http.post('/cust/getRateForCust?id=' + id);
+            return $http.post('/user/getRateForCust?id=' + id);
         };
 
         dataFactory.getOrdPubHist = function (id) {
-            return $http.post('/user/orders/getcustomerhistory?custId=' + id);
+            return $http.post('/user/customer/history?custId=' + id);
         };
 
         dataFactory.getAvailableCustOrders = function (id) {
-            return $http.post('/cust/getAvailableCustOrders?id=' + id + '&from=dev');
+            return $http.post('/user/getAvailableCustOrders?id=' + id + '&from=dev');
         };
 
         return dataFactory;

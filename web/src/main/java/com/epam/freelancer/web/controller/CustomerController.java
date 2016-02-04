@@ -5,8 +5,6 @@ import com.epam.freelancer.business.service.*;
 import com.epam.freelancer.database.model.Contact;
 import com.epam.freelancer.database.model.Customer;
 import com.epam.freelancer.database.model.Feedback;
-import com.epam.freelancer.database.model.Ordering;
-import com.epam.freelancer.database.model.*;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -87,12 +85,12 @@ public class CustomerController extends HttpServlet implements Responsable {
                 case "cust/getRateForCust":
                     getRateForCust(request, response);
                     break;
-                case "cust/getAvailableCustOrders":
-                    getAvailableCustOrders(request, response);
-                    break;
                 case "cust/history":
                     getCustomerHistory(request, response);
                     break;
+                case "user/getRate":
+                    getRate(request, response);
+                    return;
                 default:
             }
         } catch (Exception e) {
@@ -101,30 +99,6 @@ public class CustomerController extends HttpServlet implements Responsable {
         }
     }
 
-    public void getAvailableCustOrders(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        HttpSession session = request.getSession();
-        UserEntity ue = (UserEntity) session.getAttribute("user");
-        String from = request.getParameter("from");
-
-        if (ue == null) {
-            response.setStatus(304);
-            return;
-        }
-
-
-        if (!"dev".equals(from)) {
-            OrderingService os = (OrderingService) ApplicationContext.getInstance().getBean("orderingService");
-            List<Ordering> orderings = os.getAvailableCustOrders(ue.getId());
-
-            sendResponse(response, orderings, mapper);
-        } else {
-            String custId = request.getParameter("id");
-            OrderingService os = (OrderingService) ApplicationContext.getInstance().getBean("orderingService");
-            List<Ordering> orderings = os.getAvailableCustOrders(Integer.parseInt(custId));
-
-            sendResponse(response, orderings, mapper);
-        }
-    }
 
     public void getContForCust(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String param = request.getParameter("id");
@@ -266,6 +240,24 @@ public class CustomerController extends HttpServlet implements Responsable {
 
         contact = mapper.readValue(contactJson, Contact.class);
         System.out.println(contact);
+    }
+
+    public void getRate(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        String param = request.getParameter("id");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                FeedbackService fs = (FeedbackService) ApplicationContext
+                        .getInstance().getBean("feedbackService");
+                Integer avg = fs.getAvgRate(id);
+                sendResponse(response, avg, mapper);
+            } catch (Exception e) {
+                response.sendError(500);
+            }
+        } else {
+            response.sendError(404);
+        }
     }
 
     private void getCustomerHistory(HttpServletRequest

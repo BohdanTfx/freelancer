@@ -1,6 +1,5 @@
 angular.module('FreelancerApp')
     .controller('custpubCtrl', function ($scope, custpubAPI, $log, $http, $location, $filter, $stateParams, $rootScope, Notification) {
-        console.log($stateParams.custName, $stateParams.custId + ' state');
 
         $scope.query = $stateParams.custId;
 
@@ -11,14 +10,12 @@ angular.module('FreelancerApp')
         }
 
         $http.post('/user/isAuth').success(function (data) {
-            console.log(data);
             $scope.mesEmail = data.email;
         }).error(function () {
         });
 
         custpubAPI.getContForCust($scope.query).success(
             function (data, status, headers, config) {
-                console.log(data);
                 if (typeof data.skype != 'undefined')
                     $scope.skype = 'Skype: ' + data.skype;
                 else
@@ -29,7 +26,6 @@ angular.module('FreelancerApp')
             });
 
         custpubAPI.getAvailableCustOrders($scope.query).success(function (data) {
-            console.log(data);
             if (typeof data == 'undefined' || data == null || data.length == 0)
                 $scope.follow = true;
             else {
@@ -41,7 +37,6 @@ angular.module('FreelancerApp')
 
         custpubAPI.getRateForCust($scope.query).success(
             function (data, status, headers, config) {
-                console.log(data);
                 if (typeof data != 'undefined')
                     $scope.rateq = data;
                 else
@@ -52,7 +47,6 @@ angular.module('FreelancerApp')
 
         custpubAPI.getOrdPubHist($scope.query).success(
             function (data, status, headers, config) {
-                console.log(data);
                 $scope.orders = data;
             }).error(function () {
 
@@ -61,7 +55,6 @@ angular.module('FreelancerApp')
         $scope.feed = function () {
             custpubAPI.getFeedForCust($scope.query).success(
                 function (data, status, headers, config) {
-                    console.log(data);
                     if (data.length !== 0) {
                         $scope.feeds = data;
 
@@ -123,7 +116,6 @@ angular.module('FreelancerApp')
                     } else {
                         $scope.customerNotFound = true;
                     }
-                    console.log(data);
                     $scope.id = data.id;
                     if (typeof data.imgUrl == 'undefined' || data.imgUrl == null)
                         $scope.img = 'images/profile/no-profile-img.jpg';
