@@ -5,7 +5,7 @@ import com.epam.freelancer.database.transformer.annotation.Id;
 import com.epam.freelancer.database.transformer.annotation.Table;
 
 @Table(name = "complaint")
-public class Complaint {
+public class Complaint implements BaseEntity<Integer> {
 
     @Id
     private Integer id;
@@ -13,23 +13,20 @@ public class Complaint {
     private Integer order_id;
     @Column(name = "dev_id")
     private Integer dev_id;
+    @Column(name = "isDeleted")
+    private Boolean isDeleted;
+    @Column(name = "version")
+    private Integer version;
 
     public Complaint() {
     }
 
-    public Complaint(Integer id, Integer order_id, Integer dev_id) {
+    public Complaint(Integer id, Integer order_id, Integer dev_id, Boolean isDeleted, Integer version) {
         this.id = id;
         this.order_id = order_id;
         this.dev_id = dev_id;
-    }
-
-    @Override
-    public String toString() {
-        return "Complaint{" +
-                "id=" + id +
-                ", order_id=" + order_id +
-                ", dev_id=" + dev_id +
-                '}';
+        this.isDeleted = isDeleted;
+        this.version = version;
     }
 
     @Override
@@ -41,7 +38,9 @@ public class Complaint {
 
         if (!id.equals(complaint.id)) return false;
         if (!order_id.equals(complaint.order_id)) return false;
-        return dev_id.equals(complaint.dev_id);
+        if (!dev_id.equals(complaint.dev_id)) return false;
+        if (isDeleted != null ? !isDeleted.equals(complaint.isDeleted) : complaint.isDeleted != null) return false;
+        return !(version != null ? !version.equals(complaint.version) : complaint.version != null);
 
     }
 
@@ -50,7 +49,27 @@ public class Complaint {
         int result = id.hashCode();
         result = 31 * result + order_id.hashCode();
         result = 31 * result + dev_id.hashCode();
+        result = 31 * result + (isDeleted != null ? isDeleted.hashCode() : 0);
+        result = 31 * result + (version != null ? version.hashCode() : 0);
         return result;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
+    }
+
+    @Override
+    public Integer getVersion() {
+        return version;
+    }
+
+    @Override
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 
     public Integer getId() {
