@@ -1,6 +1,7 @@
 .test_page h2 {
     display: inline-block;
 }
+
 .test_page .timer {
     font-size: 30px;
     font-weight: bold;
@@ -8,11 +9,13 @@
     margin: 20px 30px 10px 0px;
 
 }
-.test_page md-progress-linear{
+
+.test_page md-progress-linear {
     height: 15px;
     padding: 30px 30px;
 }
-.test_page md-progress-linear .md-container, md-progress-linear .md-container .md-bar{
+
+.test_page md-progress-linear .md-container, md-progress-linear .md-container .md-bar {
     height: 15px;
 }
 
@@ -63,10 +66,9 @@
     border-collapse: collapse;
 }
 
-.test_page .results_border_bottom{
+.test_page .results_border_bottom {
     border-bottom: solid 2px #2591ff;;
 }
-
 
 .test_page .test-result td, th {
     border-right: solid 2px #2591ff;
@@ -93,12 +95,14 @@
     font-weight: bolder;
 }
 
-.test_page .result_success{
+.test_page .result_success {
     color: green;
 }
-.test_page .result_fail{
+
+.test_page .result_fail {
     color: red;
 }
+
 .tesp_page {
     padding: 2.5em;
 }
