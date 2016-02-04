@@ -5,7 +5,7 @@ angular
 		.service(
 				'orderService',
 				function($http) {
-					var that = this;
+					var self = this;
 					$http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
 					this.loadTechnologies = function() {
@@ -17,7 +17,7 @@ angular
 							return 'empty';
 						if (selectedTechnologies.length < 3)
 							return 'small';
-						if (selectedTechnologies.length > 20)
+						if (selectedTechnologies.length > 15)
 							return 'big';
 						return 'ok';
 					}

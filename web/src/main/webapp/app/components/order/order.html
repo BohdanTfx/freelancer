@@ -87,12 +87,20 @@
 			<md-input-container class="col-xs-12"> <label>Technologies</label>
 			<md-icon md-font-icon="fa-gears" class="fa"></md-icon>
 			<div isteven-multi-select input-model="technologies"
-				class="order-technology" output-model="selectedTechnologies"
+				class="order-technology" output-model="order.selectedTechnologies"
 				button-label="name" item-label="name" tick-property="ticked"></div>
 			</md-input-container>
 
-			<md-button class="md-raised md-primary" type="submit"> <strong>Create
-				new order</strong> </md-button>
+			<div class="col-xs-12">
+				<div class="col-xs-6">
+					<md-button class="md-raised md-primary full-width" type="submit">
+					<strong>Create new order</strong> </md-button>
+				</div>
+				<div class="col-xs-6">
+					<md-button class="md-raised md-warn full-width"
+						ng-click="resetInputs()"> Reset </md-button>
+				</div>
+			</div>
 		</form>
 		</md-content>
 	</div>

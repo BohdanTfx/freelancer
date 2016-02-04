@@ -3,9 +3,10 @@ angular
 		.controller(
 				'orderCtrl',
 				function($scope, orderService, $log, $http, Notification) {
+					$scope.order = {};
 					$scope.createOrder = function() {
 						var techValidation = orderService
-								.validateTechnologies($scope.selectedTechnologies);
+								.validateTechnologies($scope.order.selectedTechnologies);
 						if (techValidation != 'ok') {
 							Notification
 									.error({
@@ -16,6 +17,18 @@ angular
 						}
 
 						alert('order created');
+					}
+
+					$scope.resetInputs = function() {
+						$scope.order.title = "";
+						$scope.order.descr = ""
+						$scope.order.pay_type = "";
+						$scope.order.payment = "";
+						$scope.order.zone = $scope.getCurrentZone();
+						angular.forEach($scope.technologies,
+								function(value, key) {
+									value['ticked'] = false;
+								});
 					}
 
 					$scope.TechnologyValidator = {};
