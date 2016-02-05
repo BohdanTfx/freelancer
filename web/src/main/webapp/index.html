@@ -21,7 +21,7 @@
     <!-- mobile meta -->
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico">
 
     <!--[if IE]>
@@ -48,11 +48,11 @@
     <link rel="stylesheet"
           href="bower_components/angularjs-slider-master/rzslider.min.css">
     <link rel="stylesheet"
-          href="bower_components/angular-bootstrap/ui-bootstrap-csp.css" />
+          href="bower_components/angular-bootstrap/ui-bootstrap-csp.css"/>
     <link rel="stylesheet"
-          href="bower_components/angular-ui-notification-master/angular-ui-notification.min.css" />
+          href="bower_components/angular-ui-notification-master/angular-ui-notification.min.css"/>
     <link rel="stylesheet"
-          href="bower_components/angular-bootstrap/ui-bootstrap-tpls-0.14.0.min.js" />
+          href="bower_components/angular-bootstrap/ui-bootstrap-tpls-0.14.0.min.js"/>
     <link rel="stylesheet" href="app/styles/Animate.css">
     <link rel="stylesheet" href="app/styles/font-awesome.min.css">
     <link rel="stylesheet" href="app/styles/hover.min.css">
@@ -93,6 +93,7 @@
                     <a href="#/home"> <img alt="Site logo"
                                            class="img-logo img-png animated rotateIn" data-tooltip="yes"
                                            title="Home" data-placement="right" src="/images/logo.png">
+
                         <h1 class="text-shadow-white logo-text">Freelancer</h1>
                     </a>
                 </div>
@@ -145,37 +146,94 @@
 <div ng-switch on="logged">
     <div ng-switch-when="true">
         <div class="MenuController">
-            <md-toolbar class="md-menu-toolbar"> <md-menu-bar
-                    class="menuIcons "> <a href="#/home"> <i
-                    class="fa fa-home menuIconBtn home-btn"></i>
-            </a> </md-menu> <md-menu md-offset="49">
-                <button ng-click="$mdOpenMenu()" class="menuIconBtn">
-                    <i class="fa fa-user "></i>
-                </button>
-                <md-menu-content width=3 md-position-mode=target-left
-                                 class="menuContent"> <md-menu-item>
-                    <md-button onclick="location.href='#/personal'">
-                        Personal </md-button> </md-menu-item> <md-menu-item> <md-button
-                        onclick="location.href='#/myworks'"> My Works </md-button> </md-menu-item> <md-menu-item>
-                    <md-button onclick="location.href='#/tests'"> Tests </md-button> </md-menu-item> </md-menu-content> </md-menu>
+            <md-toolbar class="md-menu-toolbar">
+                <md-menu-bar
+                        class="menuIcons "><a href="#/home"> <i
+                        class="fa fa-home menuIconBtn home-btn"></i>
+                </a>
 
-                <md-menu md-offset="49">
-                    <button ng-click="$mdOpenMenu()" class="menuIconBtn">
-                        <i class="fa fa-bar-chart"></i>
-                    </button>
-                    <md-menu-content width=3 md-position-mode=target-left
-                                     class="menuContent"> <md-menu-item>
-                        <md-button> Statistics 1 </md-button> </md-menu-item> <md-menu-item>
-                        <md-button> Statistics 2 </md-button> </md-menu-item> <md-menu-item>
-                        <md-button> Statistics 3 </md-button> </md-menu-item> </md-menu-content> </md-menu> <md-menu md-offset="49">
-                    <button ng-click="$mdOpenMenu()" class="menuIconBtn">
-                        <i class="fa fa-cogs"></i>
-                    </button>
-                    <md-menu-content width=3 md-position-mode=target-left
-                                     class="menuContent"> <md-menu-item>
-                        <md-button> Settings 1 </md-button> </md-menu-item> <md-menu-item> <md-button>
-                        Settings 2 </md-button> </md-menu-item> <md-menu-item> <md-button>
-                        Settings 3 </md-button> </md-menu-item> </md-menu-content> </md-menu> </md-menu-bar> </md-toolbar>
+
+                    <md-menu md-offset="49">
+                        <button ng-click="$mdOpenMenu()" class="menuIconBtn">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        <md-menu-content width=3 md-position-mode=target-left
+                                         class="menuContent">
+                            <md-menu-item>
+                                <md-button onclick="location.href='#/orders'"> Orders</md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button onclick="location.href='#/developers'"> Developers</md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+
+
+                    </md-menu>
+                    <md-menu md-offset="49">
+                        <button ng-click="$mdOpenMenu()" class="menuIconBtn">
+                            <i class="fa fa-user "></i>
+                        </button>
+
+                        <md-menu-content width=3 md-position-mode=target-left
+                                         class="menuContent">
+                            <md-menu-item>
+                                <md-button onclick="location.href='#/personal'">
+                                    Personal
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button
+                                        onclick="location.href='#/myworks'"> My Works
+                                </md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button onclick="location.href='#/tests'"> Tests</md-button>
+                            </md-menu-item>
+
+                            <span ng-switch="role">
+                                <span ng-switch-when="developer">
+                                    <md-menu-item>
+                                        <md-button type="submit" ng-href="/#/public/developer/full-name/{{project.id}}"> See my public page</md-button>
+                                    </md-menu-item>
+                                </span>
+                                 <span ng-switch-when="customer">
+                                    <md-menu-item>
+                                        <a ng-href="/#/public/developer/full-name/{{project.id}}">See my public page</a>
+                                    </md-menu-item>
+                                </span>
+                                <span ng-switch-default>
+                                </span>
+                            </span>
+                            </md-menu-content>
+                    </md-menu>
+
+                    <md-menu md-offset="49">
+                        <button ng-click="$mdOpenMenu()" class="menuIconBtn">
+                            <i class="fa fa-bar-chart"></i>
+                        </button>
+                        <md-menu-content width=3 md-position-mode=target-left
+                                         class="menuContent">
+                            <md-menu-item>
+                                <md-button onclick="location.href='#/admin/statistics'"> Statistics</md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                    <md-menu md-offset="49">
+                        <button ng-click="$mdOpenMenu()" class="menuIconBtn">
+                            <i class="fa fa-cogs"></i>
+                        </button>
+                        <md-menu-content width=3 md-position-mode=target-left
+                                         class="menuContent">
+                            <md-menu-item>
+                                <md-button> Settings 1</md-button>
+                            </md-menu-item>
+
+
+                        </md-menu-content>
+                    </md-menu>
+                </md-menu-bar>
+            </md-toolbar>
         </div>
 
         <!-- Main view for templates -->

@@ -68,8 +68,8 @@
                     templateUrl: 'app/components/custpub/custpub.html',
                     controller: 'custpubCtrl'
 				}).state('admin', {
-					url: '/admin',
-					templateUrl: 'app/components/admin/admin.html',
+					url: '/admin/statistics',
+					templateUrl: 'app/components/admin/adminStatistics.html',
 					controller: 'adminCtrl'
 				}).state('signupadmin', {
 					url : '/signup/:uuid',
