@@ -3,6 +3,7 @@ package com.epam.freelancer.database.model;
 import com.epam.freelancer.database.transformer.annotation.Column;
 import com.epam.freelancer.database.transformer.annotation.Id;
 import com.epam.freelancer.database.transformer.annotation.Table;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import java.sql.Timestamp;
 import java.util.Locale;
@@ -10,6 +11,7 @@ import java.util.Locale;
 /**
  * Created by Max on 15.01.2016.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "developer")
 public class Developer implements UserEntity {
     @Id
@@ -48,6 +50,15 @@ public class Developer implements UserEntity {
     @Column(name = "position")
     private String position;
     private String role;
+    private String confirmCode;
+
+    public String getConfirmCode() {
+        return confirmCode;
+    }
+
+    public void setConfirmCode(String confirmCode) {
+        this.confirmCode = confirmCode;
+    }
 
     public String getOverview() {
         return overview;

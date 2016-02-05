@@ -19,17 +19,11 @@ import com.epam.freelancer.database.model.Contact;
 import com.epam.freelancer.database.model.Customer;
 import com.epam.freelancer.database.model.Feedback;
 import com.google.gson.Gson;
-import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.List;
+import java.util.Random;
 
 /**
  * Created by Максим on 22.01.2016.
@@ -41,11 +35,13 @@ public class CustomerController extends HttpServlet {
     private TestService testService;
     private TechnologyService technologyService;
     private ObjectMapper mapper;
+    private CustomerService customerService;
 
     public CustomerController() {
         mapper = new ObjectMapper();
         testService = (TestService) ApplicationContext.getInstance().getBean("testService");
         technologyService = (TechnologyService) ApplicationContext.getInstance().getBean("technologyService");
+        customerService = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
     }
 
     @Override
@@ -55,7 +51,7 @@ public class CustomerController extends HttpServlet {
             String path = FrontController.getPath(request);
 
             switch (path) {
-                case "cust/personal":
+                case "cust/getpersonalcustdata":
                     fillCustomerPersonalPage(request, response);
                     break;
                 default:
@@ -78,6 +74,11 @@ public class CustomerController extends HttpServlet {
                 case "cust/sendpersonaldata":
                     updatePersonalData(request, response);
                     break;
+                case "cust/changecustpassword":
+                    changeCustomerPassword(request, response);
+                    break;
+                case "cust/confirmchangepassword":
+                    confirmChangePassword(request, response);
                 default:
             }
         } catch (Exception e) {
@@ -124,29 +125,16 @@ public class CustomerController extends HttpServlet {
     }
 
     private void fillCustomerPersonalPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession();
+        Customer customer = (Customer) session.getAttribute("user");
+        Contact contact = customerService.getContactByCustomerId(customer.getId());
 
-        Customer            customer;
-        Contact             contact;
-        HttpSession         session;
-        CustomerService     customerService;
-        String              customerJson;
-        String              contactJson;
-        String              resultJson;
-
-        customerService = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
-
-        session = request.getSession();
-        session.setAttribute("user", customerService.findById(1));
-
-        customer = (Customer) session.getAttribute("user");
-        contact = customerService.getContactByCustomerId(customer.getId());
-
-        customerJson    = new Gson().toJson(customer);
-        System.out.println(customerJson);
-        contactJson     = new Gson().toJson(contact);
-        System.out.println(contactJson);
-
-        resultJson = "{\"cust\":" + customerJson + ",\"cont\":" + contactJson +"}";
+        String customerJson = new Gson().toJson(customer);
+        String contactJson = new Gson().toJson(contact);
+        String resultJson = "{\"cust\":" + customerJson + ",\"cont\":" + contactJson +"}";
+        if(contactJson.length() == 0){
+            resultJson = "{\"cust\":" + customerJson + "}";
+        }
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
@@ -154,32 +142,33 @@ public class CustomerController extends HttpServlet {
     }
 
     private void updatePersonalData(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
         Customer    customer = null;
-        Contact     contact;
-        String      customerJson;
-        String      contactJson;
+        Contact     contact = null;
 
         SimpleDateFormat format = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a");
         mapper.setDateFormat(format);
 
-        customerJson = request.getParameter("customer");
-        System.out.println(customerJson);
-
+        String customerJson = request.getParameter("customer");
         try {
             customer = mapper.readValue(customerJson, Customer.class);
-
         } catch(Exception e){
             LOG.warn("Some problem with mapper Customer Controller");
         }
+        String contactJson = request.getParameter("contact");
+        if(contactJson.length() != 0 ) {
+            contact = mapper.readValue(contactJson, Contact.class);
+        }
 
-        System.out.println("AFTER MAPPER +++++\n" + customer);
+        if(customerService.getContactByCustomerId(customer.getId()) == null){
+            contact.setCustomId(customer.getId());
+            customerService.updateContact(contact);    /// NEED METHOD CREATE
+        } else {
+            contact.setCustomId(customer.getId());
+            customerService.updateContact(contact);
+        }
 
-        contactJson = request.getParameter("contact");
-        System.out.println(contactJson);
+        customerService.modify(customer);
 
-        contact = mapper.readValue(contactJson, Contact.class);
-        System.out.println(contact);
     }
 
     private void sendResp(Object ue, HttpServletResponse response) throws IOException {
@@ -204,4 +193,46 @@ public class CustomerController extends HttpServlet {
         response.getWriter().close();
     }
 
+    private void changeCustomerPassword(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String password = request.getParameter("password");
+        String newPassword = request.getParameter("newPassword");
+        HttpSession session = request.getSession();
+        Customer customer = (Customer) session.getAttribute("user");
+        String confirmPhoneCode = "";
+
+        if (customer != null) {
+            if (customerService.validCredentials(customer.getEmail(), password, customer)) {
+                Random random = new Random();
+                for (int i = 0; i < 4; i++) {
+                    confirmPhoneCode = confirmPhoneCode + String.valueOf(random.nextInt(9));
+                }
+                customer.setConfirmCode(confirmPhoneCode);
+
+                //Enter sending SMS to user
+
+                String confirmCodeJson = new Gson().toJson(confirmPhoneCode);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+
+                response.getWriter().write(confirmCodeJson);
+            } else {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                        "Invalid credentials");
+                response.flushBuffer();
+                return;
+            }
+        }
+    }
+
+    private void confirmChangePassword(HttpServletRequest request, HttpServletResponse response){
+        String password = request.getParameter("password");
+        HttpSession session = request.getSession();
+        Customer customer = (Customer) session.getAttribute("user");
+
+        customer.setPassword(password);
+        customerService.encodePassword(customer);
+        customerService.modify(customer);
+
+
+    }
 }

@@ -1,67 +1,41 @@
-angular.module('FreelancerApp')
-    .controller('personalCtrl', function ($scope, $http, personalAPI, $log, $stateParams, $rootScope) {
+ angular.module('FreelancerApp')
+    .controller('personalCtrl',['$scope', '$http','personalAPI', '$log', '$rootScope','$mdDialog', function($scope, $http, personalAPI, $log, $rootScope, $mdDialog){
+        var devTemp, techsTemp, contTemp, custTemp;
 
-        var devTemp, techsTemp, contTemp;
+        $scope.newPassword = '';
+        $scope.confirmPassword = '';
+        $scope.password = '';
+        $scope.email='';
 
-        console.log('START PERSONAL');
-        console.log($rootScope.role);
-        //$scope.devId = $stateParams.id;
-        //console.log($scope.devId + '  devID');
+        if($rootScope.role =='developer'){
+            personalAPI.getDevPersonal().success(function(data) {
+                $scope.user = data.dev;
+                if ($scope.user.regDate != 'underfined') {
+                    $scope.user.regDate = new Date($scope.user.regDate).getTime();
+                }
 
+                //check for empty Json
+                if(typeof data.techs != 'underfined'){
+                    $scope.techs = data.techs;
+                }
+                if(typeof data.contacts != 'underfined'){
+                    $scope.cont = data.contacts;
+                }
+                if(typeof data.allTechs != 'underfined'){
+                    $scope.allTechs = data.allTechs;
+                }
 
-
-
-        personalAPI.getPersonal().success(function(data) {
-
-            $log.log(data);
-
-            $scope.patternPhone = '[0-9]{11}';
-
-            $scope.dev = data.dev;
-            $scope.dev.regDate = new Date($scope.dev.regDate).getTime();
-
-            if(typeof data.techs != 'undefined'){
-                $scope.techs = data.techs;
-                console.log($scope.techs);
-            } else {
-                console.log('No technologies');
-            }
-
-            if(typeof data.contacts != 'undefined'){
-                $scope.cont = data.contacts;
-                console.log($scope.cont);
-            } else {
-                console.log('No contacts');
-            }
-
-            $scope.allTechs = data.allTechs;
-
-            devTemp = clone($scope.dev);
-            techsTemp = clone($scope.techs);
-            contTemp = clone($scope.cont);
-
-            if (typeof $scope.dev.imgUrl == 'undefined')
-                $scope.img = 'images/profile/default_logo.jpg';
-            else
-                $scope.img = $scope.dev.imgUrl;
-
-
-            $scope.testTech = [
-                { name: "Java"},
-                { name: "C"},
-                { name: "C++"},
-                { name: "C#"},
-            ];
-            $scope.allTestTech = [
-                {name: "Test"},
-                {name: "Big"},
-                {name: "Speed"},
-                {name: "Red"}
-            ];
-
-        }).error(function () {
-            alert('alert');
-        });
+                //check for empty image
+                if(typeof $scope.user.imgUrl =='underfined'){
+                    $scope.img = 'images/profile/default_logo.jpg';
+                } else {
+                    $scope.img = $scope.user.imgUrl;
+                }
+                devTemp = clone($scope.user);
+                techsTemp = clone($scope.techs);
+                contTemp = clone($scope.contact);
+            });
+        }
 
         $scope.hide = false;
         $scope.editClass = 'editClass';
@@ -70,57 +44,88 @@ angular.module('FreelancerApp')
             $scope.editClass = '';
             $scope.hide = true;
 
-            devTemp = clone($scope.dev);
-            techsTemp = clone($scope.techs);
-            contTemp = clone($scope.cont);
+            if($rootScope.role =='developer') {
+                devTemp = clone($scope.user);
+                techsTemp = clone($scope.techs);
+                contTemp = clone($scope.contact);
+            }
+            if($rootScope.role == 'customer'){
+                custTemp = clone($scope.user);
+                contTemp = clone($scope.contact);
+            }
         };
 
         $scope.disableEditor = function() {
-
             $scope.hide = false;
-
-            $scope.dev = devTemp;
-            $scope.techs = techsTemp;
-            $scope.cont = contTemp;
-
-            console.log(devTemp );
-
+            if($rootScope.role =='developer') {
+                $scope.user = devTemp;
+                $scope.techs = techsTemp;
+                $scope.contact = contTemp;
+            }
+            if($rootScope.role == 'customer'){
+                $scope.user = custTemp;
+                $scope.contact = contTemp;
+            }
             $scope.editClass = 'editClass';
-
-
         };
 
         $scope.save = function() {
-            var devJson, techsJson, contJson;
-
+            var devJson, techsJson, contactJson;
             $scope.editClass = 'editClass';
             $scope.hide = false;
 
-            console.log($scope.dev.fname);
-            devJson = angular.toJson($scope.dev);
-            techsJson = angular.toJson($scope.techs);
-            contJson = angular.toJson($scope.cont);
+            if($rootScope.role =='developer') {
+                devJson = angular.toJson($scope.user);
+                techsJson = angular.toJson($scope.techs);
+                contactJson = angular.toJson($scope.contact);
 
-            devTemp = angular.copy($scope.dev);
-            techsTemp = angular.copy($scope.techs);
-            contTemp = angular.copy($scope.cont);
+                devTemp = clone($scope.user);
+                techsTemp = clone($scope.techs);
+                contTemp = clone($scope.contact);
 
-            console.log(devJson);
-            console.log(techsJson);
-            console.log(contJson);
+                personalAPI.sendDevData(devJson, techsJson, contactJson).success(function (data){
+                    $log.log(data);
+                    $scope.result = data;
+                }).error(function () {
+                });
+            }
+            if($rootScope.role == 'customer') {
+                var custJson;
+                custJson = angular.toJson($scope.user);
+                contactJson = angular.toJson($scope.contact);
+                custTemp = clone($scope.user);
+                contTemp = clone($scope.contact);
 
-            personalAPI.sendData(devJson, techsJson, contJson).success(function (data){
-                $log.log(data);
-                $scope.result = data;
-            }).error(function () {
-                alert('Server is busy');
-            });
+                personalAPI.sendCustData(custJson, contactJson).success(function (data){
+                    $log.log(data);
+                    $scope.result = data;
+                }).error(function () {
+                });
+            }
         };
 
-        //$scope.tags = $scope.techs;
-        //$scope.loadTags = function(query){
-        //    return $http.get(query);
-        //};
+        if($rootScope.role == 'customer') {
+            personalAPI.getCustPersonal().success(function (data) {
+                var custTemp, contTemp;
+                $log.log(data);
+                $scope.user = data.cust;
+                $scope.contact = data.cont;
+                if ($scope.user.regDate != 'underfined') {
+                    $scope.user.regDate = new Date($scope.user.regDate).getTime();
+                }
+
+                custTemp = clone($scope.user);
+                contTemp = clone($scope.contact);
+
+                if (typeof $scope.user.imgUrl == 'undefined') {
+                    $scope.img = 'images/profile/default_logo.jpg';
+                }
+                else {
+                    $scope.img = $scope.user.imgUrl;
+                }
+
+            });
+        }
 
         function clone(obj) {
             if(obj === null || typeof(obj) !== 'object' || 'isActiveClone' in obj)
@@ -135,131 +140,165 @@ angular.module('FreelancerApp')
                     delete obj['isActiveClone'];
                 }
             }
-
             return temp;
         }
 
+        $scope.resetPassword = function(){
+            $scope.newPassword = '';
+            $scope.confirmPassword = '';
+            $scope.password = '';
+        };
 
-        //$scope.submit = function() {
-        //
-        //        $scope.upload($scope.file);
-        //
-        //};
-        //$scope.upload = function (file) {
-        //    Upload.upload({
-        //        url: 'images/dev/',
-        //        data: {file: file, 'username': $scope.username}
-        //    }).then(function (resp) {
-        //        console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
-        //    }, function (resp) {
-        //        console.log('Error status: ' + resp.status);
-        //    }, function (evt) {
-        //        var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-        //        console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
-        //    });
-        //};
+        $scope.resetEmail = function(){
+            $scope.email = '';
+        };
 
-        //  var  file = $scope.files;
-        //  $scope.upload = function(file){
-        //      personalAPI.upload(data).success(function (data) {
-        //          $log.log(data);
-        //          $scope.result = data;
-        //      }).error(function () {
-        //          alert('Server is busy');
-        //      });
-        //  }
-        //
-        //  $scope.add = function(){
-        //      var imageJson, imgData, dataUrl;
-        //      var file = document.getElementById('file').files[0];
-        //
-        //
-        //      console.log("File name: " + file.fileName);
-        //
-        //      var reader = new FileReader(file);
-        //
-        //      reader.onload = function(event) {
-        //          // I usually remove the prefix to only keep data, but it depends on your server
-        //          var data = event.target.result.replace("data:" + file.type + ";base64,", '');
-        //
-        //
-        //          //img1 = new Image(reader);
-        //          console.log('readGood');
-        //          //imageJson = JSON.stringify(getBase64Image(img1))
-        //          //imgData = getBase64Image(file)
-        //          //dataUrl = canvas.toDataURL();
-        //          //console.log(imageJson);
-        //          console.log('sending image');
-        //          personalAPI.sendImage(data).success(function (data) {
-        //              $log.log(data);
-        //              $scope.result = data;
-        //          }).error(function () {
-        //              alert('Server is busy');
-        //          });
-        //
-        //          reader.readAsDataURL(file);
-        //          console.log(data);
-        //      }
-        //
-        //}
-        //
-        //
-        //  function getBase64Image(imgElem) {
-        //      var canvas = document.createElement("canvas");
-        //      canvas.width = imgElem.clientWidth;
-        //      canvas.height = imgElem.clientHeight;
-        //      var ctx = canvas.getContext("2d");
-        //      ctx.drawImage(imgElem, 0, 0);
-        //      var dataURL = canvas.toDataURL("image/png");
-        //      return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
-        //  }
-        //
-        //
-        //  $scope.fileToUpload = null;
-        //  $scope.upload = function () {
-        //      $http({
-        //          method: 'POST',
-        //          url: 'api/fileupload',
-        //          headers: {
-        //              'Content-Type': 'multipart/form-data'
-        //          },
-        //          data: {
-        //              upload: $scope.fileToUpload
-        //          },
-        //          transformRequest: function (data, headersGetter) {
-        //              var formData = new FormData();
-        //              angular.forEach(data, function (value, key) {
-        //                  formData.append(key, value);
-        //              });
-        //
-        //              var headers = headersGetter();
-        //              delete headers['Content-Type'];
-        //
-        //              return formData;
-        //          }
-        //      })
-        //          .success(function (data, status, headers, config) {
-        //              alert(data.FName);
-        //          })
-        //          .error(function (data, status, headers, config) {
-        //              alert(data);
-        //          });
-        //  };
+        $scope.changePassword = function() {
+
+            if($rootScope.role =='developer'){
+                personalAPI.changeDevPassword($scope.password, $scope.newPassword).success(function (data){
+                    $log.log(data);
+                    $scope.result = data;
+                    $scope.confirmPasswordFlag = true;
+                    $scope.confirmPassword = $scope.newPassword;
+                    console.log($scope.confirmPasswordFlag);
+
+                }).error(function (response) {
+                    $scope.confirmPasswordFlag = false;
+                    console.log($scope.confirmPasswordFlag);
+                    $scope.error = 'Invalid credentials';
+                });
+            }
+
+            if($rootScope.role == 'customer') {
+                personalAPI.changeCustPassword($scope.password, $scope.newPassword).success(function (data){
+                    $log.log(data);
+                    $scope.result = data;
+                    $scope.confirmPasswordFlag = true;
+                    $scope.confirmPassword = $scope.newPassword;
+                    console.log($scope.confirmPasswordFlag);
 
 
+                }).error(function (response) {
+                    $scope.confirmPasswordFlag = false;
+                    $scope.error = 'Invalid credentials';
+                });
+            }
+        };
+
+        $scope.confirmCode = '';
+
+        $scope.confirmPhoneCode = function(){
+            if($rootScope.role =='developer'){
+                if($scope.confirmCode == $scope.user.confirmCode){
+                    personalAPI.confirmCodeAndChangeDevPassword($scope.confirmPassword).success(function (data){
+                        $log.log(data);
+                        $scope.result = data;
+                        $scope.confirmPhoneCode = true;
+
+                    }).error(function (response) {
+                        $scope.confirmPhoneCode = false;
+                    });
+                    $scope.showDialogConfirm();
+                } else {
+                    $scope.confirmPhoneCode = false;
+                    $scope.showDialogConfirm();
+                }
+            }
+            if($rootScope.role == 'customer'){
+                if($scope.confirmCode == $scope.user.confirmCode){
+                    personalAPI.confirmCodeAndChangeCustPassword($scope.confirmPassword).success(function (data){
+                        $log.log(data);
+                        $scope.result = data;
+                        $scope.confirmPhoneCode = true;
+                    }).error(function (response) {
+                        $scope.confirmPhoneCode = false;
+                    });
+                    $scope.showDialogConfirm();
+                } else {
+                    $scope.confirmPhoneCode = false;
+                    $scope.showDialogConfirm()
+                }
+            }
+        };
+
+        $scope.showTabDialog = function ($event){
+            $mdDialog.show({
+                targetEvent: $event,
+                scope: $scope,
+                preserveScope: true,
+                templateUrl: 'app/components/personal/changePasswordTabDialog.html',
+                controller: 'personalCtrl',
+                onComplete: afterShowAnimation,
+                locals: { confirmPasswordFlag: $scope.confirmPasswordFlag }
+            });
+
+            function afterShowAnimation(scope, element, options) {
+
+            }
+        };
+        $scope.cancel = function() {
+            $mdDialog.cancel();
+        };
+
+        $scope.showDialogConfirm = function ($event){
+            $mdDialog.show({
+                targetEvent: $event,
+                scope: $scope,
+                preserveScope: true,
+                templateUrl: 'app/components/personal/passwordChanged.html',
+                controller: 'personalCtrl',
+                onComplete: afterShowAnimation,
+                locals: { confirmPasswordFlag: $scope.confirmPasswordFlag }
+            });
+
+            function afterShowAnimation(scope, element, options) {
+
+            }
+        };
+        $scope.cancel = function() {
+            $mdDialog.cancel();
+        };
+
+        $scope.uploadFromDevice = function (e, callback) {
+            var img = new Image();
+            var canvas = document.createElement("canvas");
+            console.log('upload image');
+            var file = document.getElementById('file').files[0];
+            img.src = URL.createObjectURL(file);
+            var ctx = canvas.getContext("2d");
+            img.onload = function () {
+                ctx = canvas.getContext("2d");
+                var maxWidth = 2000, // Max width for the image
+                    ratio = 0,  // Used for aspect ratio
+                    width = img.width,    // Current image width
+                    height = img.height;  // Current image height
+
+                if (width > maxWidth) {
+                    ratio = maxWidth / width;   // get ratio for scaling image
+                    height = height * ratio;    // Reset height to match scaled image
+                    width = width * ratio;    // Reset width to match scaled image
+                }
+                canvas.width = width;
+                canvas.height = height;
+                ctx.fillStyle = '#fff';  /// set white fill style
+                ctx.fillRect(0, 0, width, height);
+                ctx.drawImage(this, 0, 0, width, height);
+                var dataURL = canvas.toDataURL("image/jpg");
+                var base = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+
+                console.log(base);
+                //personalAPI.
+                personalAPI.sendImage(base).success(function (data){
+                    $log.log(data);
+                    $scope.result = data;
+                }).error(function () {
+                    console.log('error image');
+                });
 
 
-
-        //$scope.loadTechs = function($query) {
-        //    return $http.get('techs.json', {cache: true}).then(function (response) {
-        //        var techs = response.data;
-        //        return techs.filter(function (tech) {
-        //            return tech.name.toLowerCase().indexOf($query.toLowerCase()) != -1;
-        //        });
-        //    });
-        //};
-
-
+            }
+        };
 
         $scope.timeZones = [
             {
@@ -383,7 +422,4 @@ angular.module('FreelancerApp')
                 title : "+12 New zealand, Kamchatka, Kiribati",
                 ticked : false
             } ];
-
-
-
-    });
+    }]);

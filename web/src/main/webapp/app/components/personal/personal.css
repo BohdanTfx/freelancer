@@ -19,6 +19,9 @@
 .per-pad {
     padding-top: 10px;
 }
+.per-line{
+    display:inline;
+}
 .ng-hide {
     /* this is just another form of hiding an element */
     display: block !important;
@@ -104,8 +107,8 @@
     text-decoration: none;
 }
 .ih-item img {
-    width: 100%;
-    height: 100%;
+    width: 75%;
+    height: 75%;
 }
 
 .ih-item.circle {

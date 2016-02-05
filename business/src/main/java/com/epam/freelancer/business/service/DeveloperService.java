@@ -36,6 +36,7 @@ public class DeveloperService extends UserService<Developer> {
 	private GenericDao<Worker, Integer> workerDao;
 	private GenericDao<Contact, Integer> contactDao;
 	private GenericDao<Follower, Integer> followerDao;
+	private GenericDao<Technology, Integer> technologyDao;
 
 	public DeveloperService() {
 		super(DAOManager.getInstance().getDAO(
@@ -70,6 +71,10 @@ public class DeveloperService extends UserService<Developer> {
 		encodePassword(entity);
 
 		return genericDao.save(entity);
+	}
+
+	public Developer updateDeveloper(Developer developer){
+		return genericDao.update(developer);
 	}
 
 	private Map<ValidationParametersBuilder.Parameters, String> prepareData(
@@ -185,6 +190,10 @@ public class DeveloperService extends UserService<Developer> {
         return contactDao.update(contact);
     }
 
+	public Technology updateTechnology(Technology technology){
+		return technologyDao.update(technology);
+	}
+
 	public void deleteContact(Contact contact) {
 		contactDao.delete(contact);
 	}
@@ -192,6 +201,10 @@ public class DeveloperService extends UserService<Developer> {
 	public List<Technology> getTechnologiesByDevId(Integer id) {
 		return ((DevTechManyToManyDao) devMTMtechDao)
 				.getTechnologiesByDevId(id);
+	}
+	public void setTechnologiesByDevId(Integer developerId,Integer technologyId ){
+
+		((DevTechManyToManyDao) devMTMtechDao).saveTechnologies(developerId, technologyId);
 	}
 
 	public void setFollowerDao(GenericDao<Follower, Integer> followerDao) {
@@ -245,4 +258,5 @@ public class DeveloperService extends UserService<Developer> {
 
 		return map;
 	}
+
 }

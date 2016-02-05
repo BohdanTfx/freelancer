@@ -1,12 +1,8 @@
 package com.epam.freelancer.web.controller;
 
-import java.io.IOException;
+import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import java.util.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,15 +10,17 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.epam.freelancer.business.service.*;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.database.model.*;
 import com.epam.freelancer.web.json.model.Quest;
 import com.google.gson.Gson;
-
+import org.codehaus.jackson.type.TypeReference;
 
 /**
  * Created by Максим on 22.01.2016.
@@ -69,10 +67,9 @@ public class DeveloperController extends HttpServlet {
                 case "dev/getworkersbyidorder":
                     sendWorkersByIdOrder(request, response);
                     break;
-                case "dev/personal":
+                case "dev/getpersonaldevdata":
                     fillPersonalPage(request, response);
                     break;
-
 
                 default:
 
@@ -99,6 +96,12 @@ public class DeveloperController extends HttpServlet {
                     break;
                 case "dev/uploadImage":
                     uploadImage(request, response);
+                    break;
+                case "dev/changedevpassword":
+                    changeDeveloperPassword(request, response);
+                    break;
+                case "dev/confirmchangepassword":
+                    confirmChangePassword(request, response);
                     break;
                 default:
 
@@ -303,53 +306,28 @@ public class DeveloperController extends HttpServlet {
     }
 
     private void fillPersonalPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        List<Technology>    technologies = null;
-        HttpSession         session = null;
-        Developer           developer = null;
-        Contact             contact = null;
-        String              developerJson;
-        String              devTechsJson;
-        String              resultJson;
-        String              contactJson;
-        String              allTechsJson;
-
+        List<Technology> technologies = null;
+        HttpSession session = request.getSession();
+        Developer developer = (Developer) session.getAttribute("user");
+        Contact contact = null;
         List<String> listTechs = new ArrayList<>();
-
-        session             = request.getSession();
-
         try {
-
-            developer = (Developer) session.getAttribute("user");
             technologies = developerService.
                     getTechnologiesByDevId(developer.getId());
-
-            System.out.println(technologies);
-
             contact = developerService.getContactByDevId(developer.getId());
-
-            System.out.println(contact);
-
-
         } catch (Exception e) {
             e.printStackTrace();
             LOG.error("Error when get data from developer table" + e.getMessage());
         }
-
-        devTechsJson        = new Gson().toJson(technologies);
-        developerJson       = new Gson().toJson(developer);
-        contactJson         = new Gson().toJson(contact);
-
-        technologies        = technologyService.findAll();
-
+        String devTechsJson = new Gson().toJson(technologies);
+        String developerJson = new Gson().toJson(developer);
+        String contactJson = new Gson().toJson(contact);
+        technologies = technologyService.findAll();
         for(Technology tech : technologies){
             listTechs.add(tech.getName());
         }
-
-        allTechsJson        = new Gson().toJson(listTechs);
-        System.out.println("ALL TECHNOLOGIES" + allTechsJson);
-
-        resultJson = "{\"dev\":" + developerJson + ",\"techs\":" + devTechsJson +",\"contacts\":" + contactJson + ",\"allTechs\":" + allTechsJson +"}";
-
+        String allTechsJson = new Gson().toJson(listTechs);
+        String resultJson = "{\"dev\":" + developerJson + ",\"techs\":" + devTechsJson +",\"contacts\":" + contactJson + ",\"allTechs\":" + allTechsJson +"}";
         if(devTechsJson.length() == 2){
             resultJson = "{\"dev\":" + developerJson + ",\"contacts\":" + contactJson + ",\"allTechs\":" + allTechsJson +"}";
         } if(contactJson.length() == 0) {
@@ -357,70 +335,126 @@ public class DeveloperController extends HttpServlet {
         } if(contactJson.length() == 0 && devTechsJson.length() == 2) {
             resultJson = "{\"dev\":" + developerJson + ",\"allTechs\":" + allTechsJson +"}";
         }
-
-
-
-
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(resultJson);
     }
 
     private void updatePersonalData(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-        Developer   developer = null;
-        Contact     contact;
-        String      developerJson;
-        String      technologiesJson;
-        String      contactJson;
-
-        List<Technology> technologies;
-
+        Developer developer = null;
+        Contact contact = null;
+        List<Technology> technologies = new ArrayList<>();
         SimpleDateFormat format = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a");
+        List<Technology> allTechnology = technologyService.findAll();
         mapper.setDateFormat(format);
-
-        developerJson = request.getParameter("developer");
-        System.out.println(developerJson);
-
+        //mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true );
+        String developerJson = request.getParameter("developer");
         try {
             developer = mapper.readValue(developerJson, Developer.class);
 
         } catch(Exception e){
             LOG.warn("Some problem with mapper");
         }
-
         System.out.println(developer);
-
-        technologiesJson = request.getParameter("technologies");
-        System.out.println(technologiesJson);
-
-        System.out.println(technologiesJson.length());
-
+        String technologiesJson = request.getParameter("technologies");
         if(technologiesJson.length() != 0) {
             technologies = mapper.readValue(technologiesJson, new TypeReference<List<Technology>>() {});
-            System.out.println(technologies);
         }
 
-
-            contactJson = request.getParameter("contact");
-            System.out.println(contactJson);
+        String contactJson = request.getParameter("contact");
 
         if(contactJson.length() != 0 ) {
             contact = mapper.readValue(contactJson, Contact.class);
-            System.out.println(contact);
+        }
+        if(developerService.getContactByDevId(developer.getId()) == null){
+            contact.setDevId(developer.getId());
+            developerService.updateContact(contact);
+        } else {
+            contact.setDevId(developer.getId());
+            developerService.updateContact(contact);
         }
 
+        //developerService
+//        if(technologies != null){
+//            for(Technology technology : technologies){
+//                developerService.updateTechnology(technology);
+//            }
+//        }
+//        if(developerService.getContactByDevId(developer.getId()) == null){
+//            developerService
+//        }
+
+        developerService.updateDeveloper(developer);
     }
 
-    private void uploadImage(HttpServletRequest request, HttpServletResponse response){
-        String  imageJson;
+    private void uploadImage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession();
+        Developer developer = (Developer) session.getAttribute("user");
+        String  imageJson = request.getParameter("image");
+        byte[] encodImage = Base64.decodeBase64(imageJson);
+        String fileName = developer.getEmail().replace(".","");
+        File file = null;
+        try {
+            file = new File("/images/" + fileName + ".jpg");
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+        FileUtils.writeByteArrayToFile(file, encodImage);
 
-        System.out.println("Test");
-
-        imageJson = request.getParameter("image");
-        System.out.println(imageJson);
+        developer.setImgUrl("target/WEB-INF/userData/" + fileName + ".jpg");
+        developerService.updateDeveloper(developer);
 
     }
 
+    private Map<String, String[]> createMapForDevContact(Contact contact){
+        Map<String, String[]> map = new HashMap<>();
+        map.put("dev_id", new String[]{String.valueOf(contact.getDevId())});
+        map.put("phone", new String[]{String.valueOf(contact.getPhone())});
+        map.put("skype", new String[]{String.valueOf(contact.getSkype())});
+        map.put("phone", new String[]{String.valueOf(contact.getVersion())});
+        map.put("is_deleted", new String[]{String.valueOf(contact.getDeleted())});
+        return map;
+    }
 
+    private void changeDeveloperPassword(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String password = request.getParameter("password");
+        String newPassword = request.getParameter("newPassword");
+        HttpSession session = request.getSession();
+        Developer developer = (Developer) session.getAttribute("user");
+        String confirmPhoneCode = "";
+
+        if(developer != null){
+            if(developerService.validCredentials(developer.getEmail(), password, developer)){
+                Random random = new Random();
+                for(int i = 0; i < 4; i++){
+                    confirmPhoneCode = confirmPhoneCode + String.valueOf(random.nextInt(9));
+                }
+                developer.setConfirmCode(confirmPhoneCode);
+
+                // Enter sending SMS
+
+                String confirmCodeJson = new Gson().toJson(confirmPhoneCode);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write(confirmCodeJson);
+            } else {
+                System.out.println("Invalid password");
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                        "Invalid credentials");
+                response.flushBuffer();
+                return;
+            }
+        }
+    }
+
+    private void confirmChangePassword(HttpServletRequest request, HttpServletResponse response){
+        String password = request.getParameter("password");
+        HttpSession session = request.getSession();
+        Developer developer = (Developer) session.getAttribute("user");
+
+        developer.setPassword(password);
+        developerService.encodePassword(developer);
+        developerService.updateDeveloper(developer);
+    }
 }
