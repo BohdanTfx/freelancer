@@ -258,8 +258,6 @@ public class UserController extends HttpServlet implements Responsable {
 
     public void isAuth(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        ComplaintService cs = (ComplaintService) ApplicationContext.getInstance().getBean("complaintService");
-        System.out.println(cs.getByDevId(1));
         HttpSession session = request.getSession();
         UserEntity ue = (UserEntity) session.getAttribute("user");
         if (ue != null) {
