@@ -35,4 +35,8 @@ public class ComplaintService extends GenericService<Complaint, Integer> {
 
         return complaint;
     }
+
+    public Complaint save(Complaint complaint) {
+        return genericDao.save(complaint);
+    }
 }

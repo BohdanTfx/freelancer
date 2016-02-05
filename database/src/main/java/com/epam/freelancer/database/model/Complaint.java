@@ -54,6 +54,17 @@ public class Complaint implements BaseEntity<Integer> {
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "Complaint{" +
+                "id=" + id +
+                ", order_id=" + order_id +
+                ", dev_id=" + dev_id +
+                ", isDeleted=" + isDeleted +
+                ", version=" + version +
+                '}';
+    }
+
     public Boolean getDeleted() {
         return isDeleted;
     }

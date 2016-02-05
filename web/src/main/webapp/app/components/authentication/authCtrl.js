@@ -15,13 +15,13 @@ angular
 								$scope.showError = false;
                             };
 
-
-                            f(typeof $cookieStore
+                            /*
+                             if(typeof $cookieStore
                                     .get('freelancerRememberMeCookieAng') !== 'undefined');
                             {
 								$location.path('/');
 								return;
-							}
+                             }*/
 
 							$scope.login = function() {
 								AuthenticationService
