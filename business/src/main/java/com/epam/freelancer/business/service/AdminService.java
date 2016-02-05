@@ -21,8 +21,8 @@ public class AdminService extends UserService<Admin> {
 
     @Override
     public Admin create(Map<String, String[]> data) {
-        if (!isDataValid(prepareData(data)))
-            throw new RuntimeException("Validation exception");
+//        if (!isDataValid(prepareData(data)))
+//            throw new RuntimeException("Validation exception");
 
         Admin entity = new Admin();
         String[] value = data.get("first_name");

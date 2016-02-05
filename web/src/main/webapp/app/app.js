@@ -4,9 +4,9 @@
 			'FreelancerApp',
 			[ 'ngRoute', 'ui.router', 'ngCookies', 'ngMaterial', 'ngAnimate',
 					'ngAria', 'ngMessages', 'isteven-multi-select', 'rzModule',
-					'ui.bootstrap', 'ui-notification' ]).config(
+					'ui.bootstrap', 'ui-notification','googlechart' ]).config(
 			function($stateProvider, $urlRouterProvider, $locationProvider,
-					NotificationProvider) {
+					NotificationProvider ) {
 				$urlRouterProvider.otherwise('/home');
 
 				NotificationProvider.setOptions({
@@ -67,6 +67,14 @@
                     url: '/public/customer/:custName/:custId',
                     templateUrl: 'app/components/custpub/custpub.html',
                     controller: 'custpubCtrl'
+				}).state('admin', {
+					url: '/admin',
+					templateUrl: 'app/components/admin/admin.html',
+					controller: 'adminCtrl'
+				}).state('signupadmin', {
+					url : '/signup/:uuid',
+					templateUrl : 'app/components/signup/signup.html',
+					controller : 'signupCtrl'
 				});
 
 				$locationProvider.html5Mode(false);

@@ -38,6 +38,7 @@ public class FrontController extends HttpServlet {
 		controllers.put("unreg/", new UnregisteredController());
 		controllers.put("dev/", new DeveloperController());
 		controllers.put("cust/", new CustomerController());
+		controllers.put("admin/", new AdminController());
 	}
 
 	protected void doGet(HttpServletRequest request,
@@ -146,6 +147,8 @@ public class FrontController extends HttpServlet {
 
 			String path = request.getRequestURI().substring(
 					request.getContextPath().length());
+
+
 
 			if (path.startsWith("/front/")) {
 				path = path.substring("/front/".length());
