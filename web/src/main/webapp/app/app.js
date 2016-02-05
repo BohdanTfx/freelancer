@@ -63,6 +63,10 @@
                     url: '/public/customer/:custName/:custId',
                     templateUrl: 'app/components/custpub/custpub.html',
                     controller: 'custpubCtrl'
+				}).state('createtest', {
+                    url: '/tests/creating',
+                    templateUrl: 'app/components/createtest/createtest.html',
+                    controller: 'createtestCtrl'
 				});
 
 				$locationProvider.html5Mode(false);
