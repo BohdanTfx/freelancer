@@ -129,7 +129,7 @@ public class Ordering implements BaseEntity<Integer> {
 		return priv;
 	}
 
-	public void setPriv(Boolean priv) {
+	public void setPrivate(Boolean priv) {
 		this.priv = priv;
 	}
 
