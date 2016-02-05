@@ -9,6 +9,7 @@ import com.epam.freelancer.database.dao.jdbc.DAOManager;
 import com.epam.freelancer.database.model.*;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,25 +34,27 @@ public class OrderingService extends GenericService<Ordering, Integer> {
 			throw new RuntimeException("Validation exception");
 
 		Ordering order = new Ordering();
-		String[] value = data.get("title");
-		order.setTitle(value != null ? value[0] : null);
-		value = data.get("pay_type");
-		order.setPayType(value != null ? value[0] : null);
-		value = data.get("descr");
-		order.setDescr(value != null ? value[0] : null);
-		value = data.get("customer_id");
-		order.setCustomerId(Integer.parseInt(value[0]));
+		order.setTitle(data.get("title")[0]);
+		order.setPayType(data.get("pay_type")[0]);
+		order.setDescr(data.get("descr")[0]);
+		order.setCustomerId(Integer.parseInt(data.get("customer_id")[0]));
+		order.setZone(Integer.parseInt(data.get("zone")[0]));
 		order.setDate(new Timestamp(new java.util.Date().getTime()));
-		value = data.get("payment");
-		order.setPayment(Double.parseDouble(value[0]));
+		order.setPayment(Double.parseDouble(data.get("payment")[0]));
 		order.setStarted(false);
 		order.setEnded(false);
-		value = data.get("private");
-		order.setPrivate(Boolean.parseBoolean(value[0]));
-//		order = genericDao.save(order);
-		
+		order.setPrivate(Boolean.parseBoolean(data.get("private")[0]));
 
+		order = genericDao.save(order);
 		
+		String[] technologies = data.get("technologies")[0].split(",");
+		List<Integer> techIds = new ArrayList<>();
+		for (String string : technologies)
+			techIds.add(Integer.parseInt(string));
+		
+		for (Integer id : techIds) 
+			orderingTechnoloyManyToManyDao.saveContact(order.getId(), id);
+
 		return order;
 	}
 
@@ -81,6 +84,10 @@ public class OrderingService extends GenericService<Ordering, Integer> {
 		map.put(ValidationParametersBuilder.createParameters(true)
 				.isInteger(true).min(-12.0).max(13.0),
 				data.get("zone") == null ? null : data.get("zone")[0]);
+		map.put(ValidationParametersBuilder.createParameters(false).pattern(
+				"(^([0-9])[,0-9]*[0-9]$)|^[0-9]$"),
+				data.get("technologies") == null ? null : data
+						.get("technologies")[0]);
 
 		return map;
 	}

@@ -55,8 +55,7 @@ angular
 					}
 
 					$scope.TechnologyValidator = {};
-					$scope.TechnologyValidator.empty = 'Please, select few technology';
-					$scope.TechnologyValidator.small = 'Selected technologies are not enougth. Please select a bit more.';
+					$scope.TechnologyValidator.empty = 'Please, select at least one technology';
 					$scope.TechnologyValidator.big = 'You have selected too many technologies. Please, be short.'
 
 					$scope.getCurrentZone = function() {
