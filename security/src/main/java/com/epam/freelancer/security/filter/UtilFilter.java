@@ -1,17 +1,11 @@
 package com.epam.freelancer.security.filter;
 
-import java.io.IOException;
+import org.apache.log4j.Logger;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.log4j.Logger;
+import java.io.IOException;
 
 public class UtilFilter implements Filter {
 	private final static Logger LOG =
@@ -53,8 +47,8 @@ public class UtilFilter implements Filter {
 			chain.doFilter(request, response);
 		else
 			request.getRequestDispatcher
-					("/front/" + path).forward(request,
-					response);
+                    ("/front" + path).forward(request,
+                    response);
 	}
 
 	@Override
