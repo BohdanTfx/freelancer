@@ -4,8 +4,8 @@ angular
 		.module('FreelancerApp')
 		.controller(
 				'jobsCtrl',
-				function($scope, jobsAPI, $log, $http) {
-					$scope.filter = {}
+    function ($scope, jobsAPI, $log, $http, Notification) {
+        $scope.filter = {};
 					$scope.hourly = {};
 					$scope.ordersLoading = true;
 					$scope.filterButtonStyle = 'fa-angle-double-down';
@@ -20,7 +20,15 @@ angular
 							$scope.filterButtonStyle = 'fa-angle-double-up';
 							filterOpen = true;
 						}
-					}
+                    };
+
+        $scope.setOrderID = function (orderID) {
+            $scope.compOrderID = orderID;
+        };
+
+        $scope.complain = function () {
+            jobsAPI.toComplain($http, $scope, $scope.compOrderID, Notification);
+        };
 
 					$scope.itemsPerPage = [ {
 						number : 5,
@@ -160,13 +168,13 @@ angular
 
 					$scope.doFilter = function() {
 						jobsAPI.loadOrders($scope, $http);
-					}
+                    };
 
 					$scope.changeStep = function() {
 						localStorage.setItem("freelancerOrdersStep",
 								$scope.itesStep.number);
 						jobsAPI.loadOrders($scope, $http);
-					}
+                    };
 
 					$scope.openPage = function(page) {
 						if (page == 'last')
@@ -175,7 +183,7 @@ angular
 							$scope.itemListStart = page;
 							jobsAPI.loadOrders($scope, $http);
 						}
-					}
+                    };
 
 					jobsAPI.loadLimits($scope, $http);
 					jobsAPI.loadOrders($scope, $http);

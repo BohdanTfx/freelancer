@@ -92,8 +92,8 @@ public class DeveloperController extends HttpServlet implements Responsable {
 			String path = FrontController.getPath(request);
 
 			switch (path) {
-			case "dev/getresults":
-				sendResults(request, response);
+                case "dev/esults":
+                    sendResults(request, response);
 				break;
 			case "dev/sendpersonaldata":
 				updatePersonalData(request, response);

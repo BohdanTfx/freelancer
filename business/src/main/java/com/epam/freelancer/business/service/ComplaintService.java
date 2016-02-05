@@ -37,6 +37,10 @@ public class ComplaintService extends GenericService<Complaint, Integer> {
         return complaint;
     }
 
+    public Complaint isAlreadyExist(Integer devId, Integer orderId) {
+        return ((ComplaintDao) genericDao).isAlreadyExist(devId, orderId);
+    }
+
     public List<Complaint> getByDevId(Integer devId) {
         return ((ComplaintDao) genericDao).getByDevId(devId);
     }

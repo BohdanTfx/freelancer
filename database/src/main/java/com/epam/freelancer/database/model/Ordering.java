@@ -43,6 +43,7 @@ public class Ordering implements BaseEntity<Integer> {
 	private Integer version;
 	@Column
 	private Integer zone;
+    private Boolean isComplaint;
     private List<Technology> technologies = new ArrayList<>();
 
     public String getTitle() {
@@ -210,6 +211,14 @@ public class Ordering implements BaseEntity<Integer> {
         this.technologies = technologies;
 	}
 
+    public Boolean getIsComplaint() {
+        return isComplaint;
+    }
+
+    public void setIsComplaint(Boolean isComplaint) {
+        this.isComplaint = isComplaint;
+    }
+
     @Override
     public String toString() {
         return "Ordering{" +
@@ -228,6 +237,7 @@ public class Ordering implements BaseEntity<Integer> {
                 ", isDeleted=" + isDeleted +
                 ", version=" + version +
                 ", zone=" + zone +
+                ", isComplaint=" + isComplaint +
                 ", technologies=" + technologies +
                 '}';
     }

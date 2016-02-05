@@ -10,4 +10,6 @@ import java.util.List;
 public interface ComplaintDao extends GenericDao<Complaint, Integer> {
 
     List<Complaint> getByDevId(Integer devId);
+
+    Complaint isAlreadyExist(Integer devId, Integer orderId);
 }

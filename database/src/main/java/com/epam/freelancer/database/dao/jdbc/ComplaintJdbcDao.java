@@ -37,4 +37,25 @@ public class ComplaintJdbcDao extends GenericJdbcDao<Complaint, Integer> impleme
         }
         return complaints;
     }
+
+    @Override
+    public Complaint isAlreadyExist(Integer devId, Integer orderId) {
+        Complaint complaint = null;
+        String query = "SELECT * FROM " + table + " WHERE dev_id = ? AND order_id = ?";
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection
+                     .prepareStatement(query)) {
+            statement.setInt(1, devId);
+            statement.setInt(2, orderId);
+            try (ResultSet set = statement.executeQuery()) {
+                while (set.next()) {
+                    complaint = transformer.getObject(set);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return complaint;
+    }
 }

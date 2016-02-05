@@ -4,7 +4,7 @@ angular
 		.module('FreelancerApp')
 		.service(
 				'jobsAPI',
-				function() {
+    function ($http) {
 					var that = this;
 
 					this.loadLimits = function($scope, $http) {
@@ -31,7 +31,7 @@ angular
 								function(data, status, headers, config) {
 									alert(data);
 								});
-					}
+                    };
 
 					this.loadTechnologies = function($scope, $http) {
 						$http.post("/user/orders/tech").success(
@@ -41,7 +41,7 @@ angular
 								function(data, status, headers, config) {
 									alert(data);
 								});
-					}
+                    };
 
 					this.loadOrders = function($scope, $http, last) {
 						var content = {};
@@ -114,7 +114,25 @@ angular
 									that.fillPagination(data.pages, $scope);
 									that.fillOrders(data.items, $scope);
 								});
-					}
+                    };
+
+        this.toComplain = function ($http, $scope, orderID, Notification) {
+            $http.post("/user/orders/complain?orderID=" + orderID).success(
+                function () {
+                    Notification
+                        .success({
+                            title: 'Success!',
+                            message: 'Succesfully complained. Thank you.'
+                        });
+                }).error(
+                function () {
+                    Notification
+                        .error({
+                            title: 'Error!',
+                            message: 'Error while complaining order. Please try again.'
+                        });
+                });
+        };
 
 					this.fillPagination = function(data, $scope) {
 						$scope.pages = data;
@@ -132,10 +150,11 @@ angular
 									$scope.showLast = true;
 							}
 						}
-					}
+                    };
+
 					this.fillOrders = function(data, $scope) {
 						$scope.orders = data;
-					}
+                    };
 
 					this.getStep = function($scope) {
 						var localStep = localStorage

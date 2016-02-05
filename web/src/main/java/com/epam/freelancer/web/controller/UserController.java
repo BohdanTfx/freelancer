@@ -39,7 +39,8 @@ public class UserController extends HttpServlet implements Responsable {
 	private CustomerService customerService;
 	private DeveloperService developerService;
 	private TechnologyService technologyService;
-	private UserManager userManager;
+    private ComplaintService complaintService;
+    private UserManager userManager;
 	private Linkedin linkedin;
 	private ObjectMapper mapper;
 	private Paginator paginator;
@@ -75,7 +76,9 @@ public class UserController extends HttpServlet implements Responsable {
 				.createAuthenticationProvider();
 		feedbackService = (FeedbackService) ApplicationContext
 				.getInstance().getBean("feedbackService");
-	}
+        complaintService = (ComplaintService) ApplicationContext.
+                getInstance().getBean("complaintService");
+    }
 
 	@Override
 	protected void doGet(HttpServletRequest request,
@@ -176,6 +179,9 @@ public class UserController extends HttpServlet implements Responsable {
                     sendResponse(response, orderingService.findPaymentLimits(),
                             mapper);
                     break;
+                case "user/orders/isCompAlrEx":
+                    isComplainAlreadyExist(request, response);
+                    break;
                 case "user/orders/tech":
                     sendResponse(response, technologyService.findAll(), mapper);
                     break;
@@ -210,6 +216,12 @@ public class UserController extends HttpServlet implements Responsable {
                 case "user/contact":
                     getUserContact(request, response);
                     break;
+                case "user/orders/complain":
+                    complain(request, response);
+                    break;
+                case "user/getRate":
+                    getRate(request, response);
+                    return;
                 case "user/getTestByDevId":
                     getTestByDevId(request, response);
                 default:
@@ -218,6 +230,52 @@ public class UserController extends HttpServlet implements Responsable {
             e.printStackTrace();
             LOG.fatal(getClass().getSimpleName() + " - " + "doPost");
         }
+    }
+
+    private void complain(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession();
+        if (session != null) {
+            UserEntity ue = (UserEntity) session.getAttribute("user");
+            if (ue != null) {
+                String param = request.getParameter("orderID");
+                if (param != null) {
+                    try {
+                        Complaint complaint = new Complaint();
+                        complaint.setOrderId(Integer.parseInt(param));
+                        complaint.setDevId(ue.getId());
+                        complaintService.save(complaint);
+                    } catch (Exception e) {
+                        response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                    }
+                } else
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            } else
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        } else
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+    }
+
+    private void isComplainAlreadyExist(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String orderId = request.getParameter("orderId");
+        HttpSession session = request.getSession();
+
+        if (session != null) {
+            UserEntity ue = (UserEntity) session.getAttribute("user");
+            if (ue != null) {
+                if (ue.getId() != null && orderId != null) {
+                    try {
+                        if (complaintService.isAlreadyExist(ue.getId(), Integer.parseInt(orderId)) == null) {
+                            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                        }
+                    } catch (Exception e) {
+                        response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                    }
+                } else
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            } else
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        } else
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
 
 	private void filterOrders(HttpServletRequest request,
@@ -230,6 +288,8 @@ public class UserController extends HttpServlet implements Responsable {
 					.getContent(), result.getPage().getStart()
 					* result.getPage().getStep(), result.getPage().getStep());
 
+            addIsComplaintInOrderings(orderings, request);
+
 			for (Ordering ordering : orderings) {
 				ordering.setTechnologies(orderingService
 						.findOrderingTechnologies(ordering.getId()));
@@ -241,6 +301,25 @@ public class UserController extends HttpServlet implements Responsable {
 			e.printStackTrace();
 		}
 	}
+
+    private void addIsComplaintInOrderings(List<Ordering> orderings, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        if (session != null) {
+            UserEntity ue = (UserEntity) session.getAttribute("user");
+            String role = ue.getRole();
+            if ("developer".equals(role)) {
+                List<Complaint> complaints = complaintService.getByDevId(ue.getId());
+                for (Complaint c : complaints) {
+                    for (Ordering o : orderings) {
+                        if (c.getOrderId().equals(o.getId())) {
+                            o.setIsComplaint(true);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     public void logout(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
@@ -891,6 +970,24 @@ public class UserController extends HttpServlet implements Responsable {
             List<Ordering> orderings = os.getAvailableCustOrders(Integer.parseInt(custId));
 
             sendResponse(response, orderings, mapper);
+        }
+    }
+
+    public void getRate(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        String param = request.getParameter("id");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                FeedbackService fs = (FeedbackService) ApplicationContext
+                        .getInstance().getBean("feedbackService");
+                Integer avg = fs.getAvgRate(id);
+                sendResponse(response, avg, mapper);
+            } catch (Exception e) {
+                response.sendError(500);
+            }
+        } else {
+            response.sendError(404);
         }
     }
 

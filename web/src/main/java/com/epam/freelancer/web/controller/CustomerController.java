@@ -88,9 +88,6 @@ public class CustomerController extends HttpServlet implements Responsable {
                 case "cust/history":
                     getCustomerHistory(request, response);
                     break;
-                case "user/getRate":
-                    getRate(request, response);
-                    return;
                 default:
             }
         } catch (Exception e) {
@@ -242,23 +239,6 @@ public class CustomerController extends HttpServlet implements Responsable {
         System.out.println(contact);
     }
 
-    public void getRate(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-        String param = request.getParameter("id");
-        if (param != null) {
-            try {
-                Integer id = Integer.parseInt(param);
-                FeedbackService fs = (FeedbackService) ApplicationContext
-                        .getInstance().getBean("feedbackService");
-                Integer avg = fs.getAvgRate(id);
-                sendResponse(response, avg, mapper);
-            } catch (Exception e) {
-                response.sendError(500);
-            }
-        } else {
-            response.sendError(404);
-        }
-    }
 
     private void getCustomerHistory(HttpServletRequest
                                             request, HttpServletResponse response) throws IOException {
