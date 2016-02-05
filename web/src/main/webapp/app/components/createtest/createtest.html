@@ -1,0 +1,102 @@
+<div id="tab-content" class="panel panel-default">
+    <div class="tests-creating" ng-cloak="">
+        <md-content class="md-padding">
+            <h2>Tests creating</h2>
+            <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="Create tests">
+                    <div class="test-tab">
+                        <md-content class="md-padding">
+                            <div class="row">
+                                <div class="col-md-6 col-xs-12">
+                                    <md-input-container class="md-icon-float md-block">
+                                        <label>Test name</label>
+                                        <md-icon md-font-icon="fa-tasks" class="fa md-hue-2"
+                                                 style="display:inline-block;"></md-icon>
+                                        <input ng-model="test.name" type="text">
+                                    </md-input-container>
+                                </div>
+                                <div class="col-md-6 col-xs-12">
+                                    <md-input-container class="md-icon-float md-block">
+                                        <label><strong>Technology</strong></label>
+                                        <md-icon md-font-icon="fa-tv" class="fa md-hue-2"
+                                                 style="display:inline-block;"></md-icon>
+                                        <md-select ng-model="test.techId">
+                                            <md-option ng-repeat="technology in technologies" value="{{technology.id}}">
+                                                {{technology.name}}
+                                            </md-option>
+                                        </md-select>
+                                        <md-icon md-svg-src="img/icons/ic_euro_24px.svg"></md-icon>
+                                    </md-input-container>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 col-xs-12">
+                                    <md-input-container class="md-icon-float md-block">
+                                        <label>Min pass score</label>
+                                        <md-icon md-font-icon="fa-line-chart" class="fa md-hue-2"
+                                                 style="display:inline-block;"></md-icon>
+                                        <input ng-model="test.passScore" type="number" min="0" max="100" step="1">
+                                    </md-input-container>
+                                </div>
+                                <div class="col-md-6 col-xs-12">
+                                    <md-input-container class="md-icon-float md-block">
+                                        <label>Time (in minutes)</label>
+                                        <md-icon md-font-icon="fa-clock-o" class="fa md-hue-2"
+                                                 style="display:inline-block;"></md-icon>
+                                        <input ng-model="test.secPerQuest" type="number" min="1" max="300" step="1">
+                                    </md-input-container>
+                                </div>
+                            </div>
+
+                        </md-content>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <md-subheader class="md-no-sticky">Available questions ({{availableQuestions.length}})</md-subheader>
+                            <md-content class="md-padding">
+                                <md-list-item ng-repeat="question in availableQuestions">
+                                    <div ng-click="moveRight(question.id)">
+                                        <p> {{ question.name }} </p>
+                                        <md-checkbox class="md-secondary" ng-model="topping.wanted"></md-checkbox>
+                                    </div>
+                                    <md-divider></md-divider>
+                                </md-list-item>
+                            </md-content>
+                        </div>
+                        <div class="col-md-6">
+                            <md-subheader class="md-no-sticky">Chosen questions ({{chosenQuestions.length}})</md-subheader>
+                            <md-content class="md-padding">
+                                <md-list-item ng-repeat="question in chosenQuestions">
+                                    <div ng-click="moveLeft(question.id)">
+                                        <p> {{ question.name }} </p>
+                                        <md-checkbox class="md-secondary" ng-model="topping.wanted"></md-checkbox>
+                                    </div>
+                                    <md-divider></md-divider>
+                                </md-list-item>
+                            </md-content>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <md-button style="float: right; margin-right: 30px" class="md-raised md-primary"
+                                   ng-click="createTest()">Create test
+                        </md-button>
+                    </div>
+
+                </md-tab>
+                <md-tab label="Create questions">
+                    <div class="question-tab">
+                        <md-content class="md-padding">
+
+                        </md-content>
+                    </div>
+                </md-tab>
+            </md-tabs>
+        </md-content>
+    </div>
+
+
+</div>
+

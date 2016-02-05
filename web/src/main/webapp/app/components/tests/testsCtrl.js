@@ -4,7 +4,6 @@ angular.module('FreelancerApp')
         $scope.smt = {};
 
         testsAPI.getAllTests().success(function (data) {
-            $log.log(data);
             $scope.devQAs = data.devQAs;
             $scope.tests = data.tests;
             $scope.testsDivision();
@@ -62,16 +61,12 @@ angular.module('FreelancerApp')
         }
 
         $scope.testListCtrl = function () {
-            console.log("a: " + $scope.smt.allowedTest + " p:" + $scope.smt.passedTest);
             if ($scope.smt.passedTest == $scope.smt.allowedTest) {
                 $scope.tests = $scope.passedTestList.concat($scope.newTestsList);
-                console.log(1);
             } else if ($scope.smt.passedTest == true) {
                 $scope.tests = $scope.passedTestList;
-                console.log(2);
             } else {
                 $scope.tests = $scope.newTestsList;
-                console.log(3);
             }
         }
     });

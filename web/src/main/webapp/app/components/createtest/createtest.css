@@ -1,0 +1,11 @@
+.tests-creating md-content h2 {
+    display: inline-block;
+}
+
+.tests-creating md-input-container {
+    margin: 5px 0;
+}
+
+.tests-creating .test-tab md-input-container {
+    padding: 0 15px 0 25px;
+}

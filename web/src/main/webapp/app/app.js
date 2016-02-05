@@ -67,6 +67,10 @@
                     url: '/public/customer/:custName/:custId',
                     templateUrl: 'app/components/custpub/custpub.html',
                     controller: 'custpubCtrl'
+				}).state('createtest', {
+                    url: '/tests/creating',
+                    templateUrl: 'app/components/createtest/createtest.html',
+                    controller: 'createtestCtrl'
 				}).state('admin', {
 					url: '/admin/statistics',
 					templateUrl: 'app/components/admin/adminStatistics.html',

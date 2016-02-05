@@ -29,20 +29,31 @@ angular.module('FreelancerApp')
         function getData() {
             orderAPI.getCustomerById($scope.order.customerId).success(function (data) {
                 $scope.customer = data;
+                if ($scope.customer.imgUrl == 'undefined' || $scope.customer.imgUrl == null) {
+                    $scope.customer.imgUrl = 'images/profile/no-profile-img-head.gif';
+                }
+                $scope.getCustomerContact();
             }).error(function (e) {
                 alert(404);
             });
 
-            orderAPI.getCustomerContactById($scope.order.customerId).success(function (data) {
-                $scope.customer.contact = data;
-            }).error(function (e) {
-                alert(404);
-            });
+            $scope.getCustomerContact = function () {
+                orderAPI.getCustomerContactById($scope.order.customerId).success(function (data) {
+                    $scope.customer.contact = data;
+                }).error(function (e) {
+                    alert(404);
+                })
+            };
 
             orderAPI.getCustomerFeedbacks($scope.order.customerId).success(function (data) {
                 $scope.feedbacks = data;
                 if (data.length == 0) {
                     $scope.noFeedbacks = true;
+                } else {
+                    for (var i = 0; i < $scope.feedbacks.length; i++) {
+                        if (typeof $scope.feedbacks[i].developer.imgUrl == 'undefined' || $scope.feedbacks[i].developer.imgUrl == null)
+                            $scope.feedbacks[i].developer.imgUrl = 'images/profile/no-profile-img-head.gif';
+                    }
                 }
                 $scope.calcCustRate();
             }).error(function () {
@@ -66,9 +77,11 @@ angular.module('FreelancerApp')
                     for (var i in $scope.followers) {
                         $scope.setDevRating($scope.followers[i]);
                     }
-                    console.log($scope.user.subscribed);
+                    for (var i = 0; i < $scope.followers.length; i++) {
+                        if (typeof $scope.followers[i].developer.imgUrl == 'undefined' || $scope.followers[i].developer.imgUrl == null)
+                            $scope.followers[i].developer.imgUrl = 'images/profile/no-profile-img-head.gif';
+                    }
                     $scope.isSubscriber();
-                    console.log($scope.user.subscribed);
                 }
             }).error(function () {
                 alert(404);
@@ -113,9 +126,9 @@ angular.module('FreelancerApp')
                 });
         };
 
-        $scope.isSubscriber = function(){
-            for(var i in $scope.followers){
-                if($scope.followers[i].devId == $scope.user.id){
+        $scope.isSubscriber = function () {
+            for (var i in $scope.followers) {
+                if ($scope.followers[i].devId == $scope.user.id) {
                     $scope.user.subscribed = true;
                     break;
                 }
@@ -123,8 +136,8 @@ angular.module('FreelancerApp')
         }
 
         $scope.subscribe = function (message) {
-            if(message == undefined) {
-                message="";
+            if (message == undefined) {
+                message = "";
             }
             var data = 'message=' + message + '&orderId=' + $stateParams.orderId;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
@@ -135,6 +148,9 @@ angular.module('FreelancerApp')
                         title: 'Success!',
                         message: 'You successfully subscribed on this project'
                     });
+                if (data.developer.imgUrl == 'undefined' || data.developer.imgUrl == null) {
+                    data.developer.imgUrl = 'images/profile/no-profile-img-head.gif';
+                }
                 $scope.followers.push(data);
                 $scope.user.subscribed = true;
                 $scope.noFollowers = false;
@@ -152,8 +168,8 @@ angular.module('FreelancerApp')
 
         $scope.unsubscribe = function () {
             var followerId;
-            for(var i in $scope.followers){
-                if($scope.followers[i].devId == $scope.user.id){
+            for (var i in $scope.followers) {
+                if ($scope.followers[i].devId == $scope.user.id) {
                     followerId = $scope.followers[i].id;
                 }
             }
@@ -168,10 +184,10 @@ angular.module('FreelancerApp')
                         message: 'You successfully unsubscribed from this project'
                     });
                 $scope.user.subscribed = false;
-                for(var i in $scope.followers){
-                    if($scope.followers[i].devId == $scope.user.id){
+                for (var i in $scope.followers) {
+                    if ($scope.followers[i].devId == $scope.user.id) {
                         $scope.followers.splice(i, 1);
-                        if($scope.followers.length == 0){
+                        if ($scope.followers.length == 0) {
                             $scope.noFollowers = true;
                         }
                     }
