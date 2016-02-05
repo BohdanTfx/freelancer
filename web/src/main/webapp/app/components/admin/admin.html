@@ -1,15 +1,23 @@
-
 <div>
     <h3>Create admin</h3>
-
     <div>
-        Email:  <input type="text" name="email" ng-model="admin.email"><br/>
+        Email: <input type="text" name="email" ng-model="admin.email"><br/>
 
-        <md-button class="md-primary md-raised" ng-click="sendNewAdminEmail(admin.email)" >
+        <md-button class="md-primary md-raised" ng-click="sendAdminLinkToEmail($event,admin.email)">
             Send email
         </md-button>
 
     </div>
+</div>
+
+<hr/>
+
+<div class="row">
+
+    <canvas id="pie" class="chart chart-pie"
+            chart-data="data" chart-labels="labels">
+    </canvas>
+
 
 
 </div>

@@ -6,13 +6,13 @@
 				ng-submit="signupForm.$valid && createUser()">
 				<h3>
 					Become a new
-					<!--<div ng-if="roleAdmin !== true">-->
+					<span ng-if="roleAdmin !== true">
 						<md-select ng-model="user.role" ng-init="user.role = role"
 							class="box-none inline-block signup-choose-role-select">
 						<md-option ng-repeat="role in roles" value="{{role}}">{{role}}</md-option>
 						</md-select>
-					<!--</div>-->
-					<!--<div ng-if="roleAdmin === true" ng-init="user.role = 'admin'">Admin</div>-->
+					</span>
+					<span ng-if="roleAdmin === true" ng-model="user.role" ng-init="user.role = 'admin'">Admin</span>
 				</h3>
 
 				<div class="col-xs-12 social-buttons">

@@ -14,7 +14,7 @@ angular
 					if($scope.adminUUID!=undefined){
 						adminAPI.checkAvailableUUID($scope.adminUUID).success(function(data){
 							$scope.roleAdmin = data;
-								$scope.signup = true;
+							$scope.signup = data;
 							}
 						);
 					}
@@ -40,7 +40,7 @@ angular
 					}
 
 					$scope.createUser = function() {
-						signupAPI.createUser($http, $scope.user);
+						signupAPI.createUser($http, $scope.user,$scope.adminUUID,$scope.roleAdmin,adminAPI);
 					}
 
 					$scope.resetInputs = function() {

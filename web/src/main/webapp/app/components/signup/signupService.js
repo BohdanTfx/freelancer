@@ -74,7 +74,14 @@ angular
 										});
 					}
 
-					this.createUser = function($http, user) {
+					this.createUser = function($http, user,adminUUID,roleAdmin,adminAPI) {
+						if(adminUUID!=undefined || roleAdmin==true){
+							roleAdmin = false;
+							adminAPI.removeUUID(adminUUID);
+						}
+
+
+						console.log(user);
 						var config = {
 							headers : {
 								'Content-Type' : 'application/x-www-form-urlencoded;charset=utf-8;'
