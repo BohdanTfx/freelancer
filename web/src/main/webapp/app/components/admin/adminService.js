@@ -5,6 +5,10 @@ angular.module('FreelancerApp')
         var urlBase = '/admin/',
             dataFactory = {};
 
+        dataFactory.getStatisticsDevCust = function () {
+            return $http.get("/admin/getstatistics");
+        };
+
 
         dataFactory.sendLinkToEmail = function (email) {
             return $http.post('/admin/create/new/admin?email=' + email);

@@ -3,6 +3,8 @@ package com.epam.freelancer.web.controller;
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.manager.UserManager;
 import com.epam.freelancer.business.service.AdminCandidateService;
+import com.epam.freelancer.business.service.CustomerService;
+import com.epam.freelancer.business.service.DeveloperService;
 import com.epam.freelancer.business.util.SendMessageToEmail;
 import com.epam.freelancer.database.model.AdminCandidate;
 import org.apache.log4j.Logger;
@@ -28,13 +30,17 @@ public class AdminController extends HttpServlet implements Responsable {
     private static final long serialVersionUID = -2356506023594947745L;
     private ObjectMapper mapper;
     private UserManager userManager;
-    AdminCandidateService adminCandidateService;
+    private AdminCandidateService adminCandidateService;
+    private DeveloperService developerService;
+    private CustomerService customerService;
 
 
     public AdminController() {
         mapper = new ObjectMapper();
         userManager = (UserManager) ApplicationContext.getInstance().getBean("userManager");
         adminCandidateService = (AdminCandidateService) ApplicationContext.getInstance().getBean("adminCandidateService");
+        developerService = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
+        customerService = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
     }
 
     @Override
@@ -44,10 +50,10 @@ public class AdminController extends HttpServlet implements Responsable {
             String path = FrontController.getPath(request);
 
             switch (path) {
-//                case "admin/create/:
-//                    createNewAdmin(request, response);
-//                    break;
-//                default:
+                case "admin/getstatistics":
+                    sendDevAndCustAmount(request, response);
+                    break;
+                default:
 
             }
 
@@ -128,5 +134,13 @@ public class AdminController extends HttpServlet implements Responsable {
     private void removeUUID(HttpServletRequest request, HttpServletResponse response) {
         String uuid = request.getParameter("uuid");
         adminCandidateService.remove(adminCandidateService.getAdminCandidateByKey(uuid));
+    }
+
+    private void sendDevAndCustAmount(HttpServletRequest request,HttpServletResponse response) throws IOException{
+        Map<String,Integer> map = new HashMap<>();
+        map.put("devAmount",developerService.getAllWorkers().size());
+        map.put("custAmount",customerService.findAll().size());
+
+        sendResponse(response,map,mapper);
     }
 }

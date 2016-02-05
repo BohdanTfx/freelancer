@@ -1,15 +1,40 @@
 angular.module('FreelancerApp')
-    .controller('adminCtrl', function($scope, adminAPI ,$mdDialog, $mdMedia){
+    .controller('adminCtrl', function($scope, adminAPI ,$mdDialog){
         $scope.admin = {};
         $scope.admin.email = "";
 
 
-        //angular.module("app", ["chart.js"]).controller("PieCtrl", function ($scope) {
-            $scope.labels = ["Download Sales", "In-Store Sales", "Mail-Order Sales"];
-            $scope.data = [300, 500, 100];
-        //});
+        adminAPI.getStatisticsDevCust().success(function(data){
+                $scope.custAmount = data.custAmount;
+                $scope.devAmount = data.devAmount;
+
+            $scope.showDevCustStat();
 
 
+            }).error(function(){
+            alert(404);
+        });
+
+
+        $scope.showDevCustStat =  function(){
+            var chart1 = {};
+            chart1.type = "PieChart";
+            chart1.data = [
+                ['Component', 'cost'],
+                ['Customers',  $scope.custAmount],
+                ['Developers',  $scope.devAmount]
+            ];
+
+            chart1.options = {
+                displayExactValues: true,
+                width: 400,
+                height: 200,
+                is3D: true,
+                chartArea: {left:10,top:10,bottom:0,height:"100%"}
+            };
+
+            $scope.chart = chart1;
+       };
 
         $scope.sendAdminLinkToEmail = function(ev,email) {
             adminAPI.sendLinkToEmail(email);
