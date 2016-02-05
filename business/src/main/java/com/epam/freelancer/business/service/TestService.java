@@ -7,10 +7,7 @@ import java.util.Map;
 import com.epam.freelancer.business.util.ValidationParametersBuilder;
 import com.epam.freelancer.database.dao.*;
 import com.epam.freelancer.database.dao.jdbc.DAOManager;
-import com.epam.freelancer.database.model.Answer;
-import com.epam.freelancer.database.model.BaseEntity;
-import com.epam.freelancer.database.model.Question;
-import com.epam.freelancer.database.model.Test;
+import com.epam.freelancer.database.model.*;
 
 /**
  * Created by Максим on 18.01.2016.
@@ -19,6 +16,7 @@ public class TestService extends GenericService<Test, Integer> {
 	private GenericDao<Question, Integer> questionDao;
 	private GenericManyToManyDao<Test, Question, BaseEntity<Integer>, Integer> testMTMquestDao;
 	private GenericDao<Answer, Integer> answerDao;
+	private GenericDao<AdminCandidate, Integer> adminCandidateDao;
 
 	public TestService() {
 		super(DAOManager.getInstance().getDAO(TestDao.class.getSimpleName()));
@@ -109,6 +107,11 @@ public class TestService extends GenericService<Test, Integer> {
 
 	public void setAnswerDao(GenericDao<Answer, Integer> answerDao) {
 		this.answerDao = answerDao;
+		answerDao.setConnectionPool(DAOManager.getInstance()
+				.getConnectionPool());
+	}
+	public void setAdminCandidatDao(GenericDao<AdminCandidate, Integer> adminCandidateDao) {
+		this.adminCandidateDao = adminCandidateDao;
 		answerDao.setConnectionPool(DAOManager.getInstance()
 				.getConnectionPool());
 	}

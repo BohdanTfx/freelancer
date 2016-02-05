@@ -41,6 +41,8 @@ angular
 													$scope.showError = true;
 													$scope.errorTitle = 'Error!';
 													$scope.errorDescription = 'Invalid credentials';
+													$scope.user.email = "";
+													$scope.user.password = "";
 												})
 							};
 

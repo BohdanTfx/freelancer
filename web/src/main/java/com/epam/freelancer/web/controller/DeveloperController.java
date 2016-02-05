@@ -2,6 +2,7 @@ package com.epam.freelancer.web.controller;
 
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.service.*;
+import com.epam.freelancer.business.util.SendMessageToEmail;
 import com.epam.freelancer.database.model.*;
 import com.epam.freelancer.web.json.model.Quest;
 import com.google.gson.Gson;
@@ -29,7 +30,6 @@ public class DeveloperController extends HttpServlet implements Responsable {
 	private ObjectMapper mapper;
 	private DeveloperQAService developerQAService;
 	private DeveloperService developerService;
-	private CustomerService customerService;
 
 	public DeveloperController() {
 		testService = (TestService) ApplicationContext.getInstance().getBean(
@@ -41,8 +41,6 @@ public class DeveloperController extends HttpServlet implements Responsable {
 				.getInstance().getBean("developerQAService");
 		developerService = (DeveloperService) ApplicationContext.getInstance()
 				.getBean("developerService");
-		customerService = (CustomerService) ApplicationContext.getInstance()
-				.getBean("customerService");
 	}
 
 	@Override
@@ -116,7 +114,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
 	{
 		HttpSession session = request.getSession();
 		UserEntity user = (UserEntity) session.getAttribute("user");
-		System.out.println("USer" + user);
+
 		List<Ordering> allProjects = developerService
 				.getDeveloperPortfolio(user.getId());
 		List<Ordering> devSubscribedProjects = developerService
@@ -147,17 +145,11 @@ public class DeveloperController extends HttpServlet implements Responsable {
 					.findTechnolodyByOrderingId(order.getId()));
 		}
 
-		String devFinishedWorksJson = new Gson().toJson(devFinishedProjects);
-		String devProjectsInProcessJson = new Gson()
-				.toJson(devProjectsInProcess);
-		String devSubscribedWorksJson = new Gson()
-				.toJson(devSubscribedProjects);
-		String resultJson = "{\"processedWorks\":" + devProjectsInProcessJson
-				+ ",\"finishedWorks\":" + devFinishedWorksJson
-				+ ",\"subscribedWorks\":" + devSubscribedWorksJson + "}";
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(resultJson);
+		Map<String,List> resultMap = new HashMap<>();
+		resultMap.put("finishedWorks",devFinishedProjects);
+		resultMap.put("subscribedWorks",devSubscribedProjects);
+		resultMap.put("processedWorks",devProjectsInProcess);
+		sendResponse(response,resultMap,mapper);
 	}
 
 	private void fillTestPage(HttpServletRequest request,
@@ -213,11 +205,11 @@ public class DeveloperController extends HttpServlet implements Responsable {
 		CustomerService customerService = (CustomerService) ApplicationContext
 				.getInstance().getBean("customerService");
 		Customer cust = customerService.findById(custId);
-		String custJson = new Gson().toJson(cust);
-		String resultJson = "{\"cust\":" + custJson + "}";
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(resultJson);
+		Map<String,Customer> resultMap = new HashMap<>();
+		resultMap.put("cust",cust);
+
+		sendResponse(response,resultMap,mapper);
+
 	}
 
 	private void sendWorkersByIdOrder(HttpServletRequest request,
@@ -226,21 +218,18 @@ public class DeveloperController extends HttpServlet implements Responsable {
 		HttpSession session = request.getSession();
 		UserEntity user = (UserEntity) session.getAttribute("user");
 		Integer orderId = Integer.parseInt(request.getParameter("order_id"));
-
 		Worker worker = developerService.getWorkerByDevIdAndOrderId(
 				user.getId(), orderId);
 		List<Developer> developers = developerService
 				.getDevelopersByIdOrder(orderId);
 		if (developers.contains(worker))
 			developers.remove(worker);
-		String devListJson = new Gson().toJson(developers);
-		String workerInfoJson = new Gson().toJson(worker);
-		String resultJson = "{\"workers\":" + devListJson + ", \"workerInfo\":"
-				+ workerInfoJson + "}";
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(resultJson);
 
+		Map<String,Object> resultMap = new HashMap<>();
+		resultMap.put("workers",developers);
+		resultMap.put("workerInfo",worker);
+
+		sendResponse(response,resultMap,mapper);
 	}
 
 	private void sendResults(HttpServletRequest request,

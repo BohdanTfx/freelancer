@@ -1,267 +1,316 @@
 package com.epam.freelancer.web.controller;
 
-import com.epam.freelancer.business.context.ApplicationContext;
-import com.epam.freelancer.business.service.*;
-import com.epam.freelancer.database.model.Contact;
-import com.epam.freelancer.database.model.Customer;
-import com.epam.freelancer.database.model.Feedback;
-import com.google.gson.Gson;
-import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.List;
 
-/**
- * Created by Максим on 22.01.2016.
- */
+import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
+
+import com.epam.freelancer.business.context.ApplicationContext;
+import com.epam.freelancer.business.service.CustomerService;
+import com.epam.freelancer.business.service.DeveloperService;
+import com.epam.freelancer.business.service.FeedbackService;
+import com.epam.freelancer.business.service.OrderingService;
+import com.epam.freelancer.business.service.TechnologyService;
+import com.epam.freelancer.business.service.TestService;
+import com.epam.freelancer.database.model.Contact;
+import com.epam.freelancer.database.model.Customer;
+import com.epam.freelancer.database.model.Feedback;
+import com.epam.freelancer.database.model.UserEntity;
+import com.google.gson.Gson;
+
 public class CustomerController extends HttpServlet implements Responsable {
-    public static final Logger LOG = Logger.getLogger(CustomerController.class);
-    private static final long serialVersionUID = -2356506023594947745L;
-    private CustomerService customerService;
-    private FeedbackService feedbackService;
-    private TestService testService;
-    private DeveloperService developerService;
-    private TechnologyService technologyService;
-    private ObjectMapper mapper;
+	public static final Logger LOG = Logger.getLogger(CustomerController.class);
+	private static final long serialVersionUID = -2356506023594947745L;
+	private CustomerService customerService;
+	private FeedbackService feedbackService;
+	private OrderingService orderingService;
+	private TestService testService;
+	private DeveloperService developerService;
+	private TechnologyService technologyService;
+	private ObjectMapper mapper;
 
-    public CustomerController() {
-        testService = (TestService) ApplicationContext.getInstance().getBean(
-                "testService");
-        technologyService = (TechnologyService) ApplicationContext
-                .getInstance().getBean("technologyService");
-        customerService = (CustomerService) ApplicationContext.getInstance()
-                .getBean("customerService");
-        mapper = new ObjectMapper();
-        developerService = (DeveloperService) ApplicationContext.getInstance()
-                .getBean("developerService");
-        feedbackService = (FeedbackService) ApplicationContext.getInstance()
-                .getBean("feedbackService");
-    }
+	public CustomerController() {
+		testService = (TestService) ApplicationContext.getInstance().getBean(
+				"testService");
+		technologyService = (TechnologyService) ApplicationContext
+				.getInstance().getBean("technologyService");
+		customerService = (CustomerService) ApplicationContext.getInstance()
+				.getBean("customerService");
+		mapper = new ObjectMapper();
+		developerService = (DeveloperService) ApplicationContext.getInstance()
+				.getBean("developerService");
+		feedbackService = (FeedbackService) ApplicationContext.getInstance()
+				.getBean("feedbackService");
+		orderingService = (OrderingService) ApplicationContext.getInstance()
+				.getBean("orderingService");
+	}
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
+	@Override
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException
+	{
+		try {
+			switch (FrontController.getPath(request)) {
+			case "cust/personal":
+				fillCustomerPersonalPage(request, response);
+				break;
+			default:
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.fatal(getClass().getSimpleName() + " - " + "doGet");
+		}
+	}
 
-            String path = FrontController.getPath(request);
+	@Override
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException
+	{
+		try {
+			switch (FrontController.getPath(request)) {
+			case "cust/getCustById":
+				getCustById(request, response);
+				break;
+			case "cust/sendpersonaldata":
+				updatePersonalData(request, response);
+				break;
+			case "cust/getFeedForCust":
+				getFeedbacksByIdForCust(request, response);
+				break;
+			case "cust/getContForCust":
+				getContForCust(request, response);
+				break;
+			case "cust/getRateForCust":
+				getRateForCust(request, response);
+				break;
+			case "cust/history":
+				getCustomerHistory(request, response);
+				break;
+			case "user/getRate":
+				getRate(request, response);
+				return;
+			case "cust/order/create":
+				createOrder(request, response);
+				break;
+			default:
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.fatal(getClass().getSimpleName() + " - " + "doPost");
+		}
+	}
 
-            switch (path) {
-                case "cust/personal":
-                    fillCustomerPersonalPage(request, response);
-                    break;
-                default:
+	private void createOrder(HttpServletRequest request,
+			HttpServletResponse response) throws IOException
+	{
+		UserEntity customer = (UserEntity) request.getSession().getAttribute(
+				"user");
+		try {
+			String requestData = request.getReader().readLine();
+			Map<String, String> data = mapper.readValue(requestData,
+					new TypeReference<Map<String, String>>() {
+					});
+			data.put("customer_id", customer.getId().toString());
+			orderingService.create(data
+					.entrySet()
+					.stream()
+					.collect(
+							Collectors.toMap(Map.Entry::getKey,
+									e -> new String[] { e.getValue() })));
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
+			return;
+		}
+		response.sendError(HttpServletResponse.SC_OK);
+	}
 
-            }
+	public void getContForCust(HttpServletRequest request,
+			HttpServletResponse response) throws IOException
+	{
+		String param = request.getParameter("id");
+		if (param != null) {
+			try {
+				Integer id = Integer.parseInt(param);
+				Contact contact = customerService.getContactByCustomerId(id);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            LOG.fatal(getClass().getSimpleName() + " - " + "doGet");
-        }
-    }
+				if (contact != null) {
+					sendResponse(response, contact, mapper);
+				} else
+					response.sendError(404);
+			} catch (Exception e) {
+				response.sendError(500);
+			}
+		} else {
+			response.sendError(404);
+			return;
+		}
+	}
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            switch (FrontController.getPath(request)) {
-                case "cust/getCustById":
-                    getCustById(request, response);
-                    break;
-                case "cust/sendpersonaldata":
-                    updatePersonalData(request, response);
-                    break;
-                case "cust/getFeedForCust":
-                    getFeedbacksByIdForCust(request, response);
-                    break;
-                case "cust/getContForCust":
-                    getContForCust(request, response);
-                    break;
-                case "cust/getRateForCust":
-                    getRateForCust(request, response);
-                    break;
-                case "cust/history":
-                    getCustomerHistory(request, response);
-                    break;
-                case "user/getRate":
-                    getRate(request, response);
-                    return;
-                default:
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            LOG.fatal(getClass().getSimpleName() + " - " + "doPost");
-        }
-    }
+	public void getCustById(HttpServletRequest request,
+			HttpServletResponse response) throws IOException
+	{
+		String param = request.getParameter("id");
+		if (param != null) {
+			try {
+				Integer id = Integer.parseInt(param);
+				CustomerService cs = (CustomerService) ApplicationContext
+						.getInstance().getBean("customerService");
+				Customer customer = cs.findById(id);
 
+				if (customer != null) {
+					customer.setPassword(null);
+					sendResponse(response, customer, mapper);
+				} else
+					response.sendError(404);
+			} catch (Exception e) {
+				response.sendError(500);
+			}
+		} else {
+			response.sendError(404);
+			return;
+		}
+	}
 
-    public void getContForCust(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String param = request.getParameter("id");
-        if (param != null) {
-            try {
-                Integer id = Integer.parseInt(param);
-                Contact contact = customerService.getContactByCustomerId(id);
+	public void getFeedbacksByIdForCust(HttpServletRequest request,
+			HttpServletResponse response) throws IOException
+	{
+		String param = request.getParameter("id");
+		if (param != null) {
+			try {
+				Integer id = Integer.parseInt(param);
+				List<Feedback> feedbacks = feedbackService
+						.findFeedbacksByCustIdForHim(id);
+				for (Feedback f : feedbacks) {
+					f.setDeveloper(developerService.findById(f.getDevId()));
+				}
+				Collections.reverse(feedbacks);
 
-                if (contact != null) {
-                    sendResponse(response, contact, mapper);
-                } else
-                    response.sendError(404);
-            } catch (Exception e) {
-                response.sendError(500);
-            }
-        } else {
-            response.sendError(404);
-            return;
-        }
-    }
+				sendResponse(response, feedbacks, mapper);
 
-    public void getCustById(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String param = request.getParameter("id");
-        if (param != null) {
-            try {
-                Integer id = Integer.parseInt(param);
-                CustomerService cs = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
-                Customer customer = cs.findById(id);
+			} catch (Exception e) {
+				response.sendError(500);
+			}
+		}
+	}
 
-                if (customer != null) {
-                    customer.setPassword(null);
-                    sendResponse(response, customer, mapper);
-                } else
-                    response.sendError(404);
-            } catch (Exception e) {
-                response.sendError(500);
-            }
-        } else {
-            response.sendError(404);
-            return;
-        }
-    }
+	public void getRateForCust(HttpServletRequest request,
+			HttpServletResponse response) throws IOException
+	{
+		String param = request.getParameter("id");
+		if (param != null) {
+			try {
+				Integer id = Integer.parseInt(param);
+				List<Feedback> feedbacks = feedbackService
+						.findFeedbacksByCustId(id);
+				Integer rate = 0;
+				for (Feedback f : feedbacks) {
+					rate += f.getRate();
+				}
 
-    public void getFeedbacksByIdForCust(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String param = request.getParameter("id");
-        if (param != null) {
-            try {
-                Integer id = Integer.parseInt(param);
-                List<Feedback> feedbacks = feedbackService
-                        .findFeedbacksByCustIdForHim(id);
-                for (Feedback f : feedbacks) {
-                    f.setDeveloper(developerService.findById(f.getDevId()));
-                }
-                Collections.reverse(feedbacks);
+				rate = rate / feedbacks.size();
+				sendResponse(response, rate, mapper);
 
-                sendResponse(response, feedbacks, mapper);
+			} catch (Exception e) {
+				response.sendError(500);
+			}
+		}
+	}
 
-            }catch (Exception e) {
-                response.sendError(500);
-            }
-        }
-    }
+	private void fillCustomerPersonalPage(HttpServletRequest request,
+			HttpServletResponse response) throws IOException
+	{
+		Customer customer;
+		Contact contact;
+		HttpSession session;
+		String customerJson;
+		String contactJson;
+		String resultJson;
 
-    public void getRateForCust(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String param = request.getParameter("id");
-        if (param != null) {
-            try {
-                Integer id = Integer.parseInt(param);
-                List<Feedback> feedbacks = feedbackService
-                        .findFeedbacksByCustId(id);
-                Integer rate = 0;
-                for (Feedback f : feedbacks) {
-                    rate += f.getRate();
-                }
+		session = request.getSession();
+		session.setAttribute("user", customerService.findById(1));
 
-                rate = rate / feedbacks.size();
-                sendResponse(response, rate, mapper);
+		customer = (Customer) session.getAttribute("user");
+		contact = customerService.getContactByCustomerId(customer.getId());
 
-            } catch (Exception e) {
-                response.sendError(500);
-            }
-        }
-    }
+		customerJson = new Gson().toJson(customer);
+		System.out.println(customerJson);
+		contactJson = new Gson().toJson(contact);
+		System.out.println(contactJson);
 
-    private void fillCustomerPersonalPage(HttpServletRequest request,
-                                          HttpServletResponse response) throws IOException
-    {
-        Customer customer;
-        Contact contact;
-        HttpSession session;
-        String customerJson;
-        String contactJson;
-        String resultJson;
+		resultJson = "{\"cust\":" + customerJson + ",\"cont\":" + contactJson
+				+ "}";
 
-        session = request.getSession();
-        session.setAttribute("user", customerService.findById(1));
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(resultJson);
+	}
 
-        customer = (Customer) session.getAttribute("user");
-        contact = customerService.getContactByCustomerId(customer.getId());
+	private void updatePersonalData(HttpServletRequest request,
+			HttpServletResponse response) throws IOException
+	{
+		Customer customer = null;
+		Contact contact;
+		String customerJson;
+		String contactJson;
 
-        customerJson = new Gson().toJson(customer);
-        System.out.println(customerJson);
-        contactJson = new Gson().toJson(contact);
-        System.out.println(contactJson);
+		SimpleDateFormat format = new SimpleDateFormat(
+				"MMM dd, yyyy hh:mm:ss a");
+		mapper.setDateFormat(format);
 
-        resultJson = "{\"cust\":" + customerJson + ",\"cont\":" + contactJson +"}";
+		customerJson = request.getParameter("customer");
+		System.out.println(customerJson);
 
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(resultJson);
-    }
+		try {
+			customer = mapper.readValue(customerJson, Customer.class);
 
-    private void updatePersonalData(HttpServletRequest request,
-                                    HttpServletResponse response) throws IOException
-    {
-        Customer customer = null;
-        Contact contact;
-        String customerJson;
-        String contactJson;
+		} catch (Exception e) {
+			LOG.warn("Some problem with mapper Customer Controller");
+		}
 
-        SimpleDateFormat format = new SimpleDateFormat(
-                "MMM dd, yyyy hh:mm:ss a");
-        mapper.setDateFormat(format);
+		System.out.println("AFTER MAPPER +++++\n" + customer);
 
-        customerJson = request.getParameter("customer");
-        System.out.println(customerJson);
+		contactJson = request.getParameter("contact");
+		System.out.println(contactJson);
 
-        try {
-            customer = mapper.readValue(customerJson, Customer.class);
+		contact = mapper.readValue(contactJson, Contact.class);
+		System.out.println(contact);
+	}
 
-        } catch(Exception e){
-            LOG.warn("Some problem with mapper Customer Controller");
-        }
+	public void getRate(HttpServletRequest request, HttpServletResponse response)
+			throws IOException
+	{
+		String param = request.getParameter("id");
+		if (param != null) {
+			try {
+				Integer id = Integer.parseInt(param);
+				FeedbackService fs = (FeedbackService) ApplicationContext
+						.getInstance().getBean("feedbackService");
+				Integer avg = fs.getAvgRate(id);
+				sendResponse(response, avg, mapper);
+			} catch (Exception e) {
+				response.sendError(500);
+			}
+		} else {
+			response.sendError(404);
+		}
+	}
 
-        System.out.println("AFTER MAPPER +++++\n" + customer);
-
-        contactJson = request.getParameter("contact");
-        System.out.println(contactJson);
-
-        contact = mapper.readValue(contactJson, Contact.class);
-        System.out.println(contact);
-    }
-
-    public void getRate(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-        String param = request.getParameter("id");
-        if (param != null) {
-            try {
-                Integer id = Integer.parseInt(param);
-                FeedbackService fs = (FeedbackService) ApplicationContext
-                        .getInstance().getBean("feedbackService");
-                Integer avg = fs.getAvgRate(id);
-                sendResponse(response, avg, mapper);
-            } catch (Exception e) {
-                response.sendError(500);
-            }
-        } else {
-            response.sendError(404);
-        }
-    }
-
-    private void getCustomerHistory(HttpServletRequest
-                                            request, HttpServletResponse response) throws IOException {
-        //method for private history
-    }
+	private void getCustomerHistory(HttpServletRequest request,
+			HttpServletResponse response) throws IOException
+	{
+		// method for private history
+	}
 }

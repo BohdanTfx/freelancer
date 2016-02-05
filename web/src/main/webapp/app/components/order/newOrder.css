@@ -1,0 +1,33 @@
+@CHARSET "UTF-8";
+
+.payment-fieldset {
+	border: 1px solid rgba(0, 0, 0, 0.12);
+	margin-bottom: 10px;
+}
+
+.payment-fieldset legend {
+	width: auto;
+	border: medium none;
+	font-size: 1em;
+	margin: 0px 0px 0px 10px;
+	padding: 0px 5px;
+}
+
+.payment-fieldset>div>md-input-container {
+	margin-top: 15px;
+}
+
+md-input-container>label+md-icon.fa {
+	font-size: 1.8em;
+}
+
+.order-technology .multiSelectItem>.acol>label {
+	transform: none;
+	position: relative;
+	color: black;
+	font-weight: bold;
+}
+
+.order-private-icon>label+md-icon.fa {
+	margin-top: -7px;
+}

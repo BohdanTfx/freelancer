@@ -69,6 +69,7 @@
     <link rel="stylesheet" href="app/components/myworks/mywork.css">
 
     <link rel="stylesheet" href="app/components/custpub/custpub.css">
+    <link rel="stylesheet" href="app/components/order/newOrder.css">
 
     <link rel="stylesheet" href="app/components/createtest/createtest.css">
 
@@ -87,137 +88,146 @@
 
             <div class="outer-box">
                 <div class="logo">
-                    <a href="#/home">
-                        <img alt="Site logo" class="img-logo img-png animated rotateIn"
-                             data-tooltip="yes" title="Home" data-placement="right"
-                             src="/images/logo.png">
+                    <a href="#/home"> <img alt="Site logo"
+                                           class="img-logo img-png animated rotateIn" data-tooltip="yes"
+                                           title="Home" data-placement="right" src="/images/logo.png">
+
+                        <h1 class="text-shadow-white logo-text">Freelancer</h1>
                     </a>
                 </div>
-
-                <nav class="main-menu">
-                    <div class="navbar-header">
-                        <button type="button" class="navbar-toggle"
-                                data-toggle="collapse" data-target=".navbar-collapse">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                    </div>
-
-                    <div class="navbar-collapse collapse clearfix">
-                        <!--<sec:access role="none">-->
-                        <ul class="navigation" ng-switch on="logged">
-                            <li class="hvr-underline-from-center" ng-switch-when="false"><a
-                                    href="#/auth">
-                                <i class="fa fa-sign-in"></i>Sign In
-                            </a></li>
-                            <li class="hvr-underline-from-center" ng-switch-when="false"><a
-                                    href="#/signup">
-                                <i class="fa fa-user-plus"></i>Sign Up
-                            </a></li>
-
-
-                        </ul>
-                        <!--</sec:access>-->
-                        <!--<sec:access role="user">-->
-                        <ul class="navigation" ng-switch on="logged">
-                            <li class="hvr-underline-from-center" ng-switch-when="true"><a
-                                    href="#/cabinet/main">
-                                <i class="fa fa-home"></i>{{name}} {{lastName}}
-                            </a></li>
-                            <li id="logout" ng-click="logout()"
-                                class="hvr-underline-from-center" ng-switch-when="true"><a
-                                    href="#/logout">
-                                <i class="fa fa-sign-out"></i>Logout
-                            </a></li>
-                        </ul>
-                        <!--</sec:access>-->
-                    </div>
-                </nav>
-
             </div>
+
+            <nav class="main-menu">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse"
+                            data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+
+                <div class="navbar-collapse collapse clearfix">
+                    <!--<sec:access role="none">-->
+                    <ul class="navigation" ng-switch on="logged">
+                        <li class="hvr-underline-from-center" ng-switch-when="false"><a
+                                href="#/auth"> <i class="fa fa-sign-in"></i>Sign In
+                        </a></li>
+                        <li class="hvr-underline-from-center" ng-switch-when="false"><a
+                                href="#/signup"> <i class="fa fa-user-plus"></i>Sign Up
+                        </a></li>
+
+
+                    </ul>
+                    <!--</sec:access>-->
+                    <!--<sec:access role="user">-->
+                    <ul class="navigation " ng-switch on="logged">
+                        <li class="hvr-underline-from-center" ng-switch-when="true"><a
+                                href="#/cabinet/main"> <i class="fa fa-home"></i>{{name}}
+                            {{lastName}}
+                        </a></li>
+                        <li id="logout" ng-click="logout()"
+                            class="hvr-underline-from-center" ng-switch-when="true"><a
+                                href="#/logout"> <i class="fa fa-sign-out"></i>Logout
+                        </a></li>
+                    </ul>
+                    <!--</sec:access>-->
+                </div>
+            </nav>
+
         </div>
+    </div>
     </div>
 </header>
 
 
 <div ng-switch on="logged">
     <div ng-switch-when="true">
-        <div class="MenuController" >
+        <div class="MenuController">
             <md-toolbar class="md-menu-toolbar">
-                <md-menu-bar class="menuIcons ">
-                    <a href="#/home">
-                        <i class="fa fa-home menuIconBtn home-btn"></i>
-                    </a>
+                <md-menu-bar
+                        class="menuIcons "><a href="#/home"> <i
+                        class="fa fa-home menuIconBtn home-btn"></i>
+                </a>
 
+
+                    <md-menu md-offset="49">
+                        <button ng-click="$mdOpenMenu()" class="menuIconBtn">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        <md-menu-content width=3 md-position-mode=target-left
+                                         class="menuContent">
+                            <md-menu-item>
+                                <md-button onclick="location.href='#/orders'"> Orders</md-button>
+                            </md-menu-item>
+                            <md-menu-item>
+                                <md-button onclick="location.href='#/developers'"> Developers</md-button>
+                            </md-menu-item>
+                        </md-menu-content>
                     </md-menu>
 
+
+                    </md-menu>
                     <md-menu md-offset="49">
                         <button ng-click="$mdOpenMenu()" class="menuIconBtn">
                             <i class="fa fa-user "></i>
                         </button>
-                        <md-menu-content width=3 md-position-mode=target-left class="menuContent">
+
+                        <md-menu-content width=3 md-position-mode=target-left
+                                         class="menuContent">
                             <md-menu-item>
                                 <md-button onclick="location.href='#/personal'">
                                     Personal
                                 </md-button>
                             </md-menu-item>
                             <md-menu-item>
-                                <md-button onclick="location.href='#/myworks'">
-                                    My Works
+                                <md-button
+                                        onclick="location.href='#/myworks'"> My Works
                                 </md-button>
                             </md-menu-item>
                             <md-menu-item>
-                                <md-button onclick="location.href='#/tests'">
-                                    Tests
-                                </md-button>
+                                <md-button onclick="location.href='#/tests'"> Tests</md-button>
                             </md-menu-item>
-                        </md-menu-content>
+
+                            <span ng-switch="role">
+                                <span ng-switch-when="developer">
+                                    <md-menu-item>
+                                        <md-button type="submit" ng-href="/#/public/developer/full-name/{{project.id}}"> See my public page</md-button>
+                                    </md-menu-item>
+                                </span>
+                                 <span ng-switch-when="customer">
+                                    <md-menu-item>
+                                        <a ng-href="/#/public/developer/full-name/{{project.id}}">See my public page</a>
+                                    </md-menu-item>
+                                </span>
+                                <span ng-switch-default>
+                                </span>
+                            </span>
+                            </md-menu-content>
                     </md-menu>
 
                     <md-menu md-offset="49">
                         <button ng-click="$mdOpenMenu()" class="menuIconBtn">
                             <i class="fa fa-bar-chart"></i>
                         </button>
-                        <md-menu-content width=3 md-position-mode=target-left class="menuContent">
+                        <md-menu-content width=3 md-position-mode=target-left
+                                         class="menuContent">
                             <md-menu-item>
-                                <md-button>
-                                    Statistics 1
-                                </md-button>
-                            </md-menu-item>
-                            <md-menu-item>
-                                <md-button>
-                                    Statistics 2
-                                </md-button>
-                            </md-menu-item>
-                            <md-menu-item>
-                                <md-button>
-                                    Statistics 3
-                                </md-button>
+                                <md-button onclick="location.href='#/admin/statistics'"> Statistics</md-button>
                             </md-menu-item>
                         </md-menu-content>
                     </md-menu>
-
                     <md-menu md-offset="49">
                         <button ng-click="$mdOpenMenu()" class="menuIconBtn">
                             <i class="fa fa-cogs"></i>
                         </button>
-                        <md-menu-content width=3 md-position-mode=target-left class="menuContent">
+                        <md-menu-content width=3 md-position-mode=target-left
+                                         class="menuContent">
                             <md-menu-item>
-                                <md-button>
-                                    Settings 1
-                                </md-button>
+                                <md-button> Settings 1</md-button>
                             </md-menu-item>
-                            <md-menu-item>
-                                <md-button>
-                                    Settings 2
-                                </md-button>
-                            </md-menu-item>
-                            <md-menu-item>
-                                <md-button>
-                                    Settings 3
-                                </md-button>
-                            </md-menu-item>
+
+
                         </md-menu-content>
                     </md-menu>
                 </md-menu-bar>
@@ -227,7 +237,7 @@
         <!-- Main view for templates -->
         <div class="menu-offset menu-header-offset">
             <div class="container">
-                <div ui-view ></div>
+                <div ui-view></div>
             </div>
         </div>
     </div>
@@ -236,7 +246,7 @@
     <div ng-switch-default>
         <div class="menu-header-offset-unlog">
             <div class="">
-                <div ui-view ></div>
+                <div ui-view></div>
             </div>
         </div>
     </div>
@@ -261,11 +271,10 @@
 <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="bower_components/angular-bootstrap/ui-bootstrap.min.js"></script>
 <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-
-<script
-        src="bower_components/angular-multi-select-master/isteven-multi-select.js"></script>
+<script src="bower_components/angular-multi-select-master/isteven-multi-select.js"></script>
 <script src="bower_components/angularjs-slider-master/rzslider.min.js"></script>
 <script src="bower_components/angular-ui-notification-master/angular-ui-notification.min.js"></script>
+<script src="bower_components/angular-google-chart-0.1.0/ng-google-chart.js"></script>
 <script src="app/app.js"></script>
 <script src="app/constants/config.js"></script>
 
@@ -300,6 +309,12 @@
 
 <script src="app/components/custpub/custpubCtrl.js"></script>
 <script src="app/components/custpub/custpubService.js"></script>
+
+<script src="app/components/order/orderCtrl.js"></script>
+<script src="app/components/order/orderService.js"></script>
+
+<script src="app/components/admin/adminCtrl.js"></script>
+<script src="app/components/admin/adminService.js"></script>
 
 <script src="app/components/createtest/createtestCtrl.js"></script>
 <script src="app/components/createtest/createtestService.js"></script>

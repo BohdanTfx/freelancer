@@ -4,9 +4,9 @@
 			'FreelancerApp',
 			[ 'ngRoute', 'ui.router', 'ngCookies', 'ngMaterial', 'ngAnimate',
 					'ngAria', 'ngMessages', 'isteven-multi-select', 'rzModule',
-					'ui.bootstrap', 'ui-notification' ]).config(
+					'ui.bootstrap', 'ui-notification','googlechart' ]).config(
 			function($stateProvider, $urlRouterProvider, $locationProvider,
-					NotificationProvider) {
+					NotificationProvider ) {
 				$urlRouterProvider.otherwise('/home');
 
 				NotificationProvider.setOptions({
@@ -23,6 +23,10 @@
 					url : '/orders',
 					templateUrl : 'app/components/jobs/jobs.html',
 					controller : 'jobsCtrl'
+				}).state('createOrder', {
+					url : '/order/create',
+					templateUrl : 'app/components/order/order.html',
+					controller : 'orderCtrl'
 				}).state('order', {
 					url : '/orders/:orderId',
 					templateUrl : 'app/components/jobinfo/jobinfo.html',
@@ -63,6 +67,14 @@
                     url: '/public/customer/:custName/:custId',
                     templateUrl: 'app/components/custpub/custpub.html',
                     controller: 'custpubCtrl'
+				}).state('admin', {
+					url: '/admin/statistics',
+					templateUrl: 'app/components/admin/adminStatistics.html',
+					controller: 'adminCtrl'
+				}).state('signupadmin', {
+					url : '/signup/:uuid',
+					templateUrl : 'app/components/signup/signup.html',
+					controller : 'signupCtrl'
 				}).state('createtest', {
                     url: '/tests/creating',
                     templateUrl: 'app/components/createtest/createtest.html',

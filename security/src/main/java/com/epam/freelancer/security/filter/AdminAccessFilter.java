@@ -35,11 +35,11 @@ public class AdminAccessFilter implements Filter {
 			FilterChain chain) throws ServletException, IOException
 	{
 		LOG.info(getClass().getSimpleName() + " - " + "doFilter");
-		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
-
-		if (authenticationProvider.provideAccess(cookieAutoAuthName, userName,
-				"login", adminService, httpServletRequest, httpServletResponse))
+//		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+//		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
+//
+//		if (authenticationProvider.provideAccess(cookieAutoAuthName, userName,
+//				"login", adminService, httpServletRequest, httpServletResponse))
 			chain.doFilter(request, response);
 	}
 

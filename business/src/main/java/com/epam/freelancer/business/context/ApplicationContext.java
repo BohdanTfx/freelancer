@@ -58,6 +58,7 @@ public final class ApplicationContext {
 
 		addBean("questionService", new QuestionService());
 		addBean("testService", new TestService());
+		addBean("adminCandidateService", new AdminCandidateService());
 
 		TestService testService = new TestService();
 		testService.setQuestionDao(daoManager.getDAO(QuestionDao.class
@@ -67,6 +68,8 @@ public final class ApplicationContext {
 						.getSimpleName()));
 		testService.setAnswerDao(daoManager.getDAO(AnswerDao.class
 				.getSimpleName()));
+//		testService.setAdminCandidatDao(daoManager.getDAO(AdminCandidateDao.class
+//				.getSimpleName()));
 		addBean("testService", testService);
 
 		DeveloperQAService developerQAService = new DeveloperQAService();
@@ -97,6 +100,8 @@ public final class ApplicationContext {
 					new AdminJdbcDao());
 			daoManager.addDao(AnswerDao.class.getSimpleName(),
 					new AnswerJdbcDao());
+			daoManager.addDao(AdminCandidateDao.class.getSimpleName(),
+					new AdminCandidateJdbcDao());
 			daoManager.addDao(ContactDao.class.getSimpleName(),
 					new ContactJdbcDao());
 			daoManager.addDao(CustomerDao.class.getSimpleName(),
