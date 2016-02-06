@@ -1,3 +1,4 @@
+<div class="home-page">
 <div class="container home-content">
     <div class="container" style="padding: 0;">
         <div style="" class="row">
@@ -8,10 +9,8 @@
                         <div class="home-carousel-image-div">
                             <img class="home-carousel-image"  ng-src="{{slide.image}}">
                         </div>
-                        <div class="carousel-caption">
-                            <h4>Slide {{slide.id}}</h4>
-
-                            <p>{{slide.text}}</p>
+                        <div class="carousel-caption" style="color:white;">
+                            <h2>{{slide.text}}</h2>
             </div>
                     </uib-slide>
                 </uib-carousel>
@@ -20,24 +19,6 @@
         <link rel="stylesheet" href="../../../images/home/it.jpg"/>
 
     </div>
-
-
-    <!--<div class="row">-->
-    <!--<div class="col-md-6">-->
-    <!--<button type="button" class="btn btn-info" ng-click="addSlide()">Add Slide</button>-->
-    <!--<button type="button" class="btn btn-info" ng-click="randomize()">Randomize slides</button>-->
-    <!--<div class="checkbox">-->
-    <!--<label>-->
-    <!--<input type="checkbox" ng-model="noWrapSlides">-->
-    <!--Disable Slide Looping-->
-    <!--</label>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<div class="col-md-6">-->
-    <!--Interval, in milliseconds: <input type="number" class="form-control" ng-model="myInterval">-->
-    <!--<br />Enter a negative number or 0 to stop the interval.-->
-    <!--</div>-->
-    <!--</div>-->
 
     <!-- Page Content -->
     <div class=" container homeContent">
@@ -67,7 +48,7 @@
                         <h4><i class="fa fa-fw fa-users "></i> Large database of employers</h4>
                     </div>
                     <div class="panel-body">
-                        <p>We have information about more than fifty thousands employers and specialists</p>
+                        <p>We have information about more than 1,5 millions employers and specialists</p>
                     </div>
                 </div>
             </div>
@@ -77,7 +58,7 @@
                         <h4><i class="fa fa-fw fa-hand-peace-o "></i> Free &amp; Open to all</h4>
                     </div>
                     <div class="panel-body">
-                        <p>Every one can work with us, you need only <a href="#/chooserole">sign up</a>. It is very
+                        <p>Every one can work with us, you need only <a href="#/signup">sign up</a>. It is very
                             easy.</p>
                     </div>
                 </div>
@@ -86,23 +67,34 @@
         <!-- /.row -->
 
 
+
         <!-- Features Section -->
         <div class="row">
             <div class="col-lg-12">
-                <h2 class="page-header">What you will able to do with freelance service</h2>
+                <h2 class="page-header">You can do more with our service</h2>
             </div>
             <div class="col-md-6">
-                <p>A few tips for quick start:</p>
-                <ul>
-                    <li>Corporis, omnis doloremque non</li>
-                    <li>Reiciendis quia dolorum</li>
-                    <li>Aspernatur tempora minima</li>
-                    <li>Unstyled page elements for easy customization</li>
-                    <li>Ducimus unde</li>
+
+                <p>Create a profile and define the freelance services you want to offer.
+                    Employers will find you by these services when they search for freelancers to hire.
+                    Search and apply for jobs that interest you, in any category.
+                    We make it easy to showcase previous work you’ve completed to back up your proposals.</p>
+
+                <p>Post your project and receive competitive bids from freelancers within minutes.
+                    Our reputation system will make it easy to find the perfect freelancer for your job.
+                    It is the simplest and safest way to get work done online!</p>
+
+               <p>
+                   Whether you need one writer or an entire team of programmers, we help you find the right experts to fuel your success.
+                   Our platform lets you work effortlessly with freelancers anywhere. Say goodbye to business as usual.
+               </p>
+                <br/>
+                <h4 >A few tips for quick start:</h4>
+                <ul class="tips-list">
+                    <li>Use our  feature-rich filter to find exactly that job you want.</li>
+                    <li>Take a look at rating of person, to find a deserving companion to work with.</li>
+                    <li>Fill all information about yourself to be more attractive to customers.</li>
                 </ul>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Corporis, omnis doloremque non cum id
-                    reprehenderit, quisquam totam aspernatur tempora minima unde aliquid ea culpa sunt. Reiciendis quia
-                    dolorum ducimus unde.</p>
             </div>
             <div class="col-md-6">
                 <img class="img-responsive" src="../../../images/home/Fotolia_74087814_Subscription_Monthly_M.jpg"
@@ -114,6 +106,9 @@
         <hr>
 
         <!-- Call to Action Section -->
+
+        <div ng-switch="logged">
+            <div ng-switch-when="false">
         <div class="well">
             <div class="row">
                 <div class="col-md-8">
@@ -122,12 +117,50 @@
                         Do not worry it will not take much time.</p>
                 </div>
                 <div class="col-md-4">
-                    <a class="btn btn-lg btn-primary btn-block" href="#/chooserole">Sign up</a>
+                            <a class="btn btn-lg btn-primary btn-block" href="#/signup">Sign up</a>
                 </div>
             </div>
         </div>
+            </div>
+
+            <div ng-switch-when="true">
+
+                <div ng-switch="role">
+                    <div ng-switch-when="developer">
+                        <div class="well">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <p>You can find all orders in menu (icon "search").
+                                        If you want to do one of orders you can press subscribe and the Customer will contact you. Press button "Search orders"
+                                         to get started.</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <a class="btn btn-lg btn-primary btn-block" href="#/orders">Search orders</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-switch-when="customer">
+                        <div class="well">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <p>You can create new order, and people will be able to find your order in search and contact with you to discuss all
+                                        condition of offer. Press button "Create new order" to get started.</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <a class="btn btn-lg btn-primary btn-block" href="#/order/create">Create new order</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
 
         <hr>
+
+    </div>
 
     </div>
 
