@@ -1,29 +1,3 @@
-.mywork  .details-dev-list{
-    font-size: 2em;
-}
-
-.mywork .details-dev-list li {
-    margin-left: 5%;
-}
-
-.mywork .hidden-icons-title{
-   display: inline-block;
-}
-
-.mywork .project-block {
-    height: 120px;
-    overflow: hidden;
-    background-color: #F5F5F5;
-    margin: 0;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.mywork .project-block-title {
-    width: 100%;
-    font-size: 1.5em;
-    font-weight: bold;
-}
 
 .mywork .project-block-descr {
     width: 100%;
@@ -59,19 +33,19 @@
     color: #000000;
 }
 
- .mywork .unit-foto{
+.mywork .unit-foto{
     width: 64px;
     height: 64px;
     margin:0 auto;
 
 }
 
- .mywork .members-unit-dev{
-     width: 100px;
-     float: left;
-     text-align: center;
-     margin-bottom: 10px;
- }
+.mywork .members-unit-dev{
+    width: 100px;
+    float: left;
+    text-align: center;
+    margin-bottom: 10px;
+}
 
 
 
@@ -87,6 +61,7 @@
 .mywork .panel-unit{
     margin-right: 3%;
 }
+
 .mywork .modal-header{
     padding: 0;
 }
@@ -98,8 +73,8 @@
 }
 
 /*.mywork .tab-label{*/
-    /*background-color: #273039;*/
-    /*color: green;*/
+/*background-color: #273039;*/
+/*color: green;*/
 /*}*/
 
 .mywork md-tabs md-ink-bar {
@@ -107,5 +82,5 @@
 }
 
 .mywork  md-tabs.md-default-theme .md-tab.md-active, md-tabs .md-tab.md-active, md-tabs.md-default-theme .md-tab.md-active md-icon, md-tabs .md-tab.md-active md-icon, md-tabs.md-default-theme .md-tab.md-focused, md-tabs .md-tab.md-focused, md-tabs.md-default-theme .md-tab.md-focused md-icon, md-tabs .md-tab.md-focused md-icon {
-              color: #273039;
-          }
+    color: #273039;
+}
