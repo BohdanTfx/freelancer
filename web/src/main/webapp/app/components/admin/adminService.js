@@ -6,7 +6,7 @@ angular.module('FreelancerApp')
             dataFactory = {};
 
         dataFactory.getStatisticsDevCust = function () {
-            return $http.get("/admin/getstatistics");
+            return $http.get("/admin/statistics");
         };
 
 

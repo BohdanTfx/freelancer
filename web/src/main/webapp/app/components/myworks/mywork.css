@@ -33,7 +33,7 @@
     color: #000000;
 }
 
-.mywork .unit-foto{
+ .mywork .unit-foto{
     width: 64px;
     height: 64px;
     margin:0 auto;
@@ -72,10 +72,6 @@
     background-color: #273039;
 }
 
-/*.mywork .tab-label{*/
-/*background-color: #273039;*/
-/*color: green;*/
-/*}*/
 
 .mywork md-tabs md-ink-bar {
     background: #273039 none repeat scroll 0% 0%;

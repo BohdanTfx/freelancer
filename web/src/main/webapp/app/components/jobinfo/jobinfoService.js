@@ -9,6 +9,14 @@ angular.module('FreelancerApp')
             return $http.post(urlBase + orderId);
         };
 
+        dataFactory.toComplain = function (orderId) {
+            return $http.post("/user/orders/complain?orderID=" + orderId);
+        };
+
+        dataFactory.isCompAlrEx = function (orderId) {
+            return $http.post("/user/orders/isCompAlrEx?orderId=" + orderId);
+        };
+
         var urlFollowers = '/user/order/followers?orderId=';
         dataFactory.getFollowers = function (orderId) {
             return $http.post(urlFollowers + orderId);

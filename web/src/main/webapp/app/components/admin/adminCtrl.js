@@ -8,6 +8,8 @@ angular.module('FreelancerApp')
                 $scope.custAmount = data.custAmount;
                 $scope.devAmount = data.devAmount;
 
+            alert(data.custAmount+'    '+data.devAmount);
+
             $scope.showDevCustStat();
 
 
