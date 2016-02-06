@@ -41,7 +41,7 @@
                                                     <label class="control-label">Date</label>
                                                     <div class="col-xs-12" >
                                                         <div class="label label-warning form-control">
-                                                            {{project.date | date:'MMMM dd, yyyy'}}
+                                                            {{project.date |  date:'MMM d, y'}}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -107,7 +107,7 @@
                                                     <label class="control-label">Date</label>
                                                     <div class="col-xs-12" >
                                                         <div class="label label-warning form-control">
-                                                            {{project.date | date:'MMMM dd, yyyy'}}
+                                                            {{project.date | date:'MMM d, y'}}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -173,7 +173,7 @@
                                                     <label class="control-label">Date</label>
                                                     <div class="col-xs-12" >
                                                         <div class="label label-warning form-control">
-                                                            {{project.date | date:'MMMM dd, yyyy'}}
+                                                            {{project.date | date:'MMM d, y'}}
                                                         </div>
                                                     </div>
                                                 </div>
@@ -208,92 +208,4 @@
         </md-content>
     </div>
 </div>
-
-
-<!--<div ng-switch="finishedWorks.length">-->
-    <!--<div ng-switch-when="0">-->
-        <!--<h1>There is no Finished projects</h1>-->
-    <!--</div>-->
-    <!--<div ng-switch-default>-->
-        <!--&lt;!&ndash;start header&ndash;&gt;-->
-        <!--<div class="history-title">-->
-            <!--<div class="panel panel-default">-->
-                <!--<div class="panel-heading">-->
-                    <!--<div class="row">-->
-                        <!--<div class="panel-title col-md-12">-->
-                            <!--<div class="col-md-5 col-sm-5 col-xs-8">-->
-                                <!--<a ng-click="sort('title')">-->
-                                    <!--<div class="hidden-xs hidden-icons-title">-->
-                                        <!--<i class="fa fa-briefcase"></i>-->
-                                    <!--</div>-->
-                                    <!--Project title-->
-                                    <!--<i class="glyphicon"-->
-                                       <!--ng-class="{'glyphicon-arrow-up' : isSortUp('title'),-->
-                                                                          <!--'glyphicon-arrow-down' : isSortDown('title')}">-->
-
-                                    <!--</i>-->
-                                <!--</a>-->
-                            <!--</div>-->
-                            <!--<div class="col-md-3 col-sm-3 hidden-xs">-->
-                                <!--<a ng-click="sort('payment')">-->
-                                    <!--<i class="fa fa-money"></i> Payment-->
-                                    <!--<i class="glyphicon"-->
-                                       <!--ng-class="{'glyphicon-arrow-up' : isSortUp('payment'),-->
-                                                                          <!--'glyphicon-arrow-down' : isSortDown('payment')}">-->
-                                    <!--</i>-->
-                                <!--</a>-->
-                            <!--</div>-->
-                            <!--<div class="col-md-2 col-sm-4 col-xs-4">-->
-                                <!--<div class="hidden-xs hidden-icons-title">-->
-                                    <!--<i class="fa fa-calendar"></i>-->
-                                <!--</div>-->
-                                <!--Duration-->
-                            <!--</div>-->
-                            <!--<div class="col-md-2 hidden-sm hidden-xs"-->
-                                 <!--style="text-align: right;">-->
-                                <!--<i class="fa fa-lock"></i> Privacy-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--&lt;!&ndash;end header&ndash;&gt;-->
-
-        <!--&lt;!&ndash;start body&ndash;&gt;-->
-        <!--<div ng-repeat="project in finishedWorks | orderBy:sortField:reverse">-->
-            <!--<div class="panel panel-default">-->
-                <!--<div class="row" ng-click="showTabDialog($event,project)">-->
-                    <!--<div class="col-md-12">-->
-                        <!--<div class="panel-heading">-->
-                            <!--<div class="col-md-5 col-sm-5 col-xs-7">-->
-                                <!--{{project.title}}-->
-                            <!--</div>-->
-
-                            <!--<div class="col-md-3 col-sm-3 hidden-xs">-->
-                                <!--{{project.payment | number:1}} $-->
-                            <!--</div>-->
-
-                            <!--<div class="col-md-3 col-sm-4 col-xs-5 ">-->
-                                <!--<span>{{ project.startedDate | dateFormat }}</span> --->
-                                <!--<span>{{ project.endedDate | dateFormat }}</span>-->
-                            <!--</div>-->
-
-                            <!--<div ng-if="project.priv==''">-->
-                                <!--<div class=" col-md-1 hidden-sm hidden-xs">-->
-                                    <!--public-->
-                                <!--</div>-->
-                            <!--</div>-->
-                            <!--<div ng-if="project.priv!=''">-->
-                                <!--<div class="col-md-1 hidden-sm hidden-xs">-->
-                                    <!--private-->
-                                <!--</div>-->
-                            <!--</div>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
 

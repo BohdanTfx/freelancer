@@ -125,7 +125,7 @@
                     <!--<sec:access role="user">-->
                     <ul class="navigation " ng-switch on="logged">
                         <li class="hvr-underline-from-center" ng-switch-when="true"><a
-                                href="#/cabinet/main"> <i class="fa fa-home"></i>{{name}}
+                                href="#/personal"> <i class="fa fa-home"></i>{{name}}
                             {{lastName}}
                         </a></li>
                         <li id="logout" ng-click="logout()"
@@ -160,13 +160,27 @@
                         <md-menu-content width=3 md-position-mode=target-left
                                          class="menuContent">
                             <md-menu-item>
-                                <md-button onclick="location.href='#/orders'"> Orders</md-button>
+                                <md-button ng-href="/#/orders"> Orders</md-button>
                             </md-menu-item>
                             <md-menu-item>
-                                <md-button onclick="location.href='#/developers'"> Developers</md-button>
+                                <md-button ng-href="/#/developers"> Developers</md-button>
                             </md-menu-item>
                         </md-menu-content>
                     </md-menu>
+
+                    <div ng-if="role===customer">
+                        <md-menu md-offset="49">
+                            <button ng-click="$mdOpenMenu()" class="menuIconBtn">
+                                <i class="fa fa-briefcase"></i>
+                            </button>
+                            <md-menu-content width=3 md-position-mode=target-left
+                                             class="menuContent">
+                                <md-menu-item>
+                                    <md-button ng-href="/#/order/create"> Create new Order</md-button>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
+                    </div>
 
 
                     </md-menu>
@@ -178,47 +192,40 @@
                         <md-menu-content width=3 md-position-mode=target-left
                                          class="menuContent">
                             <md-menu-item>
-                                <md-button onclick="location.href='#/personal'">
+                                <md-button ng-href="/#/personal">
                                     Personal
                                 </md-button>
                             </md-menu-item>
                             <md-menu-item>
                                 <md-button
-                                        onclick="location.href='#/myworks'"> My Works
+                                        ng-href="/#/myworks"> My Works
                                 </md-button>
                             </md-menu-item>
                             <md-menu-item>
-                                <md-button onclick="location.href='#/tests'"> Tests</md-button>
+                                <md-button ng-href="/#/tests"> Tests</md-button>
                             </md-menu-item>
 
                             <span ng-switch="role">
                                 <span ng-switch-when="developer">
                                     <md-menu-item>
-                                        <md-button type="submit" ng-href="/#/public/developer/full-name/{{project.id}}"> My public page</md-button>
+                                        <md-button type="submit" ng-href="/#/public/developer/devname/{{id}}"> My public
+                                            page
+                                        </md-button>
                                     </md-menu-item>
                                 </span>
                                  <span ng-switch-when="customer">
                                     <md-menu-item>
-                                        <a ng-href="/#/public/developer/full-name/{{project.id}}">My public page</a>
+                                        <md-button ng-href="/#/public/customer/custname/{{id}}">My public page
+                                        </md-button>
                                     </md-menu-item>
                                 </span>
                                 <span ng-switch-default>
                                 </span>
                             </span>
-                            </md-menu-content>
-                    </md-menu>
-
-                    <md-menu md-offset="49">
-                        <button ng-click="$mdOpenMenu()" class="menuIconBtn">
-                            <i class="fa fa-bar-chart"></i>
-                        </button>
-                        <md-menu-content width=3 md-position-mode=target-left
-                                         class="menuContent">
-                            <md-menu-item>
-                                <md-button onclick="location.href='#/admin/statistics'"> Statistics</md-button>
-                            </md-menu-item>
                         </md-menu-content>
                     </md-menu>
+
+
                     <md-menu md-offset="49">
                         <button ng-click="$mdOpenMenu()" class="menuIconBtn">
                             <i class="fa fa-cogs"></i>
