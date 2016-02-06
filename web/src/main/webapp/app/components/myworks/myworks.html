@@ -21,42 +21,42 @@
                                     <div class="panel panel-default">
 
                                         <a ng-href="/#/orders/{{project.id}}">
-                                        <div class="row project-block panel-body" >
+                                            <div class="row project-block panel-body" >
 
-                                            <div class="col-xs-10">
-                                                <span class="project-block-title">{{project.title}}</span><br>
+                                                <div class="col-xs-10">
+                                                    <span class="project-block-title">{{project.title}}</span><br>
 
-                                                <div class="project-block-descr">
-                                                    {{project.descr}}
-                                                </div>
-                                                 Technologies:
+                                                    <div class="project-block-descr">
+                                                        {{project.descr}}
+                                                    </div>
+                                                    Technologies:
                                                 <span ng-repeat="tech in project.technologies">
                                                      <span class="label label-success lb">{{tech.name}}</span>
                                                  </span>
 
-                                            </div>
+                                                </div>
 
-                                            <div class="col-xs-2 ">
-                                                <div class="form-group">
-                                                    <label class="control-label">Date</label>
-                                                    <div class="col-xs-12" >
-                                                        <div class="label label-warning form-control">
-                                                            {{project.date |  date:'MMM d, y'}}
+                                                <div class="col-xs-2 ">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Date</label>
+                                                        <div class="col-xs-12" >
+                                                            <div class="label label-warning form-control">
+                                                                {{project.date |  date:'MMM d, y'}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">Payment:
+                                                            {{project.payType}}</label>
+
+                                                        <div class="col-xs-12">
+                                                            <div class="label label-info form-control">
+                                                                {{project.payment | number:2}} $
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label class="control-label">Payment:
-                                                        {{project.payType}}</label>
-
-                                                    <div class="col-xs-12">
-                                                        <div class="label label-info form-control">
-                                                            {{project.payment | number:2}} $
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             </div>
-                                        </div>
                                         </a>
 
 
