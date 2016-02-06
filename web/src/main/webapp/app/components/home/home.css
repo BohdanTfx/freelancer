@@ -1,12 +1,23 @@
-.homeContent{
+.home-page .homeContent{
     background-color: #ffffff;
 }
 
 
-.home-carousel-image-div {
+.home-page .home-carousel-image-div {
     height: 40vh;
 }
 
-.home-content{
+.home-page .home-content{
     padding-left: 0;
 }
+
+
+.home-page .tips-list{
+    padding-left: 1.5em;
+}
+
+.home-page .tips-list li{
+    list-style-type: circle;
+}
+
+
