@@ -9,6 +9,16 @@ angular
 					$scope.createOrder = function() {
 						var self = this;
 
+						if ($scope.order.technologies === undefined
+								|| $scope.order.technologies.length < 1) {
+							$scope.newOrderForm.fakeTechnologies.$setValidity(
+									'emptyTechnologies', false);
+							return;
+						} else {
+							$scope.newOrderForm.fakeTechnologies.$setValidity(
+									'emptyTechnologies', true);
+						}
+
 						orderService
 								.createOrder($scope.order)
 								.success(
@@ -207,35 +217,5 @@ angular
 							})
 						}
 					}
-				})
-		.directive(
-				'emptyTechnology',
-				[
-						'$http',
-						function($http) {
-							return {
-								restrict : "AE",
-								link : function($scope, element, attrs) {
-									$('form')
-											.submit(
-													function() {
-														if ($scope.order.technologies === undefined
-																|| $scope.order.technologies.length < 1) {
-															$scope.newOrderForm.fakeTechnologies
-																	.$setValidity(
-																			'emptyTechnologies',
-																			false);
-															return;
-														} else {
-															$scope.newOrderForm.fakeTechnologies
-																	.$setValidity(
-																			'emptyTechnologies',
-																			true);
-														}
-
-														confirm.log('end');
-													});
-								}
-							}
-						} ]);
+				});
 ;
