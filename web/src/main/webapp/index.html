@@ -125,7 +125,7 @@
                     <!--<sec:access role="user">-->
                     <ul class="navigation " ng-switch on="logged">
                         <li class="hvr-underline-from-center" ng-switch-when="true"><a
-                                href="#/cabinet/main"> <i class="fa fa-home"></i>{{name}}
+                                href="#/personal"> <i class="fa fa-user"></i>{{name}}
                             {{lastName}}
                         </a></li>
                         <li id="logout" ng-click="logout()"
@@ -160,10 +160,10 @@
                         <md-menu-content width=3 md-position-mode=target-left
                                          class="menuContent">
                             <md-menu-item>
-                                <md-button onclick="location.href='#/orders'"> Orders</md-button>
+                                <md-button ng-href="/#/orders"> Orders</md-button>
                             </md-menu-item>
                             <md-menu-item>
-                                <md-button onclick="location.href='#/developers'"> Developers</md-button>
+                                <md-button ng-href="/#/developers"> Developers</md-button>
                             </md-menu-item>
                         </md-menu-content>
                     </md-menu>
@@ -223,17 +223,7 @@
                             </md-menu-content>
                     </md-menu>
 
-                    <md-menu md-offset="49">
-                        <button ng-click="$mdOpenMenu()" class="menuIconBtn">
-                            <i class="fa fa-bar-chart"></i>
-                        </button>
-                        <md-menu-content width=3 md-position-mode=target-left
-                                         class="menuContent">
-                            <md-menu-item>
-                                <md-button onclick="location.href='#/admin/statistics'"> Statistics</md-button>
-                            </md-menu-item>
-                        </md-menu-content>
-                    </md-menu>
+
                     <md-menu md-offset="49">
                         <button ng-click="$mdOpenMenu()" class="menuIconBtn">
                             <i class="fa fa-cogs"></i>
