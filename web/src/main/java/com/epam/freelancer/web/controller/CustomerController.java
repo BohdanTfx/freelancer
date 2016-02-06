@@ -82,9 +82,6 @@ public class CustomerController extends HttpServlet implements Responsable {
                 case "cust/getContForCust":
                     getContForCust(request, response);
                     break;
-                case "cust/getRateForCust":
-                    getRateForCust(request, response);
-                    break;
                 case "cust/history":
                     getCustomerHistory(request, response);
                     break;
@@ -154,27 +151,6 @@ public class CustomerController extends HttpServlet implements Responsable {
                 sendResponse(response, feedbacks, mapper);
 
             }catch (Exception e) {
-                response.sendError(500);
-            }
-        }
-    }
-
-    public void getRateForCust(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String param = request.getParameter("id");
-        if (param != null) {
-            try {
-                Integer id = Integer.parseInt(param);
-                List<Feedback> feedbacks = feedbackService
-                        .findFeedbacksByCustId(id);
-                Integer rate = 0;
-                for (Feedback f : feedbacks) {
-                    rate += f.getRate();
-                }
-
-                rate = rate / feedbacks.size();
-                sendResponse(response, rate, mapper);
-
-            } catch (Exception e) {
                 response.sendError(500);
             }
         }

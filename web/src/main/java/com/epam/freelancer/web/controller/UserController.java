@@ -157,6 +157,9 @@ public class UserController extends HttpServlet implements Responsable {
                 case "user/getFeed":
                     getFeedbackByIdForDev(request, response);
                     return;
+                case "user/getRateForCust":
+                    getRateForCust(request, response);
+                    break;
                 case "user/send":
                     send(request, response);
                     return;
@@ -988,6 +991,27 @@ public class UserController extends HttpServlet implements Responsable {
             }
         } else {
             response.sendError(404);
+        }
+    }
+
+    public void getRateForCust(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String param = request.getParameter("id");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                List<Feedback> feedbacks = feedbackService
+                        .findFeedbacksByCustId(id);
+                Integer rate = 0;
+                for (Feedback f : feedbacks) {
+                    rate += f.getRate();
+                }
+
+                rate = rate / feedbacks.size();
+                sendResponse(response, rate, mapper);
+
+            } catch (Exception e) {
+                response.sendError(500);
+            }
         }
     }
 
