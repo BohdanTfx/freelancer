@@ -203,15 +203,33 @@ angular
 							})
 						}
 					}
-				}).directive('emptyTechnologies', [ function() {
-			return {
-				require : 'ngModel',
-				restrict : "A",
-				link : function(scope, elem, attrs, ctrl, ngModel) {
-					$(elem).on('submit', function(e) {
-						alert('asgfsgf');
-					});
-				}
-			}
-		} ]);
+				})
+		.directive(
+				'emptyTechnology',
+				[
+						'$http',
+						function($http) {
+							return {
+								restrict : "AE",
+								link : function($scope, element, attrs) {
+									$('form')
+											.submit(
+													function(event) {
+														if ($scope.order.technologies === undefined
+																|| $scope.order.technologies.length < 1) {
+															$scope.newOrderForm.fakeTechnologies
+																	.$setValidity(
+																			'emptyTechnologies',
+																			false);
+															return;
+														} else {
+															$scope.newOrderForm.fakeTechnologies
+																	.$setValidity(
+																			'emptyTechnologies',
+																			true);
+														}
+													});
+								}
+							}
+						} ]);
 ;

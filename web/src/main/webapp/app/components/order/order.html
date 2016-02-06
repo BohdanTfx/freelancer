@@ -82,13 +82,15 @@
 		{{zone.title}} </md-option> </md-select> </md-input-container>
 
 		<md-input-container class="col-xs-12"> <label>Technologies</label>
-		<md-icon md-font-icon="fa-gears" class="fa"></md-icon>
+		<md-icon md-font-icon="fa-gears" class="fa"></md-icon> <input
+			ng-required="true" name="fakeTechnologies"
+			ng-model="order.fakeTechnologies" empty-technology>
 		<div isteven-multi-select input-model="technologies"
-			empty-technologies class="order-technology"
-			output-model="order.technologies" button-label="name"
-			item-label="name" tick-property="ticked"></div>
-		<div ng-messages="newOrderForm.payment.$error"
-			ng-if="newOrderForm.$submitted || newOrderForm.payment.$touched">
+			class="order-technology" output-model="order.technologies"
+			id="someId" button-label="name" item-label="name"
+			tick-property="ticked"></div>
+		<div ng-messages="newOrderForm.fakeTechnologies.$error"
+			ng-if="newOrderForm.$submitted || newOrderForm.fakeTechnologies.$touched">
 			<div ng-message="emptyTechnologies">Please, select at least one
 				technology.</div>
 		</div>
