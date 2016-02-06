@@ -5,8 +5,8 @@
 			<label><i class="fa fa-wrench"></i> Filter</label>
 			<div class="pull-right">
 				<button
-					class="btn btn-warning order-open-filter-btn animated slideInUp"
-					data-tooltip="yes" title="Open filter" data-placement="left">
+					class="btn btn-warning order-open-filter-btn animated slideInUp">
+					<md-tooltip md-direction="bottom"> Open filter </md-tooltip>
 					<i class="fa {{filterButtonStyle}} fa-2x"></i>
 				</button>
 			</div>
@@ -102,15 +102,19 @@
 	<div class="panel panel-info" ng-repeat="developer in developers"
 		ng-if="developersLoading == false">
 		<div class="panel-heading">
-			<div class="panel-title">{{developer.fname}}
-				{{developer.lname}}</div>
+			<a
+				href="/#/public/developer/{{developer.fname}}{{developer.lname}}/{{developer.id}}"
+				class="panel-title">{{developer.fname}} {{developer.lname}}</a>
 		</div>
 		<div class="panel-body developer-panel-body">
 			<div class="col-xs-8 col-sm-10">
 				<img class="img-rounded animated zoomIn developer-list-img"
 					ng-src="{{developer.imgUrl==null? '/images/profile/no-profile-img.jpg' : developer.imgUrl}}"
 					alt="developer img">
-				<div>{{developer.overview}}</div>
+				<div>
+					<h4>{{developer.position}}</h4>
+					{{developer.overview}}
+				</div>
 			</div>
 			<div class="col-xs-4 col-sm-2">
 				<div class="form-group">

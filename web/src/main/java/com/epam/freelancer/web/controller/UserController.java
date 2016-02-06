@@ -274,10 +274,15 @@ public class UserController extends HttpServlet implements Responsable {
 					.getContent(), result.getPage().getStart()
 					* result.getPage().getStep(), result.getPage().getStep());
 
-			for (Developer developer : developers)
+			for (Developer developer : developers) {
 				developer.setTechnologies(developerService
 						.getTechnologiesByDevId(developer.getId()));
-
+				developer.setEmail(null);
+				developer.setPassword(null);
+				developer.setUuid(null);
+				developer.setSalt(null);
+				developer.setRegUrl(null);
+			}
 
 			paginator.next(result.getPage(), response, orderingService
 					.getFilteredObjectNumber(result.getContent()), developers);
