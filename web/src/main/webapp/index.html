@@ -47,12 +47,9 @@
           href="bower_components/angular-multi-select-master/isteven-multi-select.css">
     <link rel="stylesheet"
           href="bower_components/angularjs-slider-master/rzslider.min.css">
-    <link rel="stylesheet"
-          href="bower_components/angular-bootstrap/ui-bootstrap-csp.css"/>
-    <link rel="stylesheet"
-          href="bower_components/angular-ui-notification-master/angular-ui-notification.min.css"/>
-    <link rel="stylesheet"
-          href="bower_components/angular-bootstrap/ui-bootstrap-tpls-0.14.0.min.js"/>
+    <link rel="stylesheet" href="bower_components/angular-bootstrap/ui-bootstrap-csp.css"/>
+    <link rel="stylesheet" href="bower_components/angular-ui-notification-master/angular-ui-notification.min.css"/>
+    <link rel="stylesheet" href="bower_components/angular-bootstrap/ui-bootstrap-tpls-0.14.0.min.js"/>
     <link rel="stylesheet" href="app/styles/Animate.css">
     <link rel="stylesheet" href="app/styles/font-awesome.min.css">
     <link rel="stylesheet" href="app/styles/hover.min.css">
@@ -99,15 +96,15 @@
                 </div>
             </div>
 
-            <nav class="main-menu">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse"
-                            data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
+                <nav class="main-menu">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle"
+                                data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                    </div>
 
                 <div class="navbar-collapse collapse clearfix">
                     <!--<sec:access role="none">-->
@@ -190,22 +187,7 @@
                             <md-menu-item>
                                 <md-button onclick="location.href='#/tests'"> Tests</md-button>
                             </md-menu-item>
-
-                            <span ng-switch="role">
-                                <span ng-switch-when="developer">
-                                    <md-menu-item>
-                                        <md-button type="submit" ng-href="/#/public/developer/full-name/{{project.id}}"> See my public page</md-button>
-                                    </md-menu-item>
-                                </span>
-                                 <span ng-switch-when="customer">
-                                    <md-menu-item>
-                                        <a ng-href="/#/public/developer/full-name/{{project.id}}">See my public page</a>
-                                    </md-menu-item>
-                                </span>
-                                <span ng-switch-default>
-                                </span>
-                            </span>
-                            </md-menu-content>
+                        </md-menu-content>
                     </md-menu>
 
                     <md-menu md-offset="49">
@@ -239,7 +221,7 @@
         <!-- Main view for templates -->
         <div class="menu-offset menu-header-offset">
             <div class="container">
-                <div ui-view></div>
+                <div ui-view ></div>
             </div>
         </div>
     </div>
@@ -248,7 +230,7 @@
     <div ng-switch-default>
         <div class="menu-header-offset-unlog">
             <div class="">
-                <div ui-view></div>
+                <div ui-view ></div>
             </div>
         </div>
     </div>
@@ -292,8 +274,8 @@
 
 <script src="app/components/tests/testsCtrl.js"></script>
 <script src="app/components/tests/testsService.js"></script>
-<script src="app/components/test/testCtrl.js"></script>
-<script src="app/components/test/testService.js"></script>
+<script src="app/components/tests/testsCtrl.js"></script>
+<script src="app/components/tests/testsService.js"></script>
 <script src="app/components/authentication/authCtrl.js"></script>
 <script src="app/components/authentication/authService.js"></script>
 <script src="app/components/header/headerCtrl.js"></script>
