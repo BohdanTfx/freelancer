@@ -9,14 +9,6 @@ angular
 					$scope.createOrder = function() {
 						var self = this;
 
-						if ($scope.order.technologies.length < 1) {
-							Notification
-									.error({
-										title : 'Error!',
-										message : 'Please, select at least one technology'
-									});
-							return;
-						}
 						orderService
 								.createOrder($scope.order)
 								.success(
@@ -80,6 +72,18 @@ angular
 							return (technology._lowername
 									.indexOf(lowercaseQuery) != -1);
 						};
+					}
+
+					$scope.itemSelect = function(data) {
+						if ($scope.order.technologies === undefined
+								|| $scope.order.technologies.length < 1) {
+							$scope.newOrderForm.fakeTechnologies.$setValidity(
+									'emptyTechnologies', false);
+							return;
+						} else {
+							$scope.newOrderForm.fakeTechnologies.$setValidity(
+									'emptyTechnologies', true);
+						}
 					}
 				})
 		.directive(
@@ -214,7 +218,7 @@ angular
 								link : function($scope, element, attrs) {
 									$('form')
 											.submit(
-													function(event) {
+													function() {
 														if ($scope.order.technologies === undefined
 																|| $scope.order.technologies.length < 1) {
 															$scope.newOrderForm.fakeTechnologies
@@ -228,6 +232,8 @@ angular
 																			'emptyTechnologies',
 																			true);
 														}
+
+														confirm.log('end');
 													});
 								}
 							}
