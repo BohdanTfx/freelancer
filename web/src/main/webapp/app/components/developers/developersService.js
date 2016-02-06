@@ -11,12 +11,18 @@ angular
 						return $http.post("/user/technologies");
 					}
 
+					this.loadPaymentLimits = function() {
+						return $http.get("/user/developers/payment/limits");
+					}
+
 					this.loadDevelopers = function(filter, last, itemListStart,
-							developersLoading,itesStep) {
+							developersLoading, itesStep) {
 						var content = {};
-						content.fullname = filter.fullname === undefined
+						var fullname = filter.fullname === undefined
 								|| filter.fullname.length == 0 ? undefined
 								: filter.fullname;
+						content.name = fullname;
+						content.last_name = fullname;
 						content.position = filter.position === undefined
 								|| filter.position.length == 0 ? undefined
 								: filter.position;
@@ -27,8 +33,7 @@ angular
 								key) {
 							zone.push(value.zone);
 						});
-						content.zone = zone === undefined || zone.length == 0 ? undefined
-								: zone;
+						content.zone = zone.length == 0 ? undefined : zone;
 
 						content.technology = [];
 						var technology = [];
@@ -36,8 +41,7 @@ angular
 								value, key) {
 							technology.push(value.id);
 						});
-						content.technology = technology === undefined
-								|| technology.length == 0 ? undefined
+						content.technology = technology.length == 0 ? undefined
 								: technology;
 
 						var pagination = {};
@@ -57,7 +61,7 @@ angular
 								'Content-Type' : 'application/x-www-form-urlencoded;charset=utf-8;'
 							}
 						};
-						return $http.get("/user/developers/filter", data,
+						return $http.post("/user/developers/filter", data,
 								config);
 					}
 

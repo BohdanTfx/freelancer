@@ -1,143 +1,140 @@
-<div class="container col-xs-12 center">
-	<div class="row">
-		<div class="panel panel-primary">
-			<div class="panel-heading" id="filterHeader"
-				ng-click="filterToggle()">
-				<div class="panel-title">
-					<label><i class="fa fa-wrench"></i> Filter</label>
-					<div class="pull-right">
-						<button
-							class="btn btn-warning order-open-filter-btn animated slideInUp"
-							data-tooltip="yes" title="Open filter" data-placement="left">
-							<i class="fa {{filterButtonStyle}} fa-2x"></i>
-						</button>
-					</div>
+
+<div class="panel panel-primary">
+	<div class="panel-heading" id="filterHeader" ng-click="filterToggle()">
+		<div class="panel-title relative-element">
+			<label><i class="fa fa-wrench"></i> Filter</label>
+			<div class="pull-right">
+				<button
+					class="btn btn-warning order-open-filter-btn animated slideInUp"
+					data-tooltip="yes" title="Open filter" data-placement="left">
+					<i class="fa {{filterButtonStyle}} fa-2x"></i>
+				</button>
+			</div>
+		</div>
+	</div>
+	<div id="developer_filter"
+		class="panel-collapse collapse {{filterState}}">
+		<div class="panel-body form-horizontal">
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="developer_fullname">
+					Search for fullname</label>
+				<div class="col-sm-8">
+					<input class="form-control" name="developer_fullname"
+						id="developer_fullname" ng-model="filter.fullname"
+						placeholder="Enter part of name or last name">
 				</div>
 			</div>
-			<div id="developer_filter"
-				class="panel-collapse collapse {{filterState}}">
-				<div class="panel-body form-horizontal">
-					<div class="form-group">
-						<label class="control-label col-sm-2" for="developer_fullname">
-							Search for fullname</label>
-						<div class="col-sm-8">
-							<input class="form-control" name="developer_fullname"
-								id="developer_fullname" ng-model="filter.fullname"
-								placeholder="Enter part of name or last name">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-sm-2" for="developer_position">
-							Search for position</label>
-						<div class="col-sm-8">
-							<input class="form-control" name="developer_position"
-								id="developer_position" placeholder="Enter part of position"
-								ng-model="filter.position">
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-sm-2" for="developer_technologies">
-							Techologies </label>
-						<div class="col-sm-8">
-							<div isteven-multi-select input-model="technologies"
-								output-model="filter.selectedTechnologies" button-label="name"
-								item-label="name" tick-property="ticked"></div>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-sm-2" for="developer_payment">
-							Payment per hour</label>
-						<div class="col-sm-8">
-							<rzslider rz-slider-model="filter.payment.min"
-								rz-slider-high="filter.payment.min"
-								rz-slider-options="filter.payment.options"></rzslider>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="control-label col-sm-2" for="timeZoneSelect">
-							Time zones </label>
-						<div class="col-sm-8">
-							<div isteven-multi-select input-model="timeZones"
-								output-model="filter.selectedZones" button-label="title"
-								item-label="title" tick-property="ticked"></div>
-						</div>
-					</div>
-					<div class="form-group">
-						<div class="col-xs-offset-8 col-xs-2">
-							<button class="btn btn-info full-width" ng-click="doFilter()">
-								<i class="fa fa-search"></i> Do filter
-							</button>
-						</div>
-					</div>
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="developer_position">
+					Search for position</label>
+				<div class="col-sm-8">
+					<input class="form-control" name="developer_position"
+						id="developer_position" placeholder="Enter part of position"
+						ng-model="filter.position">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="developer_technologies">
+					Techologies </label>
+				<div class="col-sm-8">
+					<div isteven-multi-select input-model="technologies"
+						output-model="filter.selectedTechnologies" button-label="name"
+						item-label="name" tick-property="ticked"></div>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="developer_payment">
+					Payment per hour</label>
+				<div class="col-sm-8">
+					<rzslider rz-slider-model="filter.payment.min"
+						rz-slider-high="filter.payment.min"
+						rz-slider-options="filter.payment.options"></rzslider>
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="control-label col-sm-2" for="timeZoneSelect">
+					Time zones </label>
+				<div class="col-sm-8">
+					<div isteven-multi-select input-model="timeZones"
+						output-model="filter.selectedZones" button-label="title"
+						item-label="title" tick-property="ticked"></div>
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-xs-offset-8 col-xs-2">
+					<button class="btn btn-info full-width" ng-click="doFilter()">
+						<i class="fa fa-search"></i> Do filter
+					</button>
 				</div>
 			</div>
 		</div>
 	</div>
-	<div class="row">
-		<div class="pagination dark animated fadeIn">
-			<div class="col-xs-6">
-				<button ng-click="openPage(0)" class="page dark gradient"
-					ng-if="showFirst">
-					<i class="fa fa-caret-left"></i>
-					<span>First</span>
-				</button>
-				<div data-pagination="yes" class="inline-block">
-					<button ng-repeat="page in pages"
-						ng-click="page.first == 'current' ? '' : openPage(page.second)"
-						ng-class="page.first == 'current' ? 'page dark active' : 'page dark gradient'">{{page.second
-						+ 1}}</button>
-				</div>
-				<button class="page dark gradient" ng-click="openPage('last')"
-					ng-if="showLast">
-					<span>{{maxPage}} </span>
-					<i class="fa fa-caret-right"></i>
-				</button>
-			</div>
-			<md-input-container class="pull-right box-none">
-			<label>Developers per page</label> <md-select ng-model="itesStep"
-				ng-change="changeStep()" class="inner-elements-color-blue-light">
-			<md-option ng-repeat="step in itemsPerPage" ng-value="step">
-			{{step.text}} </md-option> </md-select> </md-input-container>
+</div>
+<div class="pagination dark animated fadeIn">
+	<div class="col-xs-6">
+		<button ng-click="openPage(0)" class="page dark gradient"
+			ng-if="showFirst">
+			<i class="fa fa-caret-left"></i>
+			<span>First</span>
+		</button>
+		<div data-pagination="yes" class="inline-block">
+			<button ng-repeat="page in pages"
+				ng-click="page.first == 'current' ? '' : openPage(page.second)"
+				ng-class="page.first == 'current' ? 'page dark active' : 'page dark gradient'">{{page.second
+				+ 1}}</button>
 		</div>
-		<div id="developersArea">
-			<div class="col-xs-12 cabinet-top" ng-if="developersLoading">
-				<div class="load-animation"></div>
+		<button class="page dark gradient" ng-click="openPage('last')"
+			ng-if="showLast">
+			<span>{{maxPage}} </span>
+			<i class="fa fa-caret-right"></i>
+		</button>
+	</div>
+	<md-input-container class="pull-right box-none"> <md-select
+		ng-model="itesStep" ng-change="changeStep()"
+		class="inner-elements-color-blue-light"> <md-option
+		ng-repeat="step in itemsPerPage" ng-value="step">
+	{{step.text}} </md-option> </md-select> </md-input-container>
+</div>
+<div id="developersArea">
+	<div class="col-xs-12 cabinet-top" ng-if="developersLoading">
+		<div class="load-animation"></div>
+	</div>
+	<div class="panel panel-info" ng-repeat="developer in developers"
+		ng-if="developersLoading == false">
+		<div class="panel-heading">
+			<div class="panel-title">{{developer.fname}}
+				{{developer.lname}}</div>
+		</div>
+		<div class="panel-body developer-panel-body">
+			<div class="col-xs-8 col-sm-10">
+				<img class="img-rounded animated zoomIn developer-list-img"
+					ng-src="{{developer.imgUrl==null? '/images/profile/no-profile-img.jpg' : developer.imgUrl}}"
+					alt="developer img">
+				<div>{{developer.overview}}</div>
 			</div>
-			<div class="panel panel-info" ng-repeat="developer in developers"
-				ng-if="developersLoading == false">
-				<div class="panel-heading">
-					<div class="panel-title">{{developer.title}}</div>
-				</div>
-				<div class="panel-body">
-					<div class="row">
-						<div class="col-xs-8 col-sm-10">{{developer.descr}}</div>
-						<div class="col-xs-4 col-sm-2">
-							<div class="form-group">
-								<label for="name" class="control-label">Date</label>
-								<div class="col-xs-12">
-									<div class="label label-warning form-control">
-										{{developer.date | date:'mediumDate'}}</div>
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="name" class="control-label">Payment:
-									{{developer.payType}}</label>
-								<div class="col-xs-12">
-									<div class="label label-info form-control">
-										{{developer.payment | number:2}} $</div>
-								</div>
-							</div>
-						</div>
+			<div class="col-xs-4 col-sm-2">
+				<div class="form-group">
+					<label for="name" class="control-label">Date</label>
+					<div class="col-xs-12">
+						<div class="label label-warning form-control">
+							{{developer.regDate | date:'mediumDate'}}</div>
 					</div>
 				</div>
-				<div class="panel-footer">
-					<div class="row">
-						<ul class="tags animated zoomIn">
-							<li ng-repeat="tech in developer.technologies"><a href="#"
-								class="hvr-grow">{{tech.name}}</a></li>
-						</ul>
+				<div class="form-group">
+					<label for="name" class="control-label">Payment:</label>
+					<div class="col-xs-12">
+						<div class="label label-info form-control">
+							{{developer.hourly | number:2}} $</div>
 					</div>
 				</div>
+			</div>
+		</div>
+		<div class="panel-footer">
+			<div class="row">
+				<ul class="tags animated flipInX">
+					<li ng-repeat="tech in developer.technologies"><a href="#"
+						class="hvr-grow">{{tech.name}}</a></li>
+				</ul>
 			</div>
 		</div>
 	</div>

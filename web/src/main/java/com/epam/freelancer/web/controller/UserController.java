@@ -116,9 +116,6 @@ public class UserController extends HttpServlet implements Responsable {
 			case "user/signin/linkedin":
 				signIn(request, response, SignInType.LINKEDIN);
 				return;
-			case "user/developers/filter":
-				filterDevelopers(request, response);
-				return;
 			default:
 			}
 		} catch (Exception e) {
@@ -201,6 +198,9 @@ public class UserController extends HttpServlet implements Responsable {
 			case "user/technologies":
 				sendResponse(response, technologyService.findAll(), mapper);
 				break;
+			case "user/developers/filter":
+				filterDevelopers(request, response);
+				return;
 			case "user/order":
 				getOrderById(request, response);
 				break;
@@ -277,6 +277,7 @@ public class UserController extends HttpServlet implements Responsable {
 			for (Developer developer : developers)
 				developer.setTechnologies(developerService
 						.getTechnologiesByDevId(developer.getId()));
+
 
 			paginator.next(result.getPage(), response, orderingService
 					.getFilteredObjectNumber(result.getContent()), developers);

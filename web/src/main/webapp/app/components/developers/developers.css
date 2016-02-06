@@ -1,1 +1,31 @@
 @CHARSET "UTF-8";
+
+.developer-panel-body {
+	max-height: 200px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.developer-list-img {
+	width: 150px;
+	float: left;
+	margin: 5px;
+	-webkit-transition: width 0.5s ease-in-out;
+	-moz-transition: width 0.5s ease-in-out;
+	-o-transition: width 0.5s ease-in-out;
+	transition: width 0.5s ease-in-out;
+}
+
+.relative-element {
+	position: relative;
+}
+
+@media only screen and (max-width:599px) {
+	.developer-list-img {
+		width: 50px;
+		-webkit-transition: width 0.5s ease-in-out;
+		-moz-transition: width 0.5s ease-in-out;
+		-o-transition: width 0.5s ease-in-out;
+		transition: width 0.5s ease-in-out;
+	}
+}

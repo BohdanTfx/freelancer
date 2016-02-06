@@ -36,7 +36,24 @@ angular.module('FreelancerApp').controller(
 			$scope.timeZones = getTimeZones();
 
 			$scope.doFilter = function() {
-				developersService.loadDevelopers($scope, $http);
+				developersService.loadDevelopers($scope.filter, $scope.last,
+						$scope.itemListStart, $scope.developersLoading,
+						$scope.itesStep).success(
+						function(data, status, headers, config) {
+							$scope.maxPage = data.maxPage;
+							developersService
+									.fillPagination(data.pages, $scope);
+							$scope.developers = data.items;
+
+							$scope.developersLoading = false;
+						}).error(
+						function(data, status, headers, config) {
+							Notification.error({
+								title : 'Error!',
+								message : 'Some errors occurred'
+										+ ' while loading developers!'
+							});
+						});
 			}
 
 			$scope.changeStep = function() {
@@ -46,27 +63,15 @@ angular.module('FreelancerApp').controller(
 			}
 
 			$scope.openPage = function(page) {
-				if (page == 'last')
-					developersService.loadDevelopers($scope, $http, 1);
-				else {
+				if (page == 'last') {
+					$scope.last = true;
+					$scope.doFilter();
+				} else {
 					$scope.itemListStart = page;
-					developersService.loadDevelopers($scope, $http);
+					$scope.doFilter();
 				}
 			}
 
-			developersService.loadDevelopers($scope.filter, $scope.last,
-					$scope.itemListStart, $scope.developersLoading,
-					$scope.itesStep).success(
-					function(data, status, headers, config) {
-						alert(data);
-					}).error(
-					function(data, status, headers, config) {
-						Notification.error({
-							title : 'Error!',
-							message : 'Some errors occurred'
-									+ ' while loading developers!'
-						});
-					});
 			developersService.loadTechnologies($scope, $http).success(
 					function(data, status, headers, config) {
 						$scope.tech = data;
@@ -78,6 +83,7 @@ angular.module('FreelancerApp').controller(
 									+ ' while loading technologies!'
 						});
 					});
+			$scope.doFilter();
 		});
 
 function getTimeZones() {
