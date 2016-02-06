@@ -47,10 +47,11 @@ public class AdminController extends HttpServlet implements Responsable {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
 
+            System.out.println("asdasdasd");
             String path = FrontController.getPath(request);
 
             switch (path) {
-                case "admin/getstatistics":
+                case "/admin/statistics":
                     sendDevAndCustAmount(request, response);
                     break;
                 default:
@@ -137,6 +138,7 @@ public class AdminController extends HttpServlet implements Responsable {
     }
 
     private void sendDevAndCustAmount(HttpServletRequest request,HttpServletResponse response) throws IOException{
+        System.out.println("getstatistics");
         Map<String,Integer> map = new HashMap<>();
         map.put("devAmount",developerService.getAllWorkers().size());
         map.put("custAmount",customerService.findAll().size());

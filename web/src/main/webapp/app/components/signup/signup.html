@@ -15,6 +15,7 @@
 					<span ng-if="roleAdmin === true" ng-model="user.role" ng-init="user.role = 'admin'">Admin</span>
 				</h3>
 
+                    <div  ng-if="roleAdmin !== true">
 				<div class="col-xs-12 social-buttons">
 					<div class="col-xs-6">
 						<a class="btn btn-block btn-social btn-google-plus"> <i
@@ -28,29 +29,35 @@
 						</a>
 					</div>
 				</div>
+                    </div>
+
 
 				<md-input-container class="col-sm-6 col-xs-12"
 					md-is-error="signupForm.firstname.$invalid && (signupForm.$submitted || signupForm.firstname.$dirty)">
 				<label>First name</label> <input ng-required="true"
 					md-maxlength="50" ng-model="user.first_name" name="firstname">
+
 				<div ng-messages="signupForm.firstname.$error"
 					ng-if="signupForm.$submitted || signupForm.firstname.$touched">
 					<div ng-message="required">This is required.</div>
 					<div ng-message="md-maxlength">The name has to be less than
-						50 characters long.</div>
+                                50 characters long.
 				</div>
+                        </div>
 				</md-input-container>
 
 				<md-input-container class="col-sm-6 col-xs-12"
 					md-is-error="signupForm.lastname.$invalid && (signupForm.$submitted || signupForm.lastname.$dirty)">
 				<label>Last name</label> <input md-maxlength="50" ng-required="true"
 					ng-model="user.last_name" name="lastname">
+
 				<div ng-messages="signupForm.lastname.$error"
 					ng-if="signupForm.$submitted || signupForm.lastname.$touched">
 					<div ng-message="required">This is required.</div>
 					<div ng-message="md-maxlength">The name has to be less than
-						50 characters long.</div>
+                                50 characters long.
 				</div>
+                        </div>
 				</md-input-container>
 
 				<md-input-container class="col-xs-12"
@@ -59,6 +66,7 @@
 					name="email" ng-model="user.email" ng-minlength="10"
 					ng-change="checkEmail()" md-maxlength="100" id="emailInput"
 					ng-pattern="/^.+@.+\..+$/" email-available />
+
 				<div ng-messages="signupForm.email.$error"
 					ng-if="signupForm.$submitted || signupForm.email.$touched">
 					<div ng-message="required">This is required.</div>
@@ -83,14 +91,16 @@
 				<label>Password</label> <input md-maxlength="50" ng-minlength="8"
 					name="password" type="password" ng-required="true"
 					ng-model="user.password">
+
 				<div ng-messages="signupForm.password.$error"
 					ng-if="signupForm.$submitted || signupForm.password.$touched">
 					<div ng-message="required">This is required.</div>
 					<div ng-message="md-maxlength">The name has to be less than
 						50 characters long.</div>
 					<div ng-message="minlength">The name has to be more than 8
-						characters long.</div>
+                                characters long.
 				</div>
+                        </div>
 				</md-input-container>
 
 				<md-input-container class="col-sm-6 col-xs-12"
@@ -98,6 +108,7 @@
 				<label>Confirm password</label> <input md-maxlength="50"
 					type="password" ng-required="true" name="passwordconfirm"
 					ng-model="user.passwordconfirm" match="user.password">
+
 				<div ng-messages="signupForm.passwordconfirm.$error"
 					ng-if="signupForm.$submitted || signupForm.passwordconfirm.$touched">
 					<div ng-message="required">This is required.</div>
@@ -131,12 +142,14 @@
 			<div class="row">
 				<div class="head col-xs-12 text-center">
 					<h2>Get started!</h2>
+
 					<h3>What are you looking for ?!</h3>
 				</div>
 				<div class="col-xs-12 col-sm-6 animated zoomIn">
 					<div class="hover ehover13">
 						<img class="img-responsive signup-role-img"
 							ng-src="/images/role/developer (Small).jpg" alt="Developer" />
+
 						<div class="overlay">
 							<h3 class="text-center">Developer</h3>
 							<h4>Lorem ipsum dolor sit amet, consectetur adipisicing
@@ -153,6 +166,7 @@
 					<div class="hover ehover13">
 						<img class="img-responsive signup-role-img"
 							ng-src="/images/role/customer (Small).jpg" alt="Customer" />
+
 						<div class="overlay">
 							<h3 class="text-center">Customer</h3>
 							<h4>Lorem ipsum dolor sit amet, consectetur adipisicing
