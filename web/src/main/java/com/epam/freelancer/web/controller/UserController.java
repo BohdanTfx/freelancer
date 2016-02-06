@@ -116,6 +116,9 @@ public class UserController extends HttpServlet implements Responsable {
 			case "user/signin/linkedin":
 				signIn(request, response, SignInType.LINKEDIN);
 				return;
+			case "user/developers/filter":
+				filterDevelopers(request, response);
+				return;
 			default:
 			}
 		} catch (Exception e) {
@@ -259,6 +262,28 @@ public class UserController extends HttpServlet implements Responsable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	private void filterDevelopers(HttpServletRequest request,
+			HttpServletResponse response)
+	{
+		try {
+			JsonPaginator result = mapper.readValue(request.getReader()
+					.readLine(), JsonPaginator.class);
+			List<Developer> developers = developerService.filterElements(result
+					.getContent(), result.getPage().getStart()
+					* result.getPage().getStep(), result.getPage().getStep());
+
+			for (Developer developer : developers)
+				developer.setTechnologies(developerService
+						.getTechnologiesByDevId(developer.getId()));
+
+			paginator.next(result.getPage(), response, orderingService
+					.getFilteredObjectNumber(result.getContent()), developers);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public void logout(HttpServletRequest request, HttpServletResponse response)

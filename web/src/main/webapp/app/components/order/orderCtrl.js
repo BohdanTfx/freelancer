@@ -8,13 +8,12 @@ angular
 
 					$scope.createOrder = function() {
 						var self = this;
-						var techValidation = orderService
-								.validateTechnologies($scope.order.technologies);
-						if (techValidation != 'ok') {
+
+						if ($scope.order.technologies.length < 1) {
 							Notification
 									.error({
 										title : 'Error!',
-										message : $scope.TechnologyValidator[techValidation]
+										message : 'Please, select at least one technology'
 									});
 							return;
 						}
@@ -53,10 +52,6 @@ angular
 							value['ticked'] = false;
 						});
 					}
-
-					$scope.TechnologyValidator = {};
-					$scope.TechnologyValidator.empty = 'Please, select at least one technology';
-					$scope.TechnologyValidator.big = 'You have selected too many technologies. Please, be short.'
 
 					$scope.getCurrentZone = function() {
 						var offset = new Date().getTimezoneOffset(), o = Math

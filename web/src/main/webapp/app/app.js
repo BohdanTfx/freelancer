@@ -23,6 +23,10 @@
 					url : '/orders',
 					templateUrl : 'app/components/jobs/jobs.html',
 					controller : 'jobsCtrl'
+				}).state('developers', {
+					url : '/developers',
+					templateUrl : 'app/components/developers/developers.html',
+					controller : 'developersCtrl'
 				}).state('createOrder', {
 					url : '/order/create',
 					templateUrl : 'app/components/order/order.html',
@@ -60,13 +64,13 @@
 					templateUrl : 'app/components/authentication/auth.html',
 					controller : 'authCtrl'
 				}).state('pubdev', {
-                    url: '/public/developer/:devName/:devId',
+					url : '/public/developer/:devName/:devId',
 					templateUrl : 'app/components/pubdev/pubdev.html',
 					controller : 'pubdevCtrl'
-                }).state('custpub', {
-                    url: '/public/customer/:custName/:custId',
-                    templateUrl: 'app/components/custpub/custpub.html',
-                    controller: 'custpubCtrl'
+				}).state('custpub', {
+					url : '/public/customer/:custName/:custId',
+					templateUrl : 'app/components/custpub/custpub.html',
+					controller : 'custpubCtrl'
 				});
 
 				$locationProvider.html5Mode(false);
@@ -82,36 +86,37 @@
 						$rootScope.logout = function() {
 							AuthenticationService.ClearCredentials();
 						};
-                        $rootScope.checking = function (data) {
-                            var path = $location.path();
-                            if (typeof data.id != 'undefined') {
-                                switch (path) {
-                                    case '/auth':
-                                        $location.path('/');
-                                        break;
-                                    case '/signup':
-                                        $location.path('/');
-                                        break;
-                                }
-                            } else {
-                                if (path.indexOf('/orders') > -1) {
-                                    $location.path('/');
-                                }
-                                if (path.indexOf('/personal') > -1) {
-                                    $location.path('/');
-                                }
-                                if (path.indexOf('/myworks') > -1) {
-                                    $location.path('/');
-                                }
-                                if (path.indexOf('/tests') > -1) {
-                                    $location.path('/');
-                                }
-                                if (path.indexOf('/public') > -1) {
-                                    $location.path('/');
-                                }
-                            }
-                        };
-                        $rootScope.$on('$locationChangeStart', function (event, next, current, $scope) {
+						$rootScope.checking = function(data) {
+							var path = $location.path();
+							if (typeof data.id != 'undefined') {
+								switch (path) {
+								case '/auth':
+									$location.path('/');
+									break;
+								case '/signup':
+									$location.path('/');
+									break;
+								}
+							} else {
+								if (path.indexOf('/orders') > -1) {
+									$location.path('/');
+								}
+								if (path.indexOf('/personal') > -1) {
+									$location.path('/');
+								}
+								if (path.indexOf('/myworks') > -1) {
+									$location.path('/');
+								}
+								if (path.indexOf('/tests') > -1) {
+									$location.path('/');
+								}
+								if (path.indexOf('/public') > -1) {
+									$location.path('/');
+								}
+							}
+						};
+						$rootScope.$on('$locationChangeStart', function(event,
+								next, current, $scope) {
 							$rootScope.globals = {};
 							$rootScope.logged = false;
 							$http.post('/user/isAuth').success(function(data) {
@@ -121,9 +126,9 @@
 								$rootScope.role = data.role;
 								$rootScope.logged = true;
 
-                                $rootScope.checking($rootScope);
+								$rootScope.checking($rootScope);
 							}).error(function() {
-                                $rootScope.checking($rootScope);
+								$rootScope.checking($rootScope);
 							});
 						});
 					} ]);

@@ -14,50 +14,43 @@
 					</div>
 				</div>
 			</div>
-			<div id="order_filter"
+			<div id="developer_filter"
 				class="panel-collapse collapse {{filterState}}">
 				<div class="panel-body form-horizontal">
 					<div class="form-group">
-						<label class="control-label col-sm-2" for="order_title">
-							Search title </label>
+						<label class="control-label col-sm-2" for="developer_fullname">
+							Search for fullname</label>
 						<div class="col-sm-8">
-							<input class="form-control" id="order_title" name="order_title"
-								placeholder="Enter title" ng-model="filter.title">
+							<input class="form-control" name="developer_fullname"
+								id="developer_fullname" ng-model="filter.fullname"
+								placeholder="Enter part of name or last name">
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label col-sm-2" for="order_technologies">
+						<label class="control-label col-sm-2" for="developer_position">
+							Search for position</label>
+						<div class="col-sm-8">
+							<input class="form-control" name="developer_position"
+								id="developer_position" placeholder="Enter part of position"
+								ng-model="filter.position">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="control-label col-sm-2" for="developer_technologies">
 							Techologies </label>
 						<div class="col-sm-8">
-							<div isteven-multi-select input-model="tech"
-								output-model="selectedTechs" button-label="name"
+							<div isteven-multi-select input-model="technologies"
+								output-model="filter.selectedTechnologies" button-label="name"
 								item-label="name" tick-property="ticked"></div>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="control-label col-sm-2" for="order_pay_type">
-							Order pay type </label>
+						<label class="control-label col-sm-2" for="developer_payment">
+							Payment per hour</label>
 						<div class="col-sm-8">
-							<div class="row">
-								<div class="col-sm-5">
-									<md-checkbox md-no-ink ng-true-value="false"
-										ng-false-value="true"
-										ng-model="payment.hourly.options.disabled" class="md-warn">
-									Hourly </md-checkbox>
-									<rzslider rz-slider-model="payment.hourly.first"
-										rz-slider-high="payment.hourly.second"
-										rz-slider-options="payment.hourly.options"></rzslider>
-								</div>
-								<div class="col-sm-offset-2 col-sm-5">
-									<md-checkbox md-no-ink ng-true-value="false"
-										ng-false-value="true"
-										ng-model="payment.fixed.options.disabled"
-										class="md-warn empty-margin-left"> Fixed </md-checkbox>
-									<rzslider rz-slider-model="payment.fixed.first"
-										rz-slider-high="payment.fixed.second"
-										rz-slider-options="payment.fixed.options"></rzslider>
-								</div>
-							</div>
+							<rzslider rz-slider-model="filter.payment.min"
+								rz-slider-high="filter.payment.min"
+								rz-slider-options="filter.payment.options"></rzslider>
 						</div>
 					</div>
 					<div class="form-group">
@@ -65,7 +58,7 @@
 							Time zones </label>
 						<div class="col-sm-8">
 							<div isteven-multi-select input-model="timeZones"
-								output-model="selectedZones" button-label="title"
+								output-model="filter.selectedZones" button-label="title"
 								item-label="title" tick-property="ticked"></div>
 						</div>
 					</div>
@@ -101,37 +94,37 @@
 				</button>
 			</div>
 			<md-input-container class="pull-right box-none">
-			<md-select ng-model="itesStep" ng-change="changeStep()"
-				class="inner-elements-color-blue-light"> <md-option
-				ng-repeat="step in itemsPerPage" ng-value="step">
+			<label>Developers per page</label> <md-select ng-model="itesStep"
+				ng-change="changeStep()" class="inner-elements-color-blue-light">
+			<md-option ng-repeat="step in itemsPerPage" ng-value="step">
 			{{step.text}} </md-option> </md-select> </md-input-container>
 		</div>
-		<div id="ordersArea">
-			<div class="col-xs-12 cabinet-top" ng-if="ordersLoading">
+		<div id="developersArea">
+			<div class="col-xs-12 cabinet-top" ng-if="developersLoading">
 				<div class="load-animation"></div>
 			</div>
-			<div class="panel panel-info" ng-repeat="order in orders"
-				ng-if="ordersLoading == false">
+			<div class="panel panel-info" ng-repeat="developer in developers"
+				ng-if="developersLoading == false">
 				<div class="panel-heading">
-					<div class="panel-title">{{order.title}}</div>
+					<div class="panel-title">{{developer.title}}</div>
 				</div>
 				<div class="panel-body">
 					<div class="row">
-						<div class="col-xs-8 col-sm-10">{{order.descr}}</div>
+						<div class="col-xs-8 col-sm-10">{{developer.descr}}</div>
 						<div class="col-xs-4 col-sm-2">
 							<div class="form-group">
 								<label for="name" class="control-label">Date</label>
 								<div class="col-xs-12">
 									<div class="label label-warning form-control">
-										{{order.date | date:'mediumDate'}}</div>
+										{{developer.date | date:'mediumDate'}}</div>
 								</div>
 							</div>
 							<div class="form-group">
 								<label for="name" class="control-label">Payment:
-									{{order.payType}}</label>
+									{{developer.payType}}</label>
 								<div class="col-xs-12">
 									<div class="label label-info form-control">
-										{{order.payment | number:2}} $</div>
+										{{developer.payment | number:2}} $</div>
 								</div>
 							</div>
 						</div>
@@ -140,7 +133,7 @@
 				<div class="panel-footer">
 					<div class="row">
 						<ul class="tags animated zoomIn">
-							<li ng-repeat="tech in order.technologies"><a href="#"
+							<li ng-repeat="tech in developer.technologies"><a href="#"
 								class="hvr-grow">{{tech.name}}</a></li>
 						</ul>
 					</div>
