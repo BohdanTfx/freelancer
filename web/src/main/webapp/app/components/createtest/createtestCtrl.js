@@ -4,8 +4,7 @@ angular.module('FreelancerApp')
 
         $scope.chosenQuestions = [];
 
-        /*
-        createtestAPI.getAllQuestions().success(function (data) {
+        createtestAPI.getQuestionsByTechId(id).success(function (data) {
             $scope.questions = data;
             $scope.availableQuestions = $scope.questions;
         }).error(function () {
@@ -17,7 +16,6 @@ angular.module('FreelancerApp')
         }).error(function () {
             alert(404);
         });
-        */
 
         createtestAPI.getAllTechnologies().success(function (data) {
             $scope.technologies = data;

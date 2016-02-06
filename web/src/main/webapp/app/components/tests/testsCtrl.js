@@ -2,10 +2,18 @@ angular.module('FreelancerApp')
     .controller('testsCtrl', function ($scope, testsAPI, $log, $interval) {
 
         $scope.smt = {};
+        $scope.smt.passedTest = false;
+        $scope.smt.allowedTest = false;
+
 
         testsAPI.getAllTests().success(function (data) {
             $scope.devQAs = data.devQAs;
             $scope.tests = data.tests;
+            if (data.tests.length == 0)
+                $scope.noTest = true;
+            else
+                $scope.noTest = false;
+
             $scope.testsDivision();
         }).error(function () {
             alert(404);

@@ -2,7 +2,7 @@
     <div class="tests-tabs" ng-cloak="">
         <md-content>
             <md-tabs md-dynamic-height md-border-bottom>
-                <md-tab label="Test history">
+                <md-tab label="Tests results">
                     <div class="history-tab">
                         <md-content class="md-padding">
 
@@ -138,9 +138,9 @@
                         </md-content>
                     </div>
                 </md-tab>
-                <md-tab label="Tests list">
+                <md-tab label="All tests">
                     <md-content class="md-padding">
-                        <div class="row filter" ng-if="tests.length != 0">
+                        <div class="row filter" ng-hide="noTest">
                             <div class="form-group col-md-6 col-xs-12">
                                 <label for="test_name">Search by test name:</label>
                                 <input type="text" ng-model="search.name" class="form-control" id="test_name"
@@ -153,7 +153,7 @@
                                        placeholder="&#xF002;" style="font-family:Arial, FontAwesome">
                             </div>
                             <div class="form-group col-md-6 col-xs-12 tests-checkbox-pass">
-                                <md-checkbox ng-model="smt.passedTest"ng-change="testListCtrl()"
+                                <md-checkbox ng-model="smt.passedTest" ng-change="testListCtrl()"
                                              class="md-warn" flex>
                                     Passed
                                 </md-checkbox>
@@ -165,7 +165,7 @@
                         </div>
                         <div class="tests-tab">
                             <!--start header-->
-                            <div class="tests-title" ng-if="tests.length != 0">
+                            <div class="tests-title" ng-hide="noTest">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <div class="row">
@@ -205,12 +205,16 @@
 
                             <!--start body-->
 
-                            <div ng-if="tests.length == 0">
+                            <div ng-show="noTest">
                                 <h5>We don't have any tests for you now. Check it later</h5>
                             </div>
-                            <div ng-if="tests.length != 0">
-                                <div class="tests-body" ng-repeat="test in tests | orderBy:sortField:reverse
-                                            | filter:search">
+
+                            <div ng-hide="noTest">
+                                <div ng-if="tests.length == 0">
+                                    <h5>No results</h5>
+                                </div>
+
+                                <div class="tests-body" ng-repeat="test in tests | orderBy:sortField:reverse | filter:search">
                                     <div class="panel panel-default">
                                         <div class="row">
                                             <div class="testItem">
@@ -224,15 +228,18 @@
                                                     {{test.passScore}} %
                                                 </div>
                                                 <div class="col-md-2 col-sm-2 col-xs-3">
-                                                    <a ng-hide="test.status == 'passed'" class="btn btn-primary btn-pass-test vertical-align-center"
+                                                    <a ng-hide="test.status == 'passed'"
+                                                       class="btn btn-primary btn-pass-test vertical-align-center"
                                                        href="/#/tests/{{test.id}}">
                                                         <span ng-show="test.status == 'new'">Pass test</span>
                                                         <span ng-show="test.status == 'expired'">Repass test</span>
                                                     </a>
-                                                    <a ng-show="test.status == 'passed'" ng-disabled="true" class="btn btn-primary btn-pass-test vertical-align-center">
+                                                    <a ng-show="test.status == 'passed'" ng-disabled="true"
+                                                       class="btn btn-primary btn-pass-test vertical-align-center">
                                                         <span>Repass test</span>
                                                         <md-tooltip md-visible="true" md-direction="top">
-                                                            Repass unblock in {{test.repass | date:"d 'day(s)' h 'hour(s)' mm 'min(s)'"}}
+                                                            Repass unblock in {{test.repass | date:"d 'day(s)' h
+                                                            'hour(s)' mm 'min(s)'"}}
                                                         </md-tooltip>
                                                     </a>
                                                 </div>

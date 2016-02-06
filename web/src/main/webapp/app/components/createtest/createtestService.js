@@ -2,19 +2,18 @@
 
 angular.module('FreelancerApp')
     .factory('createtestAPI', function ($http, config) {
-        var urlTests = '/admin/tests',
-            dataFactory = {};
+        var dataFactory = {};
 
         dataFactory.getAllTests = function () {
-            return $http.get(urlBase);
+            return $http.get('/admin/tests');
         };
 
-        dataFactory.getAllQuestions = function () {
-            return $http.post('/admin/questions');
+        dataFactory.getQuestionsByTechId = function (id) {
+            return $http.get('/admin/tech/questions?id=' + id);
         };
 
-        dataFactory.getAllTechnologies= function (customerId) {
-            return $http.post('/user/orders/tech');
+        dataFactory.getAllTechnologies= function () {
+            return $http.get('/admin/technologies');
         };
 
         return dataFactory;

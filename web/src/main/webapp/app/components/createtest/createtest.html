@@ -20,7 +20,7 @@
                                         <label><strong>Technology</strong></label>
                                         <md-icon md-font-icon="fa-tv" class="fa md-hue-2"
                                                  style="display:inline-block;"></md-icon>
-                                        <md-select ng-model="test.techId">
+                                        <md-select ng-model="test.techId" ng-change="getQuestionsByTechId({{test.techId}})">
                                             <md-option ng-repeat="technology in technologies" value="{{technology.id}}">
                                                 {{technology.name}}
                                             </md-option>

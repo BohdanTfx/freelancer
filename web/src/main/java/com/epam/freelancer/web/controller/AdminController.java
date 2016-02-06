@@ -2,11 +2,12 @@ package com.epam.freelancer.web.controller;
 
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.manager.UserManager;
-import com.epam.freelancer.business.service.AdminCandidateService;
-import com.epam.freelancer.business.service.CustomerService;
-import com.epam.freelancer.business.service.DeveloperService;
+import com.epam.freelancer.business.service.*;
 import com.epam.freelancer.business.util.SendMessageToEmail;
 import com.epam.freelancer.database.model.AdminCandidate;
+import com.epam.freelancer.database.model.Question;
+import com.epam.freelancer.database.model.Technology;
+import com.epam.freelancer.database.model.Test;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Executors;
@@ -33,7 +35,10 @@ public class AdminController extends HttpServlet implements Responsable {
     private AdminCandidateService adminCandidateService;
     private DeveloperService developerService;
     private CustomerService customerService;
-
+    private QuestionService questionService;
+    private TestService testService;
+    private AnswerService answerService;
+    private TechnologyService technologyService;
 
     public AdminController() {
         mapper = new ObjectMapper();
@@ -41,6 +46,10 @@ public class AdminController extends HttpServlet implements Responsable {
         adminCandidateService = (AdminCandidateService) ApplicationContext.getInstance().getBean("adminCandidateService");
         developerService = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
         customerService = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
+        questionService = (QuestionService) ApplicationContext.getInstance().getBean("questionService");
+        testService = (TestService) ApplicationContext.getInstance().getBean("testService");
+        answerService = (AnswerService) ApplicationContext.getInstance().getBean("answerService");
+        technologyService = (TechnologyService) ApplicationContext.getInstance().getBean("technologyService");
     }
 
     @Override
@@ -52,6 +61,15 @@ public class AdminController extends HttpServlet implements Responsable {
             switch (path) {
                 case "admin/getstatistics":
                     sendDevAndCustAmount(request, response);
+                    break;
+                case "admin/tests":
+                    getTests(request, response);
+                    break;
+                case "admin/tech/questions":
+                    getQuestionsByTechnologyId(request, response);
+                    break;
+                case "admin/technologies":
+                    getTechnologies(request,response);
                     break;
                 default:
 
@@ -75,6 +93,12 @@ public class AdminController extends HttpServlet implements Responsable {
                     break;
                 case "admin/remove/uuid":
                     removeUUID(request, response);
+                    break;
+                case "admin/test":
+                    createTest(request, response);
+                    break;
+                case "admin/question":
+                    createQuestion(request, response);
                     break;
                 default:
 
@@ -142,5 +166,43 @@ public class AdminController extends HttpServlet implements Responsable {
         map.put("custAmount",customerService.findAll().size());
 
         sendResponse(response,map,mapper);
+    }
+
+    private void getTests(HttpServletRequest request, HttpServletResponse response){
+        List<Test> tests = testService.findAll();
+        List<Technology> techs = technologyService.findAll();
+        Map<Integer, Technology> technologyMap = new HashMap<>();
+        techs.forEach(technology -> technologyMap.put(technology.getId(),
+                technology));
+        Map<Integer, Test> testMap = new HashMap<>();
+        for (int i = 0; i < tests.size(); i++) {
+        }
+        tests.forEach(test -> {
+            test.setTechnology(technologyMap.get(test.getTechId()));
+            testMap.put(test.getId(), test);
+        });
+    }
+
+    private void getQuestionsByTechnologyId(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String paramId = request.getParameter("id");
+        if (paramId == null || "".equals(paramId) || !paramId.matches("[0-9]")){
+            response.sendError(HttpServletResponse.SC_CONFLICT);
+            return;
+        }
+        Integer id = Integer.parseInt(paramId);
+        List<Question> questions = questionService.findQuestionsByTechnologyId(id);
+        sendResponse(response,questions,mapper);
+    }
+
+    private void getTechnologies(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        sendResponse(response,questionService.findAll(),mapper);
+    }
+
+    private void createTest(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+    }
+
+    private void createQuestion(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
     }
 }
