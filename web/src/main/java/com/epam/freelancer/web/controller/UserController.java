@@ -1,51 +1,33 @@
 package com.epam.freelancer.web.controller;
 
-import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
-import org.scribe.exceptions.OAuthException;
-
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.manager.UserManager;
-import com.epam.freelancer.business.service.AdminService;
-import com.epam.freelancer.business.service.CustomerService;
-import com.epam.freelancer.business.service.DeveloperQAService;
-import com.epam.freelancer.business.service.DeveloperService;
-import com.epam.freelancer.business.service.FeedbackService;
-import com.epam.freelancer.business.service.OrderingService;
-import com.epam.freelancer.business.service.TechnologyService;
-import com.epam.freelancer.business.service.TestService;
+import com.epam.freelancer.business.service.*;
 import com.epam.freelancer.business.util.SendMessageToEmail;
 import com.epam.freelancer.business.util.SmsSender;
-import com.epam.freelancer.database.model.Admin;
-import com.epam.freelancer.database.model.Contact;
-import com.epam.freelancer.database.model.Customer;
-import com.epam.freelancer.database.model.Developer;
-import com.epam.freelancer.database.model.DeveloperQA;
-import com.epam.freelancer.database.model.Feedback;
-import com.epam.freelancer.database.model.Follower;
-import com.epam.freelancer.database.model.Ordering;
-import com.epam.freelancer.database.model.Technology;
-import com.epam.freelancer.database.model.UserEntity;
+import com.epam.freelancer.database.model.*;
 import com.epam.freelancer.security.provider.AuthenticationProvider;
 import com.epam.freelancer.web.json.model.JsonPaginator;
 import com.epam.freelancer.web.social.Linkedin;
 import com.epam.freelancer.web.social.model.LinkedinProfile;
 import com.epam.freelancer.web.util.Paginator;
 import com.epam.freelancer.web.util.SignInType;
+import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
+import org.scribe.exceptions.OAuthException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class UserController extends HttpServlet implements Responsable {
 	public static final Logger LOG = Logger.getLogger(UserController.class);
@@ -213,12 +195,6 @@ public class UserController extends HttpServlet implements Responsable {
                     getFollowersByOrderId(request,
                             response);
                     break;
-                case "user/order/subscribe":
-                    subscribe(request, response);
-                    break;
-                case "user/order/unsubscribe":
-                    unsubscribe(request, response);
-                    break;
                 case "user/order/techs":
                     getOrderTechs(request, response);
                     break;
@@ -245,19 +221,57 @@ public class UserController extends HttpServlet implements Responsable {
                     break;
                 case "user/getTestByDevId":
                     getTestByDevId(request, response);
+                    break;
                 case "user/orders/complain":
                     complain(request, response);
                     break;
                 case "user/getRate":
                     getRate(request, response);
                     return;
-                case "user/getTestByDevId":
-                    getTestByDevId(request, response);
                 default:
             }
         } catch (Exception e) {
             e.printStackTrace();
             LOG.fatal(getClass().getSimpleName() + " - " + "doPost");
+        }
+    }
+
+    public void getRate(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        String param = request.getParameter("id");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                FeedbackService fs = (FeedbackService) ApplicationContext
+                        .getInstance().getBean("feedbackService");
+                Integer avg = fs.getAvgRate(id);
+                sendResponse(response, avg, mapper);
+            } catch (Exception e) {
+                response.sendError(500);
+            }
+        } else {
+            response.sendError(404);
+        }
+    }
+
+    public void getRateForCust(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String param = request.getParameter("id");
+        if (param != null) {
+            try {
+                Integer id = Integer.parseInt(param);
+                List<Feedback> feedbacks = feedbackService
+                        .findFeedbacksByCustId(id);
+                Integer rate = 0;
+                for (Feedback f : feedbacks) {
+                    rate += f.getRate();
+                }
+
+                rate = rate / feedbacks.size();
+                sendResponse(response, rate, mapper);
+
+            } catch (Exception e) {
+                response.sendError(500);
+            }
         }
     }
 
@@ -421,15 +435,18 @@ public class UserController extends HttpServlet implements Responsable {
         else
             cust_id = request.getParameter("id");
 
-		if (comment == null || rate == null) {
-			response.sendError(500);
-			return;
-		}
+        String comment = request.getParameter("comment");
+        HttpSession session = request.getSession();
+        UserEntity ue = (UserEntity) session.getAttribute("user");
+        if (ue == null) {
+            response.sendError(404);
+            return;
+        }
 
-		if ("".equals(comment)) {
-			response.sendError(500);
-			return;
-		}
+        if (comment == null || rate == null) {
+            response.sendError(500);
+            return;
+        }
 
         if ("".equals(comment)) {
             response.sendError(500);
@@ -441,8 +458,23 @@ public class UserController extends HttpServlet implements Responsable {
         else
             dev_id = ue.getId().toString();
 
-		feedbackService.create(map);
-	}
+        if ("".equals(dev_id) || "".equals(cust_id) || "".equals(comment)
+                || "".equals(rate) || "".equals(author)) {
+            response.sendError(500);
+            return;
+        }
+        if (comment.contains("<")) {
+            response.sendError(500);
+            return;
+        }
+        FeedbackService feedbackService = (FeedbackService) ApplicationContext
+                .getInstance().getBean("feedbackService");
+        Map<String, String[]> map = new HashMap<>();
+        map.put("dev_id", new String[]{dev_id});
+        map.put("cust_id", new String[]{cust_id});
+        map.put("comment", new String[]{comment});
+        map.put("rate", new String[]{rate});
+        map.put("author", new String[]{author});
 
         feedbackService.create(map);
     }

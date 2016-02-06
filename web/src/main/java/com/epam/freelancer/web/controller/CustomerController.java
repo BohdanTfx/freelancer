@@ -1,34 +1,27 @@
 package com.epam.freelancer.web.controller;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import com.epam.freelancer.business.context.ApplicationContext;
+import com.epam.freelancer.business.service.*;
+import com.epam.freelancer.database.model.Contact;
+import com.epam.freelancer.database.model.Customer;
+import com.epam.freelancer.database.model.Feedback;
+import com.epam.freelancer.database.model.UserEntity;
+import com.google.gson.Gson;
+import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
-
-import com.epam.freelancer.business.context.ApplicationContext;
-import com.epam.freelancer.business.service.CustomerService;
-import com.epam.freelancer.business.service.DeveloperService;
-import com.epam.freelancer.business.service.FeedbackService;
-import com.epam.freelancer.business.service.OrderingService;
-import com.epam.freelancer.business.service.TechnologyService;
-import com.epam.freelancer.business.service.TestService;
-import com.epam.freelancer.database.model.Contact;
-import com.epam.freelancer.database.model.Customer;
-import com.epam.freelancer.database.model.Feedback;
-import com.epam.freelancer.database.model.UserEntity;
-import com.google.gson.Gson;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CustomerController extends HttpServlet implements Responsable {
 	public static final Logger LOG = Logger.getLogger(CustomerController.class);
@@ -73,14 +66,6 @@ public class CustomerController extends HttpServlet implements Responsable {
 			LOG.fatal(getClass().getSimpleName() + " - " + "doGet");
 		}
 	}
-
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            LOG.fatal(getClass().getSimpleName() + " - " + "doGet");
-        }
-    }
 
 private void createOrder(HttpServletRequest request,
         HttpServletResponse response) throws IOException
