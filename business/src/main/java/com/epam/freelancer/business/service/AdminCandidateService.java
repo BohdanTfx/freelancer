@@ -34,7 +34,6 @@ public class AdminCandidateService extends GenericService<AdminCandidate, Intege
         adminCandidate.setEmail(value != null ? value[0] : null);
         value = data.get("access_key");
         adminCandidate.setKey(value != null ? value[0] : null);
-        adminCandidate.setExpire(new Timestamp(new Date().getTime()));
 
         return genericDao.save(adminCandidate);
     }

@@ -21,8 +21,6 @@ public class AdminCandidate implements BaseEntity<Integer> {
     private String email;
     @Column(name="access_key")
     private String key;
-    @Column
-    private Timestamp expire;
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
@@ -52,9 +50,9 @@ public class AdminCandidate implements BaseEntity<Integer> {
         return key;
     }
 
-    public Timestamp getExpire() {
-        return expire;
-    }
+//    public Timestamp getExpire() {
+//        return expire;
+//    }
 
     public Boolean getDeleted() {
         return isDeleted;
@@ -73,9 +71,9 @@ public class AdminCandidate implements BaseEntity<Integer> {
         this.key = key;
     }
 
-    public void setExpire(Timestamp expire) {
-        this.expire = expire;
-    }
+//    public void setExpire(Timestamp expire) {
+//        this.expire = expire;
+//    }
 
     public void setDeleted(Boolean isDeleted) {
         this.isDeleted = isDeleted;
@@ -89,10 +87,10 @@ public class AdminCandidate implements BaseEntity<Integer> {
         AdminCandidate that = (AdminCandidate) o;
 
         if (email != null ? !email.equals(that.email) : that.email != null) return false;
-        if (expire != null ? !expire.equals(that.expire) : that.expire != null) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (isDeleted != null ? !isDeleted.equals(that.isDeleted) : that.isDeleted != null) return false;
         if (key != null ? !key.equals(that.key) : that.key != null) return false;
+        if (version != null ? !version.equals(that.version) : that.version != null) return false;
 
         return true;
     }
@@ -102,8 +100,8 @@ public class AdminCandidate implements BaseEntity<Integer> {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (key != null ? key.hashCode() : 0);
-        result = 31 * result + (expire != null ? expire.hashCode() : 0);
         result = 31 * result + (isDeleted != null ? isDeleted.hashCode() : 0);
+        result = 31 * result + (version != null ? version.hashCode() : 0);
         return result;
     }
 
@@ -113,7 +111,6 @@ public class AdminCandidate implements BaseEntity<Integer> {
                 "id=" + id +
                 ", email='" + email + '\'' +
                 ", key='" + key + '\'' +
-                ", expire=" + expire +
                 ", isDeleted=" + isDeleted +
                 ", version=" + version +
                 '}';
