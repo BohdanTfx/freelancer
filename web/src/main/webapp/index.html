@@ -125,7 +125,7 @@
                     <!--<sec:access role="user">-->
                     <ul class="navigation " ng-switch on="logged">
                         <li class="hvr-underline-from-center" ng-switch-when="true"><a
-                                href="#/cabinet/main"> <i class="fa fa-home"></i>{{name}}
+                                href="#/personal"> <i class="fa fa-user"></i>{{name}}
                             {{lastName}}
                         </a></li>
                         <li id="logout" ng-click="logout()"
@@ -168,22 +168,22 @@
                         </md-menu-content>
                     </md-menu>
 
-                    <div ng-if="role===customer">
-                        <md-menu md-offset="49">
-                            <button ng-click="$mdOpenMenu()" class="menuIconBtn">
-                                <i class="fa fa-briefcase"></i>
-                            </button>
-                            <md-menu-content width=3 md-position-mode=target-left
-                                             class="menuContent">
-                                <md-menu-item>
-                                    <md-button ng-href="/#/order/create"> Create new Order</md-button>
-                                </md-menu-item>
-                            </md-menu-content>
-                        </md-menu>
-                    </div>
+                   <!--<span ng-switch="role">-->
+                       <!--<div ng-switch="customer">-->
+                           <md-menu md-offset="49">
+                               <button ng-click="$mdOpenMenu()" class="menuIconBtn">
+                                   <i class="fa fa-briefcase"></i>
+                               </button>
+                               <md-menu-content width=3 md-position-mode=target-left
+                                                class="menuContent">
+                                   <md-menu-item>
+                                       <md-button ng-href="/#/order/create"> Create new order</md-button>
+                                   </md-menu-item>
+                               </md-menu-content>
+                           </md-menu>
+                       <!--</div>-->
+                    <!--</span>-->
 
-
-                    </md-menu>
                     <md-menu md-offset="49">
                         <button ng-click="$mdOpenMenu()" class="menuIconBtn">
                             <i class="fa fa-user "></i>
