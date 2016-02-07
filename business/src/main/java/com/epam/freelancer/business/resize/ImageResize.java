@@ -13,12 +13,12 @@ import javax.imageio.ImageIO;
 
 public class ImageResize {
 
-    private static final int IMG_HEIGHT_LG = 200;
-    private static final int IMG_WIDTH_LG = 200;
-    private static final int IMG_WIDTH_MD = 160;
-    private static final int IMG_HEIGHT_MD = 160;
-    private static final int IMG_WIDTH_SM = 125;
-    private static final int IMG_HEIGHT_SM = 125;
+    private static final int IMG_HEIGHT_LG = 500;
+    private static final int IMG_WIDTH_LG = 500;
+    private static final int IMG_WIDTH_MD = 200;
+    private static final int IMG_HEIGHT_MD = 200;
+    private static final int IMG_WIDTH_SM = 100;
+    private static final int IMG_HEIGHT_SM = 100;
 
     public ImageResize(String pathToOriginalImg, String pathToSaveSmImg, String pathToSaveMdImg, String pathToSaveLgImg) throws IOException {
         BufferedImage originalImage = ImageIO.read(new File(pathToOriginalImg));
