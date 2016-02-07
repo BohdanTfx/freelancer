@@ -16,13 +16,14 @@ angular
 					}
 
 					this.loadDevelopers = function(filter, last, itemListStart,
-							developersLoading, itesStep) {
+							developersLoading, itesStep, paymentMin, paymentMax) {
 						var content = {};
-						var fullname = filter.fullname === undefined
-								|| filter.fullname.length == 0 ? undefined
-								: filter.fullname;
-						content.name = fullname;
-						content.last_name = fullname;
+						content.name = filter.firstName === undefined
+								|| filter.firstName.length == 0 ? undefined
+								: filter.firstName;
+						content.last_name = filter.lastName === undefined
+								|| filter.lastName.length == 0 ? undefined
+								: filter.lastName;
 						content.position = filter.position === undefined
 								|| filter.position.length == 0 ? undefined
 								: filter.position;
@@ -44,10 +45,14 @@ angular
 						content.technology = technology.length == 0 ? undefined
 								: technology;
 
+						content.paymentMin = paymentMin;
+						content.paymentMax = paymentMax;
+
 						var pagination = {};
 						pagination.start = itemListStart | 0;
 						pagination.last = last;
-						pagination.step = self.getStep(itesStep);
+						pagination.step = 2;
+						// pagination.step = self.getStep(itesStep);
 
 						var data = {};
 						if (isNotEmpty(content))

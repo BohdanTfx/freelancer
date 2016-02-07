@@ -68,9 +68,8 @@ public class DeveloperService extends UserService<Developer> {
 				: data.get("img_url")[0]);
 		map.put(ValidationParametersBuilder.createParameters(false)
 				.maxLength(50).minLength(1),
-				data.get("last_name") == null ? null
-                        : data.get("last_name")[0]);
-        map.put(ValidationParametersBuilder.createParameters(false)
+				data.get("last_name") == null ? null : data.get("last_name")[0]);
+		map.put(ValidationParametersBuilder.createParameters(false)
 				.maxLength(140).minLength(8),
 				data.get("password") == null ? null : data.get("password")[0]);
 		map.put(ValidationParametersBuilder
@@ -136,9 +135,9 @@ public class DeveloperService extends UserService<Developer> {
 				.getConnectionPool());
 	}
 
-    public Worker createWorker(Worker worker) {
-        return workerDao.save(worker);
-    }
+	public Worker createWorker(Worker worker) {
+		return workerDao.save(worker);
+	}
 
 	public void deleteWorker(Worker worker) {
 		workerDao.delete(worker);
@@ -160,13 +159,14 @@ public class DeveloperService extends UserService<Developer> {
 		return ((ContactDao) contactDao).getContactByDevId(id);
 	}
 
-    public Worker getWorkerByDevIdAndOrderId(Integer idDev,Integer idOrder) {
-        return ((WorkerDao) workerDao).getWorkerByDevIdAndOrderId(idDev,idOrder);
-    }
+	public Worker getWorkerByDevIdAndOrderId(Integer idDev, Integer idOrder) {
+		return ((WorkerDao) workerDao).getWorkerByDevIdAndOrderId(idDev,
+				idOrder);
+	}
 
-    public Contact updateContact(Contact contact) {
-        return contactDao.update(contact);
-    }
+	public Contact updateContact(Contact contact) {
+		return contactDao.update(contact);
+	}
 
 	public void deleteContact(Contact contact) {
 		contactDao.delete(contact);
@@ -188,8 +188,10 @@ public class DeveloperService extends UserService<Developer> {
 	}
 
 	public Follower createFollowing(Map<String, String[]> data) {
-        /*if (!isDataValid(prepareFollowerData(data)))
-			throw new RuntimeException("Validation exception in follower");*/
+		/*
+		 * if (!isDataValid(prepareFollowerData(data))) throw new
+		 * RuntimeException("Validation exception in follower");
+		 */
 
 		Follower follower = new Follower();
 		String[] value = data.get("dev_id");
@@ -202,7 +204,7 @@ public class DeveloperService extends UserService<Developer> {
 		follower.setAuthor(value != null ? value[0] : null);
 		value = data.get("message");
 		follower.setMessage(value != null ? value[0] : null);
-		
+
 		return followerDao.save(follower);
 	}
 
@@ -229,19 +231,29 @@ public class DeveloperService extends UserService<Developer> {
 		return map;
 	}
 
-	public Follower subscribeOnProject(Integer devId, Integer orderId, String message){
+	public Follower subscribeOnProject(Integer devId, Integer orderId,
+			String message)
+	{
 		Follower follower = new Follower();
 		follower.setDevId(devId);
 		follower.setOrderId(orderId);
 		follower.setAuthor("dev");
-		if(!message.isEmpty())
+		if (!message.isEmpty())
 			follower.setMessage(message);
 		return followerDao.save(follower);
 	}
 
-	public void unsubscribeFromProject(Integer followerId){
+	public void unsubscribeFromProject(Integer followerId) {
 		Follower follower = new Follower();
 		follower.setId(followerId);
 		followerDao.delete(follower);
+	}
+
+	public Integer getFilteredObjectNumber(Map<String, Object> parameters) {
+		return ((DeveloperDao) genericDao).getFilteredObjectNumber(parameters);
+	}
+
+	public Double findPaymentLimit(String limitType) {
+		return ((DeveloperDao) genericDao).getPaymentLimit(limitType);
 	}
 }

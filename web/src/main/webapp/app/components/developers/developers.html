@@ -6,7 +6,10 @@
 			<div class="pull-right">
 				<button
 					class="btn btn-warning order-open-filter-btn animated slideInUp">
-					<md-tooltip md-direction="bottom"> Open filter </md-tooltip>
+					<md-tooltip md-direction="bottom" ng-switch="filter.tooltip.locked">
+					<i class="fa fa-unlock-alt" ng-switch-when="true"></i> <i
+						ng-switch-when="false" class="fa fa-lock"></i>
+					{{filter.tooltip.title}} </md-tooltip>
 					<i class="fa {{filterButtonStyle}} fa-2x"></i>
 				</button>
 			</div>
@@ -16,12 +19,16 @@
 		class="panel-collapse collapse {{filterState}}">
 		<div class="panel-body form-horizontal">
 			<div class="form-group">
-				<label class="control-label col-sm-2" for="developer_fullname">
-					Search for fullname</label>
-				<div class="col-sm-8">
-					<input class="form-control" name="developer_fullname"
-						id="developer_fullname" ng-model="filter.fullname"
-						placeholder="Enter part of name or last name">
+				<label class="control-label col-sm-2"> Search for </label>
+				<div class="col-sm-4">
+					<input class="form-control" name="developer_firstName"
+						id="developer_firstName" ng-model="filter.firstName"
+						placeholder="Enter part of name">
+				</div>
+				<div class="col-sm-4">
+					<input class="form-control" name="developer_lastName"
+						id="developer_lastName" ng-model="filter.lastName"
+						placeholder="Enter part of last name">
 				</div>
 			</div>
 			<div class="form-group">
@@ -47,7 +54,7 @@
 					Payment per hour</label>
 				<div class="col-sm-8">
 					<rzslider rz-slider-model="filter.payment.min"
-						rz-slider-high="filter.payment.min"
+						rz-slider-high="filter.payment.max"
 						rz-slider-options="filter.payment.options"></rzslider>
 				</div>
 			</div>

@@ -116,12 +116,23 @@ public class UserController extends HttpServlet implements Responsable {
 			case "user/signin/linkedin":
 				signIn(request, response, SignInType.LINKEDIN);
 				return;
+			case "user/developers/payment/limits":
+				getPaymentLimits(response);
+				return;
 			default:
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOG.fatal(getClass().getSimpleName() + " - " + "doGet");
 		}
+	}
+
+	private void getPaymentLimits(HttpServletResponse response) {
+		Map<String, Double> limits = new HashMap<>();
+		limits.put("min", developerService.findPaymentLimit("min"));
+		limits.put("max", developerService.findPaymentLimit("max"));
+
+		sendResponse(response, limits, mapper);
 	}
 
 	private LinkedinProfile getLinkedInProfile(HttpServletRequest request,
@@ -284,7 +295,7 @@ public class UserController extends HttpServlet implements Responsable {
 				developer.setRegUrl(null);
 			}
 
-			paginator.next(result.getPage(), response, orderingService
+			paginator.next(result.getPage(), response, developerService
 					.getFilteredObjectNumber(result.getContent()), developers);
 		} catch (IOException e) {
 			e.printStackTrace();
