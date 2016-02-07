@@ -71,7 +71,7 @@ angular
 					$scope.changeStep = function() {
 						localStorage.setItem("freelancerDevelopersStep",
 								$scope.itesStep.number);
-						developersService.loadDevelopers($scope, $http);
+						$scope.doFilter();
 					}
 
 					$scope.openPage = function(page) {
