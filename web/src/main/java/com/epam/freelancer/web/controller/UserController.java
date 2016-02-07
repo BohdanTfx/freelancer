@@ -101,12 +101,23 @@ public class UserController extends HttpServlet implements Responsable {
 			case "user/signin/linkedin":
 				signIn(request, response, SignInType.LINKEDIN);
 				return;
+			case "user/developers/payment/limits":
+				getPaymentLimits(response);
+				return;
 			default:
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOG.fatal(getClass().getSimpleName() + " - " + "doGet");
 		}
+	}
+
+	private void getPaymentLimits(HttpServletResponse response) {
+		Map<String, Double> limits = new HashMap<>();
+		limits.put("min", developerService.findPaymentLimit("min"));
+		limits.put("max", developerService.findPaymentLimit("max"));
+
+		sendResponse(response, limits, mapper);
 	}
 
     private LinkedinProfile getLinkedInProfile(HttpServletRequest request,
@@ -182,12 +193,15 @@ public class UserController extends HttpServlet implements Responsable {
                     sendResponse(response, orderingService.findPaymentLimits(),
                             mapper);
                     break;
-                case "user/orders/tech":
+			case "user/technologies":
                     sendResponse(response, technologyService.findAll(), mapper);
                     break;
                 case "user/orders/isCompAlrEx":
                     isComplainAlreadyExist(request, response);
                     break;
+			case "user/developers/filter":
+				filterDevelopers(request, response);
+				return;
                 case "user/order":
                     getOrderById(request, response);
                     break;
@@ -363,6 +377,34 @@ public class UserController extends HttpServlet implements Responsable {
             }
         }
     }
+
+	private void filterDevelopers(HttpServletRequest request,
+			HttpServletResponse response)
+	{
+		try {
+			JsonPaginator result = mapper.readValue(request.getReader()
+					.readLine(), JsonPaginator.class);
+			List<Developer> developers = developerService.filterElements(result
+					.getContent(), result.getPage().getStart()
+					* result.getPage().getStep(), result.getPage().getStep());
+
+			for (Developer developer : developers) {
+				developer.setTechnologies(developerService
+						.getTechnologiesByDevId(developer.getId()));
+				developer.setEmail(null);
+				developer.setPassword(null);
+				developer.setUuid(null);
+				developer.setSalt(null);
+				developer.setRegUrl(null);
+			}
+
+			paginator.next(result.getPage(), response, developerService
+					.getFilteredObjectNumber(result.getContent()), developers);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
 
     public void logout(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
@@ -682,19 +724,6 @@ public class UserController extends HttpServlet implements Responsable {
 
 		response.setStatus(200);
 	}
-
-    private boolean isAvailable(String email) {
-        boolean result = false;
-        if (((AdminService) ApplicationContext.getInstance().getBean(
-                "adminService")).emailAvailable(email)
-                && ((DeveloperService) ApplicationContext.getInstance()
-                .getBean("developerService")).emailAvailable(email)
-                && ((CustomerService) ApplicationContext.getInstance().getBean(
-                "customerService")).emailAvailable(email)) {
-            result = true;
-        }
-        return result;
-    }
 
     private void signIn(HttpServletRequest request,
                         HttpServletResponse response, SignInType type)

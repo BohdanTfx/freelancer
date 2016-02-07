@@ -23,6 +23,10 @@
 					url : '/orders',
 					templateUrl : 'app/components/jobs/jobs.html',
 					controller : 'jobsCtrl'
+				}).state('developers', {
+					url : '/developers',
+					templateUrl : 'app/components/developers/developers.html',
+					controller : 'developersCtrl'
 				}).state('createOrder', {
 					url : '/order/create',
 					templateUrl : 'app/components/order/order.html',
