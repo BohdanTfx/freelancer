@@ -6,7 +6,7 @@
 }
 
 .cust-noneOver {
-    font-size: 32px;
+    font-size: 22px;
     color: #ccc;
 }
 
@@ -51,14 +51,14 @@
 }
 
 .cust-emptyComment {
-    font-size: 48px;
+    font-size: 22px;
     text-align: center;
     color: #ccc;
     font-weight: bold;
 }
 
 .cust-free-not-found {
-    font-size: 48px;
+    font-size: 22px;
     text-align: center;
     color: #ccc;
     font-weight: bold;
@@ -67,7 +67,7 @@
 .cust-emptyPort {
     margin-top: 70px;
     margin-bottom: 70px;
-    font-size: 48px;
+    font-size: 22px;
     text-align: center;
     color: #ccc;
     font-weight: bold;
@@ -76,7 +76,7 @@
 .cust-emptyTest {
     margin-top: 70px;
     margin-bottom: 70px;
-    font-size: 48px;
+    font-size: 22px;
     text-align: center;
     color: #ccc;
     font-weight: bold;

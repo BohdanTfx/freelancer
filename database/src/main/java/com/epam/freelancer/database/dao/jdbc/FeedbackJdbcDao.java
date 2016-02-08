@@ -43,6 +43,40 @@ public class FeedbackJdbcDao extends GenericJdbcDao<Feedback, Integer> implement
     }
 
     @Override
+    public int deleteDevFeed(Integer devId, Integer feedId) {
+        int res = 0;
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection
+                     .prepareStatement("delete from feedback where dev_id = ? && id = ?")) {
+            statement.setObject(1, devId);
+            statement.setObject(2, feedId);
+            res = statement.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return res;
+    }
+
+    @Override
+    public int deleteCustFeed(Integer custId, Integer feedId) {
+        int res = 0;
+        try (Connection connection = connectionPool.getConnection();
+             PreparedStatement statement = connection
+                     .prepareStatement("delete from feedback where cust_id = ? && id = ?")) {
+            statement.setObject(1, custId);
+            statement.setObject(2, feedId);
+            res = statement.executeUpdate();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return res;
+    }
+
+    @Override
     public Integer getAvgRate(Integer dev_id) {
         Integer avg = null;
         try (Connection connection = connectionPool.getConnection();

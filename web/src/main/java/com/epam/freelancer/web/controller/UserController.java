@@ -242,11 +242,52 @@ public class UserController extends HttpServlet implements Responsable {
                 case "user/getRate":
                     getRate(request, response);
                     return;
+                case "user/deleteFeed":
+                    deleteFeed(request, response);
+                    return;
                 default:
             }
         } catch (Exception e) {
             e.printStackTrace();
             LOG.fatal(getClass().getSimpleName() + " - " + "doPost");
+        }
+    }
+
+    public void deleteFeed(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String role = request.getParameter("role");
+        if (role != null) {
+            if ("developer".equals(role)) {
+                FeedbackService feedbackService = (FeedbackService) ApplicationContext.getInstance().getBean("feedbackService");
+                String devId = request.getParameter("devId");
+                String feedId = request.getParameter("feedId");
+
+                if (feedId != null && devId != null) {
+                    try {
+                        int res = feedbackService.deleteDevFeed(Integer.parseInt(devId), Integer.parseInt(feedId));
+                        if (res == 0)
+                            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                    } catch (Exception e) {
+                        response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                    }
+                }
+            }
+            if ("customer".equals(role)) {
+                FeedbackService feedbackService = (FeedbackService) ApplicationContext.getInstance().getBean("feedbackService");
+                String custId = request.getParameter("custId");
+                String feedId = request.getParameter("feedId");
+
+                if (feedId != null && custId != null) {
+                    try {
+                        int res = feedbackService.deleteCustFeed(Integer.parseInt(custId), Integer.parseInt(feedId));
+                        if (res == 0)
+                            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                    } catch (Exception e) {
+                        response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                    }
+                }
+            }
+        } else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 
@@ -927,6 +968,7 @@ public class UserController extends HttpServlet implements Responsable {
         }
 
     }
+
 
     private void getUserById(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String paramId = request.getParameter("id");

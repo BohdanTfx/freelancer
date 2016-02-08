@@ -18,4 +18,8 @@ public interface FeedbackDao extends GenericDao<Feedback, Integer> {
     List<Feedback> getFeedbacksByCustIdForHim(Integer id);
 
     List<Feedback> getFeedbacksByDevIdForHim(Integer id);
+
+    int deleteDevFeed(Integer devId, Integer feedId);
+
+    int deleteCustFeed(Integer custId, Integer feedId);
 }

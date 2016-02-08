@@ -3,6 +3,7 @@ angular.module('FreelancerApp')
 
         $scope.userrole = $rootScope.role;
         $scope.hireord = '';
+        $scope.deleteFeedId = $rootScope.id;
 
         $scope.wmDis = false;
         if($rootScope.id == $stateParams.devId) {
@@ -16,6 +17,23 @@ angular.module('FreelancerApp')
             $scope.hire = true;
             $scope.show = true;
         }
+
+        $scope.deleteFeed = function (custId, feedId) {
+            pubdevAPI.deleteFeed(custId, feedId).success(function () {
+                $scope.feed();
+                Notification
+                    .success({
+                        title: 'Success!',
+                        message: 'Feedback deleted.'
+                    });
+            }).error(function () {
+                Notification
+                    .success({
+                        title: 'Error!',
+                        message: 'Something wrong. Try again!'
+                    });
+            });
+        };
 
         $scope.query = $stateParams.devId;
         $http.post('/user/isAuth').success(function (data) {
