@@ -1,49 +1,28 @@
 package com.epam.freelancer.web.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.security.SecureRandom;
+import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import java.util.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.epam.freelancer.business.manager.UserManager;
-import com.epam.freelancer.business.util.SmsSender;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.FileUtils;
+import com.epam.freelancer.business.service.*;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
 import com.epam.freelancer.business.context.ApplicationContext;
-import com.epam.freelancer.business.service.CustomerService;
-import com.epam.freelancer.business.service.DeveloperQAService;
-import com.epam.freelancer.business.service.DeveloperService;
-import com.epam.freelancer.business.service.TechnologyService;
-import com.epam.freelancer.business.service.TestService;
-import com.epam.freelancer.database.model.Answer;
-import com.epam.freelancer.database.model.Contact;
-import com.epam.freelancer.database.model.Customer;
-import com.epam.freelancer.database.model.Developer;
-import com.epam.freelancer.database.model.DeveloperQA;
-import com.epam.freelancer.database.model.Ordering;
-import com.epam.freelancer.database.model.Question;
-import com.epam.freelancer.database.model.Technology;
-import com.epam.freelancer.database.model.Test;
-import com.epam.freelancer.database.model.UserEntity;
-import com.epam.freelancer.database.model.Worker;
+import com.epam.freelancer.database.model.*;
 import com.epam.freelancer.web.json.model.Quest;
 import com.google.gson.Gson;
 
+/**
+ * Created by Максим on 22.01.2016.
+ */
 public class DeveloperController extends HttpServlet implements Responsable {
 	public static final Logger LOG = Logger.getLogger(UserController.class);
 	private static final long serialVersionUID = -2356506023594947745L;
@@ -68,37 +47,35 @@ public class DeveloperController extends HttpServlet implements Responsable {
 				"userManager");
 	}
 
-	@Override
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException
-	{
-		try {
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
 
-			String path = FrontController.getPath(request);
+            String path = FrontController.getPath(request);
 
-			switch (path) {
-			case "dev/getalltests":
-				fillTestPage(request, response);
-				break;
-			case "dev/gettestbyid":
-				sendTestById(request, response);
-				break;
-			case "dev/getallworks":
-				fillMyWorksPage(request, response);
-				break;
-			case "dev/getcustomerbyid":
-				sendCustomerById(request, response);
-				break;
-			case "dev/getworkersbyidorder":
-				sendWorkersByIdOrder(request, response);
-				break;
-			case "dev/getPersonalData":
-				fillPersonalPage(request, response);
-				break;
+            switch (path) {
+                case "dev/getalltests":
+                    fillTestPage(request, response);
+                    break;
+                case "dev/gettestbyid":
+                    sendTestById(request, response);
+                    break;
+                case "dev/getallworks":
+                    fillMyWorksPage(request, response);
+                    break;
+                case "dev/getcustomerbyid":
+                    sendCustomerById(request, response);
+                    break;
+                case "dev/getworkersbyidorder":
+                    sendWorkersByIdOrder(request, response);
+                    break;
+                case "dev/getPersonalData":
+                    fillPersonalPage(request, response);
+                    break;
 
 			default:
 
-			}
+            }
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -106,78 +83,73 @@ public class DeveloperController extends HttpServlet implements Responsable {
 		}
 	}
 
-	@Override
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException
-	{
-		try {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
 
-			String path = FrontController.getPath(request);
+            String path = FrontController.getPath(request);
 
-			switch (path) {
-                case "dev/esults":
+            switch (path) {
+                case "dev/getresults":
                     sendResults(request, response);
-				break;
-			case "dev/sendPersonalData":
-				updatePersonalData(request, response);
-				break;
-			case "dev/uploadImage":
-				uploadImage(request, response);
-				break;
-			case "dev/changePassword":
-				changeDeveloperPassword(request, response);
-				break;
-			case "dev/confirmChangePasswordAndEmail":
-				confirmChangePasswordAndEmail(request, response);
-				break;
-			case "dev/changeEmail":
-				changeEmail(request, response);
-				break;
-			default:
+                    break;
+                case "dev/sendPersonalData":
+                    updatePersonalData(request, response);
+                    break;
+                case "dev/uploadImage":
+                    uploadImage(request, response);
+                    break;
+                case "dev/changePassword":
+                    changeDeveloperPassword(request, response);
+                    break;
+                case "dev/confirmChangePasswordAndEmail":
+                    confirmChangePasswordAndEmail(request, response);
+                    break;
+                case "dev/changeEmail":
+                    changeEmail(request, response);
+                    break;
+                default:
 
-			}
 
-		} catch (Exception e) {
-			e.printStackTrace();
-			LOG.fatal(getClass().getSimpleName() + " - " + "doPost");
-		}
-	}
+            }
 
-	private void fillMyWorksPage(HttpServletRequest request,
-			HttpServletResponse response) throws IOException
-	{
-		HttpSession session = request.getSession();
-		UserEntity user = (UserEntity) session.getAttribute("user");
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOG.fatal(getClass().getSimpleName() + " - " + "doPost");
+        }
+    }
 
-		List<Ordering> allProjects = developerService
-				.getDeveloperPortfolio(user.getId());
-		List<Ordering> devSubscribedProjects = developerService
-				.getDeveloperSubscribedProjects(user.getId());
+
+    private void fillMyWorksPage(HttpServletRequest  request,HttpServletResponse response) throws IOException{
+        HttpSession session = request.getSession();
+        UserEntity user = (UserEntity) session.getAttribute("user");
+        System.out.println("USer"+user);
+        List<Ordering> allProjects = developerService.getDeveloperPortfolio(user.getId());
+        List<Ordering> devSubscribedProjects = developerService.getDeveloperSubscribedProjects(user.getId());
+
 
 		for (Ordering order : devSubscribedProjects) {
 			order.setTechnologies(technologyService
 					.findTechnolodyByOrderingId(order.getId()));
 		}
 
-		List<Ordering> devFinishedProjects = new ArrayList<>();
-		List<Ordering> devProjectsInProcess = new ArrayList<>();
-		allProjects.forEach(ordering -> {
-			if (ordering.getEnded()) {
-				devFinishedProjects.add(ordering);
-			} else {
-				devProjectsInProcess.add(ordering);
-			}
-		});
+        List<Ordering> devFinishedProjects = new ArrayList<>();
+        List<Ordering> devProjectsInProcess = new ArrayList<>();
+        allProjects.forEach(ordering -> {
+            if(ordering.getEnded()){
+                devFinishedProjects.add(ordering);
+            }else {
+                devProjectsInProcess.add(ordering);
+            }
+        });
 
-		for (Ordering order : devFinishedProjects) {
-			order.setTechnologies(technologyService
-					.findTechnolodyByOrderingId(order.getId()));
-		}
+        for (Ordering order :devFinishedProjects){
+            order.setTechnologies(technologyService.findTechnolodyByOrderingId(order.getId()));
+        }
 
-		for (Ordering order : devProjectsInProcess) {
-			order.setTechnologies(technologyService
-					.findTechnolodyByOrderingId(order.getId()));
-		}
+        for (Ordering order :devProjectsInProcess){
+            order.setTechnologies(technologyService.findTechnolodyByOrderingId(order.getId()));
+        }
 
 		Map<String,List> resultMap = new HashMap<>();
 		resultMap.put("finishedWorks",devFinishedProjects);
@@ -186,51 +158,55 @@ public class DeveloperController extends HttpServlet implements Responsable {
 		sendResponse(response,resultMap,mapper);
 	}
 
-	private void fillTestPage(HttpServletRequest request,
-			HttpServletResponse response) throws IOException{
-		HttpSession session = request.getSession();
-		UserEntity user = (UserEntity) session.getAttribute("user");
-		List<DeveloperQA> devQAs = developerQAService.findAllByDevId(user
-				.getId());
 
-		List<Test> tests = testService.findAll();
-		List<Technology> techs = technologyService.findAll();
-		Map<Integer, Technology> technologyMap = new HashMap<>();
-		techs.forEach(technology -> technologyMap.put(technology.getId(),
-				technology));
-		Map<Integer, Test> testMap = new HashMap<>();
-		for (int i = 0; i < tests.size(); i++) {
-		}
-		tests.forEach(test -> {
-			test.setTechnology(technologyMap.get(test.getTechId()));
-			testMap.put(test.getId(), test);
-		});
-		for (DeveloperQA developerQA : devQAs) {
-			developerQA.setTest(testMap.get(developerQA.getTestId()));
-		}
 
-		String devQAsJson = new Gson().toJson(devQAs);
-		String testsJson = new Gson().toJson(tests);
-		String resultJson = "{\"devQAs\":" + devQAsJson + ",\"tests\":"
-				+ testsJson + "}";
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(resultJson);
-	}
+    private void fillTestPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession();
+        UserEntity user = (UserEntity) session.getAttribute("user");
+        List<DeveloperQA> devQAs = developerQAService.findAllByDevId(user.getId());
 
-	private void sendTestById(HttpServletRequest request,
-			HttpServletResponse response) throws IOException
-	{
-		int testId = Integer.parseInt(request.getParameter("test_id"));
-		TestService testService = (TestService) ApplicationContext
-				.getInstance().getBean("testService");
-		Test test = testService.findById(testId);
-		test.setQuestions(testService.findQuestionsByTestId(testId));
-		String testJson = new Gson().toJson(test);
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(testJson);
-	}
+        List<Test> tests = testService.findAll();
+        List<Technology> techs = technologyService.findAll();
+        Map<Integer, Technology> technologyMap = new HashMap<>();
+        techs.forEach(technology -> technologyMap.put(technology.getId(), technology));
+        Map<Integer, Test> testMap = new HashMap<>();
+        for(int i=0;i<tests.size();i++){
+        }
+        tests.forEach(test -> {
+            test.setTechnology(technologyMap.get(test.getTechId()));
+            testMap.put(test.getId(), test);
+        });
+        for (DeveloperQA developerQA : devQAs) {
+            developerQA.setTest(testMap.get(developerQA.getTestId()));
+        }
+        for (int i = 0; i < tests.size(); i++) {
+            for (DeveloperQA developerQA : devQAs) {
+                if (developerQA.getTest().equals(tests.get(i)) && !developerQA.getIsExpire()) {
+                    tests.remove(developerQA.getTest());
+                    i--;
+                    break;
+                }
+            }
+        }
+        String devQAsJson = new Gson().toJson(devQAs);
+        String testsJson = new Gson().toJson(tests);
+        String resultJson = "{\"devQAs\":" + devQAsJson + ",\"tests\":" + testsJson + "}";
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(resultJson);
+    }
+
+    private void sendTestById(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        int testId = Integer.parseInt(request.getParameter("test_id"));
+        TestService testService = (TestService) ApplicationContext.getInstance().getBean("testService");
+        Test test = testService.findById(testId);
+        test.setQuestions(
+                testService.findQuestionsByTestId(testId));
+        String testJson = new Gson().toJson(test);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(testJson);
+    }
 
 	private void sendCustomerById(HttpServletRequest request,
 			HttpServletResponse response) throws IOException

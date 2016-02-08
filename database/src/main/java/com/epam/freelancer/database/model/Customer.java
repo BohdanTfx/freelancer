@@ -3,6 +3,7 @@ package com.epam.freelancer.database.model;
 import com.epam.freelancer.database.transformer.annotation.Column;
 import com.epam.freelancer.database.transformer.annotation.Id;
 import com.epam.freelancer.database.transformer.annotation.Table;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import java.sql.Timestamp;
 import java.util.Locale;
@@ -11,6 +12,7 @@ import java.util.Locale;
  * Created by ������ on 15.01.2016.
  */
 @Table(name = "customer")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Customer implements UserEntity {
     @Id
     private Integer id;

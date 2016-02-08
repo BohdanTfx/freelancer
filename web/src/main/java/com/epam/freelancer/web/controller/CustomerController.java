@@ -35,50 +35,68 @@ import com.epam.freelancer.database.model.Contact;
 import com.epam.freelancer.database.model.Customer;
 import com.epam.freelancer.database.model.Feedback;
 import com.epam.freelancer.database.model.UserEntity;
+import com.google.gson.Gson;
+import org.codehaus.jackson.map.ObjectMapper;
 
-public class CustomerController extends HttpServlet implements Responsable {
-	public static final Logger LOG = Logger.getLogger(CustomerController.class);
-	private static final long serialVersionUID = -2356506023594947745L;
-	private CustomerService customerService;
-	private FeedbackService feedbackService;
-	private OrderingService orderingService;
-	private TestService testService;
-	private DeveloperService developerService;
-	private TechnologyService technologyService;
-	private ObjectMapper mapper;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.List;
 
-	public CustomerController() {
-		testService = (TestService) ApplicationContext.getInstance().getBean(
-				"testService");
-		technologyService = (TechnologyService) ApplicationContext
-				.getInstance().getBean("technologyService");
-		customerService = (CustomerService) ApplicationContext.getInstance()
-				.getBean("customerService");
-		mapper = new ObjectMapper();
-		developerService = (DeveloperService) ApplicationContext.getInstance()
-				.getBean("developerService");
-		feedbackService = (FeedbackService) ApplicationContext.getInstance()
-				.getBean("feedbackService");
-		orderingService = (OrderingService) ApplicationContext.getInstance()
-				.getBean("orderingService");
-	}
+/**
+ * Created by Максим on 22.01.2016.
+ */
+public class CustomerController extends HttpServlet {
+    public static final Logger LOG = Logger.getLogger(CustomerController.class);
+    private static final long serialVersionUID = -2356506023594947745L;
+    private CustomerService customerService;
+    private FeedbackService feedbackService;
+    private OrderingService orderingService;
+    private TestService testService;
+    private DeveloperService developerService;
+    private TechnologyService technologyService;
+    private ObjectMapper mapper;
 
-	@Override
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException
-	{
-		try {
-			switch (FrontController.getPath(request)) {
-			case "cust/getPersonalData":
-				fillCustomerPersonalPage(request, response);
-				break;
-			default:
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			LOG.fatal(getClass().getSimpleName() + " - " + "doGet");
-		}
-	}
+    public CustomerController() {
+        testService = (TestService) ApplicationContext.getInstance().getBean(
+                "testService");
+        technologyService = (TechnologyService) ApplicationContext
+                .getInstance().getBean("technologyService");
+        customerService = (CustomerService) ApplicationContext.getInstance()
+                .getBean("customerService");
+        mapper = new ObjectMapper();
+        developerService = (DeveloperService) ApplicationContext.getInstance()
+                .getBean("developerService");
+        feedbackService = (FeedbackService) ApplicationContext.getInstance()
+                .getBean("feedbackService");
+        orderingService = (OrderingService) ApplicationContext.getInstance()
+                .getBean("orderingService");
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+
+            String path = FrontController.getPath(request);
+
+            switch (path) {
+                switch (FrontController.getPath(request)) {
+                    case "cust/getPersonalData":
+                        fillCustomerPersonalPage(request, response);
+                        break;
+                    default:
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOG.fatal(getClass().getSimpleName() + " - " + "doGet");
+        }
+    }
 
 private void createOrder(HttpServletRequest request,
         HttpServletResponse response) throws IOException

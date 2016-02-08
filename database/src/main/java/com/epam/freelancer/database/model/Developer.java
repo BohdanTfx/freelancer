@@ -3,6 +3,7 @@ package com.epam.freelancer.database.model;
 import com.epam.freelancer.database.transformer.annotation.Column;
 import com.epam.freelancer.database.transformer.annotation.Id;
 import com.epam.freelancer.database.transformer.annotation.Table;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -12,8 +13,61 @@ import java.util.Locale;
 /**
  * Created by Max on 15.01.2016.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "developer")
 public class Developer implements UserEntity {
+    @Id
+    private Integer id;
+    @Column
+    private String email;
+    @Column
+    private String password;
+    @Column(name = "name")
+    private String fname;
+    @Column(name = "last_name")
+    private String lname;
+    @Column
+    private Double hourly;
+    @Column
+    private Integer zone;
+    private Locale locale;
+    @Column
+    private String lang;
+    @Column
+    private String uuid;
+    @Column(name = "reg_url")
+    private String regUrl;
+    @Column(name = "reg_date")
+    private Timestamp regDate;
+    @Column(name = "is_deleted")
+    private Boolean isDeleted;
+    @Column
+    private Integer version;
+    @Column
+    private String salt;
+    @Column(name="img_url")
+    private String imgUrl;
+    @Column(name = "overview")
+    private String overview;
+    @Column(name = "position")
+    private String position;
+    private String role;
+    private String confirmCode;
+	@Column(name = "send_email")
+	private String sendEmail;
+	private List<Technology> technologies = new ArrayList<>();
+
+	public String getSendEmail() { return sendEmail; }
+
+	public void setSendEmail(String sendEmail) { this.sendEmail = sendEmail; }
+
+    public String getConfirmCode() {
+        return confirmCode;
+    }
+
+    public void setConfirmCode(String confirmCode) {
+        this.confirmCode = confirmCode;
+    }
 	@Id
 	private Integer id;
 	@Column
@@ -63,223 +117,205 @@ public class Developer implements UserEntity {
 
 	public void setConfirmCode(String confirmCode) { this.confirmCode = confirmCode; }
 
-	public String getOverview() {
-		return overview;
-	}
+    public String getOverview() {
+        return overview;
+    }
 
-	public void setOverview(String overview) {
-		this.overview = overview;
-	}
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
 
-	public String getPosition() {
-		return position;
-	}
+    public String getPosition() {
+        return position;
+    }
 
-	public void setPosition(String position) {
-		this.position = position;
-	}
+    public void setPosition(String position) {
+        this.position = position;
+    }
 
-	public String getRole() {
-		return role;
-	}
+    public String getRole() {
+        return role;
+    }
 
-	public void setRole(String role) {
-		this.role = role;
-	}
+    public void setRole(String role) {
+        this.role = role;
+    }
 
-	@Override
-	public String getSalt() {
-		return salt;
-	}
+    @Override
+    public String getSalt() {
+        return salt;
+    }
 
-	@Override
-	public void setSalt(String salt) {
-		this.salt = salt;
-	}
+    @Override
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
 
-	public Integer getVersion() {
-		return version;
-	}
+    public Integer getVersion() {
+        return version;
+    }
 
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 
-	public Double getHourly() {
-		return hourly;
-	}
+    public Double getHourly() {
+        return hourly;
+    }
 
-	public void setHourly(Double hourly) {
-		this.hourly = hourly;
-	}
+    public void setHourly(Double hourly) {
+        this.hourly = hourly;
+    }
 
-	public Integer getZone() {
-		return zone;
-	}
+    public Integer getZone() {
+        return zone;
+    }
 
-	public void setZone(Integer zone) {
-		this.zone = zone;
-	}
+    public void setZone(Integer zone) {
+        this.zone = zone;
+    }
 
-	public String getRegUrl() {
-		return regUrl;
-	}
+    public String getRegUrl() {
+        return regUrl;
+    }
 
-	public void setRegUrl(String regUrl) {
-		this.regUrl = regUrl;
-	}
+    public void setRegUrl(String regUrl) {
+        this.regUrl = regUrl;
+    }
 
-	public Timestamp getRegDate() {
-		return regDate;
-	}
+    public Timestamp getRegDate() {
+        return regDate;
+    }
 
-	public void setRegDate(Timestamp regDate) {
-		this.regDate = regDate;
-	}
+    public void setRegDate(Timestamp regDate) {
+        this.regDate = regDate;
+    }
 
-	@Override
-	public String getImgUrl() {
-		return imgUrl;
-	}
+    @Override
+    public String getImgUrl() {
+        return imgUrl;
+    }
 
-	@Override
-	public void setImgUrl(String imgUrl) {
-		this.imgUrl = imgUrl;
-	}
+    @Override
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
 
-	public Locale getLocale() {
-		return locale;
-	}
+    public Locale getLocale() {
+        return locale;
+    }
 
-	public void setLocale(Locale locale) {
-		this.locale = locale;
-	}
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
 
-	public String getLang() {
-		return locale != null ? locale.toLanguageTag() : null;
-	}
+    public String getLang() {
+        return locale != null ? locale.toLanguageTag() : null;
+    }
 
-	public void setLang(String lang) {
-		if (lang == null) {
-			this.lang = null;
-			return;
-		}
-		this.lang = lang;
-		String[] langCode = lang.split("-");
-		if (langCode.length == 2)
-			this.locale = new Locale(langCode[0], langCode[1]);
-		else
-			this.locale = new Locale(langCode[0]);
-	}
+    public void setLang(String lang) {
+        if (lang == null) {
+            this.lang = null;
+            return;
+        }
+        this.lang = lang;
+        String[] langCode = lang.split("-");
+        if (langCode.length == 2)
+            this.locale = new Locale(langCode[0], langCode[1]);
+        else
+            this.locale = new Locale(langCode[0]);
+    }
 
-	@Override
-	public String getEmail() {
-		return email;
-	}
+    @Override
+    public String getEmail() {
+        return email;
+    }
 
-	@Override
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    @Override
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	@Override
-	public String getPassword() {
-		return password;
-	}
+    @Override
+    public String getPassword() {
+        return password;
+    }
 
-	@Override
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    @Override
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	@Override
-	public String getUuid() {
-		return uuid;
-	}
+    @Override
+    public String getUuid() {
+        return uuid;
+    }
 
-	@Override
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
+    @Override
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
-	@Override
-	public String getFname() {
-		return fname;
-	}
+    @Override
+    public String getFname() {
+        return fname;
+    }
 
-	@Override
-	public void setFname(String fname) {
-		this.fname = fname;
-	}
+    @Override
+    public void setFname(String fname) {
+        this.fname = fname;
+    }
 
-	@Override
-	public String getLname() {
-		return lname;
-	}
+    @Override
+    public String getLname() {
+        return lname;
+    }
 
-	@Override
-	public void setLname(String lname) {
-		this.lname = lname;
-	}
+    @Override
+    public void setLname(String lname) {
+        this.lname = lname;
+    }
 
-	@Override
-	public Integer getId() {
-		return id;
-	}
+    @Override
+    public Integer getId() {
+        return id;
+    }
 
-	@Override
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Override
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	@Override
-	public Boolean getDeleted() {
-		return isDeleted;
-	}
+    @Override
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
 
-	@Override
-	public void setDeleted(Boolean deleted) {
-		this.isDeleted = deleted;
-	}
+    @Override
+    public void setDeleted(Boolean deleted) {
+        this.isDeleted = deleted;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-		Developer developer = (Developer) o;
+        Developer developer = (Developer) o;
 
-		if (email != null ? !email.equals(developer.email)
-				: developer.email != null)
-			return false;
-		if (uuid != null ? !uuid.equals(developer.uuid)
-				: developer.uuid != null)
-			return false;
-		return !(isDeleted != null ? !isDeleted.equals(developer.isDeleted)
-				: developer.isDeleted != null);
+        if (email != null ? !email.equals(developer.email) : developer.email != null) return false;
+        if (uuid != null ? !uuid.equals(developer.uuid) : developer.uuid != null) return false;
+        return !(isDeleted != null ? !isDeleted.equals(developer.isDeleted) : developer.isDeleted != null);
 
-	}
+    }
 
-	@Override
-	public int hashCode() {
-		int result = email != null ? email.hashCode() : 0;
-		result = 31 * result + (uuid != null ? uuid.hashCode() : 0);
-		result = 31 * result + (isDeleted != null ? isDeleted.hashCode() : 0);
-		return result;
-	}
-
-	@Override
-	public String toString() {
-		return "Developer{" + "id=" + id + ", email='" + email + '\''
-				+ ", fname='" + fname + '\'' + ", lname='" + lname + '\''
-				+ ", hourly=" + hourly + ", zone=" + zone + ", lang='" + lang
-				+ '\'' + ", uuid='" + uuid + '\'' + ", regUrl='" + regUrl
-				+ '\'' + ", regDate=" + regDate + ", isDeleted=" + isDeleted
-				+ ", version=" + version + '}';
-	}
-
+    @Override
+    public int hashCode() {
+        int result = email != null ? email.hashCode() : 0;
+        result = 31 * result + (uuid != null ? uuid.hashCode() : 0);
+        result = 31 * result + (isDeleted != null ? isDeleted.hashCode() : 0);
+        return result;
+    }
 	public List<Technology> getTechnologies() {
 		return technologies;
 	}
@@ -287,4 +323,22 @@ public class Developer implements UserEntity {
 	public void setTechnologies(List<Technology> technologies) {
 		this.technologies = technologies;
 	}
+
+    @Override
+    public String toString() {
+        return "Developer{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", fname='" + fname + '\'' +
+                ", lname='" + lname + '\'' +
+                ", hourly=" + hourly +
+                ", zone=" + zone +
+                ", lang='" + lang + '\'' +
+                ", uuid='" + uuid + '\'' +
+                ", regUrl='" + regUrl + '\'' +
+                ", regDate=" + regDate +
+                ", isDeleted=" + isDeleted +
+                ", version=" + version +
+                '}';
+    }
 }
