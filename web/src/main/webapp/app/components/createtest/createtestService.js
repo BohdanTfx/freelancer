@@ -2,20 +2,36 @@
 
 angular.module('FreelancerApp')
     .factory('createtestAPI', function ($http, config) {
-        var urlTests = '/admin/tests',
-            dataFactory = {};
+        var dataFactory = {};
 
         dataFactory.getAllTests = function () {
-            return $http.get(urlBase);
+            return $http.get('/admin/tests');
         };
 
-        dataFactory.getAllQuestions = function () {
-            return $http.post('/admin/questions');
+        dataFactory.getQuestionsByTechId = function (itemListStart, id) {
+            var pagination = {};
+            pagination.start = itemListStart | 0;
+            //pagination.last = last;
+            pagination.step = 5;
+
+            var data = {};
+            data.content = {};
+            data.content.tech_id = id;
+            data.page = pagination;
+            return $http.post('/admin/tech/questions', data, {'Content-Type': 'application/x-www-form-urlencoded'});
         };
 
-        dataFactory.getAllTechnologies= function (customerId) {
-            return $http.post('/user/orders/tech');
+        dataFactory.getAllTechnologies = function () {
+            return $http.get('/admin/technologies');
         };
+
+        dataFactory.createTest = function (testJSON, questionsJSON) {
+            return $http.post('/admin/test/create?test=' + testJSON + "&questions=" + questionsJSON);
+        };
+
+        dataFactory.createQuestion = function (questionJSON, answersJSON) {
+            return $http.post('/admin/question?question=' + questionJSON+ "&answers=" + answersJSON);
+        }
 
         return dataFactory;
     });

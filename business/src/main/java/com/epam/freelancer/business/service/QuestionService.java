@@ -52,7 +52,7 @@ public class QuestionService extends GenericService<Question, Integer> {
     private Map<ValidationParametersBuilder.Parameters, String> prepareData(Map<String, String[]> data) {
         Map<ValidationParametersBuilder.Parameters, String> map = new HashMap<>();
         map.put(ValidationParametersBuilder.createParameters(false).minLength(5)
-                        .maxLength(50),
+                        .maxLength(255),
                 data.get("name") == null ? null : data.get("name")[0]);
         return map;
     }
