@@ -6,6 +6,7 @@ import com.epam.freelancer.business.util.CookieManager;
 import com.epam.freelancer.database.dao.*;
 import com.epam.freelancer.database.dao.jdbc.*;
 import com.epam.freelancer.database.model.OrderCounter;
+import com.epam.freelancer.database.model.Answer;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -60,7 +61,6 @@ public final class ApplicationContext {
 		addBean("questionService", new QuestionService());
 		addBean("testService", new TestService());
 		addBean("adminCandidateService", new AdminCandidateService());
-		addBean("orderCounterService", new OrderCounterService());
 
 		TestService testService = new TestService();
 		testService.setQuestionDao(daoManager.getDAO(QuestionDao.class
@@ -86,6 +86,8 @@ public final class ApplicationContext {
 				.getInstance().getManyToManyDAO(
 						OrderingTechnologyManyToManyDao.class.getSimpleName()));
 		addBean("technologyService", technologyService);
+
+		addBean("answerService", new AnswerService());
 
 		UserManager userManager = new UserManager();
 		userManager.setCustomerService(customerService);

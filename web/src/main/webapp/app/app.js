@@ -4,7 +4,7 @@
 			'FreelancerApp',
 			[ 'ngRoute', 'ui.router', 'ngCookies', 'ngMaterial', 'ngAnimate',
 					'ngAria', 'ngMessages', 'isteven-multi-select', 'rzModule',
-					'ui.bootstrap', 'ui-notification','googlechart' ]).config(
+					'ui.bootstrap', 'ui-notification' ]).config(
 			function($stateProvider, $urlRouterProvider, $locationProvider,
 					NotificationProvider ) {
 				$urlRouterProvider.otherwise('/home');
@@ -71,6 +71,10 @@
                     url: '/public/customer/:custName/:custId',
                     templateUrl: 'app/components/custpub/custpub.html',
                     controller: 'custpubCtrl'
+				}).state('createtest', {
+                    url: '/tests/creating',
+                    templateUrl: 'app/components/createtest/createtest.html',
+                    controller: 'createtestCtrl'
 				}).state('admin', {
 					url: '/admin/statistics',
 					templateUrl: 'app/components/admin/adminStatistics.html',

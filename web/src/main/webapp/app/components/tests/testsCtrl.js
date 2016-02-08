@@ -2,11 +2,18 @@ angular.module('FreelancerApp')
     .controller('testsCtrl', function ($scope, testsAPI, $log, $interval) {
 
         $scope.smt = {};
+        $scope.smt.passedTest = false;
+        $scope.smt.allowedTest = false;
+
 
         testsAPI.getAllTests().success(function (data) {
-            $log.log(data);
             $scope.devQAs = data.devQAs;
             $scope.tests = data.tests;
+            if (data.tests.length == 0)
+                $scope.noTest = true;
+            else
+                $scope.noTest = false;
+
             $scope.testsDivision();
         }).error(function () {
             alert(404);
@@ -62,16 +69,12 @@ angular.module('FreelancerApp')
         }
 
         $scope.testListCtrl = function () {
-            console.log("a: " + $scope.smt.allowedTest + " p:" + $scope.smt.passedTest);
             if ($scope.smt.passedTest == $scope.smt.allowedTest) {
                 $scope.tests = $scope.passedTestList.concat($scope.newTestsList);
-                console.log(1);
             } else if ($scope.smt.passedTest == true) {
                 $scope.tests = $scope.passedTestList;
-                console.log(2);
             } else {
                 $scope.tests = $scope.newTestsList;
-                console.log(3);
             }
         }
     });

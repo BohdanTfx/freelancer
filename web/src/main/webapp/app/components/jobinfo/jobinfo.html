@@ -57,7 +57,7 @@
 
                             <div class="col-lg-5 col-sm-12 hidden-xs">
                                 <div class="user"
-                                     style="background-image: url('https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSmt5i-ru168WMldKAgcExrQIEKzlys0qTjjAA13TmHf5COlixX')"></div>
+                                     style="background-image: url('{{customer.imgUrl}}')"></div>
                             </div>
                             <div class="col-lg-7 col-sm-12">
                                 <h2><em>{{customer.fname}} {{customer.lname}}</em></h2>
@@ -117,7 +117,7 @@
                                                     <br/>
 
                                                     <div class="follower"
-                                                         style="background-image: url('../../../images/role/developer.png')"></div>
+                                                         style="background-image: url('{{follower.developer.imgUrl}}')"></div>
 
                                                     <p>
                                                         <a ng-href="/#/public/dev-name/{{follower.developer.id}}"><em>{{follower.developer.fname}}
@@ -160,7 +160,7 @@
                                             <br/>
 
                                             <div class="feedback"
-                                                 style="background-image: url('../../../images/role/developer.png')"></div>
+                                                 style="background-image: url('{{feedback.developer.imgUrl}}')"></div>
 
                                             <p>
                                                 <a ng-href="/public/dev-name/{{developer.id}}"><em>{{feedback.developer.fname}}

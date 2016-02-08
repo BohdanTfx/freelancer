@@ -11,7 +11,7 @@ angular.module('FreelancerApp')
             });
         };
 
-        var urlResult = '/dev/getresults';
+        var urlResult = '/dev/results';
         dataFactory.sendAnswers = function (questions, results, testId, expireDate) {
 
             var data = $.param({

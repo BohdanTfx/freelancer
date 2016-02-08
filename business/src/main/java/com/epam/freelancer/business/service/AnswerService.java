@@ -47,7 +47,7 @@ public class AnswerService extends GenericService<Answer, Integer> {
 	{
 		Map<ValidationParametersBuilder.Parameters, String> map = new HashMap<>();
 		map.put(ValidationParametersBuilder.createParameters(false)
-				.minLength(5).maxLength(50), data.get("name") == null ? null
+				.minLength(1).maxLength(50), data.get("name") == null ? null
 				: data.get("name")[0]);
 		return map;
 	}
