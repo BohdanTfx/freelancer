@@ -1,0 +1,36 @@
+<md-dialog>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <small> Information</small>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()" aria-label="Button">
+                <i class="fa fa-times"></i>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <div ng-show="confirmEmailFlag">
+        <div class="panel panel-success">
+            <div class="panel-heading">Enter code from SMS</div>
+            <div class="panel-body">
+                <md-input-container class="col-xs-6 col-sm-6 box-none">
+                    <input type="text" name="confirmCode" ng-required="true" ng-model="confirmCode" aria-label="Input">
+                </md-input-container>
+            </div>
+        </div>
+    </div>
+    <div ng-hide="confirmEmailFlag">
+        <div>
+            <div class="panel panel-success" class="color: red;">
+                <div class="panel-heading">You enter already used email</div>
+            </div>
+        </div>
+    </div>
+    <md-dialog-actions>
+        <md-button type="submit" ng-show="confirmEmailFlag" md-autofocus ng-click="confirmPhoneCode()" aria-label="Button">
+            Confirm
+        </md-button>
+        <md-button ng-click="cancel()" ng-click="submitted=true" md-autofocus aria-label="Button">
+            Exit
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

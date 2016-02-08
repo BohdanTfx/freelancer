@@ -8,22 +8,21 @@
             </md-button>
         </div>
     </md-toolbar>
-        <div ng-show="flagConfirmPhoneCode">
-            <div>
-                <div class="panel panel-success">
-                    <div class="panel-heading">Password Changed</div>
-                </div>
+    <div ng-show="flagConfirmPhoneCode">
+        <div>
+            <div class="panel panel-success">
+                <div class="panel-heading">Email Changed</div>
             </div>
         </div>
-        <div ng-hide="flagConfirmPhoneCode">
-            <div>
-                <div class="panel panel-success">
-                    <div class="panel-heading">Code is wrong</div>
-                </div>
+    </div>
+    <div ng-hide="flagConfirmPhoneCode">
+        <div>
+            <div class="panel panel-success">
+                <div class="panel-heading">Code is wrong</div>
             </div>
         </div>
+    </div>
     <md-dialog-actions>
-
         <md-button ng-click="cancel()" md-autofocus aria-label="Button">
             Ok
         </md-button>

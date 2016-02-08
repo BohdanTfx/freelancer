@@ -433,13 +433,13 @@ public class DeveloperController extends HttpServlet implements Responsable {
 		String fileName = developer.getFname() + developer.getLname();
 		File file = null;
 		try {
-			file = new File("../target/WEB-INF/userData/" + fileName + ".jpg");
+			file = new File("C:/" + fileName + ".jpg");
 			FileUtils.writeByteArrayToFile(file, encodImage);
 		} catch(Exception e){
 			e.printStackTrace();
 		}
 
-		developer.setImgUrl("target/WEB-INF/userData/" + fileName + ".jpg");
+		developer.setImgUrl("/" + fileName + ".jpg");
 		developerService.updateDeveloper(developer);
 	}
 
