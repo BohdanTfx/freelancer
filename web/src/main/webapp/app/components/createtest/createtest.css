@@ -1,0 +1,43 @@
+.tests-creating md-content h2 {
+    display: inline-block;
+}
+
+.tests-creating md-input-container {
+    margin: 5px 0;
+}
+
+.tests-creating .test-tab md-input-container {
+    padding: 0 15px 0 25px;
+}
+
+.tests-creating md-input-container > label + md-icon.fa {
+    font-size: inherit;
+}
+
+.tests-creating .quest-column {
+    border-radius: 3px;
+    border: solid 1px #007bb6;
+    margin: 0 25px 25px 25px;
+}
+
+.tests-creating .disabled {
+    color: #b3b3b3;
+    cursor: not-allowed;
+}
+
+.tests-creating md-checkbox .md-icon {
+    background-color: #D9534F;
+}
+
+.tests-creating .answers-block {
+    padding: 12px;
+}
+
+.tests-creating md-checkbox.md-checked.green .md-icon {
+    background-color: #009926;
+}
+
+.tests-creating .answers-block .answCtrl {
+    margin-top: 10px;
+    padding: 6px 12px;
+}

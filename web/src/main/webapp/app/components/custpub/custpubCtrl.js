@@ -3,11 +3,17 @@ angular.module('FreelancerApp')
 
         $scope.query = $stateParams.custId;
 
-        if ($rootScope.role == 'developer') {
+        if ($rootScope.role == 'customer') {
             $scope.show = true;
         } else {
             $scope.show = false;
         }
+
+        $scope.wmDis = false;
+        if($rootScope.id = $stateParams.custId) {
+            $scope.wmDis = true;
+        }
+
 
         $http.post('/user/isAuth').success(function (data) {
             $scope.mesEmail = data.email;
@@ -26,13 +32,14 @@ angular.module('FreelancerApp')
             });
 
         custpubAPI.getAvailableCustOrders($scope.query).success(function (data) {
-            if (typeof data == 'undefined' || data == null || data.length == 0)
-                $scope.follow = true;
+            if ((typeof data == 'undefined' || data == null || data.length == 0) && !$scope.show)
+                $scope.show = true;
             else {
                 $scope.avords = data;
-                $scope.follow = false;
+                $scope.show = false;
             }
         }).error(function () {
+            $scope.show = false;
         });
 
         custpubAPI.getRateForCust($scope.query).success(

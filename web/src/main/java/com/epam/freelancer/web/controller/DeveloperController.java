@@ -55,9 +55,11 @@ public class DeveloperController extends HttpServlet implements Responsable {
 				"userManager");
 	}
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
+	@Override
+	protected void doGet(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException
+	{
+		try {
 
             String path = FrontController.getPath(request);
 
@@ -83,7 +85,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
 
 			default:
 
-            }
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -91,11 +93,13 @@ public class DeveloperController extends HttpServlet implements Responsable {
 		}
 	}
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
+	@Override
+	protected void doPost(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException
+	{
+		try {
 
-            String path = FrontController.getPath(request);
+			String path = FrontController.getPath(request);
 
             switch (path) {
                 case "dev/getresults":
@@ -119,43 +123,47 @@ public class DeveloperController extends HttpServlet implements Responsable {
                 default:
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            LOG.fatal(getClass().getSimpleName() + " - " + "doPost");
-        }
-    }
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.fatal(getClass().getSimpleName() + " - " + "doPost");
+		}
+	}
 
+	private void fillMyWorksPage(HttpServletRequest request,
+			HttpServletResponse response) throws IOException
+	{
+		HttpSession session = request.getSession();
+		UserEntity user = (UserEntity) session.getAttribute("user");
 
-    private void fillMyWorksPage(HttpServletRequest  request,HttpServletResponse response) throws IOException{
-        HttpSession session = request.getSession();
-        UserEntity user = (UserEntity) session.getAttribute("user");
-        System.out.println("USer"+user);
-        List<Ordering> allProjects = developerService.getDeveloperPortfolio(user.getId());
-        List<Ordering> devSubscribedProjects = developerService.getDeveloperSubscribedProjects(user.getId());
-
+		List<Ordering> allProjects = developerService
+				.getDeveloperPortfolio(user.getId());
+		List<Ordering> devSubscribedProjects = developerService
+				.getDeveloperSubscribedProjects(user.getId());
 
 		for (Ordering order : devSubscribedProjects) {
 			order.setTechnologies(technologyService
 					.findTechnolodyByOrderingId(order.getId()));
 		}
 
-        List<Ordering> devFinishedProjects = new ArrayList<>();
-        List<Ordering> devProjectsInProcess = new ArrayList<>();
-        allProjects.forEach(ordering -> {
-            if(ordering.getEnded()){
-                devFinishedProjects.add(ordering);
-            }else {
-                devProjectsInProcess.add(ordering);
-            }
-        });
+		List<Ordering> devFinishedProjects = new ArrayList<>();
+		List<Ordering> devProjectsInProcess = new ArrayList<>();
+		allProjects.forEach(ordering -> {
+			if (ordering.getEnded()) {
+				devFinishedProjects.add(ordering);
+			} else {
+				devProjectsInProcess.add(ordering);
+			}
+		});
 
-        for (Ordering order :devFinishedProjects){
-            order.setTechnologies(technologyService.findTechnolodyByOrderingId(order.getId()));
-        }
+		for (Ordering order : devFinishedProjects) {
+			order.setTechnologies(technologyService
+					.findTechnolodyByOrderingId(order.getId()));
+		}
 
-        for (Ordering order :devProjectsInProcess){
-            order.setTechnologies(technologyService.findTechnolodyByOrderingId(order.getId()));
-        }
+		for (Ordering order : devProjectsInProcess) {
+			order.setTechnologies(technologyService
+					.findTechnolodyByOrderingId(order.getId()));
+		}
 
 		Map<String,List> resultMap = new HashMap<>();
 		resultMap.put("finishedWorks",devFinishedProjects);
@@ -164,55 +172,51 @@ public class DeveloperController extends HttpServlet implements Responsable {
 		sendResponse(response,resultMap,mapper);
 	}
 
+	private void fillTestPage(HttpServletRequest request,
+			HttpServletResponse response) throws IOException{
+		HttpSession session = request.getSession();
+		UserEntity user = (UserEntity) session.getAttribute("user");
+		List<DeveloperQA> devQAs = developerQAService.findAllByDevId(user
+				.getId());
 
+		List<Test> tests = testService.findAll();
+		List<Technology> techs = technologyService.findAll();
+		Map<Integer, Technology> technologyMap = new HashMap<>();
+		techs.forEach(technology -> technologyMap.put(technology.getId(),
+				technology));
+		Map<Integer, Test> testMap = new HashMap<>();
+		for (int i = 0; i < tests.size(); i++) {
+		}
+		tests.forEach(test -> {
+			test.setTechnology(technologyMap.get(test.getTechId()));
+			testMap.put(test.getId(), test);
+		});
+		for (DeveloperQA developerQA : devQAs) {
+			developerQA.setTest(testMap.get(developerQA.getTestId()));
+		}
 
-    private void fillTestPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession();
-        UserEntity user = (UserEntity) session.getAttribute("user");
-        List<DeveloperQA> devQAs = developerQAService.findAllByDevId(user.getId());
+		String devQAsJson = new Gson().toJson(devQAs);
+		String testsJson = new Gson().toJson(tests);
+		String resultJson = "{\"devQAs\":" + devQAsJson + ",\"tests\":"
+				+ testsJson + "}";
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(resultJson);
+	}
 
-        List<Test> tests = testService.findAll();
-        List<Technology> techs = technologyService.findAll();
-        Map<Integer, Technology> technologyMap = new HashMap<>();
-        techs.forEach(technology -> technologyMap.put(technology.getId(), technology));
-        Map<Integer, Test> testMap = new HashMap<>();
-        for(int i=0;i<tests.size();i++){
-        }
-        tests.forEach(test -> {
-            test.setTechnology(technologyMap.get(test.getTechId()));
-            testMap.put(test.getId(), test);
-        });
-        for (DeveloperQA developerQA : devQAs) {
-            developerQA.setTest(testMap.get(developerQA.getTestId()));
-        }
-        for (int i = 0; i < tests.size(); i++) {
-            for (DeveloperQA developerQA : devQAs) {
-                if (developerQA.getTest().equals(tests.get(i)) && !developerQA.getIsExpire()) {
-                    tests.remove(developerQA.getTest());
-                    i--;
-                    break;
-                }
-            }
-        }
-        String devQAsJson = new Gson().toJson(devQAs);
-        String testsJson = new Gson().toJson(tests);
-        String resultJson = "{\"devQAs\":" + devQAsJson + ",\"tests\":" + testsJson + "}";
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(resultJson);
-    }
-
-    private void sendTestById(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int testId = Integer.parseInt(request.getParameter("test_id"));
-        TestService testService = (TestService) ApplicationContext.getInstance().getBean("testService");
-        Test test = testService.findById(testId);
-        test.setQuestions(
-                testService.findQuestionsByTestId(testId));
-        String testJson = new Gson().toJson(test);
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(testJson);
-    }
+	private void sendTestById(HttpServletRequest request,
+			HttpServletResponse response) throws IOException
+	{
+		int testId = Integer.parseInt(request.getParameter("test_id"));
+		TestService testService = (TestService) ApplicationContext
+				.getInstance().getBean("testService");
+		Test test = testService.findById(testId);
+		test.setQuestions(testService.findQuestionsByTestId(testId));
+		String testJson = new Gson().toJson(test);
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(testJson);
+	}
 
 	private void sendCustomerById(HttpServletRequest request,
 			HttpServletResponse response) throws IOException
@@ -304,7 +308,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
 	}
 
 	private Map<String, String[]> createMapForDevQA(HttpServletRequest request,
-													double rate)
+			double rate)
 	{
 		Map<String, String[]> map = new HashMap<>();
 		UserEntity user = (UserEntity) request.getSession()

@@ -1,10 +1,24 @@
 package com.epam.freelancer.web.controller;
 
 import java.io.File;
+import com.epam.freelancer.business.context.ApplicationContext;
+import com.epam.freelancer.business.service.*;
+import com.epam.freelancer.database.model.*;
+import com.google.gson.Gson;
+import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -36,10 +50,6 @@ import com.epam.freelancer.database.model.Customer;
 import com.epam.freelancer.database.model.Feedback;
 import com.epam.freelancer.database.model.UserEntity;
 
-
-/**
- * Created by Максим on 22.01.2016.
- */
 public class CustomerController extends HttpServlet implements Responsable {
     public static final Logger LOG = Logger.getLogger(CustomerController.class);
     private static final long serialVersionUID = -2356506023594947745L;
@@ -78,7 +88,6 @@ public class CustomerController extends HttpServlet implements Responsable {
                         fillCustomerPersonalPage(request, response);
                         break;
                     default:
-
             }
 
         } catch (Exception e) {

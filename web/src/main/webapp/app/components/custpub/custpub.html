@@ -5,7 +5,7 @@
                 <div class="panel-body fl-left">
                     <img class="cust-not-found" src="/images/profile/no-profile-img-head.gif" alt=""/>
 
-                    <h2 class="cust-free-not-found">Freelancer not found</h2>
+                    <h2 class="cust-free-not-found">Customer not found</h2>
                 </div>
             </div>
         </div>
@@ -36,10 +36,7 @@
                         <br/>
 
                         <p>
-                            <span style="color: firebrick">{{smserr}}</span>
-                            <span style="color: darkgreen">{{smssuc}}</span>
-
-                        <div ng-disabled="follow" ng-if="show" class="btn btn-block btn-primary" data-toggle="modal"
+                        <div ng-disabled="show" class="btn btn-block btn-primary" data-toggle="modal"
                              data-target=".bs-example-modal-md1">
                                     <span
                                             class="glyphicon glyphicon-thumbs-up"></span>
@@ -60,16 +57,13 @@
                         <p>
                         <h5>{{skype}}</h5>
                         </p>
-                        <p>
-                        <h5>Email: {{email}}</h5>
-                        </p>
-                        <p>On site from:
+                        <p>On site since:
                             {{regDate |date:'longDate'}}
                         </p>
                         <span style="color: firebrick">{{messerr}}</span>
                         <span style="color: darkgreen">{{messuc}}</span>
 
-                        <div class="btn btn-block btn-danger" data-toggle="modal"
+                        <div ng-disabled="wmDis" class="btn btn-block btn-danger" data-toggle="modal"
                              data-target=".bs-example-modal-md">
                             <span class="glyphicon glyphicon-envelope"></span>
                             Write
@@ -202,7 +196,7 @@
     <span
             aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title">Send mail</h4>
+                <h4 class="modal-title">Send mail to {{fname}} {{lname}}</h4>
             </div>
             <div class="modal-footer">
                 <div class="form-group">

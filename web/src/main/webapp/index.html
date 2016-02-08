@@ -47,6 +47,9 @@
           href="bower_components/angular-multi-select-master/isteven-multi-select.css">
     <link rel="stylesheet"
           href="bower_components/angularjs-slider-master/rzslider.min.css">
+    <link rel="stylesheet" href="bower_components/angular-bootstrap/ui-bootstrap-csp.css"/>
+    <link rel="stylesheet" href="bower_components/angular-ui-notification-master/angular-ui-notification.min.css"/>
+    <link rel="stylesheet" href="bower_components/angular-bootstrap/ui-bootstrap-tpls-0.14.0.min.js"/>
     <link rel="stylesheet"
           href="bower_components/angular-bootstrap/ui-bootstrap-csp.css"/>
     <link rel="stylesheet"
@@ -75,8 +78,9 @@
 
     <link rel="stylesheet" href="app/components/custpub/custpub.css">
     <link rel="stylesheet" href="app/components/order/newOrder.css">
-<link rel="stylesheet" href="app/components/developers/developers.css">
+    <link rel="stylesheet" href="app/components/developers/developers.css">
 
+    <link rel="stylesheet" href="app/components/createtest/createtest.css">
 
 </head>
 
@@ -96,7 +100,7 @@
                     <a href="#/home"> <img alt="Site logo"
                                            class="img-logo img-png animated rotateIn" data-tooltip="yes"
                                            title="Home" data-placement="right" src="/images/logo.png">
-							<h1 class="text-shadow-white logo-text animated flipInY"><span class="first">Open</span><span class="second">Task</span></h1>
+                        <h1 class="text-shadow-white logo-text animated flipInY"><span class="first">Open</span><span class="second">Task</span></h1>
                     </a>
                 </div>
             </div>
@@ -170,20 +174,20 @@
                         </md-menu-content>
                     </md-menu>
 
-                   <!--<span ng-switch="role">-->
-                       <!--<div ng-switch="customer">-->
-                           <md-menu md-offset="49">
-                               <button ng-click="$mdOpenMenu()" class="menuIconBtn">
-                                   <i class="fa fa-briefcase"></i>
-                               </button>
-                               <md-menu-content width=3 md-position-mode=target-left
-                                                class="menuContent">
-                                   <md-menu-item>
-                                       <md-button ng-href="/#/order/create"> Create new order</md-button>
-                                   </md-menu-item>
-                               </md-menu-content>
-                           </md-menu>
-                       <!--</div>-->
+                    <!--<span ng-switch="role">-->
+                    <!--<div ng-switch="customer">-->
+                    <md-menu md-offset="49">
+                        <button ng-click="$mdOpenMenu()" class="menuIconBtn">
+                            <i class="fa fa-briefcase"></i>
+                        </button>
+                        <md-menu-content width=3 md-position-mode=target-left
+                                         class="menuContent">
+                            <md-menu-item>
+                                <md-button ng-href="/#/order/create"> Create new order</md-button>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
+                    <!--</div>-->
                     <!--</span>-->
 
                     <md-menu md-offset="49">
@@ -330,6 +334,9 @@
 
 <script src="app/components/developers/developersCtrl.js"></script>
 <script src="app/components/developers/developersService.js"></script>
+
+<script src="app/components/createtest/createtestCtrl.js"></script>
+<script src="app/components/createtest/createtestService.js"></script>
 <!-- endinject -->
 
 

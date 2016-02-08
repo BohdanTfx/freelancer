@@ -65,15 +65,15 @@ public class TestService extends GenericService<Test, Integer> {
 		map.put(ValidationParametersBuilder.createParameters(false)
 				.maxLength(50).minLength(1), data.get("name") == null ? null
 				: data.get("name")[0]);
-		map.put(ValidationParametersBuilder.createParameters(true).min(1.00),
+		map.put(ValidationParametersBuilder.createParameters(true).min(1.00).isInteger(true),
 				data.get("tech_id") == null ? null : data.get("tech_id")[0]);
-		map.put(ValidationParametersBuilder.createParameters(true).min(1.00),
+		map.put(ValidationParametersBuilder.createParameters(true).min(1.00).isInteger(true),
 				data.get("sec_per_quest") == null ? null : data
 						.get("sec_per_quest")[0]);
-		map.put(ValidationParametersBuilder.createParameters(true).min(1.00),
+		map.put(ValidationParametersBuilder.createParameters(true).min(1.00).isInteger(true),
 				data.get("admin_id") == null ? null : data.get("admin_id")[0]);
-		map.put(ValidationParametersBuilder.createParameters(true)
-				.isInteger(true).max(5.00).min(1.00),
+		map.put(ValidationParametersBuilder.createParameters(true).isInteger(true)
+				.isInteger(true).min(1.00).max(101.00),
 				data.get("pass_score") == null ? null
 						: data.get("pass_score")[0]);
 		return map;
@@ -89,6 +89,11 @@ public class TestService extends GenericService<Test, Integer> {
 			question.setAnswers(((AnswerDao)answerDao).getAnswersByQuestionId(question.getId()));
 		}
 		return questions;
+	}
+
+	public void saveTestQuestions(Integer testId, List<Integer> questIDs){
+		for(Integer qID : questIDs)
+			testMTMquestDao.saveContact(testId, qID);
 	}
 
 	public List<Test> findTestsByAdminId(Integer id) {
@@ -110,7 +115,7 @@ public class TestService extends GenericService<Test, Integer> {
 		answerDao.setConnectionPool(DAOManager.getInstance()
 				.getConnectionPool());
 	}
-	public void setAdminCandidatDao(GenericDao<AdminCandidate, Integer> adminCandidateDao) {
+	public void setAdminCandidateDao(GenericDao<AdminCandidate, Integer> adminCandidateDao) {
 		this.adminCandidateDao = adminCandidateDao;
 		answerDao.setConnectionPool(DAOManager.getInstance()
 				.getConnectionPool());

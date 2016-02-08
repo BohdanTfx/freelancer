@@ -4,9 +4,16 @@ angular.module('FreelancerApp')
         $scope.userrole = $rootScope.role;
         $scope.hireord = '';
 
+        $scope.wmDis = false;
+        if($rootScope.id == $stateParams.devId) {
+            $scope.wmDis = true;
+        }
+
         if ($scope.userrole == 'developer') {
             $scope.show = false;
+            $scope.hire = false;
         } else {
+            $scope.hire = true;
             $scope.show = true;
         }
 
@@ -174,6 +181,7 @@ angular.module('FreelancerApp')
                 $scope.hire = false;
             }
         }).error(function () {
+            $scope.hire = false;
         });
 
         $scope.send = function () {
