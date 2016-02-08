@@ -220,8 +220,7 @@ angular.module('FreelancerApp')
                     $scope.result = data;
                     $scope.confirmPasswordFlag = true;
                     $scope.confirmPasswordTemp = clone($scope.newPassword);
-                    $scope.showTabDialog();
-
+                    scope.showTabDialog();
                 }).error(function (response) {
                     $scope.confirmPasswordFlag = false;
                     console.log($scope.confirmPasswordFlag);
@@ -250,7 +249,12 @@ angular.module('FreelancerApp')
                 personalAPI.confirmCodeAndChangeDevPassword($scope.confirmPasswordTemp, $scope.confirmCode).success(function (data){
                     $scope.result = data;
                     $scope.flagConfirmPhoneCode = true;
-                    $scope.showDialogConfirm();
+                    if($scope.confirmPasswordFlag == undefined){
+                        $scope.showDialogConfirm();
+                    } else {
+                        $scope.confirmEmailDialog();
+                    }
+
                 }).error(function (response) {
                     $scope.flagConfirmPhoneCode = false;
                     $scope.showDialogConfirm();
@@ -274,12 +278,12 @@ angular.module('FreelancerApp')
                 personalAPI.changeDevSendingEmail($scope.newEmail).success(function (data){
                     $scope.confirmEmailFlag = true;
                     $scope.newEmailTemp = clone($scope.newPassword);
-                    $scope.showTabDialog();
+                    $scope.showEmailDialog();
 
                 }).error(function (response) {
                     $scope.confirmPasswordFlag = false;
                     $scope.error = 'Invalid credentials';
-                    $scope.showTabDialog();
+                    $scope.showEmailDialog();
                 });
             }
             if($rootScope.role == 'customer'){
@@ -329,6 +333,43 @@ angular.module('FreelancerApp')
 
             }
         };
+
+        $scope.showEmailDialog = function ($event){
+            $mdDialog.show({
+                parent: angular.element(document.body),
+                targetEvent: $event,
+                scope: $scope,
+                preserveScope: true,
+                templateUrl: 'app/components/personal/changeEmailDialog.html',
+                controller: 'personalCtrl',
+                clickOutsideToClose: true,
+                onComplete: afterShowAnimation,
+                locals: {confirmPasswordFlag: $scope.confirmPasswordFlag}
+            });
+
+            function afterShowAnimation(scope, element, options) {
+
+            }
+        };
+
+        $scope.confirmEmailDialog = function ($event){
+            $mdDialog.show({
+                parent: angular.element(document.body),
+                targetEvent: $event,
+                scope: $scope,
+                preserveScope: true,
+                templateUrl: 'app/components/personal/emailChanged.html',
+                controller: 'personalCtrl',
+                clickOutsideToClose: true,
+                onComplete: afterShowAnimation,
+                locals: {confirmPasswordFlag: $scope.confirmPasswordFlag}
+            });
+
+            function afterShowAnimation(scope, element, options) {
+
+            }
+        };
+
 
         $scope.cancel = function() {
             $mdDialog.cancel();
@@ -401,32 +442,32 @@ angular.module('FreelancerApp')
             $mdDialog.hide();
         };
 
-        $scope.uploadFromDevice = function (files, e, callback) {
+        $scope.uploadFromDevice = function (e, callback) {
             var img = new Image();
             var canvas = document.createElement("canvas");
-            //var file = document.getElementById('file').files[0];
-            if(files != ''){
-                img.src = URL.createObjectURL(files);
-                var ctx = canvas.getContext("2d");
-                img.onload = function () {
-                    ctx = canvas.getContext("2d");
-                    var maxWidth = 2000, // Max width for the image
-                        ratio = 0,  // Used for aspect ratio
-                        width = img.width,    // Current image width
-                        height = img.height;  // Current image height
+            var file = document.getElementById('file').files[0];
+            img.src = URL.createObjectURL(file);
+            var ctx = canvas.getContext("2d");
+            img.onload = function () {
+                ctx = canvas.getContext("2d");
+                var maxWidth = 2000, // Max width for the image
+                    ratio = 0,  // Used for aspect ratio
+                    width = img.width,    // Current image width
+                    height = img.height;  // Current image height
 
-                    if (width > maxWidth) {
-                        ratio = maxWidth / width;   // get ratio for scaling image
-                        height = height * ratio;    // Reset height to match scaled image
-                        width = width * ratio;    // Reset width to match scaled image
-                    }
-                    canvas.width = width;
-                    canvas.height = height;
-                    ctx.fillStyle = '#fff';  /// set white fill style
-                    ctx.fillRect(0, 0, width, height);
-                    ctx.drawImage(this, 0, 0, width, height);
-                    var dataURL = canvas.toDataURL("image/jpg");
-                    var base = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+                if (width > maxWidth) {
+                    ratio = maxWidth / width;   // get ratio for scaling image
+                    height = height * ratio;    // Reset height to match scaled image
+                    width = width * ratio;    // Reset width to match scaled image
+                }
+                canvas.width = width;
+                canvas.height = height;
+                ctx.fillStyle = '#fff';  /// set white fill style
+                ctx.fillRect(0, 0, width, height);
+                ctx.drawImage(this, 0, 0, width, height);
+                var dataURL = canvas.toDataURL("image/jpg");
+                var base = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+                console.log(base);
 
                     //personalAPI.
                     if($rootScope.role =='developer'){
@@ -451,7 +492,7 @@ angular.module('FreelancerApp')
                         });
                     }
                 }
-            }
+
 
         };
 
