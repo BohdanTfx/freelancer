@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -169,7 +170,7 @@ public class AdminController extends HttpServlet implements Responsable {
         adminCandidateService.remove(adminCandidateService.getAdminCandidateByKey(uuid));
     }
 
-    private void sendDevAndCustAmount(HttpServletRequest request,HttpServletResponse response) throws IOException, ParseException {
+    private void sendDevAndCustAmount(HttpServletRequest request,HttpServletResponse response) throws IOException {
         Map<String,Integer> map = new HashMap<>();
         map.put("devAmount",developerService.getAllWorkers().size());
         map.put("custAmount",customerService.findAll().size());
@@ -276,7 +277,7 @@ public class AdminController extends HttpServlet implements Responsable {
         }
     }
 
-    private void sendCreationOrdersAmount(HttpServletRequest request,HttpServletResponse response) throws IOException, ParseException {
+    private void sendCreationOrdersAmount(HttpServletRequest request,HttpServletResponse response) throws IOException {
         List<OrderCounter> list = orderCounterService.getAllForLast30Days();
         Map<LocalDate,Integer> map = new TreeMap<>();
         Map<String,Object> resultMap = new HashMap<>();
@@ -286,7 +287,7 @@ public class AdminController extends HttpServlet implements Responsable {
         Calendar cal = Calendar.getInstance();
         for (int i = 0; i < 30; i++) {
             cal.add(Calendar.DATE, -1);
-            map.put(new Date(cal.getTimeInMillis()).toLocalDate(),0);
+            map.put(new java.sql.Date(cal.getTimeInMillis()).toLocalDate(),0);
         }
 
 

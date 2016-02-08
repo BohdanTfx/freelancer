@@ -61,6 +61,7 @@ public final class ApplicationContext {
 		addBean("questionService", new QuestionService());
 		addBean("testService", new TestService());
 		addBean("adminCandidateService", new AdminCandidateService());
+		addBean("orderCounterService", new OrderCounterService());
 
 		TestService testService = new TestService();
 		testService.setQuestionDao(daoManager.getDAO(QuestionDao.class
