@@ -3,6 +3,7 @@ package com.epam.freelancer.database.model;
 import com.epam.freelancer.database.transformer.annotation.Column;
 import com.epam.freelancer.database.transformer.annotation.Id;
 import com.epam.freelancer.database.transformer.annotation.Table;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -12,9 +13,10 @@ import java.util.Locale;
 /**
  * Created by Max on 15.01.2016.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "developer")
 public class Developer implements UserEntity {
-	@Id
+   	@Id
 	private Integer id;
 	@Column
 	private String email;
@@ -50,225 +52,218 @@ public class Developer implements UserEntity {
 	@Column(name = "position")
 	private String position;
 	private String role;
+	private String confirmCode;
+	@Column(name = "send_email")
+	private String sendEmail;
 	private List<Technology> technologies = new ArrayList<>();
 
-	public String getOverview() {
-		return overview;
-	}
+	public String getSendEmail() { return sendEmail; }
 
-	public void setOverview(String overview) {
-		this.overview = overview;
-	}
+	public void setSendEmail(String sendEmail) { this.sendEmail = sendEmail; }
 
-	public String getPosition() {
-		return position;
-	}
+	public String getConfirmCode() { return confirmCode; }
 
-	public void setPosition(String position) {
-		this.position = position;
-	}
+	public void setConfirmCode(String confirmCode) { this.confirmCode = confirmCode; }
 
-	public String getRole() {
-		return role;
-	}
+    public String getOverview() {
+        return overview;
+    }
 
-	public void setRole(String role) {
-		this.role = role;
-	}
+    public void setOverview(String overview) {
+        this.overview = overview;
+    }
 
-	@Override
-	public String getSalt() {
-		return salt;
-	}
+    public String getPosition() {
+        return position;
+    }
 
-	@Override
-	public void setSalt(String salt) {
-		this.salt = salt;
-	}
+    public void setPosition(String position) {
+        this.position = position;
+    }
 
-	public Integer getVersion() {
-		return version;
-	}
+    public String getRole() {
+        return role;
+    }
 
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
+    public void setRole(String role) {
+        this.role = role;
+    }
 
-	public Double getHourly() {
-		return hourly;
-	}
+    @Override
+    public String getSalt() {
+        return salt;
+    }
 
-	public void setHourly(Double hourly) {
-		this.hourly = hourly;
-	}
+    @Override
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
 
-	public Integer getZone() {
-		return zone;
-	}
+    public Integer getVersion() {
+        return version;
+    }
 
-	public void setZone(Integer zone) {
-		this.zone = zone;
-	}
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 
-	public String getRegUrl() {
-		return regUrl;
-	}
+    public Double getHourly() {
+        return hourly;
+    }
 
-	public void setRegUrl(String regUrl) {
-		this.regUrl = regUrl;
-	}
+    public void setHourly(Double hourly) {
+        this.hourly = hourly;
+    }
 
-	public Timestamp getRegDate() {
-		return regDate;
-	}
+    public Integer getZone() {
+        return zone;
+    }
 
-	public void setRegDate(Timestamp regDate) {
-		this.regDate = regDate;
-	}
+    public void setZone(Integer zone) {
+        this.zone = zone;
+    }
 
-	@Override
-	public String getImgUrl() {
-		return imgUrl;
-	}
+    public String getRegUrl() {
+        return regUrl;
+    }
 
-	@Override
-	public void setImgUrl(String imgUrl) {
-		this.imgUrl = imgUrl;
-	}
+    public void setRegUrl(String regUrl) {
+        this.regUrl = regUrl;
+    }
 
-	public Locale getLocale() {
-		return locale;
-	}
+    public Timestamp getRegDate() {
+        return regDate;
+    }
 
-	public void setLocale(Locale locale) {
-		this.locale = locale;
-	}
+    public void setRegDate(Timestamp regDate) {
+        this.regDate = regDate;
+    }
 
-	public String getLang() {
-		return locale != null ? locale.toLanguageTag() : null;
-	}
+    @Override
+    public String getImgUrl() {
+        return imgUrl;
+    }
 
-	public void setLang(String lang) {
-		if (lang == null) {
-			this.lang = null;
-			return;
-		}
-		this.lang = lang;
-		String[] langCode = lang.split("-");
-		if (langCode.length == 2)
-			this.locale = new Locale(langCode[0], langCode[1]);
-		else
-			this.locale = new Locale(langCode[0]);
-	}
+    @Override
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
 
-	@Override
-	public String getEmail() {
-		return email;
-	}
+    public Locale getLocale() {
+        return locale;
+    }
 
-	@Override
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
 
-	@Override
-	public String getPassword() {
-		return password;
-	}
+    public String getLang() {
+        return locale != null ? locale.toLanguageTag() : null;
+    }
 
-	@Override
-	public void setPassword(String password) {
-		this.password = password;
-	}
+    public void setLang(String lang) {
+        if (lang == null) {
+            this.lang = null;
+            return;
+        }
+        this.lang = lang;
+        String[] langCode = lang.split("-");
+        if (langCode.length == 2)
+            this.locale = new Locale(langCode[0], langCode[1]);
+        else
+            this.locale = new Locale(langCode[0]);
+    }
 
-	@Override
-	public String getUuid() {
-		return uuid;
-	}
+    @Override
+    public String getEmail() {
+        return email;
+    }
 
-	@Override
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
-	}
+    @Override
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	@Override
-	public String getFname() {
-		return fname;
-	}
+    @Override
+    public String getPassword() {
+        return password;
+    }
 
-	@Override
-	public void setFname(String fname) {
-		this.fname = fname;
-	}
+    @Override
+    public void setPassword(String password) {
+        this.password = password;
+    }
 
-	@Override
-	public String getLname() {
-		return lname;
-	}
+    @Override
+    public String getUuid() {
+        return uuid;
+    }
 
-	@Override
-	public void setLname(String lname) {
-		this.lname = lname;
-	}
+    @Override
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
-	@Override
-	public Integer getId() {
-		return id;
-	}
+    @Override
+    public String getFname() {
+        return fname;
+    }
 
-	@Override
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    @Override
+    public void setFname(String fname) {
+        this.fname = fname;
+    }
 
-	@Override
-	public Boolean getDeleted() {
-		return isDeleted;
-	}
+    @Override
+    public String getLname() {
+        return lname;
+    }
 
-	@Override
-	public void setDeleted(Boolean deleted) {
-		this.isDeleted = deleted;
-	}
+    @Override
+    public void setLname(String lname) {
+        this.lname = lname;
+    }
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o)
-			return true;
-		if (o == null || getClass() != o.getClass())
-			return false;
+    @Override
+    public Integer getId() {
+        return id;
+    }
 
-		Developer developer = (Developer) o;
+    @Override
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-		if (email != null ? !email.equals(developer.email)
-				: developer.email != null)
-			return false;
-		if (uuid != null ? !uuid.equals(developer.uuid)
-				: developer.uuid != null)
-			return false;
-		return !(isDeleted != null ? !isDeleted.equals(developer.isDeleted)
-				: developer.isDeleted != null);
+    @Override
+    public Boolean getDeleted() {
+        return isDeleted;
+    }
 
-	}
+    @Override
+    public void setDeleted(Boolean deleted) {
+        this.isDeleted = deleted;
+    }
 
-	@Override
-	public int hashCode() {
-		int result = email != null ? email.hashCode() : 0;
-		result = 31 * result + (uuid != null ? uuid.hashCode() : 0);
-		result = 31 * result + (isDeleted != null ? isDeleted.hashCode() : 0);
-		return result;
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
-	@Override
-	public String toString() {
-		return "Developer{" + "id=" + id + ", email='" + email + '\''
-				+ ", fname='" + fname + '\'' + ", lname='" + lname + '\''
-				+ ", hourly=" + hourly + ", zone=" + zone + ", lang='" + lang
-				+ '\'' + ", uuid='" + uuid + '\'' + ", regUrl='" + regUrl
-				+ '\'' + ", regDate=" + regDate + ", isDeleted=" + isDeleted
-				+ ", version=" + version + '}';
-	}
+        Developer developer = (Developer) o;
 
+        if (email != null ? !email.equals(developer.email) : developer.email != null) return false;
+        if (uuid != null ? !uuid.equals(developer.uuid) : developer.uuid != null) return false;
+        return !(isDeleted != null ? !isDeleted.equals(developer.isDeleted) : developer.isDeleted != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = email != null ? email.hashCode() : 0;
+        result = 31 * result + (uuid != null ? uuid.hashCode() : 0);
+        result = 31 * result + (isDeleted != null ? isDeleted.hashCode() : 0);
+        return result;
+    }
 	public List<Technology> getTechnologies() {
 		return technologies;
 	}
@@ -276,4 +271,22 @@ public class Developer implements UserEntity {
 	public void setTechnologies(List<Technology> technologies) {
 		this.technologies = technologies;
 	}
+
+    @Override
+    public String toString() {
+        return "Developer{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", fname='" + fname + '\'' +
+                ", lname='" + lname + '\'' +
+                ", hourly=" + hourly +
+                ", zone=" + zone +
+                ", lang='" + lang + '\'' +
+                ", uuid='" + uuid + '\'' +
+                ", regUrl='" + regUrl + '\'' +
+                ", regDate=" + regDate +
+                ", isDeleted=" + isDeleted +
+                ", version=" + version +
+                '}';
+    }
 }

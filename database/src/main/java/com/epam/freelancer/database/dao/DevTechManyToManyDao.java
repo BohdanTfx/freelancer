@@ -10,4 +10,5 @@ public interface DevTechManyToManyDao extends
 		GenericManyToManyDao<Developer, Technology, Worker, Integer>
 {
 	public List<Technology> getTechnologiesByDevId(Integer id);
+	void saveTechnologies(Integer firstId, Integer secondId);
 }

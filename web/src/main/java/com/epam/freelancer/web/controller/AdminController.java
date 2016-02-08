@@ -4,10 +4,15 @@ import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.manager.UserManager;
 import com.epam.freelancer.business.service.*;
 import com.epam.freelancer.business.util.SendMessageToEmail;
+import com.epam.freelancer.database.model.Admin;
 import com.epam.freelancer.database.model.*;
 import com.epam.freelancer.web.json.model.JsonPaginator;
 import com.epam.freelancer.web.json.model.Quest;
 import com.epam.freelancer.web.util.Paginator;
+import com.epam.freelancer.database.model.AdminCandidate;
+import com.epam.freelancer.database.model.Contact;
+import com.google.gson.Gson;
+import com.epam.freelancer.database.model.OrderCounter;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.DeserializationConfig;
@@ -20,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -36,11 +42,14 @@ public class AdminController extends HttpServlet implements Responsable {
     private AdminCandidateService adminCandidateService;
     private DeveloperService developerService;
     private CustomerService customerService;
+    private AdminService adminService;
+
     private QuestionService questionService;
     private TestService testService;
     private AnswerService answerService;
     private TechnologyService technologyService;
     private Paginator paginator;
+    private OrderCounterService orderCounterService;
 
     public AdminController() {
         mapper = new ObjectMapper();
@@ -48,6 +57,8 @@ public class AdminController extends HttpServlet implements Responsable {
         adminCandidateService = (AdminCandidateService) ApplicationContext.getInstance().getBean("adminCandidateService");
         developerService = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
         customerService = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
+        adminService = (AdminService) ApplicationContext.getInstance().getBean("adminService");
+        orderCounterService = (OrderCounterService)ApplicationContext.getInstance().getBean("orderCounterService");
         questionService = (QuestionService) ApplicationContext.getInstance().getBean("questionService");
         testService = (TestService) ApplicationContext.getInstance().getBean("testService");
         answerService = (AnswerService) ApplicationContext.getInstance().getBean("answerService");
@@ -61,8 +72,14 @@ public class AdminController extends HttpServlet implements Responsable {
             String path = FrontController.getPath(request);
 
             switch (path) {
-                case "/admin/statistics":
+                case "admin/statistics/devcust":
                     sendDevAndCustAmount(request, response);
+                    break;
+                case "admin/getPersonalData":
+                    fillAdminPage(request, response);
+                    break;
+                case "admin/statistics/orders":
+                    sendCreationOrdersAmount(request, response);
                     break;
                 case "admin/tests":
                     getTests(request, response);
@@ -137,8 +154,8 @@ public class AdminController extends HttpServlet implements Responsable {
     private void startCountdownExpireTime(AdminCandidate candidate, int secDelay) {
         ScheduledExecutorService scheduledExecutorService =
                 Executors.newScheduledThreadPool(1);
-        scheduledExecutorService.schedule(() -> adminCandidateService.remove(candidate)
-                , secDelay, TimeUnit.HOURS);
+        scheduledExecutorService.schedule(() ->  adminCandidateService.remove(candidate)
+        , secDelay, TimeUnit.HOURS);
     }
 
     private String getAdminCreatingMessage() {
@@ -162,10 +179,10 @@ public class AdminController extends HttpServlet implements Responsable {
         adminCandidateService.remove(adminCandidateService.getAdminCandidateByKey(uuid));
     }
 
-    private void sendDevAndCustAmount(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Map<String, Integer> map = new HashMap<>();
-        map.put("devAmount", developerService.getAllWorkers().size());
-        map.put("custAmount", customerService.findAll().size());
+    private void sendDevAndCustAmount(HttpServletRequest request,HttpServletResponse response) throws IOException {
+        Map<String,Integer> map = new HashMap<>();
+        map.put("devAmount",developerService.getAllWorkers().size());
+        map.put("custAmount",customerService.findAll().size());
 
         sendResponse(response, map, mapper);
     }
@@ -267,5 +284,53 @@ public class AdminController extends HttpServlet implements Responsable {
             answerMap.put("correct", new String[]{String.valueOf(answer.getCorrect())});
             answerService.create(answerMap);
         }
+    }
+
+    private void sendCreationOrdersAmount(HttpServletRequest request,HttpServletResponse response) throws IOException {
+        List<OrderCounter> list = orderCounterService.getAllForLast30Days();
+        Map<LocalDate,Integer> map = new TreeMap<>();
+        Map<String,Object> resultMap = new HashMap<>();
+        List<Integer> listDays = new ArrayList<>();
+        List<String> listMonth = new ArrayList<>();
+
+        Calendar cal = Calendar.getInstance();
+        for (int i = 0; i < 30; i++) {
+            cal.add(Calendar.DATE, -1);
+            map.put(new java.sql.Date(cal.getTimeInMillis()).toLocalDate(),0);
+        }
+
+
+        for (OrderCounter o:list){
+            if(map.containsKey(o.getDate().toLocalDate())){
+                map.put(o.getDate().toLocalDate(),o.getCount());
+            }
+        }
+
+
+        for (LocalDate date:map.keySet()) {
+            listDays.add(date.getDayOfMonth());
+            listMonth.add(date.getMonth().toString());
+        }
+
+        resultMap.put("orderValues",map.values());
+        resultMap.put("listDays",listDays);
+        resultMap.put("listMonth",listMonth);
+
+        sendResponse(response,resultMap,mapper);
+
+
+
+    }
+
+
+
+
+    private void fillAdminPage(HttpServletRequest request,HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession();
+        Admin admin = (Admin) session.getAttribute("user");
+        String adminJson = new Gson().toJson(admin);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(adminJson);
     }
 }

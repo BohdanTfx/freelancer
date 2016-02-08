@@ -1,8 +1,24 @@
 package com.epam.freelancer.web.controller;
 
+import java.io.File;
+import com.epam.freelancer.business.context.ApplicationContext;
+import com.epam.freelancer.business.service.*;
+import com.epam.freelancer.database.model.*;
+import com.google.gson.Gson;
+import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -13,7 +29,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.epam.freelancer.business.manager.UserManager;
+import com.epam.freelancer.business.util.SmsSender;
 import com.google.gson.Gson;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -31,48 +51,50 @@ import com.epam.freelancer.database.model.Feedback;
 import com.epam.freelancer.database.model.UserEntity;
 
 public class CustomerController extends HttpServlet implements Responsable {
-	public static final Logger LOG = Logger.getLogger(CustomerController.class);
-	private static final long serialVersionUID = -2356506023594947745L;
-	private CustomerService customerService;
-	private FeedbackService feedbackService;
-	private OrderingService orderingService;
-	private TestService testService;
-	private DeveloperService developerService;
-	private TechnologyService technologyService;
-	private ObjectMapper mapper;
+    public static final Logger LOG = Logger.getLogger(CustomerController.class);
+    private static final long serialVersionUID = -2356506023594947745L;
+    private CustomerService customerService;
+    private FeedbackService feedbackService;
+    private OrderingService orderingService;
+    private TestService testService;
+    private DeveloperService developerService;
+    private TechnologyService technologyService;
+    private ObjectMapper mapper;
 
-	public CustomerController() {
-		testService = (TestService) ApplicationContext.getInstance().getBean(
-				"testService");
-		technologyService = (TechnologyService) ApplicationContext
-				.getInstance().getBean("technologyService");
-		customerService = (CustomerService) ApplicationContext.getInstance()
-				.getBean("customerService");
-		mapper = new ObjectMapper();
-		developerService = (DeveloperService) ApplicationContext.getInstance()
-				.getBean("developerService");
-		feedbackService = (FeedbackService) ApplicationContext.getInstance()
-				.getBean("feedbackService");
-		orderingService = (OrderingService) ApplicationContext.getInstance()
-				.getBean("orderingService");
-	}
+    public CustomerController() {
+        testService = (TestService) ApplicationContext.getInstance().getBean(
+                "testService");
+        technologyService = (TechnologyService) ApplicationContext
+                .getInstance().getBean("technologyService");
+        customerService = (CustomerService) ApplicationContext.getInstance()
+                .getBean("customerService");
+        mapper = new ObjectMapper();
+        developerService = (DeveloperService) ApplicationContext.getInstance()
+                .getBean("developerService");
+        feedbackService = (FeedbackService) ApplicationContext.getInstance()
+                .getBean("feedbackService");
+        orderingService = (OrderingService) ApplicationContext.getInstance()
+                .getBean("orderingService");
+    }
 
-	@Override
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException
-	{
-		try {
-			switch (FrontController.getPath(request)) {
-			case "cust/personal":
-				fillCustomerPersonalPage(request, response);
-				break;
-			default:
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			LOG.fatal(getClass().getSimpleName() + " - " + "doGet");
-		}
-	}
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+
+            String path = FrontController.getPath(request);
+
+            switch (path) {
+                    case "cust/getPersonalData":
+                        fillCustomerPersonalPage(request, response);
+                        break;
+                    default:
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOG.fatal(getClass().getSimpleName() + " - " + "doGet");
+        }
+    }
 
 private void createOrder(HttpServletRequest request,
         HttpServletResponse response) throws IOException
@@ -106,7 +128,7 @@ private void createOrder(HttpServletRequest request,
                 case "cust/getCustById":
                     getCustById(request, response);
                     break;
-                case "cust/sendpersonaldata":
+                case "cust/sendPersonalData":
                     updatePersonalData(request, response);
                     break;
                 case "cust/getFeedForCust":
@@ -121,6 +143,14 @@ private void createOrder(HttpServletRequest request,
                 case "cust/order/create":
                     createOrder(request, response);
                     break;
+                case "cust/changeCustPassword":
+                    changeCustomerPassword(request, response);
+                    break;
+                case "cust/confirmChangePasswordAndEmail":
+                    confirmChangePassword(request, response);
+                    break;
+                case "cust/uploadImage":
+                    uploadImage(request, response);
                 default:
             }
         } catch (Exception e) {
@@ -216,67 +246,129 @@ private void createOrder(HttpServletRequest request,
 private void fillCustomerPersonalPage(HttpServletRequest request,
         HttpServletResponse response) throws IOException
         {
-        Customer customer;
-        Contact contact;
-        HttpSession session;
-        String customerJson;
-        String contactJson;
-        String resultJson;
+            HttpSession session = request.getSession();
+            Customer customer = (Customer) session.getAttribute("user");
+            Contact contact = customerService.getContactByCustomerId(customer.getId());
 
-        session = request.getSession();
-        session.setAttribute("user", customerService.findById(1));
-
-        customer = (Customer) session.getAttribute("user");
-        contact = customerService.getContactByCustomerId(customer.getId());
-
-        customerJson = new Gson().toJson(customer);
-        System.out.println(customerJson);
-        contactJson = new Gson().toJson(contact);
-        System.out.println(contactJson);
-
-        resultJson = "{\"cust\":" + customerJson + ",\"cont\":" + contactJson
-        + "}";
-
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(resultJson);
+            String customerJson = new Gson().toJson(customer);
+            String contactJson = new Gson().toJson(contact);
+            String resultJson = "{\"cust\":" + customerJson + ",\"cont\":" + contactJson +"}";
+            if(contactJson.length() == 0){
+                resultJson = "{\"cust\":" + customerJson + "}";
+            }
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(resultJson);
         }
 
     private void updatePersonalData(HttpServletRequest request,
-                                    HttpServletResponse response) throws IOException
-    {
-        Customer customer = null;
-        Contact contact;
-        String customerJson;
-        String contactJson;
-
-        SimpleDateFormat format = new SimpleDateFormat(
-                "MMM dd, yyyy hh:mm:ss a");
+                                    HttpServletResponse response) throws IOException {
+        Customer    customer = null;
+        Contact     contact = null;
+        SimpleDateFormat format = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a");
         mapper.setDateFormat(format);
-
-        customerJson = request.getParameter("customer");
-        System.out.println(customerJson);
-
+        String customerJson = request.getParameter("customer");
         try {
             customer = mapper.readValue(customerJson, Customer.class);
-
         } catch(Exception e){
             LOG.warn("Some problem with mapper Customer Controller");
         }
-
-        System.out.println("AFTER MAPPER +++++\n" + customer);
-
-        contactJson = request.getParameter("contact");
-        System.out.println(contactJson);
-
-        contact = mapper.readValue(contactJson, Contact.class);
-        System.out.println(contact);
+        String contactJson = request.getParameter("contact");
+        if(contactJson.length() != 0 ) {
+            contact = mapper.readValue(contactJson, Contact.class);
+        }
+        if(customerService.getContactByCustomerId(customer.getId()) == null){
+            contact.setCustomId(customer.getId());
+            customerService.createContact(contact);    /// NEED METHOD CREATE
+        } else {
+            contact.setCustomId(customer.getId());
+            customerService.updateContact(contact);
+        }
+        customerService.modify(customer);
     }
-
-
 
     private void getCustomerHistory(HttpServletRequest
                                             request, HttpServletResponse response) throws IOException {
         //method for private history
     }
+
+    private void changeCustomerPassword(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String password = request.getParameter("password");
+        String newPassword = request.getParameter("newPassword");
+        HttpSession session = request.getSession();
+        Customer customer = (Customer) session.getAttribute("user");
+        StringBuilder confirmPhoneCode =  new StringBuilder();
+        UserManager userManager = new UserManager();
+
+        if (customer != null) {
+            if(userManager.validCredentials(customer.getEmail(), password, customer)){
+                SecureRandom random = new SecureRandom();
+                for(int i = 0; i < 4; i++){
+                    confirmPhoneCode.append(String.valueOf(random.nextInt(9)));
+                }
+                customer.setConfirmCode(confirmPhoneCode.toString());
+                try{
+                    String phoneNumber = customerService.getContactByCustomerId(customer.getId()).getPhone();
+                    SmsSender smsSender = new SmsSender();
+                    smsSender.sendSms(phoneNumber, "Confirm code: " + confirmPhoneCode.toString(),
+                            "e-freelance");
+                } catch(NullPointerException e){
+                    LOG.warn("The phone number is empty");
+                }
+                String confirmCodeJson = new Gson().toJson(confirmPhoneCode);
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write(confirmCodeJson);
+            } else {
+                System.out.println("Invalid password");
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                        "Invalid credentials");
+                response.flushBuffer();
+                return;
+            }
+        }
+    }
+
+    private void confirmChangePassword(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String password = request.getParameter("password");
+        String confirmCode = request.getParameter("confirmCode");
+        HttpSession session = request.getSession();
+        Customer customer = (Customer) session.getAttribute("user");
+
+        if(customer.getConfirmCode().equals(confirmCode)){
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(new Gson().toJson("good"));
+        } else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                    "Invalid credentials");
+            response.flushBuffer();
+            return;
+        }
+
+        customer.setPassword(password);
+        customerService.encodePassword(customer);
+        customerService.modify(customer);
+    }
+
+    private void uploadImage(HttpServletRequest request,
+                             HttpServletResponse response){
+        HttpSession session = request.getSession();
+        Customer customer = (Customer) session.getAttribute("user");
+        String  imageJson = request.getParameter("image");
+        byte[] encodImage = Base64.decodeBase64(imageJson);
+        String fileName = customer.getFname() + customer.getLname();
+        File file = null;
+        try {
+            file = new File("../target/WEB-INF/userData/" + fileName + ".jpg");
+            FileUtils.writeByteArrayToFile(file, encodImage);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+        customer.setImgUrl("target/WEB-INF/userData/" + fileName + ".jpg");
+        customerService.modify(customer);
+    }
+
+
 }

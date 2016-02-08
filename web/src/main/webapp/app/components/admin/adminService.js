@@ -6,7 +6,11 @@ angular.module('FreelancerApp')
             dataFactory = {};
 
         dataFactory.getStatisticsDevCust = function () {
-            return $http.get("/admin/statistics");
+            return $http.get("/admin/statistics/devcust");
+        };
+
+        dataFactory.getStatisticsCreationOrders = function () {
+            return $http.get("/admin/statistics/orders");
         };
 
 
