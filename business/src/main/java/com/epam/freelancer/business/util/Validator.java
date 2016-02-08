@@ -17,7 +17,7 @@ public abstract class Validator {
 	{
 		if (strings == null || strings.length == 0)
 			return false;
-		
+
 		if (validationParam.getIsInteger() == null
 				|| validationParam.getIsInteger())
 			try {
@@ -83,13 +83,19 @@ public abstract class Validator {
 				for (String string : strings)
 					if (string == null || string.isEmpty())
 						return false;
-			} else
-				for (String string : strings)
-					if (string != null && !string.isEmpty())
-						return false;
+			} else {
+				boolean emptyStrings = true;
+				for (String string : strings) {
+					if (string != null)
+						if (string.isEmpty())
+							return false;
+						else
+							emptyStrings = false;
 
-		if (strings == null)
-			return false;
+					if (emptyStrings)
+						return true;
+				}
+			}
 
 		if (validationParam.getMaxLength() != null)
 			for (String string : strings)

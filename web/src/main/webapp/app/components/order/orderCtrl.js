@@ -8,16 +8,17 @@ angular
 
 					$scope.createOrder = function() {
 						var self = this;
-						var techValidation = orderService
-								.validateTechnologies($scope.order.technologies);
-						if (techValidation != 'ok') {
-							Notification
-									.error({
-										title : 'Error!',
-										message : $scope.TechnologyValidator[techValidation]
-									});
+
+						if ($scope.order.technologies === undefined
+								|| $scope.order.technologies.length < 1) {
+							$scope.newOrderForm.fakeTechnologies.$setValidity(
+									'emptyTechnologies', false);
 							return;
+						} else {
+							$scope.newOrderForm.fakeTechnologies.$setValidity(
+									'emptyTechnologies', true);
 						}
+
 						orderService
 								.createOrder($scope.order)
 								.success(
@@ -54,10 +55,6 @@ angular
 						});
 					}
 
-					$scope.TechnologyValidator = {};
-					$scope.TechnologyValidator.empty = 'Please, select at least one technology';
-					$scope.TechnologyValidator.big = 'You have selected too many technologies. Please, be short.'
-
 					$scope.getCurrentZone = function() {
 						var offset = new Date().getTimezoneOffset(), o = Math
 								.abs(offset);
@@ -85,6 +82,18 @@ angular
 							return (technology._lowername
 									.indexOf(lowercaseQuery) != -1);
 						};
+					}
+
+					$scope.itemSelect = function(data) {
+						if ($scope.order.technologies === undefined
+								|| $scope.order.technologies.length < 1) {
+							$scope.newOrderForm.fakeTechnologies.$setValidity(
+									'emptyTechnologies', false);
+							return;
+						} else {
+							$scope.newOrderForm.fakeTechnologies.$setValidity(
+									'emptyTechnologies', true);
+						}
 					}
 				})
 		.directive(

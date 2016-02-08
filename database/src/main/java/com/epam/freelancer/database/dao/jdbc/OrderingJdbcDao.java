@@ -43,29 +43,29 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 		return null;
 	}
 
-    @Override
-    public List<Ordering> getAvailableCustOrders(Integer custId) {
-        List<Ordering> orderings = new ArrayList<>();
-        try (Connection connection = connectionPool.getConnection();
-             PreparedStatement statement = connection
-                     .prepareStatement("SELECT * FROM ordering WHERE started = 0 AND ended = 0 AND customer_id = ? ;")
-        ) {
-            statement.setObject(1, custId);
-            ResultSet set = statement.executeQuery();
-            while(set.next()) {
-                Ordering o = new Ordering();
-                o.setId(set.getInt("id"));
-                o.setTitle(set.getString("title"));
+	@Override
+	public List<Ordering> getAvailableCustOrders(Integer custId) {
+		List<Ordering> orderings = new ArrayList<>();
+		try (Connection connection = connectionPool.getConnection();
+				PreparedStatement statement = connection
+						.prepareStatement("SELECT * FROM ordering WHERE started = 0 AND ended = 0 AND customer_id = ? ;"))
+		{
+			statement.setObject(1, custId);
+			ResultSet set = statement.executeQuery();
+			while (set.next()) {
+				Ordering o = new Ordering();
+				o.setId(set.getInt("id"));
+				o.setTitle(set.getString("title"));
 
-                orderings.add(o);
-            }
-                return orderings;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+				orderings.add(o);
+			}
+			return orderings;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-        return orderings;
-    }
+		return orderings;
+	}
 
 	@Override
 	public Integer getFilteredObjectNumber(Map<String, Object> parameters) {
@@ -101,11 +101,12 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 
 	@Override
 	public List<Ordering> getCustomerPublicHistory(Integer custId) {
-		String query = "SELECT * FROM " + table + " WHERE customer_id = ? AND ended = 1 AND private = 0";
+		String query = "SELECT * FROM " + table
+				+ " WHERE customer_id = ? AND ended = 1 AND private = 0";
 		List<Ordering> orders = new ArrayList<>();
 		try (Connection connection = connectionPool.getConnection();
-			 PreparedStatement statement = connection
-					 .prepareStatement(query)) {
+				PreparedStatement statement = connection
+						.prepareStatement(query)) {
 			statement.setInt(1, custId);
 			try (ResultSet set = statement.executeQuery()) {
 				while (set.next()) {
@@ -126,7 +127,7 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 		List<Ordering> entities = new ArrayList<>();
 		String query = null;
 		if (parameters == null || parameters.isEmpty())
-			query = "SELECT * FROM " + table + " Limit " + start + ", " + step;
+			query = "SELECT * FROM " + table + " ORDER BY date DESC Limit " + start + ", " + step;
 		else {
 			query = createFilterQuery(parameters, start, step);
 		}
@@ -246,7 +247,7 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 		}
 
 		if (start != null && step != null) {
-			builder.append(" LIMIT ");
+			builder.append(" ORDER BY date DESC LIMIT ");
 			builder.append(start);
 			builder.append(",");
 			builder.append(step);

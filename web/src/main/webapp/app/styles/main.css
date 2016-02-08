@@ -179,6 +179,14 @@ body {
 	padding-left: 10px;
 }
 
+.logo-text>.first {
+	
+}
+
+.logo-text>.second {
+	color: #11C3F0;
+}
+
 body .brand {
 	color: #f5f5f5;
 	text-decoration: none;
@@ -189,11 +197,6 @@ body .brand {
 * {
 	font-family: Arial;
 	outline: 0 !important;
-}
-
-.signup-role-img {
-	width: 100%;
-	max-height: 60vh;
 }
 
 .full-width {
@@ -705,7 +708,7 @@ ul, li {
 	padding: 0px 0px;
 	float: right;
 	position: absolute;
-	right: 0px;
+	right: 10px;
 }
 
 .main-menu .navbar-collapse {

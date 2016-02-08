@@ -31,3 +31,11 @@ md-input-container>label+md-icon.fa {
 .order-private-icon>label+md-icon.fa {
 	margin-top: -7px;
 }
+
+.fake-technology-input {
+	display: none !important;
+}
+
+.fake-technology-div {
+	margin-top: -1px;
+}
