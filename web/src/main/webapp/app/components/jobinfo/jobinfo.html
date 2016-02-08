@@ -18,6 +18,23 @@
                 <div class="well panel panel-default">
                     <div class="panel-body">
 
+                        <div class="row">
+                            <div ng-if="isDev" class="form-group devpub-comm-div">
+                                <div ng-hide="user.subscribed">
+                                    <button type="button" data-toggle="modal"
+                                            data-target=".bs-example-modal-md1"
+                                            class="btn btn-primary pull-left">
+                                        Subscribe
+                                    </button>
+                                </div>
+                                <div ng-show="user.subscribed">
+                                    <button type="button" ng-click="unsubscribe()"
+                                            class="btn btn-primary btn-warn pull-left">
+                                        Unsubscribe
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                         <div class="col-sm-8 col-xs-12 hr">
                             <h2><em><span class="fa fa-briefcase"></span> {{order.title}}</em></h2>
 
@@ -79,31 +96,6 @@
                             <md-tab label="Followers">
                                 <md-content class="md-padding">
                                     <div class="tab-pane fade in active">
-
-
-                                        <div ng-if="isDev" class="form-group devpub-comm-div">
-                                            <div ng-hide="user.subscribed">
-                                                <textarea type="text" class="form-control" ng-model="message" rows="2"
-                                                          placeholder="Message ..."
-                                                          required></textarea>
-                                                <br/>
-                                                <button type="button" ng-click="subscribe(message)"
-                                                        class="btn btn-primary pull-right">
-                                                    Subscribe
-                                                </button>
-                                            </div>
-                                            <div ng-show="user.subscribed">
-                                                <button type="button" ng-click="unsubscribe()"
-                                                        class="btn btn-primary btn-warn pull-right">
-                                                    Unsubscribe
-                                                </button>
-                                            </div>
-
-                                            <br/>
-                                            <hr/>
-                                        </div>
-
-
                                         <p class="noFollowers" ng-if="noFollowers">There are no followers on this
                                             project</p>
 
@@ -213,7 +205,30 @@
     <!--/panel-body-->
     <!--/panel-->
 </div>
-<!--/col-->
-</div>
-<!--/row-->
+
+<div class="modal fade bs-example-modal-md1" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span
+            aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title">Follow on project</h4>
+            </div>
+            <div class="modal-footer">
+                <div class="form-group">
+                    <br/>
+                    <textarea type="text" class="form-control" ng-model="message" rows="5" placeholder="Message ..."
+                              required></textarea>
+                    <br/>
+                    <button type="button" ng-click="subscribe(message)"
+                            class="btn btn-primary pull-right">
+                        Subscribe
+                    </button>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

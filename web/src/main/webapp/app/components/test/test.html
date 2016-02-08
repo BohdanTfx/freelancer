@@ -19,43 +19,41 @@
 
             <md-list class="test_questions" ng-switch-when="false">
                 <md-list-item ng-repeat="question in test.questions">
-
-                    <md-list ng-cloak="">
-
-                        <h4 class="md-no-sticky">{{$index+1}}. {{question.name}}</h4>
-                        <md-list-item ng-repeat="answer in question.answers">
-                            <md-checkbox ng-model="answer.check"></md-checkbox>
-                            <p> {{answer.name}} </p>
-                        </md-list-item>
-                        <md-divider></md-divider>
-                        <md-divider></md-divider>
-
-                    </md-list>
-
+                    <div class="col-xs-12">
+                        <md-list ng-cloak="">
+                            <h4 class="md-no-sticky">{{$index+1}}. {{question.name}}</h4>
+                            <md-list-item ng-repeat="answer in question.answers">
+                                <md-checkbox ng-model="answer.check"></md-checkbox>
+                                <p> {{answer.name}} </p>
+                            </md-list-item>
+                            <md-divider></md-divider>
+                            <md-divider></md-divider>
+                        </md-list>
+                    </div>
                 </md-list-item>
             </md-list>
 
             <div class="test-result" ng-switch-when="true">
-                <table class="col-md-8 col-md-offset-2 text-center">
-                    <tr>
-                        <td class="col-md-8"><i class="fa fa-line-chart"></i> Your score</td>
-                        <td class="col-md-4">{{result.rate | number : 2}} %</td>
+                <table class="col-md-12 text-center">
+                    <tr class="row">
+                        <td><i class="fa fa-line-chart"></i> Your score</td>
+                        <td>{{result.rate | number : 2}} %</td>
                     </tr>
-                    <tr class="results_border_bottom">
-                        <td class="col-md-8"><i class="fa fa-bar-chart"></i> Min pass score</td>
-                        <td class="col-md-4">{{test.passScore}} %</td>
+                    <tr class="row results_border_bottom">
+                        <td><i class="fa fa-bar-chart"></i> Min pass score</td>
+                        <td>{{test.passScore}} %</td>
                     </tr>
-                    <tr>
-                        <td class="col-md-8"><i class="fa fa-check-circle"></i> Fully correct answers</td>
-                        <td class="col-md-4">{{result.success}}</td>
+                    <tr class="row">
+                        <td><i class="fa fa-check-circle"></i> Fully correct answers</td>
+                        <td>{{result.success}}</td>
                     </tr>
-                    <tr>
-                        <td class="col-md-8"><i class="fa fa-exclamation-circle"></i> Partly correct answers</td>
-                        <td class="col-md-4">{{result.partlyCorrect}}</td>
+                    <tr class="row">
+                        <td><i class="fa fa-exclamation-circle"></i> Partly correct answers</td>
+                        <td>{{result.partlyCorrect}}</td>
                     </tr>
-                    <tr>
-                        <td class="col-md-8"><i class="fa fa-minus-circle"></i> Fully incorrect answers</td>
-                        <td class="col-md-4">{{result.errors}}</td>
+                    <tr class="row">
+                        <td><i class="fa fa-minus-circle"></i> Fully incorrect answers</td>
+                        <td>{{result.errors}}</td>
                     </tr>
                 </table>
             </div>
@@ -74,4 +72,3 @@
     </md-content>
 
 </div>
-
