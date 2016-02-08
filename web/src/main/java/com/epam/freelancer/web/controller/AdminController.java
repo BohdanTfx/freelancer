@@ -3,10 +3,14 @@ package com.epam.freelancer.web.controller;
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.manager.UserManager;
 import com.epam.freelancer.business.service.AdminCandidateService;
+import com.epam.freelancer.business.service.AdminService;
 import com.epam.freelancer.business.service.CustomerService;
 import com.epam.freelancer.business.service.DeveloperService;
 import com.epam.freelancer.business.util.SendMessageToEmail;
+import com.epam.freelancer.database.model.Admin;
 import com.epam.freelancer.database.model.AdminCandidate;
+import com.epam.freelancer.database.model.Contact;
+import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -14,6 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +38,7 @@ public class AdminController extends HttpServlet implements Responsable {
     private AdminCandidateService adminCandidateService;
     private DeveloperService developerService;
     private CustomerService customerService;
+    private AdminService adminService;
 
 
     public AdminController() {
@@ -41,6 +47,7 @@ public class AdminController extends HttpServlet implements Responsable {
         adminCandidateService = (AdminCandidateService) ApplicationContext.getInstance().getBean("adminCandidateService");
         developerService = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
         customerService = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
+        adminService = (AdminService) ApplicationContext.getInstance().getBean("adminService");
     }
 
     @Override
@@ -51,6 +58,9 @@ public class AdminController extends HttpServlet implements Responsable {
             switch (path) {
                 case "/admin/statistics":
                     sendDevAndCustAmount(request, response);
+                    break;
+                case "admin/getPersonalData":
+                    fillAdminPage(request, response);
                     break;
                 default:
 
@@ -141,5 +151,14 @@ public class AdminController extends HttpServlet implements Responsable {
         map.put("custAmount",customerService.findAll().size());
 
         sendResponse(response,map,mapper);
+    }
+
+    private void fillAdminPage(HttpServletRequest request,HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession();
+        Admin admin = (Admin) session.getAttribute("user");
+        String adminJson = new Gson().toJson(admin);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(adminJson);
     }
 }

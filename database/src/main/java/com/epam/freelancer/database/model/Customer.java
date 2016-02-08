@@ -44,6 +44,17 @@ public class Customer implements UserEntity {
     @Column(name = "overview")
     private String overview;
     private String role;
+    private String confirmCode;
+    @Column(name = "send_email")
+    private String sendEmail;
+
+    public String getSendEmail() { return sendEmail; }
+
+    public void setSendEmail(String sendEmail) { this.sendEmail = sendEmail; }
+
+    public String getConfirmCode() { return confirmCode; }
+
+    public void setConfirmCode(String confirmCode) { this.confirmCode = confirmCode; }
 
     public String getOverview() {
         return overview;

@@ -50,7 +50,18 @@ public class Developer implements UserEntity {
 	@Column(name = "position")
 	private String position;
 	private String role;
+	private String confirmCode;
+	@Column(name = "send_email")
+	private String sendEmail;
 	private List<Technology> technologies = new ArrayList<>();
+
+	public String getSendEmail() { return sendEmail; }
+
+	public void setSendEmail(String sendEmail) { this.sendEmail = sendEmail; }
+
+	public String getConfirmCode() { return confirmCode; }
+
+	public void setConfirmCode(String confirmCode) { this.confirmCode = confirmCode; }
 
 	public String getOverview() {
 		return overview;
