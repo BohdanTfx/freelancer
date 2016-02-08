@@ -1,383 +1,590 @@
 angular.module('FreelancerApp')
-    .controller('personalCtrl', function ($scope, $http, personalAPI, $log, $stateParams, $rootScope) {
+    .controller('personalCtrl',['$scope', '$http','personalAPI', '$log', '$rootScope','$mdDialog', function($scope, $http, personalAPI, $log, $rootScope, $mdDialog){
+        var devTemp, techsTemp, contTemp, custTemp, adminTemp;
 
-        var devTemp, techsTemp, contTemp;
+        $scope.newPassword = '';
+        $scope.confirmPassword = '';
+        $scope.password = '';
+        $scope.newEmail = '';
 
-        console.log('START PERSONAL');
-        console.log($rootScope.role);
-        //$scope.devId = $stateParams.id;
-        //console.log($scope.devId + '  devID');
+        if($rootScope.role =='developer'){
+            personalAPI.getDevPersonal().success(function(data) {
+                $scope.user = data.dev;
 
+                //check Registration date
+                if ($scope.user.regDate != undefined) {
+                    $scope.user.regDate = new Date($scope.user.regDate).getTime();
+                }
 
-        personalAPI.getPersonal().success(function (data) {
+                //check send e-mail
+                if($scope.user.sendEmail == undefined){
+                    $scope.email = $scope.user.email;
+                } else {
+                    $scope.email = $scope.user.sendEmail;
+                }
 
-            $log.log(data);
+                //check for empty Json
+                if(typeof data.techs != 'undefined'){
+                    $scope.techs = data.techs;
+                }
+                if(typeof data.contacts != 'undefined'){
+                    $scope.cont = data.contacts;
+                }
+                if(typeof data.allTechs != 'undefined'){
+                    $scope.allTechs = data.allTechs;
+                }
 
-            $scope.patternPhone = '[0-9]{11}';
+                //check for empty image
+                if(typeof $scope.user.imgUrl == 'undefined'){
+                    $scope.img = 'images/profile/default_logo.jpg';
+                } else {
+                    $scope.img = $scope.user.imgUrl;
+                }
+                devTemp = clone($scope.user);
+                techsTemp = clone($scope.techs);
+                contTemp = clone($scope.contact);
+            });
+        }
 
-            $scope.dev = data.dev;
-            $scope.dev.regDate = new Date($scope.dev.regDate).getTime();
+        if($rootScope.role == 'customer') {
+            personalAPI.getCustPersonal().success(function (data) {
+                var custTemp, contTemp;
+                $scope.user = data.cust;
+                $scope.contact = data.cont;
 
-            if (typeof data.techs != 'undefined') {
-                $scope.techs = data.techs;
-                console.log($scope.techs);
-            } else {
-                console.log('No technologies');
-            }
+                //check Registration date
+                if ($scope.user.regDate != undefined) {
+                    $scope.user.regDate = new Date($scope.user.regDate).getTime();
+                }
 
-            if (typeof data.contacts != 'undefined') {
-                $scope.cont = data.contacts;
-                console.log($scope.cont);
-            } else {
-                console.log('No contacts');
-            }
+                //check send e-mail
+                if($scope.user.sendEmail != undefined){
+                    $scope.email = $scope.user.sendEmail;
+                } else {
+                    $scope.email = $scope.user.email;
+                }
 
-            $scope.allTechs = data.allTechs;
+                //check for empty Json
+                if(typeof data.contacts != 'undefined'){
+                    $scope.cont = data.contacts;
+                }
 
-            devTemp = clone($scope.dev);
-            techsTemp = clone($scope.techs);
-            contTemp = clone($scope.cont);
+                //check for empty image
+                if (typeof $scope.user.imgUrl == 'undefined') {
+                    $scope.img = 'images/profile/default_logo.jpg';
+                }
+                else {
+                    $scope.img = $scope.user.imgUrl;
+                }
+                custTemp = clone($scope.user);
+                contTemp = clone($scope.contact);
+            });
+        }
 
-            if (typeof $scope.dev.imgUrl == 'undefined')
-                $scope.img = 'images/profile/default_logo.jpg';
-            else
-                $scope.img = $scope.dev.imgUrl;
+        if($rootScope.role == 'admin'){
+            personalAPI.getAdminPersonal().success(function (data){
+                $scope.user = data;
 
+                //check Registration date
+                if ($scope.user.regDate != undefined) {
+                    $scope.user.regDate = new Date($scope.user.regDate).getTime();
+                }
 
-            $scope.testTech = [
-                {name: "Java"},
-                {name: "C"},
-                {name: "C++"},
-                {name: "C#"},
-            ];
-            $scope.allTestTech = [
-                {name: "Test"},
-                {name: "Big"},
-                {name: "Speed"},
-                {name: "Red"}
-            ];
+                //check for empty image
+                if (typeof $scope.user.imgUrl == 'undefined') {
+                    $scope.img = 'images/profile/default_logo.jpg';
+                }
+                else {
+                    $scope.img = $scope.user.imgUrl;
+                }
 
-        }).error(function () {
-            alert('alert');
-        });
+                adminTemp = clone($scope.user);
+            });
+
+        }
 
         $scope.hide = false;
         $scope.editClass = 'editClass';
 
-        $scope.enableEditor = function () {
+        $scope.enableEditor = function() {
             $scope.editClass = '';
             $scope.hide = true;
 
-            devTemp = clone($scope.dev);
-            techsTemp = clone($scope.techs);
-            contTemp = clone($scope.cont);
+            if($rootScope.role =='developer') {
+                devTemp = clone($scope.user);
+                techsTemp = clone($scope.techs);
+                contTemp = clone($scope.contact);
+            }
+            if($rootScope.role == 'customer'){
+                custTemp = clone($scope.user);
+                contTemp = clone($scope.contact);
+            }
+            if($rootScope.role == 'admin'){
+                adminTemp = clone($scope.user);
+            }
         };
 
-        $scope.disableEditor = function () {
+        $scope.disableEditor = function() {
+            $scope.hide = false;
+            if($rootScope.role =='developer') {
+                $scope.user = devTemp;
+                $scope.techs = techsTemp;
+                $scope.contact = contTemp;
+            }
+            if($rootScope.role == 'customer'){
+                $scope.user = custTemp;
+                $scope.contact = contTemp;
+            }
+            if($rootScope.role == 'admin'){
+                $scope.user = adminTemp;
+            }
+            $scope.editClass = 'editClass';
+        };
 
+        $scope.save = function() {
+            var devJson, techsJson, contactJson;
+            $scope.editClass = 'editClass';
             $scope.hide = false;
 
-            $scope.dev = devTemp;
-            $scope.techs = techsTemp;
-            $scope.cont = contTemp;
+            if($rootScope.role =='developer') {
+                devJson = angular.toJson($scope.user);
+                techsJson = angular.toJson($scope.techs);
+                contactJson = angular.toJson($scope.contact);
 
-            console.log(devTemp);
+                devTemp = clone($scope.user);
+                techsTemp = clone($scope.techs);
+                contTemp = clone($scope.contact);
 
-            $scope.editClass = 'editClass';
+                personalAPI.sendDevData(devJson, techsJson, contactJson).success(function (data){
+                    $scope.result = data;
+                }).error(function () {
+                });
+            }
+            if($rootScope.role == 'customer') {
+                var custJson;
+                custJson = angular.toJson($scope.user);
+                contactJson = angular.toJson($scope.contact);
+                custTemp = clone($scope.user);
+                contTemp = clone($scope.contact);
 
+                personalAPI.sendCustData(custJson, contactJson).success(function (data){
+                    $scope.result = data;
+                }).error(function () {
+                });
+            }
+
+            if($rootScope.role == 'admin'){
+                var adminJson;
+                adminJson = angular.toJson($scope.user);
+                adminTemp = clone($scope.user);
+                $scope.user = adminTemp;
+
+                personalAPI.sendAdminData(adminJson).success(function (data){
+                    $scope.result = data;
+                }).error(function () {
+                });
+            }
 
         };
-
-        $scope.save = function () {
-            var devJson, techsJson, contJson;
-
-            $scope.editClass = 'editClass';
-            $scope.hide = false;
-
-            console.log($scope.dev.fname);
-            devJson = angular.toJson($scope.dev);
-            techsJson = angular.toJson($scope.techs);
-            contJson = angular.toJson($scope.cont);
-
-            devTemp = angular.copy($scope.dev);
-            techsTemp = angular.copy($scope.techs);
-            contTemp = angular.copy($scope.cont);
-
-            console.log(devJson);
-            console.log(techsJson);
-            console.log(contJson);
-
-            personalAPI.sendData(devJson, techsJson, contJson).success(function (data) {
-                $log.log(data);
-                $scope.result = data;
-            }).error(function () {
-                alert('Server is busy');
-            });
-        };
-
-        //$scope.tags = $scope.techs;
-        //$scope.loadTags = function(query){
-        //    return $http.get(query);
-        //};
 
         function clone(obj) {
-            if (obj === null || typeof(obj) !== 'object' || 'isActiveClone' in obj)
+            if(obj === null || typeof(obj) !== 'object' || 'isActiveClone' in obj)
                 return obj;
 
             var temp = obj.constructor(); // changed
 
-            for (var key in obj) {
-                if (Object.prototype.hasOwnProperty.call(obj, key)) {
+            for(var key in obj) {
+                if(Object.prototype.hasOwnProperty.call(obj, key)) {
                     obj['isActiveClone'] = null;
                     temp[key] = clone(obj[key]);
                     delete obj['isActiveClone'];
                 }
             }
-
             return temp;
         }
 
+        $scope.resetPassword = function(){
+            $scope.newPassword = '';
+            $scope.confirmPassword = '';
+            $scope.password = '';
+        };
 
-        //$scope.submit = function() {
-        //
-        //        $scope.upload($scope.file);
-        //
-        //};
-        //$scope.upload = function (file) {
-        //    Upload.upload({
-        //        url: 'images/dev/',
-        //        data: {file: file, 'username': $scope.username}
-        //    }).then(function (resp) {
-        //        console.log('Success ' + resp.config.data.file.name + 'uploaded. Response: ' + resp.data);
-        //    }, function (resp) {
-        //        console.log('Error status: ' + resp.status);
-        //    }, function (evt) {
-        //        var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-        //        console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+        $scope.resetEmail = function(){
+            $scope.newEmail = '';
+        };
+
+        $scope.changePassword = function() {
+            $scope.confirmCode = '';
+            if($rootScope.role =='developer'){
+                personalAPI.changeDevPassword($scope.password, $scope.newPassword).success(function (data){
+                    $scope.result = data;
+                    $scope.confirmPasswordFlag = true;
+                    $scope.confirmPasswordTemp = clone($scope.newPassword);
+                    $scope.showTabDialog();
+
+                }).error(function (response) {
+                    $scope.confirmPasswordFlag = false;
+                    console.log($scope.confirmPasswordFlag);
+                    $scope.error = 'Invalid credentials';
+                    $scope.showTabDialog();
+                });
+            }
+
+            if($rootScope.role == 'customer') {
+                personalAPI.changeCustPassword($scope.password, $scope.newPassword).success(function (data){
+                    $scope.result = data;
+                    $scope.confirmPasswordFlag = true;
+                    $scope.confirmPasswordTemp = $scope.newPassword;
+                    $scope.showTabDialog();
+
+                }).error(function (response) {
+                    $scope.confirmPasswordFlag = false;
+                    $scope.error = 'Invalid credentials';
+                    $scope.showTabDialog();
+                });
+            }
+        };
+
+        $scope.confirmPhoneCode = function(){
+            if($rootScope.role =='developer'){
+                personalAPI.confirmCodeAndChangeDevPassword($scope.confirmPasswordTemp, $scope.confirmCode).success(function (data){
+                    $scope.result = data;
+                    $scope.flagConfirmPhoneCode = true;
+                    $scope.showDialogConfirm();
+                }).error(function (response) {
+                    $scope.flagConfirmPhoneCode = false;
+                    $scope.showDialogConfirm();
+                });
+            }
+            if($rootScope.role == 'customer'){
+                personalAPI.confirmCodeAndChangeCustPassword($scope.confirmPasswordTemp, $scope.confirmCode).success(function (data){
+                    $scope.result = data;
+                    $scope.flagConfirmPhoneCode = true;
+                    $scope.showDialogConfirm();
+                }).error(function (response) {
+                    $scope.flagConfirmPhoneCode = false;
+                    $scope.showDialogConfirm();
+                });
+            }
+        };
+
+        $scope.changeSendingEmail = function(){
+            $scope.confirmCode = '';
+            if($rootScope.role =='developer'){
+                personalAPI.changeDevSendingEmail($scope.newEmail).success(function (data){
+                    $scope.confirmEmailFlag = true;
+                    $scope.newEmailTemp = clone($scope.newPassword);
+                    $scope.showTabDialog();
+
+                }).error(function (response) {
+                    $scope.confirmPasswordFlag = false;
+                    $scope.error = 'Invalid credentials';
+                    $scope.showTabDialog();
+                });
+            }
+            if($rootScope.role == 'customer'){
+                personalAPI.changeCustSendingEmail($scope.newEmail).success(function (data){
+                    $scope.result = data;
+                    $scope.confirmEmailFlag = true;
+                    $scope.newEmailTemp = clone($scope.newPassword);
+                    $scope.showTabDialog();
+
+                }).error(function (response) {
+                    $scope.confirmPasswordFlag = false;
+                    console.log($scope.confirmPasswordFlag);
+                    $scope.error = 'Invalid credentials';
+                    $scope.showTabDialog();
+                });
+            }
+
+            if($rootScope.role == 'admin'){
+                personalAPI.changeAdminSendingEmail($scope.newEmail).success(function (data){
+                    $scope.result = data;
+                    $scope.confirmEmailFlag = true;
+                    $scope.newEmailTemp = clone($scope.newPassword);
+                    $scope.showTabDialog();
+
+                }).error(function (response) {
+                    $scope.confirmPasswordFlag = false;
+                    $scope.error = 'Invalid credentials';
+                    $scope.showTabDialog();
+                });
+            }
+        };
+
+        $scope.showTabDialog = function ($event){
+            $mdDialog.show({
+                //parent: angular.element(document.body),
+                targetEvent: $event,
+                scope: $scope,
+                preserveScope: true,
+                templateUrl: 'app/components/personal/changePasswordDialog.html',
+                controller: 'personalCtrl',
+                clickOutsideToClose: true,
+                onComplete: afterShowAnimation,
+                locals: {confirmPasswordFlag: $scope.confirmPasswordFlag}
+            });
+
+            function afterShowAnimation(scope, element, options) {
+
+            }
+        };
+
+        $scope.cancel = function() {
+            $mdDialog.cancel();
+        };
+
+        $scope.showDialogConfirm = function ($event){
+            $mdDialog.show({
+                //parent: angular.element(document.body),
+                targetEvent: $event,
+                scope: $scope,
+                preserveScope: true,
+                templateUrl: 'app/components/personal/passwordChanged.html',
+                controller: 'personalCtrl',
+                onComplete: afterShowAnimation,
+                locals: {flagConfirmPhoneCode: $scope.flagConfirmPhoneCode }
+            });
+
+            function afterShowAnimation(scope, element, options) {
+
+            }
+        };
+
+        $scope.cancel = function() {
+            $mdDialog.cancel();
+        };
+
+        //$scope.showUploadDialog = function ($event){
+        //    $mdDialog.show({
+        //        parent: angular.element(document.body),
+        //        targetEvent: $event,
+        //        scope: $scope,
+        //        preserveScope: true,
+        //        templateUrl: 'app/components/personal/uploadFoto.html',
+        //        controller: 'personalCtrl',
+        //        onComplete: afterShowAnimation,
+        //        locals: {flagConfirmPhoneCode: $scope.flagConfirmPhoneCode }
         //    });
+        //
+        //    function afterShowAnimation(scope, element, options) {
+        //
+        //    }
         //};
 
-        //  var  file = $scope.files;
-        //  $scope.upload = function(file){
-        //      personalAPI.upload(data).success(function (data) {
-        //          $log.log(data);
-        //          $scope.result = data;
-        //      }).error(function () {
-        //          alert('Server is busy');
-        //      });
-        //  }
-        //
-        //  $scope.add = function(){
-        //      var imageJson, imgData, dataUrl;
-        //      var file = document.getElementById('file').files[0];
-        //
-        //
-        //      console.log("File name: " + file.fileName);
-        //
-        //      var reader = new FileReader(file);
-        //
-        //      reader.onload = function(event) {
-        //          // I usually remove the prefix to only keep data, but it depends on your server
-        //          var data = event.target.result.replace("data:" + file.type + ";base64,", '');
-        //
-        //
-        //          //img1 = new Image(reader);
-        //          console.log('readGood');
-        //          //imageJson = JSON.stringify(getBase64Image(img1))
-        //          //imgData = getBase64Image(file)
-        //          //dataUrl = canvas.toDataURL();
-        //          //console.log(imageJson);
-        //          console.log('sending image');
-        //          personalAPI.sendImage(data).success(function (data) {
-        //              $log.log(data);
-        //              $scope.result = data;
-        //          }).error(function () {
-        //              alert('Server is busy');
-        //          });
-        //
-        //          reader.readAsDataURL(file);
-        //          console.log(data);
-        //      }
-        //
-        //}
-        //
-        //
-        //  function getBase64Image(imgElem) {
-        //      var canvas = document.createElement("canvas");
-        //      canvas.width = imgElem.clientWidth;
-        //      canvas.height = imgElem.clientHeight;
-        //      var ctx = canvas.getContext("2d");
-        //      ctx.drawImage(imgElem, 0, 0);
-        //      var dataURL = canvas.toDataURL("image/png");
-        //      return dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
-        //  }
-        //
-        //
-        //  $scope.fileToUpload = null;
-        //  $scope.upload = function () {
-        //      $http({
-        //          method: 'POST',
-        //          url: 'api/fileupload',
-        //          headers: {
-        //              'Content-Type': 'multipart/form-data'
-        //          },
-        //          data: {
-        //              upload: $scope.fileToUpload
-        //          },
-        //          transformRequest: function (data, headersGetter) {
-        //              var formData = new FormData();
-        //              angular.forEach(data, function (value, key) {
-        //                  formData.append(key, value);
-        //              });
-        //
-        //              var headers = headersGetter();
-        //              delete headers['Content-Type'];
-        //
-        //              return formData;
-        //          }
-        //      })
-        //          .success(function (data, status, headers, config) {
-        //              alert(data.FName);
-        //          })
-        //          .error(function (data, status, headers, config) {
-        //              alert(data);
-        //          });
-        //  };
+        //$scope.$watch('files', function () {
+        //    $scope.upload($scope.files);
+        //});
 
-
-        //$scope.loadTechs = function($query) {
-        //    return $http.get('techs.json', {cache: true}).then(function (response) {
-        //        var techs = response.data;
-        //        return techs.filter(function (tech) {
-        //            return tech.name.toLowerCase().indexOf($query.toLowerCase()) != -1;
-        //        });
-        //    });
+        //$scope.files =['files'];
+        //$scope.upload = function (files) {
+        //    if (files && files.length) {
+        //        for (var i = 0; i < files.length; i++) {
+        //            var file = files[i];
+        //            //$scope.uploadFromDevice(file);
+        //            Upload.upload({
+        //                url: 'upload/url',
+        //                fields: {'username': $scope.username},
+        //                file: file
+        //            }).progress(function (evt) {
+        //                //$scope.uploadFromDevice(evt);
+        //                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+        //                console.log('progress: ' + progressPercentage + '% ' + evt.config.file.name);
+        //            }).success(function (data, status, headers, config) {
+        //                console.log('file ' + config.file.name + 'uploaded. Response: ' + data);
+        //            });
+        //        }
+        //    }
         //};
+
+        $scope.close = function() {
+            $mdDialog.hide();
+        };
+
+        $scope.uploadFromDevice = function (files, e, callback) {
+            var img = new Image();
+            var canvas = document.createElement("canvas");
+            //var file = document.getElementById('file').files[0];
+            if(files != ''){
+                img.src = URL.createObjectURL(files);
+                var ctx = canvas.getContext("2d");
+                img.onload = function () {
+                    ctx = canvas.getContext("2d");
+                    var maxWidth = 2000, // Max width for the image
+                        ratio = 0,  // Used for aspect ratio
+                        width = img.width,    // Current image width
+                        height = img.height;  // Current image height
+
+                    if (width > maxWidth) {
+                        ratio = maxWidth / width;   // get ratio for scaling image
+                        height = height * ratio;    // Reset height to match scaled image
+                        width = width * ratio;    // Reset width to match scaled image
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.fillStyle = '#fff';  /// set white fill style
+                    ctx.fillRect(0, 0, width, height);
+                    ctx.drawImage(this, 0, 0, width, height);
+                    var dataURL = canvas.toDataURL("image/jpg");
+                    var base = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+
+                    //personalAPI.
+                    if($rootScope.role =='developer'){
+                        personalAPI.sendDevImage(base).success(function (data){
+                            $scope.result = data;
+                        }).error(function () {
+                            console.log('error image');
+                        });
+                    }
+                    if($rootScope.role =='customer'){
+                        personalAPI.sendCustImage(base).success(function (data){
+                            $scope.result = data;
+                        }).error(function () {
+                            console.log('error image');
+                        });
+                    }
+                    if($rootScope.role =='admin'){
+                        personalAPI.sendAdminImage(base).success(function (data){
+                            $scope.result = data;
+                        }).error(function () {
+                            console.log('error image');
+                        });
+                    }
+                }
+            }
+
+        };
+
+        $scope.loadTechs = function($scope, $http, $query) {
+            return $http.post("/user/orders/tech").success(function(data) {
+                var techs = data;
+                return techs.filter(function (tech) {
+                    return tech.name.toLowerCase().indexOf($query.toLowerCase()) != -1;
+                });
+            });
+        };
 
 
         $scope.timeZones = [
             {
-                zone: "-12",
-                title: "-12 Baker island, Howland island",
-                ticked: false
+                zone : "-12",
+                title : "-12 Baker island, Howland island",
+                ticked : false
             },
             {
-                zone: "-11",
-                title: "-11 American Samoa, Niue",
-                ticked: false
+                zone : "-11",
+                title : "-11 American Samoa, Niue",
+                ticked : false
             },
             {
-                zone: "-10",
-                title: "-10 Hawaii",
-                ticked: false
+                zone : "-10",
+                title : "-10 Hawaii",
+                ticked : false
             },
             {
-                zone: "-9",
-                title: "-9 Marquesas Islands, Gamblie Islands",
-                ticked: false
+                zone : "-9",
+                title : "-9 Marquesas Islands, Gamblie Islands",
+                ticked : false
             },
             {
-                zone: "-8",
-                title: "-8 British Columbia, Mexico, California",
-                ticked: false
+                zone : "-8",
+                title : "-8 British Columbia, Mexico, California",
+                ticked : false
             },
             {
-                zone: "-7",
-                title: "-7 British Columbia, US Arizona",
-                ticked: false
+                zone : "-7",
+                title : "-7 British Columbia, US Arizona",
+                ticked : false
             },
             {
-                zone: "-6",
-                title: "-6 Canada Saskatchewan, Costa Rica, Guatemala, Honduras",
-                ticked: false
+                zone : "-6",
+                title : "-6 Canada Saskatchewan, Costa Rica, Guatemala, Honduras",
+                ticked : false
             },
             {
-                zone: "-5",
-                title: "-5 Colombia, Cuba, Ecuador, Peru",
-                ticked: false
+                zone : "-5",
+                title : "-5 Colombia, Cuba, Ecuador, Peru",
+                ticked : false
             },
             {
-                zone: "-4",
-                title: "-4 Venezuela, Bolivia, Brazil,	Barbados",
-                ticked: false
+                zone : "-4",
+                title : "-4 Venezuela, Bolivia, Brazil,	Barbados",
+                ticked : false
             },
             {
-                zone: "-3",
-                title: "-3 Newfoundland, Argentina, Chile",
-                ticked: false
+                zone : "-3",
+                title : "-3 Newfoundland, Argentina, Chile",
+                ticked : false
             },
             {
-                zone: "-2",
-                title: "-2 South Georgia",
-                ticked: false
+                zone : "-2",
+                title : "-2 South Georgia",
+                ticked : false
             },
             {
-                zone: "-1",
-                title: "-1 Capa Verde",
-                ticked: false
+                zone : "-1",
+                title : "-1 Capa Verde",
+                ticked : false
             },
             {
-                zone: "0",
-                title: "0 Ghana, Iceland, Senegal",
-                ticked: false
+                zone : "0",
+                title : "0 Ghana, Iceland, Senegal",
+                ticked : false
             },
             {
-                zone: "1",
-                title: "+1 Algeria, Nigeria, Tunisia",
-                ticked: false
+                zone : "1",
+                title : "+1 Algeria, Nigeria, Tunisia",
+                ticked : false
             },
             {
-                zone: "2",
-                title: "+2 Ukraine, Zambia, Egypt",
-                ticked: false
+                zone : "2",
+                title : "+2 Ukraine, Zambia, Egypt",
+                ticked : false
             },
             {
-                zone: "3",
-                title: "+3 Belarus, Iraq, Iran",
-                ticked: false
+                zone : "3",
+                title : "+3 Belarus, Iraq, Iran",
+                ticked : false
             },
             {
-                zone: "4",
-                title: "+4 Armenia, Georgia, Oman",
-                ticked: false
+                zone : "4",
+                title : "+4 Armenia, Georgia, Oman",
+                ticked : false
             },
             {
-                zone: "5",
-                title: "+5 Kazakhstan, Pakistan, India",
-                ticked: false
+                zone : "5",
+                title : "+5 Kazakhstan, Pakistan, India",
+                ticked : false
             },
             {
-                zone: "6",
-                title: "+6 Ural, Bangladesh",
-                ticked: false
+                zone : "6",
+                title : "+6 Ural, Bangladesh",
+                ticked : false
             },
             {
-                zone: "7",
-                title: "+7 Western Indonesai, Thailand",
-                ticked: false
+                zone : "7",
+                title : "+7 Western Indonesai, Thailand",
+                ticked : false
             },
             {
-                zone: "8",
-                title: "+8 Hong Kong, China, Taiwan, Australia",
-                ticked: false
+                zone : "8",
+                title : "+8 Hong Kong, China, Taiwan, Australia",
+                ticked : false
             }, {
-                zone: "9",
-                title: "+9 Timor,Japan",
-                ticked: false
+                zone : "9",
+                title : "+9 Timor,Japan",
+                ticked : false
             }, {
-                zone: "10",
-                title: "+10 New Guinea, Australia",
-                ticked: false
+                zone : "10",
+                title : "+10 New Guinea, Australia",
+                ticked : false
             }, {
-                zone: "11",
-                title: "+11 Solomon Islands, Vanuatu",
-                ticked: false
+                zone : "11",
+                title : "+11 Solomon Islands, Vanuatu",
+                ticked : false
             }, {
-                zone: "12",
-                title: "+12 New zealand, Kamchatka, Kiribati",
-                ticked: false
-            }];
-
-
-
-    });
+                zone : "12",
+                title : "+12 New zealand, Kamchatka, Kiribati",
+                ticked : false
+            } ];
+    }]);

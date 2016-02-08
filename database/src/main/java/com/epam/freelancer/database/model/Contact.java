@@ -3,11 +3,13 @@ package com.epam.freelancer.database.model;
 import com.epam.freelancer.database.transformer.annotation.Column;
 import com.epam.freelancer.database.transformer.annotation.Id;
 import com.epam.freelancer.database.transformer.annotation.Table;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 /**
  * Created by ������ on 16.01.2016.
  */
 @Table(name = "contact")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Contact implements BaseEntity<Integer> {
     @Id
     private Integer id;

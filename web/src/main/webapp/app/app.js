@@ -1,10 +1,9 @@
-;
 (function() {
 	angular.module(
 			'FreelancerApp',
 			[ 'ngRoute', 'ui.router', 'ngCookies', 'ngMaterial', 'ngAnimate',
 					'ngAria', 'ngMessages', 'isteven-multi-select', 'rzModule',
-					'ui.bootstrap', 'ui-notification','googlechart' ]).config(
+					'ui.bootstrap', 'ui-notification','googlechart', 'ngTagsInput']).config(
 			function($stateProvider, $urlRouterProvider, $locationProvider,
 					NotificationProvider ) {
 				$urlRouterProvider.otherwise('/home');

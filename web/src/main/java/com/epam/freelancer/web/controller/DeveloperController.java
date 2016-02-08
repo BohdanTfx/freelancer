@@ -1,26 +1,36 @@
 package com.epam.freelancer.web.controller;
 
-import com.epam.freelancer.business.context.ApplicationContext;
-import com.epam.freelancer.business.service.*;
-import com.epam.freelancer.database.model.*;
-import com.epam.freelancer.web.json.model.Quest;
-import com.google.gson.Gson;
-import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
+import java.io.*;
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import com.epam.freelancer.business.manager.UserManager;
+import com.epam.freelancer.business.service.*;
+import com.epam.freelancer.business.util.SmsSender;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
+
+import com.epam.freelancer.business.context.ApplicationContext;
+import com.epam.freelancer.database.model.*;
+import com.epam.freelancer.web.json.model.Quest;
+import com.google.gson.Gson;
+
+/**
+ * Created by Максим on 22.01.2016.
+ */
 public class DeveloperController extends HttpServlet implements Responsable {
 	public static final Logger LOG = Logger.getLogger(UserController.class);
 	private static final long serialVersionUID = -2356506023594947745L;
@@ -29,6 +39,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
 	private ObjectMapper mapper;
 	private DeveloperQAService developerQAService;
 	private DeveloperService developerService;
+	private UserManager userManager;
 
 	public DeveloperController() {
 		testService = (TestService) ApplicationContext.getInstance().getBean(
@@ -40,6 +51,8 @@ public class DeveloperController extends HttpServlet implements Responsable {
 				.getInstance().getBean("developerQAService");
 		developerService = (DeveloperService) ApplicationContext.getInstance()
 				.getBean("developerService");
+		userManager = (UserManager) ApplicationContext.getInstance().getBean(
+				"userManager");
 	}
 
 	@Override
@@ -48,27 +61,27 @@ public class DeveloperController extends HttpServlet implements Responsable {
 	{
 		try {
 
-			String path = FrontController.getPath(request);
+            String path = FrontController.getPath(request);
 
-			switch (path) {
-			case "dev/getalltests":
-				fillTestPage(request, response);
-				break;
-			case "dev/gettestbyid":
-				sendTestById(request, response);
-				break;
-			case "dev/getallworks":
-				fillMyWorksPage(request, response);
-				break;
-			case "dev/getcustomerbyid":
-				sendCustomerById(request, response);
-				break;
-			case "dev/getworkersbyidorder":
-				sendWorkersByIdOrder(request, response);
-				break;
-			case "dev/personal":
-				fillPersonalPage(request, response);
-				break;
+            switch (path) {
+                case "dev/getalltests":
+                    fillTestPage(request, response);
+                    break;
+                case "dev/gettestbyid":
+                    sendTestById(request, response);
+                    break;
+                case "dev/getallworks":
+                    fillMyWorksPage(request, response);
+                    break;
+                case "dev/getcustomerbyid":
+                    sendCustomerById(request, response);
+                    break;
+                case "dev/getworkersbyidorder":
+                    sendWorkersByIdOrder(request, response);
+                    break;
+                case "dev/getPersonalData":
+                    fillPersonalPage(request, response);
+                    break;
 
 			default:
 
@@ -88,19 +101,27 @@ public class DeveloperController extends HttpServlet implements Responsable {
 
 			String path = FrontController.getPath(request);
 
-			switch (path) {
-                case "dev/results":
+            switch (path) {
+                case "dev/getresults":
                     sendResults(request, response);
-				break;
-			case "dev/sendpersonaldata":
-				updatePersonalData(request, response);
-				break;
-			case "dev/uploadImage":
-				uploadImage(request, response);
-				break;
-			default:
-
-			}
+                    break;
+                case "dev/sendPersonalData":
+                    updatePersonalData(request, response);
+                    break;
+                case "dev/uploadImage":
+                    uploadImage(request, response);
+                    break;
+                case "dev/changePassword":
+                    changeDeveloperPassword(request, response);
+                    break;
+                case "dev/confirmChangePasswordAndEmail":
+                    confirmChangePasswordAndEmail(request, response);
+                    break;
+                case "dev/changeEmail":
+                    changeEmail(request, response);
+                    break;
+                default:
+            }
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -320,38 +341,38 @@ public class DeveloperController extends HttpServlet implements Responsable {
 	private void fillPersonalPage(HttpServletRequest request,
 			HttpServletResponse response) throws IOException
 	{
-		/*
-		 * List<Technology> technologies = null; HttpSession session = null;
-		 * Developer developer = null; Contact contact = null; String
-		 * developerJson; String devTechsJson; String resultJson; String
-		 * contactJson; String allTechsJson; List<String> listTechs = new
-		 * ArrayList<>(); session = request.getSession(); try { developer =
-		 * (Developer) session.getAttribute("user"); technologies =
-		 * developerService. getTechnologiesByDevId(developer.getId());
-		 * System.out.println(technologies); contact =
-		 * developerService.getContactByDevId(developer.getId());
-		 * System.out.println(contact); } catch (Exception e) {
-		 * e.printStackTrace();
-		 * LOG.error("Error when get data from developer table" +
-		 * e.getMessage()); } devTechsJson = new Gson().toJson(technologies);
-		 * developerJson = new Gson().toJson(developer); contactJson = new
-		 * Gson().toJson(contact); technologies = technologyService.findAll();
-		 * for(Technology tech : technologies){ listTechs.add(tech.getName()); }
-		 * allTechsJson = new Gson().toJson(listTechs);
-		 * System.out.println("ALL TECHNOLOGIES" + allTechsJson); resultJson =
-		 * "{\"dev\":" + developerJson + ",\"techs\":" + devTechsJson
-		 * +",\"contacts\":" + contactJson + ",\"allTechs\":" + allTechsJson
-		 * +"}"; if(devTechsJson.length() == 2){ resultJson = "{\"dev\":" +
-		 * developerJson + ",\"contacts\":" + contactJson + ",\"allTechs\":" +
-		 * allTechsJson +"}"; } if(contactJson.length() == 0) { resultJson =
-		 * "{\"dev\":" + developerJson + ",\"techs\":" + devTechsJson +
-		 * ",\"allTechs\":" + allTechsJson +"}"; } if(contactJson.length() == 0
-		 * && devTechsJson.length() == 2) { resultJson = "{\"dev\":" +
-		 * developerJson + ",\"allTechs\":" + allTechsJson +"}"; }
-		 * response.setContentType("application/json");
-		 * response.setCharacterEncoding("UTF-8");
-		 * response.getWriter().write(resultJson);
-		 */
+		List<Technology> technologies = null;
+		HttpSession session = request.getSession();
+		Developer developer = (Developer) session.getAttribute("user");
+		Contact contact = null;
+		List<String> listTechs = new ArrayList<>();
+		try {
+			technologies = developerService.
+					getTechnologiesByDevId(developer.getId());
+			contact = developerService.getContactByDevId(developer.getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOG.error("Error when get data from developer table" + e.getMessage());
+		}
+		String devTechsJson = new Gson().toJson(technologies);
+		String developerJson = new Gson().toJson(developer);
+		String contactJson = new Gson().toJson(contact);
+		technologies = technologyService.findAll();
+		for(Technology tech : technologies){
+			listTechs.add(tech.getName());
+		}
+		String allTechsJson = new Gson().toJson(listTechs);
+		String resultJson = "{\"dev\":" + developerJson + ",\"techs\":" + devTechsJson +",\"contacts\":" + contactJson + ",\"allTechs\":" + allTechsJson +"}";
+		if(devTechsJson.length() == 2){
+			resultJson = "{\"dev\":" + developerJson + ",\"contacts\":" + contactJson + ",\"allTechs\":" + allTechsJson +"}";
+		} if(contactJson.length() == 0) {
+		resultJson = "{\"dev\":" + developerJson + ",\"techs\":" + devTechsJson + ",\"allTechs\":" + allTechsJson +"}";
+	} if(contactJson.length() == 0 && devTechsJson.length() == 2) {
+		resultJson = "{\"dev\":" + developerJson + ",\"allTechs\":" + allTechsJson +"}";
+	}
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(resultJson);
 	}
 
 	private void updatePersonalData(HttpServletRequest request,
@@ -359,54 +380,165 @@ public class DeveloperController extends HttpServlet implements Responsable {
 	{
 
 		Developer developer = null;
-		Contact contact;
-		String developerJson;
-		String technologiesJson;
-		String contactJson;
-
-		List<Technology> technologies;
-
-		SimpleDateFormat format = new SimpleDateFormat(
-				"MMM dd, yyyy hh:mm:ss a");
+		Contact contact = null;
+		List<Technology> technologies = new ArrayList<>();
+		SimpleDateFormat format = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a");
+		List<Technology> allTechnology = technologyService.findAll();
 		mapper.setDateFormat(format);
-
-		developerJson = request.getParameter("developer");
-		System.out.println(developerJson);
-
+		mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true );
+		String developerJson = request.getParameter("developer");
 		try {
 			developer = mapper.readValue(developerJson, Developer.class);
 
-		} catch (Exception e) {
+		} catch(Exception e){
 			LOG.warn("Some problem with mapper");
 		}
-
-		System.out.println(developer);
-
-		technologiesJson = request.getParameter("technologies");
-		System.out.println(technologiesJson);
-
-		System.out.println(technologiesJson.length());
-
-		if (technologiesJson.length() != 0) {
-			technologies = mapper.readValue(technologiesJson,
-					new TypeReference<List<Technology>>() {
-					});
-			System.out.println(technologies);
+		String technologiesJson = request.getParameter("technologies");
+		if(technologiesJson.length() != 0) {
+			technologies = mapper.readValue(technologiesJson, new TypeReference<List<Technology>>() {});
 		}
 
-		contactJson = request.getParameter("contact");
-		System.out.println(contactJson);
-
-		if (contactJson.length() != 0) {
+		String contactJson = request.getParameter("contact");
+		if(contactJson.length() != 0 ){
 			contact = mapper.readValue(contactJson, Contact.class);
-			System.out.println(contact);
+		}
+		if(developerService.getContactByDevId(developer.getId()) == null){
+			contact.setDevId(developer.getId());
+			developerService.createContact(contact);
+		} else {
+			contact.setDevId(developer.getId());
+			developerService.updateContact(contact);
 		}
 
+//        if(technologies != null){
+//			List<Technology> addedTechnology = developerService.getTechnologiesByDevId(developer.getId());
+//			for(Technology addedTechs : addedTechnology){
+//				for(Technology technology : technologies){
+//					if(!addedTechs.equals(technology)){
+//						developerService.addTechnologyForDev(developer.getId(), technology.getId());
+//					}
+//				}
+//			}
+//
+//        }
+		developerService.updateDeveloper(developer);
 	}
 
 	private void uploadImage(HttpServletRequest request,
 			HttpServletResponse response){
-		String imageJson= request.getParameter("image");
+		HttpSession session = request.getSession();
+		Developer developer = (Developer) session.getAttribute("user");
+		String  imageJson = request.getParameter("image");
+		byte[] encodImage = Base64.decodeBase64(imageJson);
+		String fileName = developer.getFname() + developer.getLname();
+		File file = null;
+		try {
+			file = new File("../target/WEB-INF/userData/" + fileName + ".jpg");
+			FileUtils.writeByteArrayToFile(file, encodImage);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+
+		developer.setImgUrl("target/WEB-INF/userData/" + fileName + ".jpg");
+		developerService.updateDeveloper(developer);
 	}
 
+	private void changeDeveloperPassword(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String password = request.getParameter("password");
+		String newPassword = request.getParameter("newPassword");
+		HttpSession session = request.getSession();
+		Developer developer = (Developer) session.getAttribute("user");
+
+		if(developer != null){
+			if(userManager.validCredentials(developer.getEmail(), password, developer)){
+				String confirmCodeJson = new Gson().toJson(generatePhoneCode(developer));
+				response.setContentType("application/json");
+				response.setCharacterEncoding("UTF-8");
+				response.getWriter().write(confirmCodeJson);
+			} else {
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+						"Invalid credentials");
+				response.flushBuffer();
+				return;
+			}
+		}
+	}
+
+	private void confirmChangePasswordAndEmail(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String password = request.getParameter("password");
+		String email = request.getParameter("email");
+		String confirmCode = request.getParameter("confirmCode");
+		HttpSession session = request.getSession();
+		Developer developer = (Developer) session.getAttribute("user");
+
+		if(password != null){
+			if(checkConfirmCode(developer, confirmCode, response)){
+				developer.setPassword(password);
+				developerService.encodePassword(developer);
+				developerService.updateDeveloper(developer);
+			}
+		}
+		if(email != null){
+			if(checkConfirmCode(developer, confirmCode, response)){
+				developer.setSendEmail(email);
+				developerService.updateDeveloper(developer);
+			}
+		}
+	}
+
+	private void changeEmail(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String email = request.getParameter("email");
+		HttpSession session = request.getSession();
+		Developer developer = (Developer) session.getAttribute("user");
+		if(developer != null){
+			if(userManager.isEmailAvailable(email)){
+				String confirmCodeJson = new Gson().toJson(generatePhoneCode(developer));
+				response.setContentType("application/json");
+				response.setCharacterEncoding("UTF-8");
+				response.getWriter().write(confirmCodeJson);
+			} else {
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+						"Invalid email");
+				response.flushBuffer();
+				return;
+			}
+		} else {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+					"Invalid user");
+			response.flushBuffer();
+			return;
+		}
+	}
+
+	private String generatePhoneCode(Developer developer){
+		StringBuilder confirmPhoneCode =  new StringBuilder();
+		SecureRandom random = new SecureRandom();
+		for(int i = 0; i < 4; i++){
+			confirmPhoneCode.append(String.valueOf(random.nextInt(9)));
+		}
+		developer.setConfirmCode(confirmPhoneCode.toString());
+		try{
+			String phoneNumber = developerService.getContactByDevId(developer.getId()).getPhone();
+			SmsSender smsSender = new SmsSender();
+			smsSender.sendSms(phoneNumber, "Confirm code: " + confirmPhoneCode.toString(),
+					"e-freelance");
+		} catch(NullPointerException e){
+			LOG.warn("The phone number is empty");
+		}
+		return confirmPhoneCode.toString();
+	}
+
+	private Boolean checkConfirmCode(Developer developer, String confirmCode, HttpServletResponse response) throws IOException {
+		if(developer.getConfirmCode().equals(confirmCode)){
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write(new Gson().toJson("good"));
+		} else {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+					"Invalid code");
+			response.flushBuffer();
+			return false;
+		}
+		return true;
+	}
 }
