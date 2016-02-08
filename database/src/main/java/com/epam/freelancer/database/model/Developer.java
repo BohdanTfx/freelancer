@@ -16,59 +16,7 @@ import java.util.Locale;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Table(name = "developer")
 public class Developer implements UserEntity {
-    @Id
-    private Integer id;
-    @Column
-    private String email;
-    @Column
-    private String password;
-    @Column(name = "name")
-    private String fname;
-    @Column(name = "last_name")
-    private String lname;
-    @Column
-    private Double hourly;
-    @Column
-    private Integer zone;
-    private Locale locale;
-    @Column
-    private String lang;
-    @Column
-    private String uuid;
-    @Column(name = "reg_url")
-    private String regUrl;
-    @Column(name = "reg_date")
-    private Timestamp regDate;
-    @Column(name = "is_deleted")
-    private Boolean isDeleted;
-    @Column
-    private Integer version;
-    @Column
-    private String salt;
-    @Column(name="img_url")
-    private String imgUrl;
-    @Column(name = "overview")
-    private String overview;
-    @Column(name = "position")
-    private String position;
-    private String role;
-    private String confirmCode;
-	@Column(name = "send_email")
-	private String sendEmail;
-	private List<Technology> technologies = new ArrayList<>();
-
-	public String getSendEmail() { return sendEmail; }
-
-	public void setSendEmail(String sendEmail) { this.sendEmail = sendEmail; }
-
-    public String getConfirmCode() {
-        return confirmCode;
-    }
-
-    public void setConfirmCode(String confirmCode) {
-        this.confirmCode = confirmCode;
-    }
-	@Id
+   	@Id
 	private Integer id;
 	@Column
 	private String email;

@@ -1,15 +1,23 @@
 package com.epam.freelancer.web.controller;
 
 import java.io.*;
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.epam.freelancer.business.manager.UserManager;
 import com.epam.freelancer.business.service.*;
+import com.epam.freelancer.business.util.SmsSender;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -109,8 +117,6 @@ public class DeveloperController extends HttpServlet implements Responsable {
                     changeEmail(request, response);
                     break;
                 default:
-
-
             }
 
         } catch (Exception e) {
@@ -298,7 +304,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
 	}
 
 	private Map<String, String[]> createMapForDevQA(HttpServletRequest request,
-			double rate)
+													double rate)
 	{
 		Map<String, String[]> map = new HashMap<>();
 		UserEntity user = (UserEntity) request.getSession()
@@ -438,7 +444,6 @@ public class DeveloperController extends HttpServlet implements Responsable {
 		String newPassword = request.getParameter("newPassword");
 		HttpSession session = request.getSession();
 		Developer developer = (Developer) session.getAttribute("user");
-		UserManager userManager = new UserManager();
 
 		if(developer != null){
 			if(userManager.validCredentials(developer.getEmail(), password, developer)){

@@ -35,22 +35,12 @@ import com.epam.freelancer.database.model.Contact;
 import com.epam.freelancer.database.model.Customer;
 import com.epam.freelancer.database.model.Feedback;
 import com.epam.freelancer.database.model.UserEntity;
-import com.google.gson.Gson;
-import org.codehaus.jackson.map.ObjectMapper;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.List;
 
 /**
  * Created by Максим on 22.01.2016.
  */
-public class CustomerController extends HttpServlet {
+public class CustomerController extends HttpServlet implements Responsable {
     public static final Logger LOG = Logger.getLogger(CustomerController.class);
     private static final long serialVersionUID = -2356506023594947745L;
     private CustomerService customerService;
@@ -84,7 +74,6 @@ public class CustomerController extends HttpServlet {
             String path = FrontController.getPath(request);
 
             switch (path) {
-                switch (FrontController.getPath(request)) {
                     case "cust/getPersonalData":
                         fillCustomerPersonalPage(request, response);
                         break;
