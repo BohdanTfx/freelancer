@@ -1,6 +1,7 @@
 package com.epam.freelancer.database.dao.jdbc;
 
 import com.epam.freelancer.database.dao.DevTechManyToManyDao;
+import com.epam.freelancer.database.dao.GenericDao;
 import com.epam.freelancer.database.model.Developer;
 import com.epam.freelancer.database.model.Technology;
 import com.epam.freelancer.database.model.Worker;
@@ -43,4 +44,19 @@ public class DevTechManyToManyJdbcDao extends
 		}
 		return entities;
 	}
+
+	public void saveTechnologies(Integer firstId, Integer secondId){
+		String query = "INSERT INTO " + table + " (" + firstIdName + ", "
+				+ secondIdName + ") VALUES (?, ?)";
+		try (Connection connection = dataSource.getConnection();
+			 PreparedStatement statement = connection
+					 .prepareStatement(query)) {
+			statement.setObject(1, firstId);
+			statement.setObject(2, secondId);
+			statement.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 }

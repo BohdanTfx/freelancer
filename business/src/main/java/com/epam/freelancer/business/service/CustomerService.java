@@ -108,6 +108,8 @@ public class CustomerService extends UserService<Customer> {
 		return ((ContactDao) contactDao).getContactByCustId(id);
 	}
 
+	public Contact createContact(Contact contact) { return contactDao.save(contact); }
+
 	public Contact updateContact(Contact contact) {
 		return contactDao.update(contact);
 	}

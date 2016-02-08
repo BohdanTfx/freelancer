@@ -4,11 +4,14 @@ import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.manager.UserManager;
 import com.epam.freelancer.business.service.*;
 import com.epam.freelancer.business.util.SendMessageToEmail;
+import com.epam.freelancer.database.model.Admin;
 import com.epam.freelancer.database.model.*;
 import com.epam.freelancer.web.json.model.JsonPaginator;
 import com.epam.freelancer.web.json.model.Quest;
 import com.epam.freelancer.web.util.Paginator;
 import com.epam.freelancer.database.model.AdminCandidate;
+import com.epam.freelancer.database.model.Contact;
+import com.google.gson.Gson;
 import com.epam.freelancer.database.model.OrderCounter;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonParser;
@@ -39,6 +42,8 @@ public class AdminController extends HttpServlet implements Responsable {
     private AdminCandidateService adminCandidateService;
     private DeveloperService developerService;
     private CustomerService customerService;
+    private AdminService adminService;
+
     private QuestionService questionService;
     private TestService testService;
     private AnswerService answerService;
@@ -52,6 +57,7 @@ public class AdminController extends HttpServlet implements Responsable {
         adminCandidateService = (AdminCandidateService) ApplicationContext.getInstance().getBean("adminCandidateService");
         developerService = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
         customerService = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
+        adminService = (AdminService) ApplicationContext.getInstance().getBean("adminService");
         orderCounterService = (OrderCounterService)ApplicationContext.getInstance().getBean("orderCounterService");
         questionService = (QuestionService) ApplicationContext.getInstance().getBean("questionService");
         testService = (TestService) ApplicationContext.getInstance().getBean("testService");
@@ -68,6 +74,9 @@ public class AdminController extends HttpServlet implements Responsable {
             switch (path) {
                 case "admin/statistics/devcust":
                     sendDevAndCustAmount(request, response);
+                    break;
+                case "admin/getPersonalData":
+                    fillAdminPage(request, response);
                     break;
                 case "admin/statistics/orders":
                     sendCreationOrdersAmount(request, response);
@@ -315,4 +324,13 @@ public class AdminController extends HttpServlet implements Responsable {
 
 
 
+
+    private void fillAdminPage(HttpServletRequest request,HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession();
+        Admin admin = (Admin) session.getAttribute("user");
+        String adminJson = new Gson().toJson(admin);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(adminJson);
+    }
 }
