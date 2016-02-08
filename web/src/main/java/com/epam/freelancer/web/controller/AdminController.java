@@ -4,22 +4,23 @@ import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.manager.UserManager;
 import com.epam.freelancer.business.service.*;
 import com.epam.freelancer.business.util.SendMessageToEmail;
-import com.epam.freelancer.database.model.AdminCandidate;
-import com.epam.freelancer.database.model.Question;
-import com.epam.freelancer.database.model.Technology;
-import com.epam.freelancer.database.model.Test;
+import com.epam.freelancer.database.model.*;
+import com.epam.freelancer.web.json.model.JsonPaginator;
+import com.epam.freelancer.web.json.model.Quest;
+import com.epam.freelancer.web.util.Paginator;
 import org.apache.log4j.Logger;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -39,6 +40,7 @@ public class AdminController extends HttpServlet implements Responsable {
     private TestService testService;
     private AnswerService answerService;
     private TechnologyService technologyService;
+    private Paginator paginator;
 
     public AdminController() {
         mapper = new ObjectMapper();
@@ -50,6 +52,7 @@ public class AdminController extends HttpServlet implements Responsable {
         testService = (TestService) ApplicationContext.getInstance().getBean("testService");
         answerService = (AnswerService) ApplicationContext.getInstance().getBean("answerService");
         technologyService = (TechnologyService) ApplicationContext.getInstance().getBean("technologyService");
+        paginator = new Paginator();
     }
 
     @Override
@@ -65,11 +68,8 @@ public class AdminController extends HttpServlet implements Responsable {
                 case "admin/tests":
                     getTests(request, response);
                     break;
-                case "admin/tech/questions":
-                    getQuestionsByTechnologyId(request, response);
-                    break;
                 case "admin/technologies":
-                    getTechnologies(request,response);
+                    getTechnologies(request, response);
                     break;
                 default:
 
@@ -94,11 +94,14 @@ public class AdminController extends HttpServlet implements Responsable {
                 case "admin/remove/uuid":
                     removeUUID(request, response);
                     break;
-                case "admin/test":
+                case "admin/test/create":
                     createTest(request, response);
                     break;
                 case "admin/question":
                     createQuestion(request, response);
+                    break;
+                case "admin/tech/questions":
+                    getQuestionsByTechnologyId(request, response);
                     break;
                 default:
 
@@ -135,8 +138,8 @@ public class AdminController extends HttpServlet implements Responsable {
     private void startCountdownExpireTime(AdminCandidate candidate, int secDelay) {
         ScheduledExecutorService scheduledExecutorService =
                 Executors.newScheduledThreadPool(1);
-        scheduledExecutorService.schedule(() ->  adminCandidateService.remove(candidate)
-        , secDelay, TimeUnit.HOURS);
+        scheduledExecutorService.schedule(() -> adminCandidateService.remove(candidate)
+                , secDelay, TimeUnit.HOURS);
     }
 
     private String getAdminCreatingMessage() {
@@ -160,15 +163,15 @@ public class AdminController extends HttpServlet implements Responsable {
         adminCandidateService.remove(adminCandidateService.getAdminCandidateByKey(uuid));
     }
 
-    private void sendDevAndCustAmount(HttpServletRequest request,HttpServletResponse response) throws IOException{
-        Map<String,Integer> map = new HashMap<>();
-        map.put("devAmount",developerService.getAllWorkers().size());
-        map.put("custAmount",customerService.findAll().size());
+    private void sendDevAndCustAmount(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("devAmount", developerService.getAllWorkers().size());
+        map.put("custAmount", customerService.findAll().size());
 
-        sendResponse(response,map,mapper);
+        sendResponse(response, map, mapper);
     }
 
-    private void getTests(HttpServletRequest request, HttpServletResponse response){
+    private void getTests(HttpServletRequest request, HttpServletResponse response) {
         List<Test> tests = testService.findAll();
         List<Technology> techs = technologyService.findAll();
         Map<Integer, Technology> technologyMap = new HashMap<>();
@@ -176,33 +179,94 @@ public class AdminController extends HttpServlet implements Responsable {
                 technology));
         Map<Integer, Test> testMap = new HashMap<>();
         for (int i = 0; i < tests.size(); i++) {
+            tests.forEach(test -> {
+                test.setTechnology(technologyMap.get(test.getTechId()));
+                testMap.put(test.getId(), test);
+            });
         }
-        tests.forEach(test -> {
-            test.setTechnology(technologyMap.get(test.getTechId()));
-            testMap.put(test.getId(), test);
-        });
     }
 
     private void getQuestionsByTechnologyId(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String paramId = request.getParameter("id");
-        if (paramId == null || "".equals(paramId) || !paramId.matches("[0-9]")){
-            response.sendError(HttpServletResponse.SC_CONFLICT);
-            return;
-        }
-        Integer id = Integer.parseInt(paramId);
-        List<Question> questions = questionService.findQuestionsByTechnologyId(id);
-        sendResponse(response,questions,mapper);
+        String requestData = request.getReader().readLine();
+        JsonPaginator jsonPaginator = mapper.readValue(requestData, JsonPaginator.class);
+
+        List<Question> questions = questionService.filterElements(jsonPaginator.getContent(), jsonPaginator.getPage().getStart() * jsonPaginator.getPage().getStep(), jsonPaginator.getPage().getStep());
+
+        paginator.next(jsonPaginator.getPage(), response, questionService.getObjectAmount(), questions);
     }
 
     private void getTechnologies(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        sendResponse(response,questionService.findAll(),mapper);
+        sendResponse(response, technologyService.findAll(), mapper);
     }
 
     private void createTest(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String paramTest = request.getParameter("test");
+        String paramQuestions = request.getParameter("questions");
+        Test test = mapper.readValue(paramTest, new TypeReference<Test>() {
+        });
+        List<Integer> questIDs = mapper.readValue(paramQuestions, new TypeReference<List<Integer>>() {
+        });
+        test = writeTestInDB(test, request);
+        if (test == null)
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        else {
+            testService.saveTestQuestions(test.getId(), questIDs);
+            response.getWriter().write(test.getId());
+        }
+    }
 
+    private Test writeTestInDB(Test test, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        UserEntity ue = (UserEntity) session.getAttribute("user");
+        Map<String, String[]> testMap = new HashMap<>();
+        testMap.put("name", new String[]{test.getName()});
+        testMap.put("tech_id", new String[]{String.valueOf(test.getTechId())});
+        testMap.put("admin_id", new String[]{String.valueOf(ue.getId())});
+        testMap.put("sec_per_quest", new String[]{String.valueOf(test.getSecPerQuest())});
+        testMap.put("pass_score", new String[]{String.valueOf(test.getPassScore())});
+        return testService.create(testMap);
     }
 
     private void createQuestion(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String paramQuestion = request.getParameter("question");
+        String paramAnswers = request.getParameter("answers");
+        Question question = mapper.readValue(paramQuestion, new TypeReference<Question>() {
+        });
+        List<Answer> answers = mapper.readValue(paramAnswers, new TypeReference<List<Answer>>() {
+        });
+        int multiple = 0;
+        for(Answer answer:answers){
+            if(answer.getCorrect()) multiple++;
+        }
+        question.setMultiple(multiple>1);
+        question = writeQuestionInDB(question, request);
+        if(question == null){
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        }else{
+            writeAnswersInDB(question.getId(), answers, request);
+            response.getWriter().write(question.getId());
+        }
+    }
 
+    private Question writeQuestionInDB(Question question, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        UserEntity ue = (UserEntity) session.getAttribute("user");
+        Map<String, String[]> questionMap = new HashMap<>();
+        questionMap.put("name", new String[]{question.getName()});
+        questionMap.put("tech_id", new String[]{String.valueOf(question.getTechId())});
+        questionMap.put("admin_id", new String[]{String.valueOf(ue.getId())});
+        questionMap.put("multiple", new String[]{String.valueOf(question.getMultiple())});
+        return questionService.create(questionMap);
+    }
+
+    private void writeAnswersInDB(Integer questionId, List<Answer> answers, HttpServletRequest request) {
+        Map<String, String[]> answerMap;
+        for (Answer answer : answers) {
+            answerMap = new HashMap<>();
+            answerMap.put("name", new String[]{answer.getName()});
+            answerMap.put("question_id", new String[]{String.valueOf(questionId)});
+            answerMap.put("correct", new String[]{String.valueOf(answer.getCorrect())});
+            answerService.create(answerMap);
+        }
     }
 }

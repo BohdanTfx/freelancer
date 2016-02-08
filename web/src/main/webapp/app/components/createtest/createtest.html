@@ -4,99 +4,245 @@
             <h2>Tests creating</h2>
             <md-tabs md-dynamic-height md-border-bottom>
                 <md-tab label="Create tests">
-                    <div class="test-tab">
-                        <md-content class="md-padding">
-                            <div class="row">
-                                <div class="col-md-6 col-xs-12">
-                                    <md-input-container class="md-icon-float md-block">
-                                        <label>Test name</label>
-                                        <md-icon md-font-icon="fa-tasks" class="fa md-hue-2"
-                                                 style="display:inline-block;"></md-icon>
-                                        <input ng-model="test.name" type="text">
-                                    </md-input-container>
-                                </div>
-                                <div class="col-md-6 col-xs-12">
-                                    <md-input-container class="md-icon-float md-block">
-                                        <label><strong>Technology</strong></label>
-                                        <md-icon md-font-icon="fa-tv" class="fa md-hue-2"
-                                                 style="display:inline-block;"></md-icon>
-                                        <md-select ng-model="test.techId" ng-change="getQuestionsByTechId({{test.techId}})">
-                                            <md-option ng-repeat="technology in technologies" value="{{technology.id}}">
-                                                {{technology.name}}
-                                            </md-option>
-                                        </md-select>
-                                        <md-icon md-svg-src="img/icons/ic_euro_24px.svg"></md-icon>
-                                    </md-input-container>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6 col-xs-12">
-                                    <md-input-container class="md-icon-float md-block">
-                                        <label>Min pass score</label>
-                                        <md-icon md-font-icon="fa-line-chart" class="fa md-hue-2"
-                                                 style="display:inline-block;"></md-icon>
-                                        <input ng-model="test.passScore" type="number" min="0" max="100" step="1">
-                                    </md-input-container>
-                                </div>
-                                <div class="col-md-6 col-xs-12">
-                                    <md-input-container class="md-icon-float md-block">
-                                        <label>Time (in minutes)</label>
-                                        <md-icon md-font-icon="fa-clock-o" class="fa md-hue-2"
-                                                 style="display:inline-block;"></md-icon>
-                                        <input ng-model="test.secPerQuest" type="number" min="1" max="300" step="1">
-                                    </md-input-container>
-                                </div>
-                            </div>
-
-                        </md-content>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <md-subheader class="md-no-sticky">Available questions ({{availableQuestions.length}})</md-subheader>
+                    <form name="testForm" novalidate
+                          ng-submit="testForm.$valid && createTest()">
+                        <div class="test-tab">
                             <md-content class="md-padding">
-                                <md-list-item ng-repeat="question in availableQuestions">
-                                    <div ng-click="moveRight(question.id)">
-                                        <p> {{ question.name }} </p>
-                                        <md-checkbox class="md-secondary" ng-model="topping.wanted"></md-checkbox>
+                                <div class="row">
+                                    <div class="col-md-6 col-xs-12">
+                                        <md-input-container class="md-icon-float md-block">
+                                            <label>Test name</label>
+                                            <md-icon md-font-icon="fa-tasks" class="fa md-hue-2"
+                                                     style="display:inline-block;"></md-icon>
+                                            <input required name="name" ng-model="test.name" type="text"
+                                                   md-maxlength="50">
+
+                                            <div ng-messages="testForm.name.$error">
+                                                <div ng-message="required">Please type test name.</div>
+                                                <div ng-message="md-maxlength">Max length error.</div>
+                                            </div>
+                                        </md-input-container>
                                     </div>
-                                    <md-divider></md-divider>
-                                </md-list-item>
+                                    <div class="col-md-6 col-xs-12">
+                                        <md-input-container class="md-icon-float md-block">
+                                            <label><strong>Technology</strong></label>
+                                            <md-icon md-font-icon="fa-tv" class="fa md-hue-2"
+                                                     style="display:inline-block;"></md-icon>
+                                            <md-select required name="technology" ng-model="test.techId"
+                                                       ng-change="getQuestionsByTechId(test.techId)">
+                                                <md-option ng-repeat="technology in technologies"
+                                                           value="{{technology.id}}">
+                                                    {{technology.name}}
+                                                </md-option>
+                                            </md-select>
+                                            <div ng-messages="testForm.technology.$error">
+                                                <div ng-message="required">Please choose technology.</div>
+                                            </div>
+                                            <md-icon md-svg-src="img/icons/ic_euro_24px.svg"></md-icon>
+                                        </md-input-container>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 col-xs-12">
+                                        <md-input-container class="md-icon-float md-block">
+                                            <label>Min pass score</label>
+                                            <md-icon md-font-icon="fa-line-chart" class="fa md-hue-2"
+                                                     style="display:inline-block;"></md-icon>
+                                            <input required name="passScore" ng-model="test.passScore" type="number"
+                                                   min="0"
+                                                   max="100" step="1">
+
+                                            <div ng-messages="testForm.passScore.$error">
+                                                <div ng-message="required">Set min pass score.</div>
+                                                <div ng-message="min">Min available score is 0.</div>
+                                                <div ng-message="max">Max available score is 100.</div>
+                                                <div ng-message="number">Set number</div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                                    <div class="col-md-6 col-xs-12">
+                                        <md-input-container class="md-icon-float md-block">
+                                            <label>Time for question (in seconds)</label>
+                                            <md-icon md-font-icon="fa-clock-o" class="fa md-hue-2"
+                                                     style="display:inline-block;"></md-icon>
+                                            <input required name="secPerQuest" ng-model="test.secPerQuest" type="number"
+                                                   min="10"
+                                                   max="300" step="1">
+                                            <div ng-messages="testForm.secPerQuest.$error">
+                                                <div ng-message="required">Set seconds per question.</div>
+                                                <div ng-message="min">Min time for question is 10 sec.</div>
+                                                <div ng-message="max">Max time for question is 300 sec (5 min).</div>
+                                                <div ng-message="number">Set number</div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                                </div>
                             </md-content>
                         </div>
-                        <div class="col-md-6">
-                            <md-subheader class="md-no-sticky">Chosen questions ({{chosenQuestions.length}})</md-subheader>
-                            <md-content class="md-padding">
-                                <md-list-item ng-repeat="question in chosenQuestions">
-                                    <div ng-click="moveLeft(question.id)">
-                                        <p> {{ question.name }} </p>
-                                        <md-checkbox class="md-secondary" ng-model="topping.wanted"></md-checkbox>
+                        <md-subheader class="md-no-sticky">Click on question to move it to opposite group</md-subheader>
+                        <div class="row">
+                            <div class="col-md-6 col-xs-12">
+                                <div class="quest-column">
+                                    <div class="pagination dark animated fadeIn">
+                                        <div class="col-xs-6">
+                                            <button type="button"
+                                                    ng-click="openPage(0)" class="page dark gradient"
+                                                    ng-if="showFirst">
+                                                <i class="fa fa-caret-left"></i>
+                                                <span>First</span>
+                                            </button>
+                                            <div data-pagination="yes" class="inline-block">
+                                                <button type="button"
+                                                        ng-repeat="page in pages"
+                                                        ng-click="page.first == 'current' ? '' : openPage(page.second)"
+                                                        ng-class="page.first == 'current' ? 'page dark active' : 'page dark gradient'">
+                                                    {{page.second
+                                                    + 1}}
+                                                </button>
+                                            </div>
+                                            <button type="button"
+                                                    class="page dark gradient" ng-click="openPage('last')"
+                                                    ng-if="showLast">
+                                                <span>{{maxPage}} </span>
+                                                <i class="fa fa-caret-right"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                    <md-divider></md-divider>
-                                </md-list-item>
-                            </md-content>
+                                    <md-subheader class="md-no-sticky">Available questions
+                                    </md-subheader>
+                                    <md-content class="md-padding">
+                                        <md-list-item ng-repeat="question in availableQuestions">
+                                            <div ng-if="question.checked == true">
+                                                <div ng-disabled="true" class="disabled">
+                                                    <p> {{ question.name }} </p>
+                                                </div>
+                                            </div>
+                                            <div ng-if="question.checked != true">
+                                                <div ng-click="moveRight(question.id)">
+                                                    <p> {{ question.name }} </p>
+                                                </div>
+                                            </div>
+                                            <md-divider></md-divider>
+                                        </md-list-item>
+                                    </md-content>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xs-12">
+                                <div class="quest-column">
+                                    <md-subheader class="md-no-sticky">Chosen questions ({{chosenQuestions.length}})
+                                    </md-subheader>
+                                    <md-content class="md-padding">
+                                        <md-list-item ng-repeat="question in chosenQuestions">
+                                            <div ng-click="moveLeft(question.id)">
+                                                <p> {{ question.name }} </p>
+                                            </div>
+                                            <md-divider></md-divider>
+                                        </md-list-item>
+                                    </md-content>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-
-                    <div class="row">
-                        <md-button style="float: right; margin-right: 30px" class="md-raised md-primary"
-                                   ng-click="createTest()">Create test
-                        </md-button>
-                    </div>
-
+                        <div class="row">
+                            <button class="btn btn-primary" style="float: right; margin-right: 30px"
+                                    name="createTestBtn">
+                                <span>Create test</span>
+                            </button>
+                            <button type="button" ng-click="testReset()"
+                                    class="btn btn-primary" style="float: right; margin-right: 30px"
+                                    name="resetTestBtn">
+                                <span>Reset</span>
+                            </button>
+                        </div>
+                    </form>
                 </md-tab>
                 <md-tab label="Create questions">
-                    <div class="question-tab">
-                        <md-content class="md-padding">
+                    <form name="questForm" novalidate
+                          ng-submit="questForm.$valid && createQuestion()">
+                        <div class="question-tab">
+                            <md-content class="md-padding">
+                                <div class="row">
+                                    <div class="col-md-9 col-xs-12">
+                                        <md-input-container class="md-icon-float md-block">
+                                            <label>Question name</label>
+                                            <input required name="name" ng-model="question.name" type="text"
+                                                   md-minlength="5" md-maxlength="255">
+                                            <div ng-messages="questForm.name.$error">
+                                                <div ng-message="required">Please type question name.</div>
+                                                <div ng-message="md-minlength">Min length error.</div>
+                                                <div ng-message="md-maxlength">Max length error.</div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                                    <div class="col-md-9 col-xs-12">
+                                        <md-input-container class="md-icon-float md-block">
+                                            <label><strong>Technology</strong></label>
+                                            <md-icon md-font-icon="fa-tv" class="fa md-hue-2"
+                                                     style="display:inline-block;"></md-icon>
+                                            <md-select required name="technology" ng-model="question.techId">
+                                                <md-option ng-repeat="technology in technologies"
+                                                           value="{{technology.id}}">
+                                                    {{technology.name}}
+                                                </md-option>
+                                            </md-select>
+                                            <div ng-messages="questForm.technology.$error">
+                                                <div ng-message="required">Please choose technology.</div>
+                                            </div>
+                                        </md-input-container>
+                                    </div>
+                                </div>
+                                <div class="row answers-block">
+                                    <button class="btn btn-primary" ng-click="addAnswerForm()"
+                                            style="margin-bottom: 15px">
+                                        <span>Add answer</span>
+                                    </button>
+                                    <div ng-repeat="answer in answers track by $index">
+                                        <div class="row">
+                                            <div class="col-md-9 col-sm-7 col-xs-6">
+                                                <md-input-container class="md-block">
+                                                    <label>Name</label>
+                                                    <input required name="answerName" ng-model="answer.name">
 
-                        </md-content>
-                    </div>
+                                                    <div ng-messages="questForm.answerName.$error">
+                                                        <div ng-message="required">This is required.</div>
+                                                    </div>
+                                                </md-input-container>
+                                            </div>
+                                            <div class="col-md-2 col-sm-3 col-xs-2">
+                                                <md-checkbox md-no-ink="true" class="answCtrl green"
+                                                             ng-model="answer.correct">
+                                                <span class="hidden-xs" ng-show="answer.correct"
+                                                      style="color: #009926;"><strong>Correct</strong></span>
+                                                <span class="hidden-xs" ng-hide="answer.correct"
+                                                      style="color: #D9534F;"><strong>Incorrect</strong></span>
+                                                </md-checkbox>
+                                            </div>
+                                            <div class="col-md-1 col-sm-2">
+                                                <button type="button"
+                                                        ng-click="deleteAnswerForm($index)"
+                                                        class="answCtrl btn btn-danger">
+                                                    <i class="glyphicon glyphicon-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <button class="btn btn-primary" style="float: right; margin-right: 24px"
+                                            name="createQuestionBtn">
+                                        <span>Create question</span>
+                                    </button>
+                                    <button type="button" ng-click="questionReset()"
+                                            class="btn btn-primary" style="float: right; margin-right: 30px"
+                                            name="resetQustionBtn">
+                                        <span>Reset</span>
+                                    </button>
+                                </div>
+                            </md-content>
+                        </div>
+                    </form>
                 </md-tab>
             </md-tabs>
         </md-content>
     </div>
-
-
 </div>
 
