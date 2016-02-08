@@ -363,14 +363,16 @@ public class UserController extends HttpServlet implements Responsable {
         HttpSession session = request.getSession();
         if (session != null) {
             UserEntity ue = (UserEntity) session.getAttribute("user");
-            String role = ue.getRole();
-            if ("developer".equals(role)) {
-                List<Complaint> complaints = complaintService.getByDevId(ue.getId());
-                for (Complaint c : complaints) {
-                    for (Ordering o : orderings) {
-                        if (c.getOrderId().equals(o.getId())) {
-                            o.setIsComplaint(true);
-                            break;
+            if(ue != null) {
+                String role = ue.getRole();
+                if ("developer".equals(role)) {
+                    List<Complaint> complaints = complaintService.getByDevId(ue.getId());
+                    for (Complaint c : complaints) {
+                        for (Ordering o : orderings) {
+                            if (c.getOrderId().equals(o.getId())) {
+                                o.setIsComplaint(true);
+                                break;
+                            }
                         }
                     }
                 }
@@ -930,7 +932,7 @@ public class UserController extends HttpServlet implements Responsable {
         String paramId = request.getParameter("id");
         String role = request.getParameter("role");
 
-        if(paramId==null || "".equals(paramId) || !paramId.matches("[0-9]")){
+        if(paramId==null || "".equals(paramId)){
             response.sendError(HttpServletResponse.SC_CONFLICT);
             return;
         }

@@ -113,10 +113,11 @@
 			<div class="panel panel-info" ng-repeat="order in orders"
 				ng-if="ordersLoading == false">
 				<div class="panel-heading">
-					<div class="panel-title">{{order.title}}</div>
-                    <div class="btn btm-sm btn-warning pull-right" ng-disabled="order.isComplaint" data-toggle="modal"
-                         data-target=".bs-example-modal-sm" ng-click="setOrderID(order.id)" style="padding: 3px">
-                        Complain
+					<div class="panel-title">{{order.title}}
+                        <div class="btn btm-sm btn-danger pull-right" ng-disabled="order.isComplaint" data-toggle="modal"
+                             data-target=".bs-example-modal-sm" ng-click="setOrderID(order.id)" style="padding: 3px">
+                            Complain
+                        </div>
                     </div>
 				</div>
 				<div class="panel-body">
