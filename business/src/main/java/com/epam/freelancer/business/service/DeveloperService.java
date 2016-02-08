@@ -29,8 +29,8 @@ public class DeveloperService extends UserService<Developer> {
 
 	@Override
 	public Developer create(Map<String, String[]> data) {
-		if (!isDataValid(prepareData(data)))
-			throw new RuntimeException("Validation exception");
+//		if (!isDataValid(prepareData(data)))
+//			throw new RuntimeException("Validation exception");
 
 		Developer entity = new Developer();
 		String[] value = data.get("first_name");

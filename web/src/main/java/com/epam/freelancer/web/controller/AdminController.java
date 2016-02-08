@@ -2,11 +2,10 @@ package com.epam.freelancer.web.controller;
 
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.manager.UserManager;
-import com.epam.freelancer.business.service.AdminCandidateService;
-import com.epam.freelancer.business.service.CustomerService;
-import com.epam.freelancer.business.service.DeveloperService;
+import com.epam.freelancer.business.service.*;
 import com.epam.freelancer.business.util.SendMessageToEmail;
 import com.epam.freelancer.database.model.AdminCandidate;
+import com.epam.freelancer.database.model.OrderCounter;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -15,9 +14,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -33,6 +36,7 @@ public class AdminController extends HttpServlet implements Responsable {
     private AdminCandidateService adminCandidateService;
     private DeveloperService developerService;
     private CustomerService customerService;
+    private OrderCounterService orderCounterService;
 
 
     public AdminController() {
@@ -41,6 +45,7 @@ public class AdminController extends HttpServlet implements Responsable {
         adminCandidateService = (AdminCandidateService) ApplicationContext.getInstance().getBean("adminCandidateService");
         developerService = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
         customerService = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
+        orderCounterService = (OrderCounterService)ApplicationContext.getInstance().getBean("orderCounterService");
     }
 
     @Override
@@ -49,8 +54,11 @@ public class AdminController extends HttpServlet implements Responsable {
             String path = FrontController.getPath(request);
 
             switch (path) {
-                case "/admin/statistics":
+                case "admin/statistics/devcust":
                     sendDevAndCustAmount(request, response);
+                    break;
+                case "admin/statistics/orders":
+                    sendCreationOrdersAmount(request, response);
                     break;
                 default:
 
@@ -135,11 +143,50 @@ public class AdminController extends HttpServlet implements Responsable {
         adminCandidateService.remove(adminCandidateService.getAdminCandidateByKey(uuid));
     }
 
-    private void sendDevAndCustAmount(HttpServletRequest request,HttpServletResponse response) throws IOException{
+    private void sendDevAndCustAmount(HttpServletRequest request,HttpServletResponse response) throws IOException, ParseException {
         Map<String,Integer> map = new HashMap<>();
         map.put("devAmount",developerService.getAllWorkers().size());
         map.put("custAmount",customerService.findAll().size());
 
         sendResponse(response,map,mapper);
     }
+
+    private void sendCreationOrdersAmount(HttpServletRequest request,HttpServletResponse response) throws IOException, ParseException {
+        List<OrderCounter> list = orderCounterService.getAllForLast30Days();
+        Map<LocalDate,Integer> map = new TreeMap<>();
+        Map<String,Object> resultMap = new HashMap<>();
+        List<Integer> listDays = new ArrayList<>();
+        List<String> listMonth = new ArrayList<>();
+
+        Calendar cal = Calendar.getInstance();
+        for (int i = 0; i < 30; i++) {
+            cal.add(Calendar.DATE, -1);
+            map.put(new Date(cal.getTimeInMillis()).toLocalDate(),0);
+        }
+
+
+        for (OrderCounter o:list){
+            if(map.containsKey(o.getDate().toLocalDate())){
+                map.put(o.getDate().toLocalDate(),o.getCount());
+            }
+        }
+
+
+        for (LocalDate date:map.keySet()) {
+            listDays.add(date.getDayOfMonth());
+            listMonth.add(date.getMonth().toString());
+        }
+
+        resultMap.put("orderValues",map.values());
+        resultMap.put("listDays",listDays);
+        resultMap.put("listMonth",listMonth);
+
+        sendResponse(response,resultMap,mapper);
+
+
+
+    }
+
+
+
 }

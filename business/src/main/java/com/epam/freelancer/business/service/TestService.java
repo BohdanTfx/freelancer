@@ -110,7 +110,7 @@ public class TestService extends GenericService<Test, Integer> {
 		answerDao.setConnectionPool(DAOManager.getInstance()
 				.getConnectionPool());
 	}
-	public void setAdminCandidatDao(GenericDao<AdminCandidate, Integer> adminCandidateDao) {
+	public void setAdminCandidateDao(GenericDao<AdminCandidate, Integer> adminCandidateDao) {
 		this.adminCandidateDao = adminCandidateDao;
 		answerDao.setConnectionPool(DAOManager.getInstance()
 				.getConnectionPool());

@@ -2,10 +2,7 @@ package com.epam.freelancer.web.controller;
 
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.service.*;
-import com.epam.freelancer.database.model.Contact;
-import com.epam.freelancer.database.model.Customer;
-import com.epam.freelancer.database.model.Feedback;
-import com.epam.freelancer.database.model.UserEntity;
+import com.epam.freelancer.database.model.*;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -19,78 +16,96 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CustomerController extends HttpServlet implements Responsable {
-	public static final Logger LOG = Logger.getLogger(CustomerController.class);
-	private static final long serialVersionUID = -2356506023594947745L;
-	private CustomerService customerService;
-	private FeedbackService feedbackService;
-	private OrderingService orderingService;
-	private TestService testService;
-	private DeveloperService developerService;
-	private TechnologyService technologyService;
-	private ObjectMapper mapper;
+    public static final Logger LOG = Logger.getLogger(CustomerController.class);
+    private static final long serialVersionUID = -2356506023594947745L;
+    private CustomerService customerService;
+    private FeedbackService feedbackService;
+    private OrderingService orderingService;
+    private TestService testService;
+    private DeveloperService developerService;
+    private TechnologyService technologyService;
+    private OrderCounterService orderCounterService;
+    private ObjectMapper mapper;
 
-	public CustomerController() {
-		testService = (TestService) ApplicationContext.getInstance().getBean(
-				"testService");
-		technologyService = (TechnologyService) ApplicationContext
-				.getInstance().getBean("technologyService");
-		customerService = (CustomerService) ApplicationContext.getInstance()
-				.getBean("customerService");
-		mapper = new ObjectMapper();
-		developerService = (DeveloperService) ApplicationContext.getInstance()
-				.getBean("developerService");
-		feedbackService = (FeedbackService) ApplicationContext.getInstance()
-				.getBean("feedbackService");
-		orderingService = (OrderingService) ApplicationContext.getInstance()
-				.getBean("orderingService");
-	}
+    public CustomerController() {
+        testService = (TestService) ApplicationContext.getInstance().getBean(
+                "testService");
+        technologyService = (TechnologyService) ApplicationContext
+                .getInstance().getBean("technologyService");
+        customerService = (CustomerService) ApplicationContext.getInstance()
+                .getBean("customerService");
+        mapper = new ObjectMapper();
+        developerService = (DeveloperService) ApplicationContext.getInstance()
+                .getBean("developerService");
+        feedbackService = (FeedbackService) ApplicationContext.getInstance()
+                .getBean("feedbackService");
+        orderingService = (OrderingService) ApplicationContext.getInstance()
+                .getBean("orderingService");
+        orderCounterService = (OrderCounterService) ApplicationContext.getInstance()
+                .getBean("orderCounterService");
+    }
 
-	@Override
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException
-	{
-		try {
-			switch (FrontController.getPath(request)) {
-			case "cust/personal":
-				fillCustomerPersonalPage(request, response);
-				break;
-			default:
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			LOG.fatal(getClass().getSimpleName() + " - " + "doGet");
-		}
-	}
-
-private void createOrder(HttpServletRequest request,
-        HttpServletResponse response) throws IOException
-        {
-        UserEntity customer = (UserEntity) request.getSession().getAttribute(
-        "user");
+    @Override
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response) throws ServletException, IOException {
         try {
-        String requestData = request.getReader().readLine();
-        Map<String, String> data = mapper.readValue(requestData,
-        new TypeReference<Map<String, String>>() {
-        });
-        data.put("customer_id", customer.getId().toString());
-        orderingService.create(data
-        .entrySet()
-        .stream()
-        .collect(
-        Collectors.toMap(Map.Entry::getKey,
-        e -> new String[] { e.getValue() })));
+            switch (FrontController.getPath(request)) {
+                case "cust/personal":
+                    fillCustomerPersonalPage(request, response);
+                    break;
+                default:
+            }
         } catch (Exception e) {
-        e.printStackTrace();
-        response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
-        return;
+            e.printStackTrace();
+            LOG.fatal(getClass().getSimpleName() + " - " + "doGet");
+        }
+    }
+
+    private void createOrder(HttpServletRequest request,
+                             HttpServletResponse response) throws IOException {
+        UserEntity customer = (UserEntity) request.getSession().getAttribute(
+                "user");
+        try {
+            String requestData = request.getReader().readLine();
+            Map<String, String> data = mapper.readValue(requestData,
+                    new TypeReference<Map<String, String>>() {
+                    });
+            data.put("customer_id", customer.getId().toString());
+            orderingService.create(data
+                    .entrySet()
+                    .stream()
+                    .collect(
+                            Collectors.toMap(Map.Entry::getKey,
+                                    e -> new String[]{e.getValue()})));
+            incrementOrderCreationStatiscts();
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
+            return;
         }
         response.sendError(HttpServletResponse.SC_OK);
+    }
+
+
+    private void incrementOrderCreationStatiscts() {
+        OrderCounter counter = orderCounterService.getOrderCounterByDate(
+                new java.sql.Date(new java.util.Date().getTime()));
+        if (counter != null) {
+            orderCounterService.incrementCounter(counter.getId());
+        } else {
+            String[] count = {"1"};
+            Map<String, String[]> map = new HashMap<>();
+            map.put("count", count);
+            orderCounterService.create(map);
         }
+
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -103,10 +118,10 @@ private void createOrder(HttpServletRequest request,
                     updatePersonalData(request, response);
                     break;
                 case "cust/getFeedForCust":
-                     getFeedbacksByIdForCust(request, response);
-                     break;
+                    getFeedbacksByIdForCust(request, response);
+                    break;
                 case "cust/getContForCust":
-                     getContForCust(request, response);
+                    getContForCust(request, response);
                     break;
                 case "cust/history":
                     getCustomerHistory(request, response);
@@ -179,7 +194,7 @@ private void createOrder(HttpServletRequest request,
 
                 sendResponse(response, feedbacks, mapper);
 
-            }catch (Exception e) {
+            } catch (Exception e) {
                 response.sendError(500);
             }
         }
@@ -206,9 +221,8 @@ private void createOrder(HttpServletRequest request,
         }
     }
 
-private void fillCustomerPersonalPage(HttpServletRequest request,
-        HttpServletResponse response) throws IOException
-        {
+    private void fillCustomerPersonalPage(HttpServletRequest request,
+                                          HttpServletResponse response) throws IOException {
         Customer customer;
         Contact contact;
         HttpSession session;
@@ -228,16 +242,15 @@ private void fillCustomerPersonalPage(HttpServletRequest request,
         System.out.println(contactJson);
 
         resultJson = "{\"cust\":" + customerJson + ",\"cont\":" + contactJson
-        + "}";
+                + "}";
 
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(resultJson);
-        }
+    }
 
     private void updatePersonalData(HttpServletRequest request,
-                                    HttpServletResponse response) throws IOException
-    {
+                                    HttpServletResponse response) throws IOException {
         Customer customer = null;
         Contact contact;
         String customerJson;
@@ -253,7 +266,7 @@ private void fillCustomerPersonalPage(HttpServletRequest request,
         try {
             customer = mapper.readValue(customerJson, Customer.class);
 
-        } catch(Exception e){
+        } catch (Exception e) {
             LOG.warn("Some problem with mapper Customer Controller");
         }
 
@@ -265,7 +278,6 @@ private void fillCustomerPersonalPage(HttpServletRequest request,
         contact = mapper.readValue(contactJson, Contact.class);
         System.out.println(contact);
     }
-
 
 
     private void getCustomerHistory(HttpServletRequest
