@@ -1,33 +1,33 @@
 var filterOpen = false;
 
-angular.module('FreelancerApp')
+angular
+		.module('FreelancerApp')
 		.controller(
-				'jobsCtrl',
-    function ($scope, jobsAPI, $log, $http, Notification) {
-        $scope.filter = {};
-					$scope.hourly = {};
-					$scope.ordersLoading = true;
+				'developersCtrl',
+				function($scope, developersService, $log, $http, Notification) {
+					$scope.filter = {}
+					$scope.developersLoading = true;
 					$scope.filterButtonStyle = 'fa-angle-double-down';
+					$scope.filter.payment = {};
+					$scope.filter.tooltip = {};
+					$scope.filter.tooltip.title = 'Open filter';
+					$scope.filter.tooltip.locked = true;
 
 					$scope.filterToggle = function() {
 						if (filterOpen) {
 							$scope.filterState = '';
 							$scope.filterButtonStyle = 'fa-angle-double-down';
+							$scope.filter.tooltip.title = 'Open filter';
+							$scope.filter.tooltip.locked = true;
 							filterOpen = false;
 						} else {
 							$scope.filterState = 'in';
 							$scope.filterButtonStyle = 'fa-angle-double-up';
+							$scope.filter.tooltip.title = 'Close filter';
+							$scope.filter.tooltip.locked = false;
 							filterOpen = true;
 						}
-                    };
-
-        $scope.setOrderID = function (orderID) {
-            $scope.compOrderID = orderID;
-        };
-
-        $scope.complain = function () {
-            jobsAPI.toComplain($http, $scope, $scope.compOrderID, Notification);
-        };
+					}
 
 					$scope.itemsPerPage = [ {
 						number : 5,
@@ -39,33 +39,91 @@ angular.module('FreelancerApp')
 						number : 15,
 						text : "Show 15 items on page"
 					} ];
-					$scope.itesStep = $scope.itemsPerPage[jobsAPI
+
+					$scope.itesStep = $scope.itemsPerPage[developersService
 							.getStep($scope) / 5 - 1];
 
 					$scope.timeZones = getTimeZones();
 
 					$scope.doFilter = function() {
-						jobsAPI.loadOrders($scope, $http);
-                    };
+						developersService.loadDevelopers($scope.filter,
+								$scope.last, $scope.itemListStart,
+								$scope.developersLoading, $scope.itesStep,
+								$scope.filter.payment.min,
+								$scope.filter.payment.max).success(
+								function(data, status, headers, config) {
+									$scope.maxPage = data.maxPage;
+									developersService.fillPagination(
+											data.pages, $scope);
+									$scope.developers = data.items;
+
+									$scope.developersLoading = false;
+								}).error(
+								function(data, status, headers, config) {
+									Notification.error({
+										title : 'Error!',
+										message : 'Some errors occurred'
+												+ ' while loading developers!'
+									});
+								});
+					}
 
 					$scope.changeStep = function() {
-						localStorage.setItem("freelancerOrdersStep",
+						localStorage.setItem("freelancerDevelopersStep",
 								$scope.itesStep.number);
-						jobsAPI.loadOrders($scope, $http);
-                    };
+						$scope.doFilter();
+					}
 
 					$scope.openPage = function(page) {
-						if (page == 'last')
-							jobsAPI.loadOrders($scope, $http, 1);
-						else {
+						if (page == 'last') {
+							$scope.last = 1;
+							$scope.doFilter();
+						} else {
 							$scope.itemListStart = page;
-							jobsAPI.loadOrders($scope, $http);
+							$scope.last = undefined;
+							$scope.doFilter();
 						}
-                    };
+					}
 
-					jobsAPI.loadLimits($scope, $http);
-					jobsAPI.loadOrders($scope, $http);
-					jobsAPI.loadTechnologies($scope, $http);
+					developersService
+							.loadTechnologies($scope, $http)
+							.success(function(data, status, headers, config) {
+								$scope.technologies = data;
+							})
+							.error(
+									function(data, status, headers, config) {
+										Notification
+												.error({
+													title : 'Error!',
+													message : 'Some errors occurred'
+															+ ' while loading technologies! Please, try again.'
+												});
+									});
+					$scope.doFilter();
+					developersService
+							.loadPaymentLimits()
+							.success(function(data, status, headers, config) {
+								$scope.filter.payment = {};
+								$scope.filter.payment.min = data.min;
+								$scope.filter.payment.max = data.max;
+
+								$scope.filter.payment.options = {
+									floor : data.min,
+									ceil : data.max,
+									translate : function(value) {
+										return '$' + value;
+									}
+								};
+							})
+							.error(
+									function(data, status, headers, config) {
+										Notification
+												.error({
+													title : 'Error!',
+													message : 'Some errors occurred'
+															+ ' while loading payment limits! Please, try again.'
+												});
+									})
 				});
 
 function getTimeZones() {

@@ -82,16 +82,6 @@ angular.module('FreelancerApp')
      });
 
 
-angular.module('FreelancerApp').filter('dateFormat', function ($filter) {
-    return function (input) {
-        if (input == null) {
-            return "";
-        }
-        var _date = $filter('date')(new Date(input), 'MMM dd yyyy');
-        return _date;
-    };
-});
-
 function DialogController($scope, $mdDialog, project,customer,workers,workerInfo) {
     $scope.project = project;
     $scope.customer = customer;

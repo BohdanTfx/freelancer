@@ -12,14 +12,8 @@ angular
 								AuthenticationService, $http) {
 							$scope.user = {};
 							$scope.doClose = function() {
-								$scope.showError = false;
-							}
-
-							if (typeof $cookieStore
-									.get('freelancerRememberMeCookieAng') !== 'undefined') {
-								$location.path('/');
-								return;
-							}
+                                $scope.showError = false;
+                            };
 
 							$scope.login = function() {
 								AuthenticationService

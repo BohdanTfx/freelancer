@@ -71,7 +71,7 @@ public class CustomerService extends UserService<Customer> {
 				data.get("first_name") == null ? null
 						: data.get("first_name")[0]);
 		map.put(ValidationParametersBuilder.createParameters(false).maxLength(
-				255), data.get("img_url") == null ? null
+				255).notEmptyString(false), data.get("img_url") == null ? null
 				: data.get("img_url")[0]);
 		map.put(ValidationParametersBuilder.createParameters(false)
 				.maxLength(50).minLength(1),

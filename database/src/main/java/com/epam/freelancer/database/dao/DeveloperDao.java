@@ -1,5 +1,7 @@
 package com.epam.freelancer.database.dao;
 
+import java.util.Map;
+
 import com.epam.freelancer.database.model.Developer;
 
 /**
@@ -7,4 +9,7 @@ import com.epam.freelancer.database.model.Developer;
  */
 public interface DeveloperDao extends UserDao<Developer> {
 
+	Double getPaymentLimit(String limitType);
+
+	Integer getFilteredObjectNumber(Map<String, Object> parameters);
 }

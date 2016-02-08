@@ -46,11 +46,10 @@ public class AdminController extends HttpServlet implements Responsable {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-
             String path = FrontController.getPath(request);
 
             switch (path) {
-                case "admin/getstatistics":
+                case "/admin/statistics":
                     sendDevAndCustAmount(request, response);
                     break;
                 default:

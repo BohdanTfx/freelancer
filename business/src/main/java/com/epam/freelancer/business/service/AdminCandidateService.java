@@ -1,16 +1,14 @@
 package com.epam.freelancer.business.service;
 
-import com.epam.freelancer.database.dao.AdminCandidateDao;
-import com.epam.freelancer.database.model.AdminCandidate;
-import com.epam.freelancer.business.util.ValidationParametersBuilder;
-import com.epam.freelancer.database.dao.AnswerDao;
-import com.epam.freelancer.database.dao.jdbc.DAOManager;
-import com.epam.freelancer.database.model.Answer;
-
 import java.sql.Timestamp;
-import java.util.*;
-
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import com.epam.freelancer.business.util.ValidationParametersBuilder;
+import com.epam.freelancer.database.dao.AdminCandidateDao;
+import com.epam.freelancer.database.dao.jdbc.DAOManager;
+import com.epam.freelancer.database.model.AdminCandidate;
 
 /**
  * Created by Rynik on 05.02.2016.
@@ -34,7 +32,6 @@ public class AdminCandidateService extends GenericService<AdminCandidate, Intege
         adminCandidate.setEmail(value != null ? value[0] : null);
         value = data.get("access_key");
         adminCandidate.setKey(value != null ? value[0] : null);
-        adminCandidate.setExpire(new Timestamp(new Date().getTime()));
 
         return genericDao.save(adminCandidate);
     }

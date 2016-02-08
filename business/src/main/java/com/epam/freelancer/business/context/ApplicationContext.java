@@ -91,7 +91,8 @@ public final class ApplicationContext {
 		userManager.setAdminService((AdminService) getBean("adminService"));
 		addBean("userManager", userManager);
 		addBean("cookieManager", new CookieManager());
-	}
+        addBean("complaintService", new ComplaintService());
+    }
 
 	private void initDAO() {
 		DAOManager daoManager = DAOManager.getInstance();
@@ -141,6 +142,9 @@ public final class ApplicationContext {
             daoManager.addDao(
                     FollowerDao.class.getSimpleName(),
                     new FollowerJdbcDao());
+            daoManager.addDao(
+                    ComplaintDao.class.getSimpleName(),
+                    new ComplaintJdbcDao());
         } catch (Exception e) {
 			e.printStackTrace();
 		}

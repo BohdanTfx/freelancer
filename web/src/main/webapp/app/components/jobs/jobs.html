@@ -101,9 +101,9 @@
 				</button>
 			</div>
 			<md-input-container class="pull-right box-none">
-			<label>Order per page</label> <md-select ng-model="itesStep"
-				ng-change="changeStep()" class="inner-elements-color-blue-light">
-			<md-option ng-repeat="step in itemsPerPage" ng-value="step">
+			<md-select ng-model="itesStep" ng-change="changeStep()"
+				class="inner-elements-color-blue-light"> <md-option
+				ng-repeat="step in itemsPerPage" ng-value="step">
 			{{step.text}} </md-option> </md-select> </md-input-container>
 		</div>
 		<div id="ordersArea">
@@ -114,6 +114,10 @@
 				ng-if="ordersLoading == false">
 				<div class="panel-heading">
 					<div class="panel-title">{{order.title}}</div>
+                    <div class="btn btm-sm btn-warning pull-right" ng-disabled="order.isComplaint" data-toggle="modal"
+                         data-target=".bs-example-modal-sm" ng-click="setOrderID(order.id)" style="padding: 3px">
+                        Complain
+                    </div>
 				</div>
 				<div class="panel-body">
 					<div class="row">
@@ -148,4 +152,25 @@
 			</div>
 		</div>
 	</div>
+</div>
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Are you sure ?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal"><span
+                        class="glyphicon glyphicon-share-alt"></span> Close
+                </button>
+                <button type="button" id="delete1" class="btn btn-danger" ng-click="complain(complainOrderID)"
+                        data-dismiss="modal"><span
+                        class="glyphicon glyphicon-remove-sign"></span> Complain
+                </button>
+            </div>
+        </div>
+    </div>
 </div>

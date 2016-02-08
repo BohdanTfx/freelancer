@@ -25,6 +25,27 @@ angular.module('FreelancerApp')
             alert("Order doesn't exist");
         });
 
+        $scope.complain = function (orderId) {
+            orderAPI.toComplain($stateParams.orderId).success(function () {
+                Notification
+                    .success({
+                        title: 'Success!',
+                        message: 'Admin will review your complaint.'
+                    })
+            }).error(function () {
+                Notification
+                    .success({
+                        title: 'Error!',
+                        message: 'Error while complaining order.'
+                    })
+            });
+        };
+
+        $scope.compButDis = orderAPI.isCompAlrEx(orderId).success(function () {
+            $scope.disCompBut = true;
+        }).error(function () {
+            $scope.disCompBut = false;
+        });
 
         function getData() {
             orderAPI.getCustomerById($scope.order.customerId).success(function (data) {
@@ -133,7 +154,7 @@ angular.module('FreelancerApp')
                     break;
                 }
             }
-        }
+        };
 
         $scope.subscribe = function (message) {
             if (message == undefined) {

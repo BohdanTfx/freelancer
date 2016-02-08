@@ -1,18 +1,18 @@
-<md-dialog>
+<md-dialog style="max-width:50%;">
     <div class="mywork">
-        <md-toolbar>
-            <div class="md-toolbar-tools">
-                <small> {{project.title}}</small>
+        <div class="modal-header">
+            <div class="md-toolbar-tools modal-subheader" >
+                {{project.title}}
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="cancel()">
                     <i class="fa fa-times"></i>
                 </md-button>
             </div>
-        </md-toolbar>
-        <md-dialog-content style="min-width:500px ;min-height:50%;">
+        </div>
+        <md-dialog-content >
             <md-tabs md-dynamic-height md-border-bottom>
                 <md-tab label="Details">
-                    <md-content class="md-padding">
+                    <md-content class="md-padding" >
 
 
                         <div class="row">
@@ -33,9 +33,9 @@
                             </div>
                             <div class="col-sm-5">
                                 <h4>Information</h4>
-                                <span><strong>Registration date:</strong> {{project.date}}</span><br/>
-                                <span><strong>Start date:</strong> {{project.startedDate}}</span><br/>
-                                <span><strong>End date:</strong> {{project.endedDate}}</span><br/>
+                                <span><strong>Registration:</strong> {{project.date | date:'MMM d, y'}}</span><br/>
+                                <span><strong>Start date:</strong> {{project.startedDate | date:'MMM d, y'}}</span><br/>
+                                <span><strong>End date:</strong> {{project.endedDate | date:'MMM d, y'}}</span><br/>
                                 <span><strong>Time zone:</strong> {{project.zone}}</span><br/>
 
                                 <span>
@@ -50,7 +50,7 @@
                                 </span>
                                 </span><br/>
                                 <span><strong>Payment type:</strong> {{project.payType}}</span><br/>
-                                <span> <strong>Payment</strong> {{workerInfo.newHourly | number:1}} $</span><br>
+                                <span> <strong>Payment</strong> {{workerInfo.newHourly | number:1}} $ p/h</span><br>
                                 <span><strong>Worked time:</strong> {{workerInfo.sumHours}} h</span><br/>
 
 
@@ -61,7 +61,7 @@
                 <md-tab label="Members">
                     <md-content class="md-padding">
 
-                        <div style="min-width:500px ;min-height:50%;">
+                        <div style="min-width:500px;">
                             <div class="panel panel-success panel-unit">
                                 <div class="panel-heading">Customer</div>
                                 <div class="panel-body">
@@ -98,8 +98,8 @@
                                 </div>
                             </div>
 
-                       </div>
-                   </md-content>
+                        </div>
+                    </md-content>
                 </md-tab>
 
             </md-tabs>
