@@ -160,7 +160,7 @@
                           ng-submit="questForm.$valid && createQuestion()">
                         <div class="question-tab">
                             <md-content class="md-padding">
-                                <div class="row">
+                                <div class="row md-padding">
                                     <div class="col-md-9 col-xs-12">
                                         <md-input-container class="md-icon-float md-block">
                                             <label>{{"createtest.label-que-name" | translate}}</label>
@@ -176,8 +176,6 @@
                                     <div class="col-md-9 col-xs-12">
                                         <md-input-container class="md-icon-float md-block">
                                             <label><strong>{{"createtest.label-technology" | translate}}</strong></label>
-                                            <md-icon md-font-icon="fa-tv" class="fa md-hue-2"
-                                                     style="display:inline-block;"></md-icon>
                                             <md-select required name="technology" ng-model="question.techId">
                                                 <md-option ng-repeat="technology in technologies"
                                                            value="{{technology.id}}">

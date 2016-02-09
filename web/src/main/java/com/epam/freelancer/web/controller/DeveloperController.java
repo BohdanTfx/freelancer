@@ -28,9 +28,6 @@ import com.epam.freelancer.database.model.*;
 import com.epam.freelancer.web.json.model.Quest;
 import com.google.gson.Gson;
 
-/**
- * Created by Максим on 22.01.2016.
- */
 public class DeveloperController extends HttpServlet implements Responsable {
 	public static final Logger LOG = Logger.getLogger(UserController.class);
 	private static final long serialVersionUID = -2356506023594947745L;
@@ -102,7 +99,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
 			String path = FrontController.getPath(request);
 
             switch (path) {
-                case "dev/getresults":
+                case "dev/results":
                     sendResults(request, response);
                     break;
                 case "dev/sendPersonalData":
