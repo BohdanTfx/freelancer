@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -193,15 +194,15 @@ public class UserController extends HttpServlet implements Responsable {
                     sendResponse(response, orderingService.findPaymentLimits(),
                             mapper);
                     break;
-			case "user/technologies":
+			    case "user/technologies":
                     sendResponse(response, technologyService.findAll(), mapper);
                     break;
                 case "user/orders/isCompAlrEx":
                     isComplainAlreadyExist(request, response);
                     break;
-			case "user/developers/filter":
-				filterDevelopers(request, response);
-				return;
+			    case "user/developers/filter":
+				    filterDevelopers(request, response);
+				    return;
                 case "user/order":
                     getOrderById(request, response);
                     break;
@@ -242,6 +243,8 @@ public class UserController extends HttpServlet implements Responsable {
                 case "user/getRate":
                     getRate(request, response);
                     return;
+                case "user/confirmEmail":
+                    confirmEmail(request, response);
                 default:
             }
         } catch (Exception e) {
@@ -1078,6 +1081,44 @@ public class UserController extends HttpServlet implements Responsable {
             response.sendError(500);
             return;
         }
+    }
+
+    private void confirmEmail (HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String email = request.getParameter("email");
+
+        UserEntity userEntity = userManager.findUserByEmail(email);
+
+        if(userEntity != null){
+            StringBuilder confirmPhoneCode =  new StringBuilder();
+            SecureRandom random = new SecureRandom();
+            for(int i = 0; i < 4; i++){
+                confirmPhoneCode.append(String.valueOf(random.nextInt(9)));
+            }
+            userEntity.setConfirmCode(confirmPhoneCode.toString());
+            try{
+                String phoneNumber = null;
+                if(userEntity instanceof Developer){
+                    phoneNumber = developerService.getContactByDevId(userEntity.getId()).getPhone();
+                }
+                if(userEntity instanceof Customer){
+                    phoneNumber = customerService.getContactByCustomerId(userEntity.getId()).getPhone();
+                }
+                SmsSender smsSender = new SmsSender();
+                smsSender.sendSms(phoneNumber, "Confirm code: " + confirmPhoneCode.toString(),
+                        "e-freelance");
+            } catch(NullPointerException e){
+                LOG.warn("The phone number is empty");
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                        "Invalid email");
+                response.flushBuffer();
+            }
+        } else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                    "Invalid email");
+            response.flushBuffer();
+            return;
+        }
+
     }
 
 }

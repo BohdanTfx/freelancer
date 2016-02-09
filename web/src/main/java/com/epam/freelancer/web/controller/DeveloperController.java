@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.epam.freelancer.business.manager.UserManager;
+import com.epam.freelancer.business.resize.ImageResize;
 import com.epam.freelancer.business.service.*;
 import com.epam.freelancer.business.util.SmsSender;
 import org.apache.commons.codec.binary.Base64;
@@ -426,21 +427,45 @@ public class DeveloperController extends HttpServlet implements Responsable {
 
 	private void uploadImage(HttpServletRequest request,
 			HttpServletResponse response){
-		HttpSession session = request.getSession();
-		Developer developer = (Developer) session.getAttribute("user");
-		String  imageJson = request.getParameter("image");
-		byte[] encodImage = Base64.decodeBase64(imageJson);
-		String fileName = developer.getFname() + developer.getLname();
-		File file = null;
-		try {
-			file = new File("C:/" + fileName + ".jpg");
-			FileUtils.writeByteArrayToFile(file, encodImage);
-		} catch(Exception e){
-			e.printStackTrace();
-		}
+//		HttpSession session = request.getSession();
+//		Developer developer = (Developer) session.getAttribute("user");
+//		String  imageJson = request.getParameter("image");
+//		byte[] encodImage = Base64.decodeBase64(imageJson);
+//		String fileName = developer.getFname() + developer.getLname();
+//		File file = null;
+//		try {
+//			file = new File("C:/" + fileName + ".jpg");
+//			FileUtils.writeByteArrayToFile(file, encodImage);
+//		} catch(Exception e){
+//			e.printStackTrace();
+//		}
 
-		developer.setImgUrl("/" + fileName + ".jpg");
-		developerService.updateDeveloper(developer);
+			HttpSession session = request.getSession();
+			UserEntity ue = (UserEntity) session.getAttribute("user");
+			String  imageJson = request.getParameter("image");
+			byte[] encodImage = Base64.decodeBase64(imageJson);
+			File file = null;
+			try {
+				String applicationPath = request.getServletContext().getRealPath("");
+				String uploadFilePath = null;
+				if("developer".equals(ue.getRole()))
+					uploadFilePath = applicationPath + File.separator + "uploads"+ File.separator + "developer" + File.separator + ue.getId();
+				else
+					uploadFilePath = applicationPath + File.separator + "uploads"+ File.separator + "customer" + File.separator + ue.getId();
+				file = new File(uploadFilePath  + File.separator + "original" + ".jpg");
+				FileUtils.writeByteArrayToFile(file, encodImage);
+
+				new ImageResize(uploadFilePath + File.separator + "original.jpg",
+						uploadFilePath + File.separator + "sm.jpg", uploadFilePath + File.separator +
+						"md.jpg", uploadFilePath + File.separator + "lg.jpg");
+
+
+			} catch(Exception e){
+				e.printStackTrace();
+			}
+
+//		developer.setImgUrl("/" + fileName + ".jpg");
+//		developerService.updateDeveloper(developer);
 	}
 
 	private void changeDeveloperPassword(HttpServletRequest request, HttpServletResponse response) throws IOException {

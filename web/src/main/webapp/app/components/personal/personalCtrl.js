@@ -1,5 +1,5 @@
 angular.module('FreelancerApp')
-    .controller('personalCtrl',['$scope', '$http','personalAPI', '$log', '$rootScope','$mdDialog', function($scope, $http, personalAPI, $log, $rootScope, $mdDialog){
+    .controller('personalCtrl',['$scope', '$http','personalAPI', '$log', '$rootScope','$mdDialog', 'Notification', function($scope, $http, personalAPI, $log, $rootScope, $mdDialog, Notification){
         var devTemp, techsTemp, contTemp, custTemp, adminTemp;
 
         $scope.newPassword = '';
@@ -28,7 +28,7 @@ angular.module('FreelancerApp')
                     $scope.techs = data.techs;
                 }
                 if(typeof data.contacts != 'undefined'){
-                    $scope.cont = data.contacts;
+                    $scope.contact = data.contacts;
                 }
                 if(typeof data.allTechs != 'undefined'){
                     $scope.allTechs = data.allTechs;
@@ -36,7 +36,7 @@ angular.module('FreelancerApp')
 
                 //check for empty image
                 if(typeof $scope.user.imgUrl == 'undefined'){
-                    $scope.img = 'images/profile/default_logo.jpg';
+                    $scope.img = 'images/profile/no-image.png';
                 } else {
                     $scope.img = $scope.user.imgUrl;
                 }
@@ -66,12 +66,12 @@ angular.module('FreelancerApp')
 
                 //check for empty Json
                 if(typeof data.contacts != 'undefined'){
-                    $scope.cont = data.contacts;
+                    $scope.contact = data.contacts;
                 }
 
                 //check for empty image
                 if (typeof $scope.user.imgUrl == 'undefined') {
-                    $scope.img = 'images/profile/default_logo.jpg';
+                    $scope.img = 'images/profile/no-image.png';
                 }
                 else {
                     $scope.img = $scope.user.imgUrl;
@@ -92,7 +92,7 @@ angular.module('FreelancerApp')
 
                 //check for empty image
                 if (typeof $scope.user.imgUrl == 'undefined') {
-                    $scope.img = 'images/profile/default_logo.jpg';
+                    $scope.img = 'images/profile/no-image.png';
                 }
                 else {
                     $scope.img = $scope.user.imgUrl;
@@ -102,6 +102,82 @@ angular.module('FreelancerApp')
             });
 
         }
+
+
+
+
+
+        $scope.save = function() {
+            var devJson, techsJson, contactJson;
+            $scope.editClass = 'editClass';
+            $scope.hide = false;
+
+            if($rootScope.role =='developer') {
+                devJson = angular.toJson($scope.user);
+                techsJson = angular.toJson($scope.techs);
+                contactJson = angular.toJson($scope.contact);
+
+                devTemp = clone($scope.user);
+                techsTemp = clone($scope.techs);
+                contTemp = clone($scope.contact);
+
+                personalAPI.sendDevData(devJson, techsJson, contactJson).success(function (data){
+                    $scope.result = data;
+                    Notification.success({
+                        title: 'Changes saved!',
+                        message: 'All data is updated!'
+                    });
+
+                }).error(function () {
+                    Notification.error({
+                            title: 'Error!',
+                            message: 'Something wrong with saved data. Try again!'
+                        });
+                });
+            }
+            if($rootScope.role == 'customer') {
+                var custJson;
+                custJson = angular.toJson($scope.user);
+                contactJson = angular.toJson($scope.contact);
+                custTemp = clone($scope.user);
+                contTemp = clone($scope.contact);
+
+                personalAPI.sendCustData(custJson, contactJson).success(function (data){
+                    $scope.result = data;
+                    Notification.success({
+                        title: 'Changes saved!',
+                        message: 'All data is updated!'
+                    });
+                }).error(function () {
+                    Notification.error({
+                        title: 'Error!',
+                        message: 'Something wrong with saved data. Try again!'
+                    });
+                });
+            }
+
+            if($rootScope.role == 'admin'){
+                var adminJson;
+                adminJson = angular.toJson($scope.user);
+                adminTemp = clone($scope.user);
+                $scope.user = adminTemp;
+
+                personalAPI.sendAdminData(adminJson).success(function (data){
+                    $scope.result = data;
+                    Notification.success({
+                        title: 'Changes saved!',
+                        message: 'All data is updated!'
+                    });
+                }).error(function () {
+                    Notification.error({
+                        title: 'Error!',
+                        message: 'Something wrong with saved data. Try again!'
+                    });
+                });
+            }
+
+        };
+
 
         $scope.hide = false;
         $scope.editClass = 'editClass';
@@ -124,6 +200,7 @@ angular.module('FreelancerApp')
             }
         };
 
+
         $scope.disableEditor = function() {
             $scope.hide = false;
             if($rootScope.role =='developer') {
@@ -139,52 +216,6 @@ angular.module('FreelancerApp')
                 $scope.user = adminTemp;
             }
             $scope.editClass = 'editClass';
-        };
-
-        $scope.save = function() {
-            var devJson, techsJson, contactJson;
-            $scope.editClass = 'editClass';
-            $scope.hide = false;
-
-            if($rootScope.role =='developer') {
-                devJson = angular.toJson($scope.user);
-                techsJson = angular.toJson($scope.techs);
-                contactJson = angular.toJson($scope.contact);
-
-                devTemp = clone($scope.user);
-                techsTemp = clone($scope.techs);
-                contTemp = clone($scope.contact);
-
-                personalAPI.sendDevData(devJson, techsJson, contactJson).success(function (data){
-                    $scope.result = data;
-                }).error(function () {
-                });
-            }
-            if($rootScope.role == 'customer') {
-                var custJson;
-                custJson = angular.toJson($scope.user);
-                contactJson = angular.toJson($scope.contact);
-                custTemp = clone($scope.user);
-                contTemp = clone($scope.contact);
-
-                personalAPI.sendCustData(custJson, contactJson).success(function (data){
-                    $scope.result = data;
-                }).error(function () {
-                });
-            }
-
-            if($rootScope.role == 'admin'){
-                var adminJson;
-                adminJson = angular.toJson($scope.user);
-                adminTemp = clone($scope.user);
-                $scope.user = adminTemp;
-
-                personalAPI.sendAdminData(adminJson).success(function (data){
-                    $scope.result = data;
-                }).error(function () {
-                });
-            }
-
         };
 
         function clone(obj) {
@@ -220,12 +251,12 @@ angular.module('FreelancerApp')
                     $scope.result = data;
                     $scope.confirmPasswordFlag = true;
                     $scope.confirmPasswordTemp = clone($scope.newPassword);
-                    scope.showTabDialog();
-                }).error(function (response) {
-                    $scope.confirmPasswordFlag = false;
-                    console.log($scope.confirmPasswordFlag);
-                    $scope.error = 'Invalid credentials';
                     $scope.showTabDialog();
+                }).error(function (response) {
+                    Notification.error({
+                        title: 'Error!',
+                        message: 'Wrong old password. Try again!'
+                    });
                 });
             }
 
@@ -237,9 +268,24 @@ angular.module('FreelancerApp')
                     $scope.showTabDialog();
 
                 }).error(function (response) {
-                    $scope.confirmPasswordFlag = false;
-                    $scope.error = 'Invalid credentials';
+                    Notification.error({
+                        title: 'Error!',
+                        message: 'Wrong old password. Try again!'
+                    });
+                });
+            }
+            if($rootScope.role == 'admin'){
+                personalAPI.changeAdminPassword($scope.password, $scope.newPassword).success(function (data){
+                    $scope.result = data;
+                    $scope.confirmPasswordFlag = true;
+                    $scope.confirmPasswordTemp = $scope.newPassword;
                     $scope.showTabDialog();
+
+                }).error(function (response) {
+                    Notification.error({
+                        title: 'Error!',
+                        message: 'Wrong old password. Try again!'
+                    });
                 });
             }
         };
@@ -256,8 +302,10 @@ angular.module('FreelancerApp')
                     }
 
                 }).error(function (response) {
-                    $scope.flagConfirmPhoneCode = false;
-                    $scope.showDialogConfirm();
+                    Notification.error({
+                        title: 'Error!',
+                        message: 'Wrong confirm code. Try again!'
+                    });
                 });
             }
             if($rootScope.role == 'customer'){
@@ -266,8 +314,23 @@ angular.module('FreelancerApp')
                     $scope.flagConfirmPhoneCode = true;
                     $scope.showDialogConfirm();
                 }).error(function (response) {
-                    $scope.flagConfirmPhoneCode = false;
+                    Notification.error({
+                        title: 'Error!',
+                        message: 'Wrong confirm code. Try again!'
+                    });
+                });
+            }
+
+            if($rootScope.role == 'admin'){
+                personalAPI.confirmCodeAndChangeAdminPassword($scope.confirmPasswordTemp, $scope.confirmCode).success(function (data){
+                    $scope.result = data;
+                    $scope.flagConfirmPhoneCode = true;
                     $scope.showDialogConfirm();
+                }).error(function (response) {
+                    Notification.error({
+                        title: 'Error!',
+                        message: 'Wrong confirm code. Try again!'
+                    });
                 });
             }
         };
@@ -281,9 +344,10 @@ angular.module('FreelancerApp')
                     $scope.showEmailDialog();
 
                 }).error(function (response) {
-                    $scope.confirmPasswordFlag = false;
-                    $scope.error = 'Invalid credentials';
-                    $scope.showEmailDialog();
+                    Notification.error({
+                        title: 'Error!',
+                        message: 'Something wrong with change email. Try again!'
+                    });
                 });
             }
             if($rootScope.role == 'customer'){
@@ -294,10 +358,10 @@ angular.module('FreelancerApp')
                     $scope.showTabDialog();
 
                 }).error(function (response) {
-                    $scope.confirmPasswordFlag = false;
-                    console.log($scope.confirmPasswordFlag);
-                    $scope.error = 'Invalid credentials';
-                    $scope.showTabDialog();
+                    Notification.error({
+                        title: 'Error!',
+                        message: 'Something wrong with change email. Try again!'
+                    });
                 });
             }
 
@@ -309,9 +373,10 @@ angular.module('FreelancerApp')
                     $scope.showTabDialog();
 
                 }).error(function (response) {
-                    $scope.confirmPasswordFlag = false;
-                    $scope.error = 'Invalid credentials';
-                    $scope.showTabDialog();
+                    Notification.error({
+                        title: 'Error!',
+                        message: 'Something wrong with change email. Try again!'
+                    });
                 });
             }
         };
@@ -469,26 +534,46 @@ angular.module('FreelancerApp')
                 var base = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
                 console.log(base);
 
-                    //personalAPI.
                     if($rootScope.role =='developer'){
                         personalAPI.sendDevImage(base).success(function (data){
                             $scope.result = data;
+                            Notification.success({
+                                title: 'Changes saved!',
+                                message: 'The image is uploaded!'
+                            });
                         }).error(function () {
-                            console.log('error image');
+                            Notification.error({
+                                title: 'Error!',
+                                message: 'Something wrong with upload image. Try again!'
+                            });
                         });
                     }
                     if($rootScope.role =='customer'){
                         personalAPI.sendCustImage(base).success(function (data){
                             $scope.result = data;
+                            Notification.success({
+                                title: 'Changes saved!',
+                                message: 'The image is uploaded!'
+                            });
                         }).error(function () {
-                            console.log('error image');
+                            Notification.error({
+                                title: 'Error!',
+                                message: 'Something wrong with upload image. Try again!'
+                            });
                         });
                     }
                     if($rootScope.role =='admin'){
                         personalAPI.sendAdminImage(base).success(function (data){
                             $scope.result = data;
+                            Notification.success({
+                                title: 'Changes saved!',
+                                message: 'The image is uploaded!'
+                            });
                         }).error(function () {
-                            console.log('error image');
+                            Notification.error({
+                                title: 'Error!',
+                                message: 'Something wrong with upload image. Try again!'
+                            });
                         });
                     }
                 }

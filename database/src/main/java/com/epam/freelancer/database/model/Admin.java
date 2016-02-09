@@ -40,6 +40,17 @@ public class Admin implements UserEntity {
 	@Column(name="img_url")
 	private String imgUrl;
     private String role;
+	private String confirmCode;
+	@Column(name = "send_email")
+	private String sendEmail;
+
+	public String getSendEmail() { return sendEmail; }
+
+	public void setSendEmail(String sendEmail) { this.sendEmail = sendEmail; }
+
+	public String getConfirmCode() { return confirmCode; }
+
+	public void setConfirmCode(String confirmCode) { this.confirmCode = confirmCode; }
 
     public String getRole() {
         return role;

@@ -82,6 +82,10 @@
 					url : '/signup/:uuid',
 					templateUrl : 'app/components/signup/signup.html',
 					controller : 'signupCtrl'
+				}).state('forgot', {
+					url : '/forgot',
+					templateUrl : 'app/components/forgotpass/forgot.html',
+					controller : 'forgotCtrl'
 				});
 
 				$locationProvider.html5Mode(false);

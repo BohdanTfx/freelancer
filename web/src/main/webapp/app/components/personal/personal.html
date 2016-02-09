@@ -33,6 +33,18 @@
                                             </div>
                                         </ANY>
                                     </ANY>
+
+
+                                    <form>
+                                        <input type="file" id="file" aria-label="Input">
+                                        <button ng-click="uploadFromDevice($event)" class="btn btn-primary btn-block"
+                                                style="margin-right: 10px;">
+                                            <span class="fa fa-floppy-o"></span> Upload
+                                        </button>
+                                    </form>
+
+
+
                                 </div>
 
                                 <md-content class="col-xs-8 col-sm-9">
@@ -204,11 +216,12 @@
                                                             <strong class="col-xs-8 col-sm-4"
                                                                     style="padding-left: 0px;!important; padding-top: 15px;">Language: </strong>
 
-                                                            <md-input-container class="col-xs-6 col-sm-6 per-box-none per-pad " class="padding-top: 15px;">
+                                                            <md-input-container class="col-xs-6 col-sm-6 per-box-none per-pad ">
                                                                 <md-select ng-model="user.lang"
                                                                            ng-class="editClass"
                                                                            ng-disabled="editClass != ''"
-                                                                           aria-label="Input">
+                                                                           aria-label="Input"
+                                                                           style="margin-top: 10px;">
                                                                     <md-option value="en">English</md-option>
                                                                     <md-option value="uk-UA">Ukraine</md-option>
                                                                 </md-select>
@@ -323,9 +336,9 @@
                                                     <form name="passForm" novalidate
                                                           ng-submit="passForm.$valid && changePassword()" ng-submit="changePassword()">
                                                         <div class="per-line" style="padding-top: 30px;">
-                                                            <strong class="col-xs-12 col-sm-4 per-pad">Old
-                                                                password:</strong>
-                                                            <md-input-container class="col-xs-6 col-sm-6"
+                                                            <!--<strong class="col-xs-12 col-sm-4 per-pad">Old-->
+                                                                <!--password:</strong>-->
+                                                            <md-input-container class="col-xs-8 col-sm-8"
                                                                                 md-is-error="passForm.oldPassword.$invalid && (passForm.$submitted || passForm.oldPassword.$dirty)">
                                                                 <label>Old password</label>
                                                                 <input name="oldPassword" type="password"
@@ -338,9 +351,9 @@
                                                         </div>
 
                                                         <div>
-                                                            <strong class="col-xs-12 col-sm-4 per-pad">New
-                                                                password:</strong>
-                                                            <md-input-container class="col-xs-6 col-sm-6"
+                                                            <!--<strong class="col-xs-12 col-sm-4 per-pad">New-->
+                                                                <!--password:</strong>-->
+                                                            <md-input-container class="col-xs-8 col-sm-8"
                                                                                 md-is-error="passForm.newPassword.$invalid && (passForm.$submitted || passForm.newPassword.$dirty)">
                                                                 <label>New password</label>
                                                                 <input name="newPassword"
@@ -363,9 +376,9 @@
 
                                                         </div>
                                                         <div>
-                                                            <strong class="col-xs-12 col-sm-4 per-pad">Confirm
-                                                                password:</strong>
-                                                            <md-input-container class="col-xs-6 col-sm-6"
+                                                            <!--<strong class="col-xs-12 col-sm-4 per-pad">Confirm-->
+                                                                <!--password:</strong>-->
+                                                            <md-input-container class="col-xs-8 col-sm-8"
                                                                                 md-is-error="passForm.confirmPassword.$invalid && (passForm.$submitted || passForm.confirmPassword.$dirty)">
                                                                 <label>Confirm password</label>
                                                                 <input name="confirmPassword"

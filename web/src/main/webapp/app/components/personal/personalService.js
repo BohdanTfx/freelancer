@@ -73,6 +73,14 @@ angular.module('FreelancerApp')
             return $http.post('/cust/changePassword', data);
         };
 
+        dataFactory.changeAdminPassword = function (password, newPassword) {
+            var data = 'password=' + password + '&newPassword=' + newPassword;
+            $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+
+            return $http.post('/admin/changePassword', data);
+        };
+
+
         dataFactory.confirmCodeAndChangeDevPassword = function (confirmPassword, confirmCode) {
             var data = 'password=' + confirmPassword + '&confirmCode=' + confirmCode;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
@@ -87,6 +95,13 @@ angular.module('FreelancerApp')
             return $http.post('/cust/confirmChangePasswordAndEmail', data);
         };
 
+        dataFactory.confirmCodeAndChangeAdminPassword = function (confirmPassword, confirmCode) {
+            var data = 'password=' + confirmPassword + '&confirmCode=' + confirmCode;
+            $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+
+            return $http.post('/admin/confirmChangePasswordAndEmail', data);
+        };
+
         dataFactory.changeDevSendingEmail = function(newEmail) {
             var data = 'email=' + newEmail;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
@@ -99,6 +114,13 @@ angular.module('FreelancerApp')
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
             return $http.post('/cust/changeEmail', data);
+        };
+
+        dataFactory.changeAdminSendingEmail = function(newEmail) {
+            var data = 'email=' + newEmail;
+            $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+
+            return $http.post('/admin/changeEmail', data);
         };
 
         //dataFactory.upload = function(files){

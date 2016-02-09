@@ -51,4 +51,8 @@ public interface UserEntity extends BaseEntity<Integer> {
 	public void setImgUrl(String imgUrl);
 
 	public String getImgUrl();
+
+	public String getConfirmCode();
+
+	public void setConfirmCode(String confirmCode);
 }
