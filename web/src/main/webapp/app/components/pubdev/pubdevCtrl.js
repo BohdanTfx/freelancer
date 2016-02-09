@@ -69,8 +69,9 @@ angular.module('FreelancerApp')
                 $scope.id = data.id;
                 if (typeof data.imgUrl == 'undefined' || data.imgUrl == null)
                     $scope.img = 'images/profile/no-profile-img.jpg';
-                else
-                    $scope.img = data.imgUrl;
+                else {
+                    $scope.img = data.imgUrl + "original.jpg";
+                }
                 $scope.email = data.email;
                 $scope.fname = data.fname;
                 $scope.lname = data.lname;

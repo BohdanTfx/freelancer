@@ -27,7 +27,8 @@
     "angular-material": "~1.0.3",
     "multirange": "val-samonte/angular-multirange",
     "angular-cookies": "~1.4.9",
-    "angular-bootstrap": "~1.1.2"
+    "angular-bootstrap": "~1.1.2",
+    "ng-tags-input": "^3.0.0"
   },
   "resolutions": {
     "angular": "1.4.9",
