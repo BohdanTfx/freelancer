@@ -75,10 +75,14 @@
                     url: '/tests/creating',
                     templateUrl: 'app/components/createtest/createtest.html',
                     controller: 'createtestCtrl'
-				}).state('admin', {
+				}).state('statistics', {
 					url: '/admin/statistics',
-					templateUrl: 'app/components/admin/adminStatistics.html',
-					controller: 'adminCtrl'
+					templateUrl: 'app/components/statistics/statistics.html',
+					controller: 'statisticsCtrl'
+				}).state('createAdmin', {
+					url: '/admin/new/admin',
+					templateUrl: 'app/components/createadmin/createadmin.html',
+					controller: 'createadminCtrl'
 				}).state('signupadmin', {
 					url : '/signup/:uuid',
 					templateUrl : 'app/components/signup/signup.html',

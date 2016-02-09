@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('FreelancerApp')
-    .factory('adminAPI', function ($http, config) {
+    .factory('statisticsAPI', function ($http, config) {
         var urlBase = '/admin/',
             dataFactory = {};
 
