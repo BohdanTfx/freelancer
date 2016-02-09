@@ -75,8 +75,8 @@
 
     <link rel="stylesheet" href="app/components/custpub/custpub.css">
     <link rel="stylesheet" href="app/components/order/newOrder.css">
-    <link rel="stylesheet" href="app/components/developers/developers.css">
-
+<link rel="stylesheet" href="app/components/developers/developers.css">
+    <link rel="stylesheet" href="app/components/admin/admin.css">
     <link rel="stylesheet" href="app/components/createtest/createtest.css">
 
 </head>
@@ -97,7 +97,7 @@
                     <a href="#/home"> <img alt="Site logo"
                                            class="img-logo img-png animated rotateIn" data-tooltip="yes"
                                            title="Home" data-placement="right" src="/images/logo.png">
-                        <h1 class="text-shadow-white logo-text animated flipInY"><span class="first">Open</span><span class="second">Task</span></h1>
+							<h1 class="text-shadow-white logo-text animated flipInY"><span class="first">Open</span><span class="second">Task</span></h1>
                     </a>
                 </div>
             </div>
@@ -113,19 +113,23 @@
                 </div>
 
                 <div class="navbar-collapse collapse clearfix">
-                    <!--<sec:access role="none">-->
+
+                    <ul class="navigation" ng-switch on="logged">
+                        <li class="hvr-underline-from-center">
+                            <div ng-translate-language-select></div>
+                        </li>
+                    </ul>
+
                     <ul class="navigation" ng-switch on="logged">
                         <li class="hvr-underline-from-center" ng-switch-when="false"><a
-                                href="#/auth"> <i class="fa fa-sign-in"></i>Sign In
+                                href="#/auth"> <i class="fa fa-sign-in"></i>{{"index.header-signin" | translate}}
                         </a></li>
                         <li class="hvr-underline-from-center" ng-switch-when="false"><a
-                                href="#/signup"> <i class="fa fa-user-plus"></i>Sign Up
+                                href="#/signup"> <i class="fa fa-user-plus"></i>{{"index.header-signup" | translate}}
                         </a></li>
 
 
                     </ul>
-                    <!--</sec:access>-->
-                    <!--<sec:access role="user">-->
                     <ul class="navigation " ng-switch on="logged">
                         <li class="hvr-underline-from-center" ng-switch-when="true"><a
                                 href="#/personal"> <i class="fa fa-user"></i>{{name}}
@@ -133,10 +137,9 @@
                         </a></li>
                         <li id="logout" ng-click="logout()"
                             class="hvr-underline-from-center" ng-switch-when="true"><a
-                                href="#/logout"> <i class="fa fa-sign-out"></i>Logout
+                                href="#/logout"> <i class="fa fa-sign-out"></i>{{"index.header-logout" | translate}}
                         </a></li>
                     </ul>
-                    <!--</sec:access>-->
                 </div>
             </nav>
 
@@ -163,29 +166,52 @@
                         <md-menu-content width=3 md-position-mode=target-left
                                          class="menuContent">
                             <md-menu-item>
-                                <md-button ng-href="/#/orders"> Orders</md-button>
+                                <md-button ng-href="/#/orders"> {{"index.menu-orders" | translate}}</md-button>
                             </md-menu-item>
                             <md-menu-item>
-                                <md-button ng-href="/#/developers"> Developers</md-button>
+                                <md-button ng-href="/#/developers"> {{"index.menu-developers" | translate}}</md-button>
                             </md-menu-item>
                         </md-menu-content>
                     </md-menu>
 
-                    <!--<span ng-switch="role">-->
-                    <!--<div ng-switch="customer">-->
-                    <md-menu md-offset="49">
-                        <button ng-click="$mdOpenMenu()" class="menuIconBtn">
-                            <i class="fa fa-briefcase"></i>
-                        </button>
-                        <md-menu-content width=3 md-position-mode=target-left
-                                         class="menuContent">
-                            <md-menu-item>
-                                <md-button ng-href="/#/order/create"> Create new order</md-button>
-                            </md-menu-item>
-                        </md-menu-content>
-                    </md-menu>
-                    <!--</div>-->
-                    <!--</span>-->
+
+                           <md-menu md-offset="49">
+                               <button ng-click="$mdOpenMenu()" class="menuIconBtn">
+                                   <i class="fa fa-briefcase"></i>
+                               </button>
+                               <md-menu-content width=3 md-position-mode=target-left
+                                                class="menuContent">
+
+
+                                <span ng-switch="role">
+                                <span ng-switch-when="developer">
+                                    <md-menu-item>
+                                        <md-menu-item>
+                                            <md-button ng-href="/#/myworks"> My Works </md-button>
+                                        </md-menu-item>
+                                    </md-menu-item>
+                                </span>
+                                 <span ng-switch-when="customer">
+                                    <md-menu-item>
+                                        <md-button ng-href="/#/order/create"> Create new order</md-button>
+                                    </md-menu-item>
+                                </span>
+                                    <span ng-switch-when="admin">
+                                    <md-menu-item>
+                                        <md-button ng-href="/#/admin/statistics">Statistics</md-button>
+                                    </md-menu-item>
+                                         <md-menu-item>
+                                             <md-button ng-href="/#/tests/creating">Create Test</md-button>
+                                         </md-menu-item>
+                                </span>
+                                <span ng-switch-default>
+                                </span>
+                            </span>
+
+                               </md-menu-content>
+
+                           </md-menu>
+
 
                     <md-menu md-offset="49">
                         <button ng-click="$mdOpenMenu()" class="menuIconBtn">
@@ -196,29 +222,24 @@
                                          class="menuContent">
                             <md-menu-item>
                                 <md-button ng-href="/#/personal">
-                                    Personal
+                                    {{"index.menu-personal" | translate}}
                                 </md-button>
                             </md-menu-item>
+
                             <md-menu-item>
-                                <md-button
-                                        ng-href="/#/myworks"> My Works
-                                </md-button>
-                            </md-menu-item>
-                            <md-menu-item>
-                                <md-button onclick="location.href='#/tests'"> Tests</md-button>
+                                <md-button ng-href="/#/tests"> {{"index.menu-tests" | translate}}</md-button>
                             </md-menu-item>
 
                             <span ng-switch="role">
                                 <span ng-switch-when="developer">
                                     <md-menu-item>
-                                        <md-button type="submit" ng-href="/#/public/developer/devname/{{id}}"> My public
-                                            page
+                                        <md-button type="submit" ng-href="/#/public/developer/devname/{{id}}"> {{"index.menu-public-page" | translate}}
                                         </md-button>
                                     </md-menu-item>
                                 </span>
                                  <span ng-switch-when="customer">
                                     <md-menu-item>
-                                        <md-button ng-href="/#/public/customer/custname/{{id}}">My public page
+                                        <md-button ng-href="/#/public/customer/custname/{{id}}">{{"index.menu-public-page" | translate}}
                                         </md-button>
                                     </md-menu-item>
                                 </span>
@@ -229,19 +250,6 @@
                     </md-menu>
 
 
-                    <md-menu md-offset="49">
-                        <button ng-click="$mdOpenMenu()" class="menuIconBtn">
-                            <i class="fa fa-cogs"></i>
-                        </button>
-                        <md-menu-content width=3 md-position-mode=target-left
-                                         class="menuContent">
-                            <md-menu-item>
-                                <md-button> Settings 1</md-button>
-                            </md-menu-item>
-
-
-                        </md-menu-content>
-                    </md-menu>
                 </md-menu-bar>
             </md-toolbar>
         </div>
@@ -287,6 +295,14 @@
 <script src="bower_components/angularjs-slider-master/rzslider.min.js"></script>
 <script src="bower_components/angular-ui-notification-master/angular-ui-notification.min.js"></script>
 <script src="bower_components/angular-google-chart-0.1.0/ng-google-chart.js"></script>
+<script src="bower_components/ng-tags-input/ng-tags-input.js"></script>
+<script src="bower_components/angular-translate/angular-translate.js"></script>
+<script src="bower_components/angular-translate-handler-log/angular-translate-handler-log.js"></script>
+<script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.js"></script>
+<script src="bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
+<script src="bower_components/angular-translate-storage-local/angular-translate-storage-local.js"></script>
+<script src="bower_components/angular-dynamic-locale/tmhDynamicLocale.min.js"></script>
+
 <script src="bower_components/ng-tags-input/ng-tags-input.js"></script>
 <script src="app/app.js"></script>
 <script src="app/constants/config.js"></script>
@@ -334,6 +350,9 @@
 
 <script src="app/components/createtest/createtestCtrl.js"></script>
 <script src="app/components/createtest/createtestService.js"></script>
+
+<script src="app/locales/localeService.js"></script>
+<script src="app/locales/languageSelectDirective.js"></script>
 <!-- endinject -->
 
 

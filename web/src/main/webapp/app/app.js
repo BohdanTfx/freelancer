@@ -1,9 +1,10 @@
+;
 (function() {
 	angular.module(
 			'FreelancerApp',
 			[ 'ngRoute', 'ui.router', 'ngCookies', 'ngMaterial', 'ngAnimate',
 					'ngAria', 'ngMessages', 'isteven-multi-select', 'rzModule',
-					'ui.bootstrap', 'ui-notification','googlechart', 'ngTagsInput']).config(
+					'ui.bootstrap', 'ui-notification','googlechart','pascalprecht.translate','tmh.dynamicLocale','ngTagsInput']).config(
 			function($stateProvider, $urlRouterProvider, $locationProvider,
 					NotificationProvider ) {
 				$urlRouterProvider.otherwise('/home');
@@ -85,7 +86,24 @@
 				});
 
 				$locationProvider.html5Mode(false);
-			}).run(
+			}).constant('LOCALES', {
+			'locales': {
+				'uk_UA': 'Українська',
+				'en_US': 'English'
+			},
+			'preferredLocale': 'en_US'
+		}).config(function ($translateProvider) {
+			$translateProvider.useMissingTranslationHandlerLog();
+		}).config(function ($translateProvider) {
+			$translateProvider.useStaticFilesLoader({
+				prefix: 'app/locales/locale-',// path to translations files
+				suffix: '.json'// suffix, currently- extension of the translations
+			});
+			$translateProvider.preferredLanguage('en_US');// is applied on first load
+			$translateProvider.useLocalStorage();// saves selected language to localStorage
+		}).config(function (tmhDynamicLocaleProvider) {
+			tmhDynamicLocaleProvider.localeLocationPattern('../bower_components/angular-i18n/angular-locale_{{locale}}.js');
+		}).run(
 			[
 					'$rootScope',
 					'$location',
