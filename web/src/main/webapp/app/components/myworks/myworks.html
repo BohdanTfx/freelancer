@@ -10,14 +10,10 @@
 
                         <div ng-switch="subscribedWorks.length">
                             <div ng-switch-when="0">
-                                <h2>There is no Subscribed projects</h2>
+                                <h5 class="help-block">No projects</h5>
                             </div>
                             <div ng-switch-default>
-                                <div>
-                                    <h2>Subscribed projects</h2>
-                                </div>
-
-                                <div ng-repeat="project in subscribedWorks | orderBy:sortField:reverse">
+                                 <div ng-repeat="project in subscribedWorks | orderBy:sortField:reverse">
                                     <div class="panel panel-default">
 
                                         <a ng-href="/#/orders/{{project.id}}">
@@ -77,14 +73,10 @@
 
                         <div ng-switch="processedWorks.length">
                             <div ng-switch-when="0">
-                                <h2>There is no Projects in progress</h2>
+                                <h5 class="help-block">No projects</h5>
                             </div>
                             <div ng-switch-default>
-                                <div>
-                                    <h2>Projects in progress</h2>
-                                </div>
-
-                                <div ng-repeat="project in processedWorks | orderBy:sortField:reverse">
+                                 <div ng-repeat="project in processedWorks | orderBy:sortField:reverse">
                                     <div class="panel panel-default">
                                         <div class="row project-block panel-body"
                                              ng-click="showTabDialog($event,project)">
@@ -143,14 +135,10 @@
 
                         <div ng-switch="finishedWorks.length">
                             <div ng-switch-when="0">
-                                <h2>There is no finished Projects</h2>
+                                <h5 class="help-block">No projects</h5>
                             </div>
                             <div ng-switch-default>
-                                <div>
-                                    <h2 class="muted">Finished Projects</h2>
-                                </div>
-
-                                <div ng-repeat="project in finishedWorks | orderBy:sortField:reverse">
+                                 <div ng-repeat="project in finishedWorks | orderBy:sortField:reverse">
                                     <div class="panel panel-default">
                                         <div class="row project-block panel-body"
                                              ng-click="showTabDialog($event,project)">
