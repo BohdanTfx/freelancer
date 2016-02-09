@@ -54,3 +54,10 @@ height:100vh;
     height: 40px;
 }
 
+
+.idex-footer-body{
+    /*position: fixed;*/
+    padding: 1em;
+    color: slategray;
+}
+

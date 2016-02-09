@@ -19,15 +19,6 @@ angular.module('FreelancerApp')
         };
 
 
-
-
-
-
-
-
-
-
-
         //PieChart
         ///////////////////////////////////////////////////////////////////////////
         adminAPI.getStatisticsDevCust().success(function(data){
@@ -86,28 +77,8 @@ angular.module('FreelancerApp')
         });
 
 
-
-
-
         $scope.showOrdersStat = function(orderValues, listDays,listMonth) {
-            //
-            //function a(){
-            //    var rowArray = [];
-            //    rowArray[30] = 0;
-            //    for (var i = 0; i < rowArray.length; i++) {
-            //        rowArray[i] = {"c": [{"v": 30, "f": listMonth[i]+": " +listDays[i]}, {"v":orderValues[i]}]};
-            //    }
-            //    return rowArray;
-            //}
-            //
-            //var rowArray = [];
-            //rowArray[30] = 0;
-            //for (var i = 0; i < rowArray.length; i++) {
-            //    rowArray[i] = {"c": [{"v": 30, "f": listMonth[i]+": " +listDays[i]}, {"v":orderValues[i]}]};
-            //}
-
-
-            $scope.chartObject = {
+             $scope.chartObject = {
                 "type": "LineChart",
                 "displayed": false,
                 "data": {

@@ -1,25 +1,25 @@
 <div class="login-form col-sm-6 col-sm-offset-3">
 	<md-content layout-padding class="animated fadeInLeftBig">
-	<h3 class="box-none">Sign in</h3>
+	<h3 class="box-none">{{"auth.title" | translate}}</h3>
 	<form name="loginForm" ng-submit="loginForm.$valid && login()"
 		novalidate>
 		<div class="col-xs-12 social-buttons">
 			<div class="col-xs-6">
 				<a class="btn btn-block btn-social btn-google-plus"> <i
-					class="fa fa-google-plus"></i> Sign in with Google
+					class="fa fa-google-plus"></i> {{"auth.signin-google-button" | translate}}
 				</a>
 			</div>
 			<div class="col-xs-6">
 				<a href="{{linkedinUrl}}"
 					class="btn btn-block btn-social btn-linkedin"> <i
-					class="fa fa-linkedin"></i> Sign in with LinkedIn
+					class="fa fa-linkedin"></i> {{"auth.signin-linkedin-button" | translate}}
 				</a>
 			</div>
 		</div>
 
 		<div class="col-xs-12">
 			<div class="separator">
-				<span class="separator-text">or</span>
+				<span class="separator-text">{{"auth.or" | translate}}</span>
 			</div>
 		</div>
 
@@ -36,7 +36,7 @@
 
 		<md-input-container class="col-xs-12"
 			md-is-error="loginForm.email.$invalid && (loginForm.$submitted || loginForm.email.$dirty)">
-		<label>Email</label> <input ng-required="true" name="email"
+		<label>{{"auth.input-email" | translate}}</label> <input ng-required="true" name="email"
 			ng-model="user.email" />
 		<div ng-messages="loginForm.email.$error"
 			ng-if="loginForm.$submitted || loginForm.email.$touched">
@@ -45,7 +45,7 @@
 		</md-input-container>
 		<md-input-container class="col-xs-12"
 			md-is-error="loginForm.password.$invalid && (loginForm.$submitted || loginForm.password.$dirty)">
-		<label>Password</label> <input name="password" type="password"
+		<label>{{"auth.input-password" | translate}}</label> <input name="password" type="password"
 			ng-required="true" ng-model="user.password">
 		<div ng-messages="loginForm.password.$error"
 			ng-if="loginForm.$submitted || loginForm.password.$touched">
@@ -54,17 +54,16 @@
 		</md-input-container>
 		<div class="col-xs-12">
 			<md-checkbox md-no-ink name="remember" id="remember"
-				ng-model="user.remember" class="md-primary"> Remember
-			me </md-checkbox>
+				ng-model="user.remember" class="md-primary"> {{"auth.remember-me" | translate}}</md-checkbox>
 			<div class="pull-right">
 				<h5 class="inline-block box-none">
-					<a href="/#/forgot">Forgot password?</a>
+					<a href="/#/forgot">{{"auth.forgot-password" | translate}}</a>
 				</h5>
 			</div>
 		</div>
 		<div class="col-xs-12">
 			<md-button class="md-raised md-primary full-width margin-center"
-				type="submit"> <strong>Sign In</strong> </md-button>
+				type="submit"> <strong>{{"auth.signin-button" | translate}}</strong> </md-button>
 		</div>
 	</form>
 	</md-content>
