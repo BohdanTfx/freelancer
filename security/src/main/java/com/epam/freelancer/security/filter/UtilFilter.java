@@ -47,8 +47,8 @@ public class UtilFilter implements Filter {
 			chain.doFilter(request, response);
 		else
 			request.getRequestDispatcher
-                    ("/front" + path).forward(request,
-                    response);
+					("/front/" + path).forward(request,
+					response);
 	}
 
 	@Override
