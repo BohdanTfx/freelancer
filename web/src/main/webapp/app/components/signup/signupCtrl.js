@@ -2,7 +2,7 @@ angular
 		.module('FreelancerApp')
 		.controller(
 				'signupCtrl',
-				function($scope, signupAPI, $log, $http,$location,adminAPI) {
+				function($scope, signupAPI, $log, $http,$location,createadminAPI) {
 					$scope.page = {};
 					$scope.user = {};
 					$scope.signup = false;
@@ -12,7 +12,7 @@ angular
 					$scope.adminUUID = $location.search().uuid;
 
 					if($scope.adminUUID!=undefined){
-						adminAPI.checkAvailableUUID($scope.adminUUID).success(function(data){
+						createadminAPI.checkAvailableUUID($scope.adminUUID).success(function(data){
 							$scope.roleAdmin = data;
 							$scope.signup = data;
 							}
@@ -40,7 +40,7 @@ angular
 					}
 
 					$scope.createUser = function() {
-						signupAPI.createUser($http, $scope.user,$scope.adminUUID,$scope.roleAdmin,adminAPI);
+						signupAPI.createUser($http, $scope.user,$scope.adminUUID,$scope.roleAdmin,createadminAPI);
 					}
 
 					$scope.resetInputs = function() {

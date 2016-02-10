@@ -1,11 +1,11 @@
 angular.module('FreelancerApp')
-    .controller('adminCtrl', function($scope, adminAPI ,$mdDialog){
+    .controller('statisticsCtrl', function($scope, statisticsAPI ,$mdDialog){
         $scope.admin = {};
         $scope.admin.email = "";
 
 
         $scope.sendAdminLinkToEmail = function(ev,email) {
-            adminAPI.sendLinkToEmail(email);
+            statisticsAPI.sendLinkToEmail(email);
 
             $mdDialog.show(
                 $mdDialog.alert()
@@ -21,7 +21,7 @@ angular.module('FreelancerApp')
 
         //PieChart
         ///////////////////////////////////////////////////////////////////////////
-        adminAPI.getStatisticsDevCust().success(function(data){
+        statisticsAPI.getStatisticsDevCust().success(function(data){
                 $scope.custAmount = data.custAmount;
                 $scope.devAmount = data.devAmount;
 
@@ -61,7 +61,7 @@ angular.module('FreelancerApp')
         ///////////////////////////////////////////////////////////////////////////
 
 
-        adminAPI.getStatisticsCreationOrders().success(function(data){
+        statisticsAPI.getStatisticsCreationOrders().success(function(data){
 
             console.log(data);
             $scope.orderValues = data.orderValues;

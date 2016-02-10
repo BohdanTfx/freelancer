@@ -1,20 +1,15 @@
 'use strict';
 
 angular.module('FreelancerApp')
-    .factory('adminAPI', function ($http, config) {
-        var urlBase = '/admin/',
+    .factory('createadminAPI', function ($http, config) {
+        var urlBase = '/createadmin/',
             dataFactory = {};
 
-        dataFactory.getStatisticsDevCust = function () {
-            return $http.get("/admin/statistics/devcust");
+        dataFactory.checkAvailableEmail = function (email) {
+            return $http.post('/admin/check/email?email=' + email);
         };
 
-        dataFactory.getStatisticsCreationOrders = function () {
-            return $http.get("/admin/statistics/orders");
-        };
-
-
-        dataFactory.sendLinkToEmail = function (email) {
+         dataFactory.sendLinkToEmail = function (email) {
             return $http.post('/admin/create/new/admin?email=' + email);
         };
 

@@ -104,6 +104,9 @@ public class AdminController extends HttpServlet implements Responsable {
                 case "admin/create/new/admin":
                     sendLinkToCandidateMail(request, response);
                     break;
+                case "admin/check/email":
+                    checkAvailableEmail(request, response);
+                    break;
                 case "admin/check/uuid":
                     checkAvailableUUID(request, response);
                     break;
@@ -172,6 +175,18 @@ public class AdminController extends HttpServlet implements Responsable {
         } else {
             sendResponse(response, false, mapper);
         }
+    }
+    private void checkAvailableEmail(HttpServletRequest request, HttpServletResponse response) {
+        String email = request.getParameter("email");
+        Map<String, Boolean> map = new HashMap<>();
+
+        if (adminCandidateService.getAdminCandidateByEmail(email) != null) {
+           map.put("candidateEmailExists",true);
+        }
+        if(!customerService.emailAvailable(email)||!developerService.emailAvailable(email)){
+            map.put("otherUserEmailExists",true);
+        }
+        sendResponse(response,map,mapper);
     }
 
     private void removeUUID(HttpServletRequest request, HttpServletResponse response) {
