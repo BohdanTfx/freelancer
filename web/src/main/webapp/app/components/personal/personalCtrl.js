@@ -38,7 +38,7 @@ angular.module('FreelancerApp')
                 if(typeof $scope.user.imgUrl == 'undefined'){
                     $scope.img = 'images/profile/default_logo.jpg';
                 } else {
-                    $scope.img = $scope.user.imgUrl;
+                    $scope.img = $scope.user.imgUrl + 'original.jpg';
                 }
                 devTemp = clone($scope.user);
                 techsTemp = clone($scope.techs);
@@ -74,7 +74,7 @@ angular.module('FreelancerApp')
                     $scope.img = 'images/profile/default_logo.jpg';
                 }
                 else {
-                    $scope.img = $scope.user.imgUrl;
+                    $scope.img = $scope.user.imgUrl + 'original.jpg';
                 }
                 custTemp = clone($scope.user);
                 contTemp = clone($scope.contact);
@@ -95,7 +95,7 @@ angular.module('FreelancerApp')
                     $scope.img = 'images/profile/default_logo.jpg';
                 }
                 else {
-                    $scope.img = $scope.user.imgUrl;
+                    $scope.img = $scope.user.imgUrl + 'original.jpg';
                 }
 
                 adminTemp = clone($scope.user);
