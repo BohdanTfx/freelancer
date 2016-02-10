@@ -369,6 +369,4 @@ private void createOrder(HttpServletRequest request,
         customer.setImgUrl("target/WEB-INF/userData/" + fileName + ".jpg");
         customerService.modify(customer);
     }
-
-
 }
