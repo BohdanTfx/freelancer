@@ -17,10 +17,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
@@ -87,7 +84,10 @@ public class CustomerController extends HttpServlet implements Responsable {
                     case "cust/getPersonalData":
                         fillCustomerPersonalPage(request, response);
                         break;
-                    default:
+                     case "cust/order/followers":
+                           getFollowerByIdOrder(request, response);
+                          break;
+                         default:
             }
 
         } catch (Exception e) {
@@ -151,6 +151,9 @@ private void createOrder(HttpServletRequest request,
                     break;
                 case "cust/uploadImage":
                     uploadImage(request, response);
+                case "cust/allWorks":
+                    fillCustomerMyWorksPage(request, response);
+                    break;
                 default:
             }
         } catch (Exception e) {
@@ -369,4 +372,40 @@ private void createOrder(HttpServletRequest request,
         customer.setImgUrl("target/WEB-INF/userData/" + fileName + ".jpg");
         customerService.modify(customer);
     }
+
+
+    private void fillCustomerMyWorksPage(HttpServletRequest request, HttpServletResponse response){
+        HttpSession session = request.getSession();
+        UserEntity user = (UserEntity) session.getAttribute("user");
+       List<Ordering> allWorks = orderingService.getAllCustOrders(user.getId());
+       List<Ordering> finishedWorks = new ArrayList<>();
+       List<Ordering> inProgressWorks = new ArrayList<>();
+       List<Ordering> availableWorks = new ArrayList<>();
+       Map<String,List<Ordering>> resultMap = new HashMap<>();
+
+        allWorks.forEach(ordering ->{
+            ordering.setTechnologies(technologyService.findTechnolodyByOrderingId(ordering.getId()));
+            if((ordering.getStarted()!=null && ordering.getStarted()) && (ordering.getEnded()!=null && ordering.getEnded())){
+                finishedWorks.add(ordering);
+            }else{
+                if(ordering.getStarted()!=null && ordering.getStarted()){
+                    inProgressWorks.add(ordering);
+                }else{
+                    availableWorks.add(ordering);
+                }
+            }
+        });
+       resultMap.put("finishedWorks",finishedWorks);
+       resultMap.put("inProgressWorks",inProgressWorks);
+       resultMap.put("availableWorks",availableWorks);
+
+       sendResponse(response,resultMap,mapper);
+    }
+
+    public void getFollowerByIdOrder(HttpServletRequest request,HttpServletResponse response){
+
+
+    }
+
+
 }

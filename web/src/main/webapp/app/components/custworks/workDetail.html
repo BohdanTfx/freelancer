@@ -1,0 +1,102 @@
+<div class="custworks"  style="min-height: 450px;width: 800px;">
+<h2>Followers</h2>
+
+
+           <div ng-repeat="follower in followers">
+               <div class="col-sm-12">
+                        <div class="col-sm-7" style="margin-top: 15px;">
+                            <div class="follower-image"
+                                 style="background-image: url('../../../images/profile/no-profile-img.jpg')"></div>
+
+                            <p>
+                                <a ng-href="/#/public/dev-name/{{follower.developer.id}}"><em>{{follower.developer.fname}}
+                                    {{follower.developer.lname}}</em></a>
+                            </p>
+
+                            <p>{{follower.message}}</p>
+
+                        </div>
+                        <div class="col-sm-3 text-center">
+                            <br/>
+                            <span>Developer rate</span>
+                            <ul class="list-inline ratings" title="Ratings">
+                                <uib-rating ng-model="follower.rate" max="5" readonly="true"
+                                            on-leave="overStar = null"
+                                            titles="['1','2','3','4','5']"
+                                            aria-labelledby="default-rating"></uib-rating>
+                            </ul>
+                            <span>Rate:</span>
+                            <span ng-if="follower.developer.hourly==undefined">unknown</span>
+                                                        <span ng-if="follower.developer.hourly!=undefined"><span
+                                                                class="fa fa-usd"></span>{{follower.developer.hourly}}&#47hr</span>
+
+                        </div>
+
+                        <div class="col-sm-2">
+                            <!--<md-button  md-no-ink class="md-raised full-width md-primary" ng-click="showWorkDetailTabDialog(ev,project)"  style="margin-left: 0;">-->
+                                <!--Accept-->
+                            <!--</md-button>-->
+                            <md-button md-no-ink class="full-width md-primary"  style="margin-left: 0;">Accept</md-button>
+                            <md-button md-no-ink class="full-width md-warn"  style="margin-left: 0;">Decline</md-button>
+                            <!--<md-button class="md-raised full-width  md-warn"  style="margin-left: 0;">-->
+                                <!--Decline-->
+                            <!--</md-button>-->
+                        </div>
+                   <md-divider></md-divider>
+                </div>
+           </div>
+</div>
+
+
+<!--<div style="min-width: 500px;min-height: 450px;">-->
+
+<!--<div class="tab-pane fade in active">-->
+<!--<p class="noFollowers" ng-if="noFollowers">There are no followers on this-->
+<!--project</p>-->
+
+<!--<div ng-repeat="follower in followers">-->
+<!--<div class="row">-->
+<!--<div class="col-sm-9">-->
+<!--<br/>-->
+
+<!--<div class="follower"-->
+<!--style="background-image: url('{{follower.developer.imgUrl}}')"></div>-->
+
+<!--<p>-->
+<!--<a ng-href="/#/public/dev-name/{{follower.developer.id}}"><em>{{follower.developer.fname}}-->
+<!--{{follower.developer.lname}}</em></a>-->
+<!--</p>-->
+
+<!--<p>{{follower.message}}</p>-->
+
+<!--</div>-->
+<!--<div class="col-sm-3 text-center">-->
+<!--<br/>-->
+<!--<span>Developer rate</span>-->
+<!--<ul class="list-inline ratings" title="Ratings">-->
+<!--<uib-rating ng-model="follower.rate" max="5" readonly="true"-->
+<!--on-leave="overStar = null"-->
+<!--titles="['1','2','3','4','5']"-->
+<!--aria-labelledby="default-rating"></uib-rating>-->
+<!--</ul>-->
+<!--<span>Rate:</span>-->
+<!--<span ng-if="follower.developer.hourly==undefined">unknown</span>-->
+<!--<span ng-if="follower.developer.hourly!=undefined"><span-->
+<!--class="fa fa-usd"></span>{{follower.developer.hourly}}&#47hr</span>-->
+
+<!--</div>-->
+<!--</div>-->
+<!--<br/>-->
+<!--<md-divider></md-divider>-->
+<!--</div>-->
+<!--</div>-->
+
+
+<!--<md-dialog-actions>-->
+<!--<md-button ng-click="cancel()" md-autofocus>-->
+<!--Got it-->
+<!--</md-button>-->
+<!--</md-dialog-actions>-->
+
+
+<!--</div>-->

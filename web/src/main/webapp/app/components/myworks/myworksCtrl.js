@@ -51,7 +51,6 @@ angular.module('FreelancerApp')
                         function (dataWorkers){
                           $scope.workers = dataWorkers.workers;
                             $scope.workerInfo = dataWorkers.workerInfo;
-                            console.log($scope.workers);
 
                             $mdDialog.show({
                                 controller: DialogController,

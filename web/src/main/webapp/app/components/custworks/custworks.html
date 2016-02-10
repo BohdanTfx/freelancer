@@ -1,138 +1,84 @@
 <div id="tab-content" class="panel panel-default">
-    <div class="mywork">
+    <div class="custworks">
         <md-content>
             <md-tabs md-dynamic-height md-border-bottom>
 
-                <!--Start Tab Proposed projects-->
-                <md-tab label="Proposed">
+
+                <!--Start Tab Subscribed projects-->
+                <md-tab label="Available">
                     <md-content class="md-padding" style="min-height: 450px;">
 
-                        <div ng-switch="subscribedWorks.length">
+                        <div ng-switch="availableWorks.length">
                             <div ng-switch-when="0">
                                 <h5 class="help-block">No projects</h5>
                             </div>
                             <div ng-switch-default>
-                                <div ng-repeat="project in subscribedWorks">
+                                <div ng-repeat="project in availableWorks">
                                     <div class="panel panel-default">
 
 
-                                        <div class="row project-block panel-body">
-                                            <a ng-href="/#/orders/{{project.id}}">
-                                                <div class="col-xs-8">
-                                                    <span class="project-block-title"><strong>{{project.title}}</strong></span><br>
+                                            <div class="row project-block panel-body">
+                                                <a ng-href="/#/orders/{{project.id}}">
+                                                    <div class="col-xs-10">
+                                                        <span class="project-block-title">{{project.title}}</span><br>
 
-                                                    <div class="project-block-descr">
-                                                        {{project.descr}}
-                                                    </div>
-                                                    Technologies:
+                                                        <div class="project-block-descr">
+                                                            {{project.descr}}
+                                                        </div>
+                                                        Technologies:
                                                     <span ng-repeat="tech in project.technologies">
                                                          <span class="label label-success lb">{{tech.name}}</span>
                                                      </span>
 
-                                                </div>
+                                                    </div>
 
-                                                <div class="col-xs-2 ">
-                                                    <div class="form-group">
-                                                        <label class="control-label">Date</label>
-                                                        <div class="col-xs-12" >
-                                                            <div class="label label-warning form-control">
-                                                                {{project.date |  date:'MMM d, y'}}
+                                                    <div class="col-xs-2 ">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Date</label>
+                                                            <div class="col-xs-12" >
+                                                                <div class="label label-warning form-control">
+                                                                    {{project.date |  date:'MMM d, y'}}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label">Payment:
+                                                                {{project.payType}}</label>
+
+                                                            <div class="col-xs-12">
+                                                                <div class="label label-info form-control">
+                                                                    {{project.payment | number:2}} $
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group">
-                                                        <label class="control-label">Payment:
-                                                            {{project.payType}}</label>
+                                                 </a>
 
-                                                        <div class="col-xs-12">
-                                                            <div class="label label-info form-control">
-                                                                {{project.payment | number:2}} $
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </a>
-
-                                            <div class="col-xs-2 ">
-                                                <md-button class=" md-raised md-primary full-width" ng-click=""  style="margin-left: 0;">
-                                                    Accept
-                                                </md-button>
-                                                <md-button class=" md-raised md-warn full-width"  style="margin-left: 0;">
-                                                    Decline
-                                                </md-button>
-                                                <!--<button type="button" class="btn btn-success btn-lg ">Accept</button>-->
-                                                <!--<button type="button" class="btn btn-danger btn-lg">Decline</button>-->
+                                                <!--<div class="col-xs-2 ">-->
+                                                <!--&lt;!&ndash;<div class="row">&ndash;&gt;-->
+                                                    <!--<md-button class="md-raised full-width" ng-click="showWorkDetailTabDialog(ev,project)"  style="margin-left: 0;">-->
+                                                      <!--Followers-->
+                                                    <!--</md-button>-->
+                                                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                                    <!--&lt;!&ndash;<div class="row">&ndash;&gt;-->
+                                                        <!--<md-button class="md-raised full-width"  style="margin-left: 0;">-->
+                                                            <!--Delete-->
+                                                        <!--</md-button>-->
+                                                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                                <!--</div>-->
                                             </div>
-                                        </div>
+
+
+
+
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </md-content>
-                </md-tab>
 
 
 
 
-
-                <!--Start Tab Subscribed projects-->
-                <md-tab label="Subscribed">
-                    <md-content class="md-padding" style="min-height: 450px;">
-
-                        <div ng-switch="subscribedWorks.length">
-                            <div ng-switch-when="0">
-                                <h5 class="help-block">No projects</h5>
-                            </div>
-                            <div ng-switch-default>
-                                 <div ng-repeat="project in subscribedWorks | orderBy:sortField:reverse">
-                                    <div class="panel panel-default">
-
-                                        <a ng-href="/#/orders/{{project.id}}">
-                                            <div class="row project-block panel-body" >
-
-                                                <div class="col-xs-10">
-                                                    <span class="project-block-title"><strong>{{project.title}}</strong></span><br>
-
-                                                    <div class="project-block-descr">
-                                                        {{project.descr}}
-                                                    </div>
-                                                    Technologies:
-                                                <span ng-repeat="tech in project.technologies">
-                                                     <span class="label label-success lb">{{tech.name}}</span>
-                                                 </span>
-
-                                                </div>
-
-                                                <div class="col-xs-2 ">
-                                                    <div class="form-group">
-                                                        <label class="control-label">Date</label>
-                                                        <div class="col-xs-12" >
-                                                            <div class="label label-warning form-control">
-                                                                {{project.date |  date:'MMM d, y'}}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label class="control-label">Payment:
-                                                            {{project.payType}}</label>
-
-                                                        <div class="col-xs-12">
-                                                            <div class="label label-info form-control">
-                                                                {{project.payment | number:2}} $
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </a>
-
-
-                                    </div>
-                                </div>
-
-
-                            </div>
-                        </div>
 
 
                     </md-content>
@@ -142,18 +88,18 @@
                 <md-tab label="In progress">
                     <md-content class="md-padding" style="min-height: 450px;">
 
-                        <div ng-switch="processedWorks.length">
+                        <div ng-switch="inProgressWorks.length">
                             <div ng-switch-when="0">
                                 <h5 class="help-block">No projects</h5>
                             </div>
                             <div ng-switch-default>
-                                 <div ng-repeat="project in processedWorks | orderBy:sortField:reverse">
+                                <div ng-repeat="project in inProgressWorks">
                                     <div class="panel panel-default">
                                         <div class="row project-block panel-body"
                                              ng-click="showTabDialog($event,project)">
 
                                             <div class="col-xs-10">
-                                                <span class="project-block-title"><strong>{{project.title}}</strong></span><br>
+                                                <span class="project-block-title">{{project.title}}</span><br>
 
                                                 <div class="project-block-descr">
                                                     {{project.descr}}
@@ -186,7 +132,6 @@
                                                 </div>
                                             </div>
 
-
                                         </div>
                                     </div>
                                 </div>
@@ -209,13 +154,13 @@
                                 <h5 class="help-block">No projects</h5>
                             </div>
                             <div ng-switch-default>
-                                 <div ng-repeat="project in finishedWorks | orderBy:sortField:reverse">
+                                <div ng-repeat="project in finishedWorks">
                                     <div class="panel panel-default">
                                         <div class="row project-block panel-body"
                                              ng-click="showTabDialog($event,project)">
 
                                             <div class="col-xs-10">
-                                                <span class="project-block-title"><strong>{{project.title}}</strong></span><br>
+                                                <span class="project-block-title">{{project.title}}</span><br>
 
                                                 <div class="project-block-descr">
                                                     {{project.descr}}
