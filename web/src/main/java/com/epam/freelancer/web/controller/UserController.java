@@ -13,6 +13,8 @@ import com.epam.freelancer.web.social.model.LinkedinProfile;
 import com.epam.freelancer.web.util.Paginator;
 import com.epam.freelancer.web.util.SignInType;
 import com.google.gson.Gson;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -23,6 +25,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.Collections;
@@ -253,11 +256,95 @@ public class UserController extends HttpServlet implements Responsable {
                 case "user/changePassword":
                     changePassword(request, response);
                     break;
+                case "user/deleteFeed":
+                    deleteFeed(request, response);
+                    return;
+                case "user/uploadImage":
+                    uploadImage(request, response);
+                    break;
                 default:
             }
         } catch (Exception e) {
             e.printStackTrace();
             LOG.fatal(getClass().getSimpleName() + " - " + "doPost");
+        }
+    }
+
+
+    private void uploadImage(HttpServletRequest request,
+                             HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        UserEntity ue = (UserEntity) session.getAttribute("user");
+        String imageJson = request.getParameter("image");
+        byte[] encodeImage = Base64.decodeBase64(imageJson);
+        File file = null;
+        try {
+            String applicationPath = request.getServletContext().getRealPath("");
+            String uploadFilePath = null;
+            if ("developer".equals(ue.getRole())) {
+                uploadFilePath = applicationPath + File.separator + "uploads" + File.separator + "developer" + File.separator + ue.getId();
+                saveImage(uploadFilePath, encodeImage);
+                Developer developer = (Developer) ue;
+                developer.setImgUrl("../uploads/developer/" + ue.getId() + "/");
+                developerService.updateDeveloper(developer);
+            } else {
+                uploadFilePath = applicationPath + File.separator + "uploads" + File.separator + "customer" + File.separator + ue.getId();
+                saveImage(uploadFilePath, encodeImage);
+                Customer customer = new Customer();
+                customer.setImgUrl("../uploads/customer/" + ue.getId() + "/");
+                customerService.modify(customer);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void saveImage(String uploadFilePath, byte[] encodImage) throws IOException {
+        File file = new File(uploadFilePath + File.separator + "original" + ".jpg");
+        FileUtils.writeByteArrayToFile(file, encodImage);
+
+		/*new ImageResize(uploadFilePath + File.separator + "original.jpg",
+                    uploadFilePath + File.separator + "sm.jpg", uploadFilePath + File.separator +
+					"md.jpg", uploadFilePath + File.separator + "lg.jpg"); */
+    }
+
+
+    public void deleteFeed(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String role = request.getParameter("role");
+        if (role != null) {
+            if ("developer".equals(role)) {
+                FeedbackService feedbackService = (FeedbackService) ApplicationContext.getInstance().getBean("feedbackService");
+                String devId = request.getParameter("devId");
+                String feedId = request.getParameter("feedId");
+
+                if (feedId != null && devId != null) {
+                    try {
+                        int res = feedbackService.deleteDevFeed(Integer.parseInt(devId), Integer.parseInt(feedId));
+                        if (res == 0)
+                            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                    } catch (Exception e) {
+                        response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                    }
+                }
+            }
+            if ("customer".equals(role)) {
+                FeedbackService feedbackService = (FeedbackService) ApplicationContext.getInstance().getBean("feedbackService");
+                String custId = request.getParameter("custId");
+                String feedId = request.getParameter("feedId");
+
+                if (feedId != null && custId != null) {
+                    try {
+                        int res = feedbackService.deleteCustFeed(Integer.parseInt(custId), Integer.parseInt(feedId));
+                        if (res == 0)
+                            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                    } catch (Exception e) {
+                        response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                    }
+                }
+            }
+        } else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
         }
     }
 

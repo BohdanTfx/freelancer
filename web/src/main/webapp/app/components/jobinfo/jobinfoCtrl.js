@@ -175,6 +175,7 @@ angular.module('FreelancerApp')
                 $scope.followers.push(data);
                 $scope.user.subscribed = true;
                 $scope.noFollowers = false;
+                $scope.message = "";
 
             }).error(function () {
                 Notification

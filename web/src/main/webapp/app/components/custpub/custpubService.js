@@ -5,6 +5,10 @@ angular.module('FreelancerApp')
         var dataFactory = {};
 
 
+        dataFactory.deleteFeed = function (devId, feedId) {
+            return $http.post("/user/deleteFeed?role=developer&devId=" + devId + "&feedId=" + feedId);
+        };
+
         dataFactory.getCustById = function (id) {
             return $http.post('/user/type?role=customer&id=' + id);
         };

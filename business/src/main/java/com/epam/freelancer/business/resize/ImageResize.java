@@ -1,11 +1,10 @@
 package com.epam.freelancer.business.resize;
 
-import java.awt.Graphics2D;
+import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
-import javax.imageio.ImageIO;
 
 public class ImageResize {
 
@@ -36,11 +35,9 @@ public class ImageResize {
 		ImageIO.write(imageLG, "jpg", new File(pathToSaveLgImg));
 	}
 
-	/*
-	 * public static void main(String[] args) { try { new
-	 * ImageResize("image/вова.jpg", "image/sm/sm.jpg", "image/sm/md.jpg",
-	 * "image/sm/lg.jpg"); } catch (IOException e) { e.printStackTrace(); } }
-	 */
+	public static void main(String[] args) throws IOException {
+		new ImageResize("original.jpg", "sm.jpg", "md.jpg", "lg.jpg");
+	}
 
 	private BufferedImage resizeImage(BufferedImage originalImage, int type,
 			int IMG_WIDTH, int IMG_HEIGHT)

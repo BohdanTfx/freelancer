@@ -167,27 +167,40 @@ angular.module('FreelancerApp')
                         title: 'Error!',
                         message: 'Min count of answers is 2. Please add answers in question.'
                     });
+                return;
             } else {
-                var questionJSON = JSON.stringify($scope.question);
-                var answersJSON = JSON.stringify($scope.answers);
-
-                createtestAPI.createQuestion(questionJSON, answersJSON).success(function (data) {
-                    $scope.question.id = data;
-                    $scope.questionReset();
-                    $scope.getQuestionsByTechId($scope.chosenTechID);
-                    Notification
-                        .success({
-                            title: 'Success!',
-                            message: 'Question was successfully created.'
-                        });
-                }).error(function () {
+                var correctAnswers = 0;
+                for (var i = 0; i < $scope.answers.length; i++) {
+                    if($scope.answers[i].correct) correctAnswers++;
+                }
+                if(correctAnswers<1){
                     Notification
                         .error({
                             title: 'Error!',
-                            message: 'Something went bad. Please try again.'
+                            message: 'Set one or more correct answers.'
                         });
-                });
+                    return;
+                }
             }
+            var questionJSON = JSON.stringify($scope.question);
+            var answersJSON = JSON.stringify($scope.answers);
+
+            createtestAPI.createQuestion(questionJSON, answersJSON).success(function (data) {
+                $scope.question.id = data;
+                $scope.questionReset();
+                $scope.getQuestionsByTechId($scope.chosenTechID);
+                Notification
+                    .success({
+                        title: 'Success!',
+                        message: 'Question was successfully created.'
+                    });
+            }).error(function () {
+                Notification
+                    .error({
+                        title: 'Error!',
+                        message: 'Something went bad. Please try again.'
+                    });
+            });
         }
 
         $scope.questionReset = function () {

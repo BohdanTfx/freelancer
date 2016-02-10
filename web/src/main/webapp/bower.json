@@ -27,7 +27,14 @@
     "angular-material": "~1.0.3",
     "multirange": "val-samonte/angular-multirange",
     "angular-cookies": "~1.4.9",
-    "angular-bootstrap": "~1.1.2"
+    "angular-bootstrap": "^1.1.2",
+    "angular-translate": "~2.9.0",
+    "angular-translate-loader-static-files": "~2.9.0",
+    "angular-translate-storage-local": "~2.9.0",
+    "angular-translate-handler-log": "^2.9.0",
+    "angular-dynamic-locale": "~0.1.30",
+    "angular-i18n": "~1.5.0",
+    "ng-tags-input": "^3.0.0"
   },
   "resolutions": {
     "angular": "1.4.9",

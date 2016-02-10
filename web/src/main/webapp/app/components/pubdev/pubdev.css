@@ -7,7 +7,7 @@
 }
 
 .devpub-noneOver {
-    font-size: 32px;
+    font-size: 22px;
     color: #ccc;
 }
 
@@ -52,14 +52,14 @@
 }
 
 .devpub-emptyComment {
-    font-size: 48px;
+    font-size: 22px;
     text-align: center;
     color: #ccc;
     font-weight: bold;
 }
 
 .devpub-free-not-found {
-    font-size: 48px;
+    font-size: 22px;
     text-align: center;
     color: #ccc;
     font-weight: bold;
@@ -68,7 +68,7 @@
 .devpub-emptyPort {
     margin-top: 70px;
     margin-bottom: 70px;
-    font-size: 48px;
+    font-size: 22px;
     text-align: center;
     color: #ccc;
     font-weight: bold;
@@ -77,7 +77,7 @@
 .devpub-emptyTest {
     margin-top: 70px;
     margin-bottom: 70px;
-    font-size: 48px;
+    font-size: 22px;
     text-align: center;
     color: #ccc;
     font-weight: bold;

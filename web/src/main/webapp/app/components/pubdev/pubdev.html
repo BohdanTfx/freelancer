@@ -98,7 +98,7 @@
                                             class="btn btn-primary pull-right comm-but">
                                 <span
                                         class="glyphicon glyphicon-comment"></span>
-                                        Comment
+                                        Send
                                     </button>
                                 </div>
                                 <br/>
@@ -112,7 +112,9 @@
                                     <div class="feed"
                                          style="background-image: url('{{feed.customer.imgUrl}}')"></div>
                                     <p>
-                                        <em>{{feed.customer.fname}} {{feed.customer.lname}}</em>
+                                        <a href="#/public/customer/{{feed.customer.fname}}-{{feed.customer.lname}}/{{feed.customer.id}}">
+                                            {{feed.customer.fname}} {{feed.customer.lname}}
+                                        </a>
                                     </p>
 
                                     <p>{{feed.comment}}</p>
@@ -121,7 +123,11 @@
                                                     on-leave="overStar = null" titles="['one','two','three']"
                                                     aria-labelledby="default-rating"></uib-rating>
                                     </ul>
-
+                                    <div ng-if="deleteFeedId == feed.customer.id && show"
+                                         ng-click="deleteFeed(feed.customer.id, feed.id)"
+                                         class="btn btn-xs btn-danger pull-right"><span
+                                            class="glyphicon glyphicon-trash"></span> Delete feedback
+                                    </div>
                                     <br/>
                                     <md-divider></md-divider>
                                 </div>

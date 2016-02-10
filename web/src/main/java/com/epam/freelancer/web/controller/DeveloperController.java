@@ -1,37 +1,31 @@
 package com.epam.freelancer.web.controller;
 
-import java.io.*;
+import com.epam.freelancer.business.context.ApplicationContext;
+import com.epam.freelancer.business.manager.UserManager;
+import com.epam.freelancer.business.resize.ImageResize;
+import com.epam.freelancer.business.service.*;
+import com.epam.freelancer.business.util.SmsSender;
+import com.epam.freelancer.database.model.*;
+import com.epam.freelancer.web.json.model.Quest;
+import com.google.gson.Gson;
+import org.apache.log4j.Logger;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import com.epam.freelancer.business.manager.UserManager;
-import com.epam.freelancer.business.resize.ImageResize;
-import com.epam.freelancer.business.service.*;
-import com.epam.freelancer.business.util.SmsSender;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
-
-import com.epam.freelancer.business.context.ApplicationContext;
-import com.epam.freelancer.database.model.*;
-import com.epam.freelancer.web.json.model.Quest;
-import com.google.gson.Gson;
-
-/**
- * Created by Максим on 22.01.2016.
- */
 public class DeveloperController extends HttpServlet implements Responsable {
 	public static final Logger LOG = Logger.getLogger(UserController.class);
 	private static final long serialVersionUID = -2356506023594947745L;
@@ -103,7 +97,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
 			String path = FrontController.getPath(request);
 
             switch (path) {
-                case "dev/getresults":
+                case "dev/results":
                     sendResults(request, response);
                     break;
                 case "dev/sendPersonalData":
@@ -168,9 +162,9 @@ public class DeveloperController extends HttpServlet implements Responsable {
 
 		Map<String,List> resultMap = new HashMap<>();
 		resultMap.put("finishedWorks",devFinishedProjects);
-		resultMap.put("subscribedWorks",devSubscribedProjects);
-		resultMap.put("processedWorks",devProjectsInProcess);
-		sendResponse(response,resultMap,mapper);
+		resultMap.put("subscribedWorks", devSubscribedProjects);
+		resultMap.put("processedWorks", devProjectsInProcess);
+		sendResponse(response, resultMap, mapper);
 	}
 
 	private void fillTestPage(HttpServletRequest request,
@@ -227,9 +221,9 @@ public class DeveloperController extends HttpServlet implements Responsable {
 				.getInstance().getBean("customerService");
 		Customer cust = customerService.findById(custId);
 		Map<String,Customer> resultMap = new HashMap<>();
-		resultMap.put("cust",cust);
+		resultMap.put("cust", cust);
 
-		sendResponse(response,resultMap,mapper);
+		sendResponse(response, resultMap, mapper);
 
 	}
 
@@ -315,11 +309,11 @@ public class DeveloperController extends HttpServlet implements Responsable {
 		UserEntity user = (UserEntity) request.getSession()
 				.getAttribute("user");
 		Integer userId = user.getId();
-		map.put("dev_id", new String[] { String.valueOf(userId) });
-		map.put("test_id", new String[] { request.getParameter("testId") });
-		map.put("rate", new String[] { String.valueOf(rate) });
+		map.put("dev_id", new String[]{String.valueOf(userId)});
+		map.put("test_id", new String[]{request.getParameter("testId")});
+		map.put("rate", new String[]{String.valueOf(rate)});
 		map.put("expireDate",
-				new String[] { request.getParameter("expireDate") });
+				new String[]{request.getParameter("expireDate")});
 		return map;
 	}
 
@@ -423,49 +417,6 @@ public class DeveloperController extends HttpServlet implements Responsable {
 //
 //        }
 		developerService.updateDeveloper(developer);
-	}
-
-	private void uploadImage(HttpServletRequest request,
-			HttpServletResponse response){
-//		HttpSession session = request.getSession();
-//		Developer developer = (Developer) session.getAttribute("user");
-//		String  imageJson = request.getParameter("image");
-//		byte[] encodImage = Base64.decodeBase64(imageJson);
-//		String fileName = developer.getFname() + developer.getLname();
-//		File file = null;
-//		try {
-//			file = new File("C:/" + fileName + ".jpg");
-//			FileUtils.writeByteArrayToFile(file, encodImage);
-//		} catch(Exception e){
-//			e.printStackTrace();
-//		}
-
-			HttpSession session = request.getSession();
-			UserEntity ue = (UserEntity) session.getAttribute("user");
-			String  imageJson = request.getParameter("image");
-			byte[] encodImage = Base64.decodeBase64(imageJson);
-			File file = null;
-			try {
-				String applicationPath = request.getServletContext().getRealPath("");
-				String uploadFilePath = null;
-				if("developer".equals(ue.getRole()))
-					uploadFilePath = applicationPath + File.separator + "uploads"+ File.separator + "developer" + File.separator + ue.getId();
-				else
-					uploadFilePath = applicationPath + File.separator + "uploads"+ File.separator + "customer" + File.separator + ue.getId();
-				file = new File(uploadFilePath  + File.separator + "original" + ".jpg");
-				FileUtils.writeByteArrayToFile(file, encodImage);
-
-				new ImageResize(uploadFilePath + File.separator + "original.jpg",
-						uploadFilePath + File.separator + "sm.jpg", uploadFilePath + File.separator +
-						"md.jpg", uploadFilePath + File.separator + "lg.jpg");
-
-
-			} catch(Exception e){
-				e.printStackTrace();
-			}
-
-//		developer.setImgUrl("/" + fileName + ".jpg");
-//		developerService.updateDeveloper(developer);
 	}
 
 	private void changeDeveloperPassword(HttpServletRequest request, HttpServletResponse response) throws IOException {

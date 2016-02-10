@@ -1,9 +1,9 @@
 <div id="tab-content" class="panel panel-default">
     <div class="tests-creating" ng-cloak="">
         <md-content class="md-padding">
-            <h2>Tests creating</h2>
+            <h2>{{"createtest.title" | translate}}</h2>
             <md-tabs md-dynamic-height md-border-bottom>
-                <md-tab label="Create tests">
+                <md-tab label="{{'createtest.tab-create-test' | translate}}">
                     <form name="testForm" novalidate
                           ng-submit="testForm.$valid && createTest()">
                         <div class="test-tab">
@@ -11,21 +11,21 @@
                                 <div class="row">
                                     <div class="col-md-6 col-xs-12">
                                         <md-input-container class="md-icon-float md-block">
-                                            <label>Test name</label>
+                                            <label>{{"createtest.label-test-name" | translate}}</label>
                                             <md-icon md-font-icon="fa-tasks" class="fa md-hue-2"
                                                      style="display:inline-block;"></md-icon>
                                             <input required name="name" ng-model="test.name" type="text"
                                                    md-maxlength="50">
 
                                             <div ng-messages="testForm.name.$error">
-                                                <div ng-message="required">Please type test name.</div>
-                                                <div ng-message="md-maxlength">Max length error.</div>
+                                                <div ng-message="required">{{"createtest.required-test-name" | translate}}</div>
+                                                <div ng-message="md-maxlength">{{"createtest.eror-test-name" | translate}}</div>
                                             </div>
                                         </md-input-container>
                                     </div>
                                     <div class="col-md-6 col-xs-12">
                                         <md-input-container class="md-icon-float md-block">
-                                            <label><strong>Technology</strong></label>
+                                            <label><strong>{{"createtest.label-technology" | translate}}</strong></label>
                                             <md-icon md-font-icon="fa-tv" class="fa md-hue-2"
                                                      style="display:inline-block;"></md-icon>
                                             <md-select required name="technology" ng-model="test.techId"
@@ -36,7 +36,7 @@
                                                 </md-option>
                                             </md-select>
                                             <div ng-messages="testForm.technology.$error">
-                                                <div ng-message="required">Please choose technology.</div>
+                                                <div ng-message="required">{{"createtest.eror-technology" | translate}}</div>
                                             </div>
                                             <md-icon md-svg-src="img/icons/ic_euro_24px.svg"></md-icon>
                                         </md-input-container>
@@ -45,7 +45,7 @@
                                 <div class="row">
                                     <div class="col-md-6 col-xs-12">
                                         <md-input-container class="md-icon-float md-block">
-                                            <label>Min pass score</label>
+                                            <label>{{"createtest.lable-min-score" | translate}}</label>
                                             <md-icon md-font-icon="fa-line-chart" class="fa md-hue-2"
                                                      style="display:inline-block;"></md-icon>
                                             <input required name="passScore" ng-model="test.passScore" type="number"
@@ -53,33 +53,33 @@
                                                    max="100" step="1">
 
                                             <div ng-messages="testForm.passScore.$error">
-                                                <div ng-message="required">Set min pass score.</div>
-                                                <div ng-message="min">Min available score is 0.</div>
-                                                <div ng-message="max">Max available score is 100.</div>
-                                                <div ng-message="number">Set number</div>
+                                                <div ng-message="required">{{"createtest.error-min-score" | translate}}</div>
+                                                <div ng-message="min">{{"createtest.error-1-min-score" | translate}}</div>
+                                                <div ng-message="max">{{"createtest.error-2-min-score" | translate}}</div>
+                                                <div ng-message="number">{{"createtest.error-3-min-score" | translate}}</div>
                                             </div>
                                         </md-input-container>
                                     </div>
                                     <div class="col-md-6 col-xs-12">
                                         <md-input-container class="md-icon-float md-block">
-                                            <label>Time for question (in seconds)</label>
+                                            <label>{{"createtest.label-time-test" | translate}}</label>
                                             <md-icon md-font-icon="fa-clock-o" class="fa md-hue-2"
                                                      style="display:inline-block;"></md-icon>
                                             <input required name="secPerQuest" ng-model="test.secPerQuest" type="number"
                                                    min="10"
                                                    max="300" step="1">
                                             <div ng-messages="testForm.secPerQuest.$error">
-                                                <div ng-message="required">Set seconds per question.</div>
-                                                <div ng-message="min">Min time for question is 10 sec.</div>
-                                                <div ng-message="max">Max time for question is 300 sec (5 min).</div>
-                                                <div ng-message="number">Set number</div>
+                                                <div ng-message="required">{{"createtest.required-time-test" | translate}}</div>
+                                                <div ng-message="min">{{"createtest.error-1-time-test" | translate}}</div>
+                                                <div ng-message="max">{{"createtest.error-2-time-test" | translate}}</div>
+                                                <div ng-message="number">{{"createtest.error-3-time-test" | translate}}</div>
                                             </div>
                                         </md-input-container>
                                     </div>
                                 </div>
                             </md-content>
                         </div>
-                        <md-subheader class="md-no-sticky">Click on question to move it to opposite group</md-subheader>
+                        <md-subheader class="md-no-sticky">{{"createtest.label-move-que" | translate}}</md-subheader>
                         <div class="row">
                             <div class="col-md-6 col-xs-12">
                                 <div class="quest-column">
@@ -108,7 +108,7 @@
                                             </button>
                                         </div>
                                     </div>
-                                    <md-subheader class="md-no-sticky">Available questions
+                                    <md-subheader class="md-no-sticky">{{"createtest.label-avail-que" | translate}}
                                     </md-subheader>
                                     <md-content class="md-padding">
                                         <md-list-item ng-repeat="question in availableQuestions">
@@ -129,7 +129,7 @@
                             </div>
                             <div class="col-md-6 col-xs-12">
                                 <div class="quest-column">
-                                    <md-subheader class="md-no-sticky">Chosen questions ({{chosenQuestions.length}})
+                                    <md-subheader class="md-no-sticky">{{"createtest.label-chosen-que" | translate}} ({{chosenQuestions.length}})
                                     </md-subheader>
                                     <md-content class="md-padding">
                                         <md-list-item ng-repeat="question in chosenQuestions">
@@ -155,29 +155,27 @@
                         </div>
                     </form>
                 </md-tab>
-                <md-tab label="Create questions">
+                <md-tab label="{{'createtest.tab-create-que' | translate}}">
                     <form name="questForm" novalidate
                           ng-submit="questForm.$valid && createQuestion()">
                         <div class="question-tab">
                             <md-content class="md-padding">
-                                <div class="row">
+                                <div class="row md-padding">
                                     <div class="col-md-9 col-xs-12">
                                         <md-input-container class="md-icon-float md-block">
-                                            <label>Question name</label>
+                                            <label>{{"createtest.label-que-name" | translate}}</label>
                                             <input required name="name" ng-model="question.name" type="text"
                                                    md-minlength="5" md-maxlength="255">
                                             <div ng-messages="questForm.name.$error">
-                                                <div ng-message="required">Please type question name.</div>
-                                                <div ng-message="md-minlength">Min length error.</div>
-                                                <div ng-message="md-maxlength">Max length error.</div>
+                                                <div ng-message="required">{{"createtest.required-que-name" | translate}}</div>
+                                                <div ng-message="md-minlength">{{"createtest.error-1-que-name" | translate}}</div>
+                                                <div ng-message="md-maxlength">{{"createtest.error-2-que-name" | translate}}</div>
                                             </div>
                                         </md-input-container>
                                     </div>
                                     <div class="col-md-9 col-xs-12">
                                         <md-input-container class="md-icon-float md-block">
-                                            <label><strong>Technology</strong></label>
-                                            <md-icon md-font-icon="fa-tv" class="fa md-hue-2"
-                                                     style="display:inline-block;"></md-icon>
+                                            <label><strong>{{"createtest.label-technology" | translate}}</strong></label>
                                             <md-select required name="technology" ng-model="question.techId">
                                                 <md-option ng-repeat="technology in technologies"
                                                            value="{{technology.id}}">
@@ -185,7 +183,7 @@
                                                 </md-option>
                                             </md-select>
                                             <div ng-messages="questForm.technology.$error">
-                                                <div ng-message="required">Please choose technology.</div>
+                                                <div ng-message="required">{{"createtest.eror-technology" | translate}}</div>
                                             </div>
                                         </md-input-container>
                                     </div>
@@ -193,17 +191,17 @@
                                 <div class="row answers-block">
                                     <button class="btn btn-primary" ng-click="addAnswerForm()"
                                             style="margin-bottom: 15px">
-                                        <span>Add answer</span>
+                                        <span>{{"createtest.add-2-answer" | translate}}</span>
                                     </button>
                                     <div ng-repeat="answer in answers track by $index">
                                         <div class="row">
                                             <div class="col-md-9 col-sm-7 col-xs-6">
                                                 <md-input-container class="md-block">
-                                                    <label>Name</label>
+                                                    <label>{{"createtest.label-name-input" | translate}}</label>
                                                     <input required name="answerName" ng-model="answer.name">
 
                                                     <div ng-messages="questForm.answerName.$error">
-                                                        <div ng-message="required">This is required.</div>
+                                                        <div ng-message="required">{{"createtest.required-name-input" | translate}}</div>
                                                     </div>
                                                 </md-input-container>
                                             </div>
@@ -211,9 +209,9 @@
                                                 <md-checkbox md-no-ink="true" class="answCtrl green"
                                                              ng-model="answer.correct">
                                                 <span class="hidden-xs" ng-show="answer.correct"
-                                                      style="color: #009926;"><strong>Correct</strong></span>
+                                                      style="color: #009926;"><strong>{{"createtest.correct" | translate}}</strong></span>
                                                 <span class="hidden-xs" ng-hide="answer.correct"
-                                                      style="color: #D9534F;"><strong>Incorrect</strong></span>
+                                                      style="color: #D9534F;"><strong>{{"createtest.incorrect" | translate}}</strong></span>
                                                 </md-checkbox>
                                             </div>
                                             <div class="col-md-1 col-sm-2">
@@ -229,12 +227,12 @@
                                 <div class="row">
                                     <button class="btn btn-primary" style="float: right; margin-right: 24px"
                                             name="createQuestionBtn">
-                                        <span>Create question</span>
+                                        <span>{{"createtest.create-que-button" | translate}}</span>
                                     </button>
                                     <button type="button" ng-click="questionReset()"
                                             class="btn btn-primary" style="float: right; margin-right: 30px"
                                             name="resetQustionBtn">
-                                        <span>Reset</span>
+                                        <span>{{"createtest.reset-button" | translate}}</span>
                                     </button>
                                 </div>
                             </md-content>
@@ -245,4 +243,3 @@
         </md-content>
     </div>
 </div>
-
