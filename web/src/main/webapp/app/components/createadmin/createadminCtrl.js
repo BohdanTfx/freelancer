@@ -19,7 +19,12 @@ angular.module('FreelancerApp')
                    message:"The invitation has been already sent to this email."
                });
            }
-        })
+        }).error(function(){
+            Notification.error({
+                title:"Error",
+                message:"Something has happened wrong. Please try again later."
+            });
+        });
 
 
 

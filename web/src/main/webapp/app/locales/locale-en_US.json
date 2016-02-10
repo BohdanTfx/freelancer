@@ -14,6 +14,7 @@
   "index.menu-personal":"Profile",
   "index.menu-tests":"Tests",
   "index.menu-public-page":"My public page",
+  "index.menu-create-admin":"Invite admin",
 
   "admin.statistics":"Statistics",
   "admin.statistics-dev-cust":"Relation between Customer and Developer",
