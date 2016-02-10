@@ -81,4 +81,12 @@ public class FeedbackService extends GenericService<Feedback, Integer> {
     public Integer getAvgRate(Integer dev_id) {
         return ((FeedbackDao) genericDao).getAvgRate(dev_id);
     }
+
+    public int deleteDevFeed(Integer devId, Integer feedId) {
+        return ((FeedbackDao) genericDao).deleteDevFeed(devId, feedId);
+    }
+
+    public int deleteCustFeed(Integer custId, Integer feedId) {
+        return ((FeedbackDao) genericDao).deleteCustFeed(custId, feedId);
+    }
 }

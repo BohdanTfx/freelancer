@@ -60,8 +60,6 @@
                         <p>On site since:
                             {{regDate |date:'longDate'}}
                         </p>
-                        <span style="color: firebrick">{{messerr}}</span>
-                        <span style="color: darkgreen">{{messuc}}</span>
 
                         <div ng-disabled="wmDis" class="btn btn-block btn-danger" data-toggle="modal"
                              data-target=".bs-example-modal-md">
@@ -97,7 +95,7 @@
                                             class="btn btn-primary pull-right comm-but">
                                 <span
                                         class="glyphicon glyphicon-comment"></span>
-                                        Comment
+                                        Send
                                     </button>
                                 </div>
                                 <br/>
@@ -111,7 +109,9 @@
                                     <div class="feed"
                                          style="background-image: url('{{feed.developer.imgUrl}}')"></div>
                                     <p class="cust-pos-name">
-                                        {{feed.developer.fname}} {{feed.developer.lname}}
+                                        <a href="#/public/developer/{{feed.developer.fname}}-{{feed.developer.lname}}/{{feed.developer.id}}">
+                                            {{feed.developer.fname}} {{feed.developer.lname}}
+                                        </a>
                                     </p>
 
                                     <p>{{feed.comment}}</p>
@@ -120,7 +120,11 @@
                                                     on-leave="overStar = null" titles="['one','two','three']"
                                                     aria-labelledby="default-rating"></uib-rating>
                                     </ul>
-
+                                    <div ng-if="deleteFeedId == feed.developer.id"
+                                         ng-click="deleteFeed(feed.developer.id, feed.id)"
+                                         class="btn btn-xs btn-danger pull-right"><span
+                                            class="glyphicon glyphicon-trash"></span> Delete feedback
+                                    </div>
                                     <br/>
                                     <md-divider></md-divider>
                                 </div>
@@ -147,34 +151,6 @@
 
                             </md-content>
                         </md-tab>
-                        <!-- <md-tab label="Test">
-                             <md-content class="md-padding">
-                                 <p class="cust-emptyTest" ng-if="emptyTest">There is no test</p>
-
-                                 <div ng-repeat="qa in qas">
-                                     <h3 class="cust-test-name">{{qa.test.name}}</h3>
-
-                                     <p ng-if="qa.isExpire" class="cust-test-label"><span
-                                             class="label label-danger cust-lb cust-lb-test">{{outOfDate}}</span></p>
-
-                                     <p ng-if="qa.isPassed" class="cust-test-label"><span
-                                             class="label label-primary cust-lb cust-lb-test">{{passed}}</span></p>
-
-                                     <p ng-if="qa.isPassed != true" class="cust-test-label"><span
-                                             class="label label-danger cust-lb cust-lb-test">{{notPassed}}</span></p>
-
-                                     <div class="cust-clear-div">
-                                         <p>Point: {{qa.rate}} / 100</p>
-
-                                         <p><span
-                                                 class="label label-success cust-lb">{{qa.test.technology.name}}</span>
-                                         </p>
-                                     </div>
-                                     <md-divider></md-divider>
-                                 </div>
-
-                             </md-content>
-                         </md-tab>-->
                     </md-tabs>
                 </md-content>
             </div>

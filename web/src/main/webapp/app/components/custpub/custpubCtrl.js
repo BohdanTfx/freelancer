@@ -2,6 +2,7 @@ angular.module('FreelancerApp')
     .controller('custpubCtrl', function ($scope, custpubAPI, $log, $http, $location, $filter, $stateParams, $rootScope, Notification) {
 
         $scope.query = $stateParams.custId;
+        $scope.deleteFeedId = $rootScope.id;
 
         if ($rootScope.role == 'customer') {
             $scope.show = true;
@@ -14,6 +15,22 @@ angular.module('FreelancerApp')
             $scope.wmDis = true;
         }
 
+        $scope.deleteFeed = function (devId, feedId) {
+            custpubAPI.deleteFeed(devId, feedId).success(function () {
+                $scope.feed();
+                Notification
+                    .success({
+                        title: 'Success!',
+                        message: 'Feedback deleted.'
+                    });
+            }).error(function () {
+                Notification
+                    .error({
+                        title: 'Error!',
+                        message: 'Something wrong. Try again!'
+                    });
+            });
+        };
 
         $http.post('/user/isAuth').success(function (data) {
             $scope.mesEmail = data.email;

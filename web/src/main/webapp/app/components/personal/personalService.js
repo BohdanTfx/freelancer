@@ -28,7 +28,7 @@ angular.module('FreelancerApp')
             });
             return $http({
                 method: 'POST',
-                url: '/dev/uploadImage',
+                url: '/user/uploadImage',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 data: data
             })
@@ -39,7 +39,7 @@ angular.module('FreelancerApp')
             });
             return $http({
                 method: 'POST',
-                url: '/cust/uploadImage',
+                url: '/user/uploadImage',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 data: data
             })
@@ -51,7 +51,7 @@ angular.module('FreelancerApp')
             });
             return $http({
                 method: 'POST',
-                url: '/admin/uploadImage',
+                url: '/user/uploadImage',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
                 data: data
             })
