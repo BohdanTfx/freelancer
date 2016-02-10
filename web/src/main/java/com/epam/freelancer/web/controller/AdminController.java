@@ -178,11 +178,15 @@ public class AdminController extends HttpServlet implements Responsable {
     }
     private void checkAvailableEmail(HttpServletRequest request, HttpServletResponse response) {
         String email = request.getParameter("email");
-        if (adminCandidateService.getAdminCandidateByEmail(email) == null) {
-            sendResponse(response, true, mapper);
-        } else {
-            sendResponse(response, false, mapper);
+        Map<String, Boolean> map = new HashMap<>();
+
+        if (adminCandidateService.getAdminCandidateByEmail(email) != null) {
+           map.put("candidateEmailExists",true);
         }
+        if(!customerService.emailAvailable(email)||!developerService.emailAvailable(email)){
+            map.put("otherUserEmailExists",true);
+        }
+        sendResponse(response,map,mapper);
     }
 
     private void removeUUID(HttpServletRequest request, HttpServletResponse response) {
