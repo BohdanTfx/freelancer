@@ -2,7 +2,7 @@
  * Created by Rynik on 30.01.2016.
  */
 angular.module('FreelancerApp')
-    .controller('myworksCtrl', function ($scope, myworksAPI, $log,$mdDialog, $mdMedia) {
+    .controller('myworksCtrl', function ($scope, myworksAPI, $log,$mdDialog, $mdMedia,Notification) {
 
         myworksAPI.getAllWorks().success(function (data) {
             $log.log(data);
@@ -16,7 +16,11 @@ angular.module('FreelancerApp')
 
 
         }).error(function () {
-            alert(404);
+            Notification
+                .error({
+                    title: 'Error!',
+                    message: 'Something went bad. Please try again.'
+                });
         });
 
         $scope.sortField = undefined;
@@ -48,8 +52,6 @@ angular.module('FreelancerApp')
                           $scope.workers = dataWorkers.workers;
                             $scope.workerInfo = dataWorkers.workerInfo;
 
-                            //alert('dataWorkers.workerInfo: '+dataWorkers.workerInfo);
-
                             $mdDialog.show({
                                 controller: DialogController,
                                 templateUrl: 'app/components/myworks/workDetailsTabDialog.html',
@@ -58,23 +60,26 @@ angular.module('FreelancerApp')
                                 locals: {project:projectInfo ,customer: $scope.customer,workers:$scope.workers,
                                     workerInfo:$scope.workerInfo},
                                 clickOutsideToClose:true
-                            })
-                                .then(function(answer) {
-                                    $scope.status = 'You said the information was "' + answer + '".';
-                                }, function() {
-                                    $scope.status = 'You cancelled the dialog.';
-                                });
+                            });
 
 
 
                         }
                     ).error(function(){
-                            alert(404);
+                            Notification
+                                .error({
+                                    title: 'Error!',
+                                    message: 'Something went bad. Please try again.'
+                                });
                         });
                 }
 
             ).error(function(){
-                    alert(404);
+                    Notification
+                        .error({
+                            title: 'Error!',
+                            message: 'Something went bad. Please try again.'
+                        });
                 });
 
         };
