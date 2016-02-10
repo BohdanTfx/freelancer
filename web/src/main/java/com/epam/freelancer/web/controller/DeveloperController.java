@@ -2,7 +2,6 @@ package com.epam.freelancer.web.controller;
 
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.manager.UserManager;
-import com.epam.freelancer.business.resize.ImageResize;
 import com.epam.freelancer.business.service.*;
 import com.epam.freelancer.business.util.SmsSender;
 import com.epam.freelancer.database.model.*;
@@ -102,9 +101,6 @@ public class DeveloperController extends HttpServlet implements Responsable {
                     break;
                 case "dev/sendPersonalData":
                     updatePersonalData(request, response);
-                    break;
-                case "dev/uploadImage":
-                    uploadImage(request, response);
                     break;
                 case "dev/changePassword":
                     changeDeveloperPassword(request, response);
