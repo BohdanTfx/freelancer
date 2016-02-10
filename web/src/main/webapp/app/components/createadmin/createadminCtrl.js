@@ -1,21 +1,29 @@
 angular.module('FreelancerApp')
-    .controller('createadminCtrl', function($scope, createadminAPI ,$mdDialog){
+    .controller('createadminCtrl', function($scope, createadminAPI ,Notification){
         $scope.admin = {};
         $scope.admin.email = "";
 
         $scope.sendAdminLinkToEmail = function(ev,email) {
-        alert('sendAdminLinkToEmail');
-            //createadminAPI.sendLinkToEmail(email);
-            //
-            //$mdDialog.show(
-            //    $mdDialog.alert()
-            //        .parent(angular.element(document.querySelector('#popupContainer')))
-            //        .clickOutsideToClose(true)
-            //        .title("Attention")
-            //        .textContent('The message was sent')
-            //        .ok('Got it!')
-            //        .targetEvent(ev)
-            //);
+
+        createadminAPI.checkAvailableEmail(email).success(function(data){
+           if(data == true){
+               createadminAPI.sendLinkToEmail(email).success(function(){
+                       Notification.success({
+                           title:"Success",
+                           message:"The invitation was sent successfully."
+                       });
+               });
+           }else{
+               Notification.error({
+                   title:"Error",
+                   message:"The invitation has been already sent to this email."
+               });
+           }
+        })
+
+
+
+
         };
 
 

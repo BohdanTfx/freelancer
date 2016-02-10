@@ -104,6 +104,9 @@ public class AdminController extends HttpServlet implements Responsable {
                 case "admin/create/new/admin":
                     sendLinkToCandidateMail(request, response);
                     break;
+                case "admin/check/email":
+                    checkAvailableEmail(request, response);
+                    break;
                 case "admin/check/uuid":
                     checkAvailableUUID(request, response);
                     break;
@@ -168,6 +171,14 @@ public class AdminController extends HttpServlet implements Responsable {
     private void checkAvailableUUID(HttpServletRequest request, HttpServletResponse response) {
         String uuid = request.getParameter("uuid");
         if (adminCandidateService.getAdminCandidateByKey(uuid) != null) {
+            sendResponse(response, true, mapper);
+        } else {
+            sendResponse(response, false, mapper);
+        }
+    }
+    private void checkAvailableEmail(HttpServletRequest request, HttpServletResponse response) {
+        String email = request.getParameter("email");
+        if (adminCandidateService.getAdminCandidateByEmail(email) == null) {
             sendResponse(response, true, mapper);
         } else {
             sendResponse(response, false, mapper);

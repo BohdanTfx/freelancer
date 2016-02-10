@@ -5,6 +5,10 @@ angular.module('FreelancerApp')
         var urlBase = '/createadmin/',
             dataFactory = {};
 
+        dataFactory.checkAvailableEmail = function (email) {
+            return $http.post('/admin/check/email?email=' + email);
+        };
+
          dataFactory.sendLinkToEmail = function (email) {
             return $http.post('/admin/create/new/admin?email=' + email);
         };
@@ -16,6 +20,8 @@ angular.module('FreelancerApp')
         dataFactory.removeUUID = function (uuid) {
             return $http.post('/admin/remove/uuid?uuid=' + uuid);
         };
+
+
 
         return dataFactory;
     });
