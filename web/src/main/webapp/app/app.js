@@ -5,7 +5,7 @@
 					'ngAria', 'ngMessages', 'isteven-multi-select', 'rzModule',
 					'ui.bootstrap', 'ui-notification','googlechart', 'ngTagsInput']).config(
 			function($stateProvider, $urlRouterProvider, $locationProvider,
-					NotificationProvider ) {
+					 NotificationProvider) {
 				$urlRouterProvider.otherwise('/home');
 
 				NotificationProvider.setOptions({
@@ -17,6 +17,7 @@
 					positionX : 'right',
 					positionY : 'bottom'
 				});
+
 				// routes
 				$stateProvider.state('orders', {
 					url : '/orders',
@@ -96,33 +97,34 @@
 							AuthenticationService) {
 						$rootScope.logout = function() {
 							AuthenticationService.ClearCredentials();
+							window.location = "/";
 						};
                         $rootScope.checking = function (data) {
                             var path = $location.path();
                             if (typeof data.id != 'undefined') {
                                 switch (path) {
                                     case '/auth':
-                                        $location.path('/');
+										window.location = "/";
                                         break;
                                     case '/signup':
-                                        $location.path('/');
+										window.location = "/";
                                         break;
                                 }
                             } else {
                                 if (path.indexOf('/orders') > -1) {
-                                    $location.path('/');
+									window.location = "/";
                                 }
                                 if (path.indexOf('/personal') > -1) {
-                                    $location.path('/');
+									window.location = "/";
                                 }
                                 if (path.indexOf('/myworks') > -1) {
-                                    $location.path('/');
+									window.location = "/";
                                 }
                                 if (path.indexOf('/tests') > -1) {
-                                    $location.path('/');
+									window.location = "/";
                                 }
                                 if (path.indexOf('/public') > -1) {
-                                    $location.path('/');
+									window.location = "/";
                                 }
                             }
                         };
