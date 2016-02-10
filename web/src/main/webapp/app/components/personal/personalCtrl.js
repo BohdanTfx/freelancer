@@ -7,8 +7,9 @@ angular.module('FreelancerApp')
         $scope.password = '';
         $scope.newEmail = '';
 
-        if($rootScope.role =='developer'){
-            personalAPI.getDevPersonal().success(function(data) {
+        $scope.getDataDev = function () {
+
+            personalAPI.getDevPersonal().success(function (data) {
                 $scope.user = data.dev;
 
                 //check Registration date
@@ -17,20 +18,20 @@ angular.module('FreelancerApp')
                 }
 
                 //check send e-mail
-                if($scope.user.sendEmail == undefined){
+                if ($scope.user.sendEmail == undefined) {
                     $scope.email = $scope.user.email;
                 } else {
                     $scope.email = $scope.user.sendEmail;
                 }
 
                 //check for empty Json
-                if(typeof data.techs != 'undefined'){
+                if (typeof data.techs != 'undefined') {
                     $scope.techs = data.techs;
                 }
                 if(typeof data.contacts != 'undefined'){
                     $scope.contact = data.contacts;
                 }
-                if(typeof data.allTechs != 'undefined'){
+                if (typeof data.allTechs != 'undefined') {
                     $scope.allTechs = data.allTechs;
                 }
 
@@ -38,12 +39,15 @@ angular.module('FreelancerApp')
                 if(typeof $scope.user.imgUrl == 'undefined'){
                     $scope.img = 'images/profile/no-image.png';
                 } else {
-                    $scope.img = $scope.user.imgUrl;
+                    $scope.img = $scope.user.imgUrl + 'md.jpg';
                 }
                 devTemp = clone($scope.user);
                 techsTemp = clone($scope.techs);
                 contTemp = clone($scope.contact);
             });
+        };
+        if ($rootScope.role == 'developer') {
+            $scope.getDataDev();
         }
 
         if($rootScope.role == 'customer') {
@@ -74,7 +78,7 @@ angular.module('FreelancerApp')
                     $scope.img = 'images/profile/no-image.png';
                 }
                 else {
-                    $scope.img = $scope.user.imgUrl;
+                    $scope.img = $scope.user.imgUrl + 'md.jpg';
                 }
                 custTemp = clone($scope.user);
                 contTemp = clone($scope.contact);
@@ -95,7 +99,7 @@ angular.module('FreelancerApp')
                     $scope.img = 'images/profile/no-image.png';
                 }
                 else {
-                    $scope.img = $scope.user.imgUrl;
+                    $scope.img = $scope.user.imgUrl + 'md.jpg';
                 }
 
                 adminTemp = clone($scope.user);
@@ -532,7 +536,6 @@ angular.module('FreelancerApp')
                 ctx.drawImage(this, 0, 0, width, height);
                 var dataURL = canvas.toDataURL("image/jpg");
                 var base = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
-                console.log(base);
 
                     if($rootScope.role =='developer'){
                         personalAPI.sendDevImage(base).success(function (data){

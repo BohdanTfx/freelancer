@@ -20,6 +20,7 @@
           <element id="archive" name="business-1.0.jar">
             <element id="module-output" name="business" />
           </element>
+          <element id="library" level="project" name="Maven: net.coobird:thumbnailator:0.4.7" />
           <element id="library" level="project" name="Maven: javax.mail:mail:1.5.0-b01" />
           <element id="library" level="project" name="Maven: javax.activation:activation:1.1" />
           <element id="archive" name="database-1.0.jar">
@@ -32,7 +33,7 @@
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="C:\Users\Rynik\Documents\GitHub\freelancer\web\target/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/web/target/web/META-INF/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="web/web/Web" />
     </root>

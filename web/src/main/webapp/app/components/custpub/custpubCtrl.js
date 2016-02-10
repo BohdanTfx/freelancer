@@ -84,7 +84,9 @@ angular.module('FreelancerApp')
 
                         for (var i = 0; i < $scope.feeds.length; i++) {
                             if (typeof $scope.feeds[i].developer.imgUrl == 'undefined' || $scope.feeds[i].developer.imgUrl == null)
-                                $scope.feeds[i].developer.imgUrl = 'images/profile/no-profile-img-head.gif';
+                                $scope.feeds[i].developer.imgUrl = 'images/profile/no-image.png';
+                            else
+                                $scope.feeds[i].developer.imgUrl += 'md.jpg';
                         }
                     }
                     else {
@@ -142,9 +144,9 @@ angular.module('FreelancerApp')
                     }
                     $scope.id = data.id;
                     if (typeof data.imgUrl == 'undefined' || data.imgUrl == null)
-                        $scope.img = 'images/profile/no-profile-img.jpg';
+                        $scope.img = 'images/profile/no-image.png';
                     else
-                        $scope.img = data.imgUrl;
+                        $scope.img = data.imgUrl + "md.jpg";
                     $scope.email = data.email;
                     $scope.fname = data.fname;
                     $scope.lname = data.lname;
