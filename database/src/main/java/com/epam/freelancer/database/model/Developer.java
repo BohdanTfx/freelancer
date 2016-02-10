@@ -56,9 +56,21 @@ public class Developer implements UserEntity {
 	private String confirmCode;
 	@Column(name = "send_email")
 	private String sendEmail;
-	private List<Technology> technologies = new ArrayList<>();
+    @Column(name = "is_first")
+    private Boolean isFirst;
+    private List<Technology> technologies = new ArrayList<>();
 
-	public String getSendEmail() { return sendEmail; }
+    public Boolean getIsFirst() {
+        return isFirst;
+    }
+
+    public void setIsFirst(Boolean isFirst) {
+        this.isFirst = isFirst;
+    }
+
+    public String getSendEmail() {
+        return sendEmail;
+    }
 
 	public void setSendEmail(String sendEmail) { this.sendEmail = sendEmail; }
 
@@ -297,6 +309,7 @@ public class Developer implements UserEntity {
                 ", role='" + role + '\'' +
                 ", confirmCode='" + confirmCode + '\'' +
                 ", sendEmail='" + sendEmail + '\'' +
+                ", isFirst=" + isFirst +
                 ", technologies=" + technologies +
                 '}';
     }

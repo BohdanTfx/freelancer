@@ -50,6 +50,16 @@ public class Customer implements UserEntity {
     private String confirmCode;
     @Column(name = "send_email")
     private String sendEmail;
+    @Column(name = "is_first")
+    private Boolean isFirst;
+
+    public Boolean getIsFirst() {
+        return isFirst;
+    }
+
+    public void setIsFirst(Boolean isFirst) {
+        this.isFirst = isFirst;
+    }
 
     public String getSendEmail() { return sendEmail; }
 
@@ -267,6 +277,7 @@ public class Customer implements UserEntity {
                 ", role='" + role + '\'' +
                 ", confirmCode='" + confirmCode + '\'' +
                 ", sendEmail='" + sendEmail + '\'' +
+                ", isFirst=" + isFirst +
                 '}';
     }
 }
