@@ -46,6 +46,7 @@ public class Customer implements UserEntity {
     @Column(name = "overview")
     private String overview;
     private String role;
+    @Column(name = "confirm_code")
     private String confirmCode;
     @Column(name = "send_email")
     private String sendEmail;
@@ -249,15 +250,23 @@ public class Customer implements UserEntity {
         return "Customer{" +
                 "id=" + id +
                 ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
                 ", fname='" + fname + '\'' +
                 ", lname='" + lname + '\'' +
                 ", zone=" + zone +
                 ", lang='" + lang + '\'' +
                 ", uuid='" + uuid + '\'' +
+                ", locale=" + locale +
                 ", regUrl='" + regUrl + '\'' +
                 ", regDate=" + regDate +
                 ", isDeleted=" + isDeleted +
                 ", version=" + version +
+                ", salt='" + salt + '\'' +
+                ", imgUrl='" + imgUrl + '\'' +
+                ", overview='" + overview + '\'' +
+                ", role='" + role + '\'' +
+                ", confirmCode='" + confirmCode + '\'' +
+                ", sendEmail='" + sendEmail + '\'' +
                 '}';
     }
 }

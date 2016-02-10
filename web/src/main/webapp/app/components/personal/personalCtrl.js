@@ -66,7 +66,7 @@ angular.module('FreelancerApp')
 
                 //check for empty Json
                 if(typeof data.contacts != 'undefined'){
-                    $scope.contact = data.contacts;
+                    $scope.contact = data.cont;
                 }
 
                 //check for empty image

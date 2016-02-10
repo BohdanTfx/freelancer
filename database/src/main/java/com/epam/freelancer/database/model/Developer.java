@@ -52,6 +52,7 @@ public class Developer implements UserEntity {
 	@Column(name = "position")
 	private String position;
 	private String role;
+    @Column (name = "confirm_code")
 	private String confirmCode;
 	@Column(name = "send_email")
 	private String sendEmail;
@@ -277,16 +278,26 @@ public class Developer implements UserEntity {
         return "Developer{" +
                 "id=" + id +
                 ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
                 ", fname='" + fname + '\'' +
                 ", lname='" + lname + '\'' +
                 ", hourly=" + hourly +
                 ", zone=" + zone +
+                ", locale=" + locale +
                 ", lang='" + lang + '\'' +
                 ", uuid='" + uuid + '\'' +
                 ", regUrl='" + regUrl + '\'' +
                 ", regDate=" + regDate +
                 ", isDeleted=" + isDeleted +
                 ", version=" + version +
+                ", salt='" + salt + '\'' +
+                ", imgUrl='" + imgUrl + '\'' +
+                ", overview='" + overview + '\'' +
+                ", position='" + position + '\'' +
+                ", role='" + role + '\'' +
+                ", confirmCode='" + confirmCode + '\'' +
+                ", sendEmail='" + sendEmail + '\'' +
+                ", technologies=" + technologies +
                 '}';
     }
 }

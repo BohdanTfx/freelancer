@@ -12,6 +12,7 @@ import com.epam.freelancer.web.social.Linkedin;
 import com.epam.freelancer.web.social.model.LinkedinProfile;
 import com.epam.freelancer.web.util.Paginator;
 import com.epam.freelancer.web.util.SignInType;
+import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -245,6 +246,13 @@ public class UserController extends HttpServlet implements Responsable {
                     return;
                 case "user/confirmEmail":
                     confirmEmail(request, response);
+                    break;
+                case "user/confirmPhoneCode":
+                    confirmPhoneCode(request, response);
+                    break;
+                case "user/changePassword":
+                    changePassword(request, response);
+                    break;
                 default:
             }
         } catch (Exception e) {
@@ -1085,7 +1093,6 @@ public class UserController extends HttpServlet implements Responsable {
 
     private void confirmEmail (HttpServletRequest request, HttpServletResponse response) throws IOException {
         String email = request.getParameter("email");
-
         UserEntity userEntity = userManager.findUserByEmail(email);
 
         if(userEntity != null){
@@ -1095,13 +1102,17 @@ public class UserController extends HttpServlet implements Responsable {
                 confirmPhoneCode.append(String.valueOf(random.nextInt(9)));
             }
             userEntity.setConfirmCode(confirmPhoneCode.toString());
-            try{
+            try {
                 String phoneNumber = null;
                 if(userEntity instanceof Developer){
                     phoneNumber = developerService.getContactByDevId(userEntity.getId()).getPhone();
+                    Developer developer = (Developer) userEntity;
+                    developerService.updateDeveloper(developer);
                 }
                 if(userEntity instanceof Customer){
                     phoneNumber = customerService.getContactByCustomerId(userEntity.getId()).getPhone();
+                    Customer customer = (Customer) userEntity;
+                    customerService.modify(customer);
                 }
                 SmsSender smsSender = new SmsSender();
                 smsSender.sendSms(phoneNumber, "Confirm code: " + confirmPhoneCode.toString(),
@@ -1118,7 +1129,65 @@ public class UserController extends HttpServlet implements Responsable {
             response.flushBuffer();
             return;
         }
+    }
 
+    public void confirmPhoneCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String email = request.getParameter("email");
+        String confirmPhoneCode = request.getParameter("phoneCode");
+        UserEntity userEntity = userManager.findUserByEmail(email);
+
+        if(userEntity != null){
+            String realPhoneCode = userEntity.getConfirmCode();
+            try{
+                if(realPhoneCode.equals(confirmPhoneCode)){
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(new Gson().toJson("good"));
+                } else {
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                            "Invalid Phone Code");
+                    response.flushBuffer();
+                    return;
+                }
+            } catch(NullPointerException e){
+                LOG.warn("Some problem with Phone Code");
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                        "Invalid Phone Code");
+                response.flushBuffer();
+                return;
+            }
+
+        } else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                    "Invalid email");
+            response.flushBuffer();
+            return;
+        }
+    }
+
+    private void changePassword(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        UserEntity userEntity = userManager.findUserByEmail(email);
+
+        if(userEntity != null){
+            userEntity.setPassword(password);
+            if(userEntity instanceof Developer){
+                Developer developer = (Developer) userEntity;
+                developerService.encodePassword(developer);
+                developerService.updateDeveloper(developer);
+            }
+            if(userEntity instanceof Customer){
+                Customer customer = (Customer) userEntity;
+                customerService.encodePassword(customer);
+                customerService.modify(customer);
+            }
+        } else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                    "Invalid email");
+            response.flushBuffer();
+            return;
+        }
     }
 
 }

@@ -1,20 +1,14 @@
 <div class="login-form col-sm-6 col-sm-offset-3">
     <md-content layout-padding class="animated fadeInLeftBig">
         <h3 class="box-none">Forgot password</h3>
-        <form name="forgotForm" ng-submit="forgotForm.$valid && checkEmail()"
+        <form name="forgotForm" ng-submit="checkEmail()"
               novalidate>
-            <form name="passForm" ng-submit="passForm.$valid && passChange()">
-
-
             <div class="col-xs-12">
                 <div class="separator">
                 </div>
             </div>
-
-            <div ng-hide="confirmEmailFlag">
-
-                <md-input-container class="col-xs-12"
-                                    md-is-error="forgotForm.email.$invalid && (forgotForm.$submitted || forgotForm.email.$dirty)">
+            <div ng-hide="confirmEmailFlag" style="padding-top: 50px;">
+                <md-input-container class="col-xs-12">
                     <label>Email</label> <input ng-required="true"
                                                 type="email"
                                                 name="email"
@@ -24,9 +18,17 @@
                         <div ng-message="required">This is required.</div>
                     </div>
                 </md-input-container>
-
             </div>
-            <div ng-show="confirmEmailFlag">
+            <div class="col-xs-12" ng-hide="confirmEmailFlag">
+                <md-button class="md-raised md-primary full-width margin-center"
+                           type="submit">
+                    <strong>Change password</strong>
+                </md-button>
+            </div>
+        </form>
+
+        <form name="passForm" ng-submit="passForm.$valid && passChange()" ng-submit="changePassword()" novalidate>
+            <div ng-show="confirmEmailFlag" style="padding-top: 50px;">
                 <md-input-container class="col-xs-12">
                     <label>New password</label>
                     <input name="newPassword"
@@ -64,14 +66,9 @@
                 </md-input-container>
             </div>
 
-
-            <div class="col-xs-12" ng-hide="confirmEmailFlag">
-                <md-button class="md-raised md-primary full-width margin-center"
-                           type="submit"> <strong>Change password</strong> </md-button>
-            </div>
             <div class="col-xs-12" ng-show="confirmEmailFlag">
                 <div class="col-xs-6">
-                    <button ng-hide="passForm.confirmPassword.$invalid" type="submit" class="btn btn-info full-width">
+                    <button ng-hide="passForm.confirmPassword.$invalid" type="submit" class="btn btn-info full-width" ng-click="changePassword()">
                         <span class="glyphicon glyphicon-ok" ></span>
                         Change password
                     </button>
@@ -85,7 +82,6 @@
                         <span class="fa fa-times"></span> Reset
                     </button>
                 </div>
-            </div>
             </div>
         </form>
     </md-content>

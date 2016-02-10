@@ -243,7 +243,7 @@ private void createOrder(HttpServletRequest request,
         }
     }
 
-private void fillCustomerPersonalPage(HttpServletRequest request,
+    private void fillCustomerPersonalPage(HttpServletRequest request,
         HttpServletResponse response) throws IOException
         {
             HttpSession session = request.getSession();
@@ -279,7 +279,7 @@ private void fillCustomerPersonalPage(HttpServletRequest request,
         }
         if(customerService.getContactByCustomerId(customer.getId()) == null){
             contact.setCustomId(customer.getId());
-            customerService.createContact(contact);    /// NEED METHOD CREATE
+            customerService.createContact(contact);
         } else {
             contact.setCustomId(customer.getId());
             customerService.updateContact(contact);
