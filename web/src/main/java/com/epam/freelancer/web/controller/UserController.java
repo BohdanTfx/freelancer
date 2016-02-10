@@ -280,7 +280,7 @@ public class UserController extends HttpServlet implements Responsable {
             } else {
                 uploadFilePath = applicationPath + File.separator + "uploads" + File.separator + "customer" + File.separator + ue.getId();
                 saveImage(uploadFilePath, encodeImage);
-                Customer customer = new Customer();
+                Customer customer = (Customer) ue;
                 customer.setImgUrl("uploads/customer/" + ue.getId() + "/");
                 customerService.modify(customer);
             }
@@ -293,10 +293,12 @@ public class UserController extends HttpServlet implements Responsable {
     private void saveImage(String uploadFilePath, byte[] encodImage) throws IOException {
         File file = new File(uploadFilePath + File.separator + "original" + ".jpg");
         FileUtils.writeByteArrayToFile(file, encodImage);
-
-        new ImageResize(uploadFilePath + File.separator + "original.jpg",
-                    uploadFilePath + File.separator + "sm.jpg", uploadFilePath + File.separator +
-                "md.jpg", uploadFilePath + File.separator + "lg.jpg");
+        ImageResize.resizeImage(uploadFilePath + File.separator + "original.jpg",
+                uploadFilePath + File.separator + "sm.jpg", 100, 100);
+        ImageResize.resizeImage(uploadFilePath + File.separator + "original.jpg",
+                uploadFilePath + File.separator + "md.jpg", 200, 200);
+        ImageResize.resizeImage(uploadFilePath + File.separator + "original.jpg",
+                uploadFilePath + File.separator + "lg.jpg", 500, 500);
     }
 
 

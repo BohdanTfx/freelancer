@@ -68,9 +68,9 @@ angular.module('FreelancerApp')
                 }
                 $scope.id = data.id;
                 if (typeof data.imgUrl == 'undefined' || data.imgUrl == null)
-                    $scope.img = 'images/profile/no-profile-img.jpg';
+                    $scope.img = 'images/profile/no-image.png';
                 else {
-                    $scope.img = data.imgUrl + "original.jpg";
+                    $scope.img = data.imgUrl + "md.jpg";
                 }
                 $scope.email = data.email;
                 $scope.fname = data.fname;
@@ -157,7 +157,9 @@ angular.module('FreelancerApp')
 
                         for (var i = 0; i < $scope.feeds.length; i++) {
                             if (typeof $scope.feeds[i].customer.imgUrl == 'undefined' || $scope.feeds[i].customer.imgUrl == null)
-                                $scope.feeds[i].customer.imgUrl = 'images/profile/no-profile-img-head.gif';
+                                $scope.feeds[i].customer.imgUrl = 'images/profile/no-image.png';
+                            else
+                                $scope.feeds[i].customer.imgUrl += 'md.jpg';
                         }
                     }
                     else {
