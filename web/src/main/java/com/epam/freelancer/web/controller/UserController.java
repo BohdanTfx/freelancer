@@ -296,6 +296,13 @@ public class UserController extends HttpServlet implements Responsable {
                 customer.setImgUrl("uploads/customer/" + ue.getId() + "/");
                 customerService.modify(customer);
             }
+            if("admin".equals(ue.getRole())) {
+                uploadFilePath = applicationPath + File.separator + "uploads" + File.separator + "admin" + File.separator + ue.getId();
+                saveImage(uploadFilePath, encodeImage, response);
+                Admin admin = (Admin) ue;
+                admin.setImgUrl("uploads/admin/" +ue.getId() + "/");
+                adminService.modify(admin);
+            }
 
 
         } catch (Exception e) {

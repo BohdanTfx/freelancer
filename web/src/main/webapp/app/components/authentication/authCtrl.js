@@ -23,11 +23,28 @@ angular
 										.success(
 												function(response) {
 													AuthenticationService
-															.SetCredentials(
-																	response.fname,
-																	response.lname,
-																	response.role);
-													$location.path('/');
+														.SetCredentials(
+														response.fname,
+														response.lname,
+														response.role);
+													if (response.role == 'admin') {
+														$location.path('/personal');
+														return;
+													}
+													if (response.isFirst) {
+														$location.path('/personal');
+														$http.post('/user/firstTimeEnter?id=' + response.id).success(function () {
+															alert('suc');
+														}).error(function () {
+															alert('error');
+														});
+													}
+													else {
+														if (response.role == 'developer')
+															$location.path('/orders');
+														if (response.role == 'customer')
+															$location.path('/developers');
+													}
 
 												})
 										.error(

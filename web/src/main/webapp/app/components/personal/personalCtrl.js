@@ -7,7 +7,7 @@ angular.module('FreelancerApp')
         $scope.password = '';
         $scope.newEmail = '';
 
-        $scope.getDataDev = function () {
+        $scope.getDevPersonal = function () {
 
             personalAPI.getDevPersonal().success(function (data) {
                 $scope.user = data.dev;
@@ -47,10 +47,10 @@ angular.module('FreelancerApp')
             });
         };
         if ($rootScope.role == 'developer') {
-            $scope.getDataDev();
+            $scope.getDevPersonal();
         }
 
-        if($rootScope.role == 'customer') {
+        $scope.getCustPersonal = function () {
             personalAPI.getCustPersonal().success(function (data) {
                 var custTemp, contTemp;
                 $scope.user = data.cust;
@@ -83,6 +83,10 @@ angular.module('FreelancerApp')
                 custTemp = clone($scope.user);
                 contTemp = clone($scope.contact);
             });
+        };
+
+        if ($rootScope.role == 'customer') {
+            $scope.getCustPersonal();
         }
 
         if($rootScope.role == 'admin'){
@@ -515,6 +519,13 @@ angular.module('FreelancerApp')
             var img = new Image();
             var canvas = document.createElement("canvas");
             var file = document.getElementById('file').files[0];
+            if (file.type != 'image/jpeg' || file.type != 'image/gif' || file.type != 'image/png') {
+                Notification.error({
+                    title: 'Error!',
+                    message: 'Only for .jpeg, .png or .gif. Try again!'
+                });
+                return;
+            }
             img.src = URL.createObjectURL(file);
             var ctx = canvas.getContext("2d");
             img.onload = function () {
@@ -540,9 +551,10 @@ angular.module('FreelancerApp')
                     if($rootScope.role =='developer'){
                         personalAPI.sendDevImage(base).success(function (data){
                             $scope.result = data;
+                            $scope.getDevPersonal();
                             Notification.success({
                                 title: 'Changes saved!',
-                                message: 'The image is uploaded!'
+                                message: 'The image was uploaded!'
                             });
                         }).error(function () {
                             Notification.error({
@@ -554,6 +566,7 @@ angular.module('FreelancerApp')
                     if($rootScope.role =='customer'){
                         personalAPI.sendCustImage(base).success(function (data){
                             $scope.result = data;
+                            $scope.getCustPersonal();
                             Notification.success({
                                 title: 'Changes saved!',
                                 message: 'The image is uploaded!'

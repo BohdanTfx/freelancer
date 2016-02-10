@@ -341,6 +341,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
 			technologies = developerService.
 					getTechnologiesByDevId(developer.getId());
 			contact = developerService.getContactByDevId(developer.getId());
+			developer = developerService.findById(developer.getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOG.error("Error when get data from developer table" + e.getMessage());
