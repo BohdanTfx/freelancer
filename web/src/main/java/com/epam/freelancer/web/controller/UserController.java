@@ -284,32 +284,38 @@ public class UserController extends HttpServlet implements Responsable {
             String uploadFilePath = null;
             if ("developer".equals(ue.getRole())) {
                 uploadFilePath = applicationPath + File.separator + "uploads" + File.separator + "developer" + File.separator + ue.getId();
-                saveImage(uploadFilePath, encodeImage);
+                saveImage(uploadFilePath, encodeImage, response);
                 Developer developer = (Developer) ue;
                 developer.setImgUrl("uploads/developer/" + ue.getId() + "/");
                 developerService.updateDeveloper(developer);
-            } else {
+            }
+            if ("customer".equals(ue.getRole())) {
                 uploadFilePath = applicationPath + File.separator + "uploads" + File.separator + "customer" + File.separator + ue.getId();
-                saveImage(uploadFilePath, encodeImage);
+                saveImage(uploadFilePath, encodeImage, response);
                 Customer customer = (Customer) ue;
                 customer.setImgUrl("uploads/customer/" + ue.getId() + "/");
                 customerService.modify(customer);
             }
+
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void saveImage(String uploadFilePath, byte[] encodImage) throws IOException {
+    private void saveImage(String uploadFilePath, byte[] encodImage, HttpServletResponse response) throws IOException {
         File file = new File(uploadFilePath + File.separator + "original" + ".jpg");
-        FileUtils.writeByteArrayToFile(file, encodImage);
-        ImageResize.resizeImage(uploadFilePath + File.separator + "original.jpg",
-                uploadFilePath + File.separator + "sm.jpg", 100, 100);
-        ImageResize.resizeImage(uploadFilePath + File.separator + "original.jpg",
-                uploadFilePath + File.separator + "md.jpg", 200, 200);
-        ImageResize.resizeImage(uploadFilePath + File.separator + "original.jpg",
-                uploadFilePath + File.separator + "lg.jpg", 500, 500);
+        try {
+            FileUtils.writeByteArrayToFile(file, encodImage);
+            ImageResize.resizeImage(uploadFilePath + File.separator + "original.jpg",
+                    uploadFilePath + File.separator + "sm.jpg", 100, 100);
+            ImageResize.resizeImage(uploadFilePath + File.separator + "original.jpg",
+                    uploadFilePath + File.separator + "md.jpg", 200, 200);
+            ImageResize.resizeImage(uploadFilePath + File.separator + "original.jpg",
+                    uploadFilePath + File.separator + "lg.jpg", 500, 500);
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        }
     }
 
 
