@@ -66,13 +66,14 @@
                                 <div class="panel-heading">Customer</div>
                                 <div class="panel-body">
 
-                                    <div>
-                                        <img class="unit-cust-image" src="../../../images/role/customer.png"
-                                             alt=""/>
-                                        {{customer.fname}}
-                                        {{customer.lname}}
-                                    </div>
-
+                                    <a ng-href="/#/public/customer/custname/{{customer.id}}">
+                                        <div>
+                                            <img class="unit-cust-image" src="{{customer.imgUrl==null? '/images/profile/no-profile-img.jpg' : customer.imgUrl}}"
+                                                 alt=""/>
+                                            {{customer.fname}}
+                                            {{customer.lname}}
+                                        </div>
+                                    </a>
                                 </div>
                             </div>
 
@@ -84,16 +85,19 @@
                                 <div class="panel-body">
                                     <div ng-repeat="devWorker in workers">
 
-                                        <div class="members-unit-dev" tex>
-                                            <div class="unit-foto">
-                                                <img style="width: 100%" src="../../../images/role/customer.png"
-                                                     alt=""/>
+
+                                        <a href="/#/public/developer/devname/{{devWorker.id}}">
+                                        <div class="members-unit-dev">
+                                                <div class="unit-foto">
+                                                    <img style="width: 100%" src="{{devWorker.imgUrl==null? '/images/profile/no-profile-img.jpg' : devWorker.imgUrl}}"
+                                                         alt=""/>
+                                                </div>
+                                                <div class="unit-name-dev">
+                                                    {{devWorker.fname}}
+                                                    <br> {{devWorker.lname}}
+                                                </div>
                                             </div>
-                                            <div class="unit-name-dev">
-                                                {{devWorker.fname}}
-                                                <br> {{devWorker.lname}}
-                                            </div>
-                                        </div>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
