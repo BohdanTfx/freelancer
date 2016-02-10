@@ -68,7 +68,7 @@
                                                 </div>
                                                 <div class="col-xs-12 col-sm-10">
                                                     <form name="saveForm" ng-submit="saveForm.$valid && save()"
-                                                          novalidate ng-submit="save()">
+                                                          novalidate>
                                                         <p class="per-line">
                                                             <strong class="col-xs-8 col-sm-4 per-pad"
                                                                     style="padding-left: 0px;!important;">Name:</strong>
@@ -105,24 +105,24 @@
                                                             </span>
                                                         </p>
 
-                                                        <p ng-show="role == 'developer'">
-                                                            <strong class="col-xs-12 col-sm-4">Position: </strong>
+                                                        <!--<p ng-show="role == 'developer'">-->
+                                                            <!--<strong class="col-xs-12 col-sm-4">Position: </strong>-->
 
-                                                            <md-input-container class="col-xs-6 col-sm-6 per-box-none"
-                                                                                md-is-error="saveForm.position.$invalid && (saveForm.$submitted || saveForm.position.$dirty)">
-                                                                <input name="position" type="text" ng-class="editClass"
-                                                                       ng-readonly="editClass == 'editClass'"
-                                                                       ng-model="user.position"
-                                                                       ng-required="true"
-                                                                       aria-label="Input">
-                                                            </md-input-container>
-                                                            <span ng-if="editClass === ''">
-                                                            <span ng-hide="saveForm.position.$invalid && (saveForm.$submitted || saveForm.position.$dirty)"
-                                                                  class="ng-hide per-glyphicon glyphicon-ok per-val"></span>
-                                                            <span ng-show="saveForm.position.$invalid && (saveForm.$submitted || saveForm.position.$dirty)"
-                                                                  class="ng-hide per-glyphicon glyphicon-remove per-er"></span>
-                                                            </span>
-                                                        </p>
+                                                            <!--<md-input-container class="col-xs-6 col-sm-6 per-box-none"-->
+                                                                                <!--md-is-error="saveForm.position.$invalid && (saveForm.$submitted || saveForm.position.$dirty)">-->
+                                                                <!--<input name="position" type="text" ng-class="editClass"-->
+                                                                       <!--ng-readonly="editClass == 'editClass'"-->
+                                                                       <!--ng-model="user.position"-->
+                                                                       <!--ng-required="true"-->
+                                                                       <!--aria-label="Input">-->
+                                                            <!--</md-input-container>-->
+                                                            <!--<span ng-if="editClass === ''">-->
+                                                            <!--<span ng-hide="saveForm.position.$invalid && (saveForm.$submitted || saveForm.position.$dirty)"-->
+                                                                  <!--class="ng-hide per-glyphicon glyphicon-ok per-val"></span>-->
+                                                            <!--<span ng-show="saveForm.position.$invalid && (saveForm.$submitted || saveForm.position.$dirty)"-->
+                                                                  <!--class="ng-hide per-glyphicon glyphicon-remove per-er"></span>-->
+                                                            <!--</span>-->
+                                                        <!--</p>-->
 
                                                         <p ng-show="role == 'developer'">
                                                             <strong class="col-xs-12 col-sm-4" style="padding-top: 5px;!important;">Pay: </strong>
@@ -175,7 +175,7 @@
 
                                                         </p>
                                                         <p>
-                                                            <strong class="col-xs-12 col-sm-4">Registration
+                                                            <strong class="col-xs-12 col-sm-4 per-line">Registration
                                                                 Date: </strong>
 
                                                             <md-input-container class="col-xs-6 col-sm-6 per-box-none">
@@ -212,7 +212,7 @@
                                                             <!--</span>-->
 
                                                         </p>
-                                                        <p>
+                                                        <p class="per-line">
                                                             <strong class="col-xs-8 col-sm-4"
                                                                     style="padding-left: 0px;!important; padding-top: 15px;">Language: </strong>
 
@@ -299,7 +299,6 @@
                                                         </p>
 
                                                         <div ng-hide="hide" class="col-xs-12 col-sm-12">
-
                                                             <button aria-label="Primary" class="btn btn-info full-width"
                                                                     ng-click="enableEditor()">
                                                                 <span class="fa fa-edit"></span> Edit
@@ -307,22 +306,18 @@
                                                         </div>
                                                         <!--/col-->
                                                         <div ng-show="hide" class="col-xs-12 col-sm-6">
-
                                                             <button aria-label="Primary" type="submit" class="btn btn-primary btn-block"
                                                                     style="margin-right: 10px;">
                                                                 <span class="fa fa-floppy-o"></span> Save
                                                             </button>
                                                         </div>
                                                         <div ng-show="hide" class="col-xs-12 col-sm-6">
-
                                                             <button class="btn btn-info btn-block btn-warning"
                                                                     ng-click="disableEditor()"
                                                                     style="margin-left: 10px;">
                                                                 <span class="fa fa-remove"></span> Cancel
                                                             </button>
                                                         </div>
-
-
                                                     </form>
                                                 </div>
                                                 <!--Button on page profile-->
