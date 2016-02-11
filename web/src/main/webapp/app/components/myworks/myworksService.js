@@ -5,26 +5,33 @@
 
 angular.module('FreelancerApp')
     .factory('myworksAPI', function ($http, config) {
-        var urlBase = '/dev/getallworks',dataFactory = {};
-        var getCustById = '/dev/getcustomerbyid';
-        var getWorkersByIdOrder = '/dev/getworkersbyidorder';
+        var urlBase = '/myworks',dataFactory = {};
 
-
-        dataFactory.getAllWorks = function () {
-            return $http.get(urlBase);
+        dataFactory.getAllDeveloperWorks = function () {
+            return $http.get("/dev/works/all");
         };
 
         dataFactory.getCustomerById = function(customer_id){
-            return $http.get(getCustById,{
-                params:{cust_id : customer_id}
-            });
+            return $http.get("/dev/customerById?customer_id="+customer_id);
         };
 
-        dataFactory.getWorkersByIdOrder = function (order_id){
-            return $http.get(getWorkersByIdOrder,{
-                params:{order_id:order_id}
-            })
-        }
+        dataFactory.getDevWorkersByIdOrder = function (order_id){
+            return $http.get('/dev/workersByIdOrder?order_id='+order_id);
+        };
+
+        dataFactory.getCustWorkersByIdOrder = function (order_id){
+            return $http.get('/cust/workersByIdOrder?order_id='+order_id);
+        };
+
+        dataFactory.getAllCustomerWorks = function () {
+            return $http.post("/cust/allWorks");
+        };
+
+        //
+        //dataFactory.getFollowers = function (orderId) {
+        //    return $http.post("/user/order/followers?orderId=" + orderId);
+        //};
+
 
 
 

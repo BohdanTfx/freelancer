@@ -33,6 +33,8 @@ public class DeveloperController extends HttpServlet implements Responsable {
 	private ObjectMapper mapper;
 	private DeveloperQAService developerQAService;
 	private DeveloperService developerService;
+	private OrderingService orderingService;
+	private OrderingService orderingService;
 	private UserManager userManager;
 
 	public DeveloperController() {
@@ -47,37 +49,36 @@ public class DeveloperController extends HttpServlet implements Responsable {
 				.getBean("developerService");
 		userManager = (UserManager) ApplicationContext.getInstance().getBean(
 				"userManager");
+		orderingService = (OrderingService) ApplicationContext.getInstance().getBean("orderingService");
 	}
 
 	@Override
 	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException
-	{
+						 HttpServletResponse response) throws ServletException, IOException {
 		try {
 
-            String path = FrontController.getPath(request);
+			String path = FrontController.getPath(request);
+			switch (path) {
+				case "dev/getalltests":
+					fillTestPage(request, response);
+					break;
+				case "dev/gettestbyid":
+					sendTestById(request, response);
+					break;
+				case "dev/works/all":
+					fillMyWorksPage(request, response);
+					break;
+				case "dev/customerById":
+					sendCustomerById(request, response);
+					break;
+				case "dev/workersByIdOrder":
+					sendWorkersByIdOrder(request, response);
+					break;
+				case "dev/getPersonalData":
+					fillPersonalPage(request, response);
+					break;
 
-            switch (path) {
-                case "dev/getalltests":
-                    fillTestPage(request, response);
-                    break;
-                case "dev/gettestbyid":
-                    sendTestById(request, response);
-                    break;
-                case "dev/getallworks":
-                    fillMyWorksPage(request, response);
-                    break;
-                case "dev/getcustomerbyid":
-                    sendCustomerById(request, response);
-                    break;
-                case "dev/getworkersbyidorder":
-                    sendWorkersByIdOrder(request, response);
-                    break;
-                case "dev/getPersonalData":
-                    fillPersonalPage(request, response);
-                    break;
-
-			default:
+				default:
 
 			}
 
@@ -89,30 +90,29 @@ public class DeveloperController extends HttpServlet implements Responsable {
 
 	@Override
 	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException
-	{
+						  HttpServletResponse response) throws ServletException, IOException {
 		try {
 
 			String path = FrontController.getPath(request);
 
-            switch (path) {
-                case "dev/results":
-                    sendResults(request, response);
-                    break;
-                case "dev/sendPersonalData":
-                    updatePersonalData(request, response);
-                    break;
-                case "dev/changePassword":
-                    changeDeveloperPassword(request, response);
-                    break;
-                case "dev/confirmChangePasswordAndEmail":
-                    confirmChangePasswordAndEmail(request, response);
-                    break;
-                case "dev/changeEmail":
-                    changeEmail(request, response);
-                    break;
-                default:
-            }
+			switch (path) {
+				case "dev/results":
+					sendResults(request, response);
+					break;
+				case "dev/sendPersonalData":
+					updatePersonalData(request, response);
+					break;
+				case "dev/changePassword":
+					changeDeveloperPassword(request, response);
+					break;
+				case "dev/confirmChangePasswordAndEmail":
+					confirmChangePasswordAndEmail(request, response);
+					break;
+				case "dev/changeEmail":
+					changeEmail(request, response);
+					break;
+				default:
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -121,50 +121,42 @@ public class DeveloperController extends HttpServlet implements Responsable {
 	}
 
 	private void fillMyWorksPage(HttpServletRequest request,
-			HttpServletResponse response) throws IOException
-	{
+								 HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession();
 		UserEntity user = (UserEntity) session.getAttribute("user");
 
-		List<Ordering> allProjects = developerService
-				.getDeveloperPortfolio(user.getId());
-		List<Ordering> devSubscribedProjects = developerService
-				.getDeveloperSubscribedProjects(user.getId());
 
-		for (Ordering order : devSubscribedProjects) {
-			order.setTechnologies(technologyService
-					.findTechnolodyByOrderingId(order.getId()));
-		}
+		List<Worker> allWorks = developerService.getAllWorkersByDevId(user.getId());
+		List<Ordering> subscribedWorks = developerService.getDeveloperSubscribedProjects(user.getId());
+		List<Ordering> finishedWorks = new ArrayList<>();
+		List<Ordering> worksInProgress = new ArrayList<>();
+		List<Ordering> notAcceptedWorks = new ArrayList<>();
 
-		List<Ordering> devFinishedProjects = new ArrayList<>();
-		List<Ordering> devProjectsInProcess = new ArrayList<>();
-		allProjects.forEach(ordering -> {
-			if (ordering.getEnded()) {
-				devFinishedProjects.add(ordering);
-			} else {
-				devProjectsInProcess.add(ordering);
+		allWorks.forEach(worker -> {
+			Ordering order = orderingService.findById(worker.getOrderId());
+			if(worker.getAccepted()){
+				if(order.getStarted() && order.getEnded()){
+					finishedWorks.add(order);
+				}else{
+					worksInProgress.add(order);
+				}
+			}else {
+				notAcceptedWorks.add(order);
 			}
 		});
 
-		for (Ordering order : devFinishedProjects) {
-			order.setTechnologies(technologyService
-					.findTechnolodyByOrderingId(order.getId()));
-		}
 
-		for (Ordering order : devProjectsInProcess) {
-			order.setTechnologies(technologyService
-					.findTechnolodyByOrderingId(order.getId()));
-		}
 
-		Map<String,List> resultMap = new HashMap<>();
-		resultMap.put("finishedWorks",devFinishedProjects);
-		resultMap.put("subscribedWorks", devSubscribedProjects);
-		resultMap.put("processedWorks", devProjectsInProcess);
+		Map<String, List> resultMap = new HashMap<>();
+		resultMap.put("finishedWorks", finishedWorks);
+		resultMap.put("subscribedWorks", subscribedWorks);
+		resultMap.put("processedWorks", worksInProgress);
+		resultMap.put("notAcceptedWorks", notAcceptedWorks);
 		sendResponse(response, resultMap, mapper);
 	}
 
 	private void fillTestPage(HttpServletRequest request,
-			HttpServletResponse response) throws IOException{
+							  HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession();
 		UserEntity user = (UserEntity) session.getAttribute("user");
 		List<DeveloperQA> devQAs = developerQAService.findAllByDevId(user
@@ -196,8 +188,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
 	}
 
 	private void sendTestById(HttpServletRequest request,
-			HttpServletResponse response) throws IOException
-	{
+							  HttpServletResponse response) throws IOException {
 		int testId = Integer.parseInt(request.getParameter("test_id"));
 		TestService testService = (TestService) ApplicationContext
 				.getInstance().getBean("testService");
@@ -210,13 +201,12 @@ public class DeveloperController extends HttpServlet implements Responsable {
 	}
 
 	private void sendCustomerById(HttpServletRequest request,
-			HttpServletResponse response) throws IOException
-	{
-		Integer custId = Integer.parseInt(request.getParameter("cust_id"));
+								  HttpServletResponse response) throws IOException {
+		Integer custId = Integer.parseInt(request.getParameter("customer_id"));
 		CustomerService customerService = (CustomerService) ApplicationContext
 				.getInstance().getBean("customerService");
 		Customer cust = customerService.findById(custId);
-		Map<String,Customer> resultMap = new HashMap<>();
+		Map<String, Customer> resultMap = new HashMap<>();
 		resultMap.put("cust", cust);
 
 		sendResponse(response, resultMap, mapper);
@@ -224,28 +214,30 @@ public class DeveloperController extends HttpServlet implements Responsable {
 	}
 
 	private void sendWorkersByIdOrder(HttpServletRequest request,
-			HttpServletResponse response) throws IOException
-	{
+									  HttpServletResponse response) throws IOException {
 		HttpSession session = request.getSession();
 		UserEntity user = (UserEntity) session.getAttribute("user");
 		Integer orderId = Integer.parseInt(request.getParameter("order_id"));
+
+		Map<String, Object> resultMap = new HashMap<>();
+
+		List<Worker> allWorkersOfOrder = developerService.getAllWorkersByOrderId(orderId);
+		List<Developer> acceptedDevelopers = new ArrayList<>();
+
+		allWorkersOfOrder.forEach(worker ->{
+			if(worker.getAccepted()){
+				acceptedDevelopers.add(developerService.findById(worker.getDevId()));}
+		});
 		Worker worker = developerService.getWorkerByDevIdAndOrderId(
 				user.getId(), orderId);
-		List<Developer> developers = developerService
-				.getDevelopersByIdOrder(orderId);
-		if (developers.contains(worker))
-			developers.remove(worker);
+		resultMap.put("workerInfo", worker);
+		resultMap.put("workers", acceptedDevelopers);
 
-		Map<String,Object> resultMap = new HashMap<>();
-		resultMap.put("workers",developers);
-		resultMap.put("workerInfo",worker);
-
-		sendResponse(response,resultMap,mapper);
+		sendResponse(response, resultMap, mapper);
 	}
 
 	private void sendResults(HttpServletRequest request,
-			HttpServletResponse response)
-	{
+							 HttpServletResponse response) {
 		try {
 			String resultsJson = request.getParameter("results");
 			List<Quest> results = mapper.readValue(resultsJson,
@@ -275,8 +267,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
 					if ((answer.getCorrect() && !answersId.contains(answer
 							.getId()))
 							|| (!answer.getCorrect() && answersId
-									.contains(answer.getId())))
-					{
+							.contains(answer.getId()))) {
 						points--;
 						qErrors++;
 					} else if (answer.getCorrect()) {
@@ -299,8 +290,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
 	}
 
 	private Map<String, String[]> createMapForDevQA(HttpServletRequest request,
-			double rate)
-	{
+													double rate) {
 		Map<String, String[]> map = new HashMap<>();
 		UserEntity user = (UserEntity) request.getSession()
 				.getAttribute("user");
@@ -314,8 +304,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
 	}
 
 	private void sendResultResponse(HttpServletResponse response, double rate,
-			int errors, int success) throws IOException
-	{
+									int errors, int success) throws IOException {
 		StringBuilder sb = new StringBuilder();
 		sb.append("{\"rate\":");
 		sb.append(rate);
@@ -330,8 +319,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
 	}
 
 	private void fillPersonalPage(HttpServletRequest request,
-			HttpServletResponse response) throws IOException
-	{
+								  HttpServletResponse response) throws IOException {
 		List<Technology> technologies = null;
 		HttpSession session = request.getSession();
 		Developer developer = (Developer) session.getAttribute("user");
@@ -341,9 +329,6 @@ public class DeveloperController extends HttpServlet implements Responsable {
 			technologies = developerService.
 					getTechnologiesByDevId(developer.getId());
 			contact = developerService.getContactByDevId(developer.getId());
-			developer = developerService.findById(developer.getId());
-			developer.setIsFirst(false);
-			developerService.modify(developer);
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOG.error("Error when get data from developer table" + e.getMessage());
@@ -352,26 +337,27 @@ public class DeveloperController extends HttpServlet implements Responsable {
 		String developerJson = new Gson().toJson(developer);
 		String contactJson = new Gson().toJson(contact);
 		technologies = technologyService.findAll();
-		for(Technology tech : technologies){
+		for (Technology tech : technologies) {
 			listTechs.add(tech.getName());
 		}
 		String allTechsJson = new Gson().toJson(listTechs);
-		String resultJson = "{\"dev\":" + developerJson + ",\"techs\":" + devTechsJson +",\"contacts\":" + contactJson + ",\"allTechs\":" + allTechsJson +"}";
-		if(devTechsJson.length() == 2){
-			resultJson = "{\"dev\":" + developerJson + ",\"contacts\":" + contactJson + ",\"allTechs\":" + allTechsJson +"}";
-		} if(contactJson.length() == 0) {
-		resultJson = "{\"dev\":" + developerJson + ",\"techs\":" + devTechsJson + ",\"allTechs\":" + allTechsJson +"}";
-	} if(contactJson.length() == 0 && devTechsJson.length() == 2) {
-		resultJson = "{\"dev\":" + developerJson + ",\"allTechs\":" + allTechsJson +"}";
-	}
+		String resultJson = "{\"dev\":" + developerJson + ",\"techs\":" + devTechsJson + ",\"contacts\":" + contactJson + ",\"allTechs\":" + allTechsJson + "}";
+		if (devTechsJson.length() == 2) {
+			resultJson = "{\"dev\":" + developerJson + ",\"contacts\":" + contactJson + ",\"allTechs\":" + allTechsJson + "}";
+		}
+		if (contactJson.length() == 0) {
+			resultJson = "{\"dev\":" + developerJson + ",\"techs\":" + devTechsJson + ",\"allTechs\":" + allTechsJson + "}";
+		}
+		if (contactJson.length() == 0 && devTechsJson.length() == 2) {
+			resultJson = "{\"dev\":" + developerJson + ",\"allTechs\":" + allTechsJson + "}";
+		}
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(resultJson);
 	}
 
 	private void updatePersonalData(HttpServletRequest request,
-			HttpServletResponse response) throws IOException
-	{
+									HttpServletResponse response) throws IOException {
 
 		Developer developer = null;
 		Contact contact = null;
@@ -379,24 +365,25 @@ public class DeveloperController extends HttpServlet implements Responsable {
 		SimpleDateFormat format = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a");
 		List<Technology> allTechnology = technologyService.findAll();
 		mapper.setDateFormat(format);
-		mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true );
+		mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
 		String developerJson = request.getParameter("developer");
 		try {
 			developer = mapper.readValue(developerJson, Developer.class);
 
-		} catch(Exception e){
+		} catch (Exception e) {
 			LOG.warn("Some problem with mapper");
 		}
 		String technologiesJson = request.getParameter("technologies");
-		if(technologiesJson.length() != 0) {
-			technologies = mapper.readValue(technologiesJson, new TypeReference<List<Technology>>() {});
+		if (technologiesJson.length() != 0) {
+			technologies = mapper.readValue(technologiesJson, new TypeReference<List<Technology>>() {
+			});
 		}
 
 		String contactJson = request.getParameter("contact");
-		if(contactJson.length() != 0 ){
+		if (contactJson.length() != 0) {
 			contact = mapper.readValue(contactJson, Contact.class);
 		}
-		if(developerService.getContactByDevId(developer.getId()) == null){
+		if (developerService.getContactByDevId(developer.getId()) == null) {
 			contact.setDevId(developer.getId());
 			developerService.createContact(contact);
 		} else {
@@ -424,8 +411,8 @@ public class DeveloperController extends HttpServlet implements Responsable {
 		HttpSession session = request.getSession();
 		Developer developer = (Developer) session.getAttribute("user");
 
-		if(developer != null){
-			if(userManager.validCredentials(developer.getEmail(), password, developer)){
+		if (developer != null) {
+			if (userManager.validCredentials(developer.getEmail(), password, developer)) {
 				String confirmCodeJson = new Gson().toJson(generatePhoneCode(developer));
 				response.setContentType("application/json");
 				response.setCharacterEncoding("UTF-8");
@@ -446,15 +433,15 @@ public class DeveloperController extends HttpServlet implements Responsable {
 		HttpSession session = request.getSession();
 		Developer developer = (Developer) session.getAttribute("user");
 
-		if(password != null){
-			if(checkConfirmCode(developer, confirmCode, response)){
+		if (password != null) {
+			if (checkConfirmCode(developer, confirmCode, response)) {
 				developer.setPassword(password);
 				developerService.encodePassword(developer);
 				developerService.updateDeveloper(developer);
 			}
 		}
-		if(email != null){
-			if(checkConfirmCode(developer, confirmCode, response)){
+		if (email != null) {
+			if (checkConfirmCode(developer, confirmCode, response)) {
 				developer.setSendEmail(email);
 				developerService.updateDeveloper(developer);
 			}
@@ -465,8 +452,8 @@ public class DeveloperController extends HttpServlet implements Responsable {
 		String email = request.getParameter("email");
 		HttpSession session = request.getSession();
 		Developer developer = (Developer) session.getAttribute("user");
-		if(developer != null){
-			if(userManager.isEmailAvailable(email)){
+		if (developer != null) {
+			if (userManager.isEmailAvailable(email)) {
 				String confirmCodeJson = new Gson().toJson(generatePhoneCode(developer));
 				response.setContentType("application/json");
 				response.setCharacterEncoding("UTF-8");
@@ -485,26 +472,26 @@ public class DeveloperController extends HttpServlet implements Responsable {
 		}
 	}
 
-	private String generatePhoneCode(Developer developer){
-		StringBuilder confirmPhoneCode =  new StringBuilder();
+	private String generatePhoneCode(Developer developer) {
+		StringBuilder confirmPhoneCode = new StringBuilder();
 		SecureRandom random = new SecureRandom();
-		for(int i = 0; i < 4; i++){
+		for (int i = 0; i < 4; i++) {
 			confirmPhoneCode.append(String.valueOf(random.nextInt(9)));
 		}
 		developer.setConfirmCode(confirmPhoneCode.toString());
-		try{
+		try {
 			String phoneNumber = developerService.getContactByDevId(developer.getId()).getPhone();
 			SmsSender smsSender = new SmsSender();
 			smsSender.sendSms(phoneNumber, "Confirm code: " + confirmPhoneCode.toString(),
 					"e-freelance");
-		} catch(NullPointerException e){
+		} catch (NullPointerException e) {
 			LOG.warn("The phone number is empty");
 		}
 		return confirmPhoneCode.toString();
 	}
 
 	private Boolean checkConfirmCode(Developer developer, String confirmCode, HttpServletResponse response) throws IOException {
-		if(developer.getConfirmCode().equals(confirmCode)){
+		if (developer.getConfirmCode().equals(confirmCode)) 		if (developer.getConfirmCode().equals(confirmCode)) {
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
 			response.getWriter().write(new Gson().toJson("good"));

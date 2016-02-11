@@ -1,8 +1,8 @@
 angular.module('FreelancerApp')
     .controller('statisticsCtrl', function($scope, statisticsAPI ,$mdDialog){
         $scope.admin = {};
+        $scope.element = {};
         $scope.admin.email = "";
-
 
         $scope.sendAdminLinkToEmail = function(ev,email) {
             statisticsAPI.sendLinkToEmail(email);
@@ -17,6 +17,7 @@ angular.module('FreelancerApp')
                     .targetEvent(ev)
             );
         };
+
 
 
         //PieChart

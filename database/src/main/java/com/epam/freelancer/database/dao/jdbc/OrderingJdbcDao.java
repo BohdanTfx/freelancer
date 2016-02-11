@@ -67,6 +67,31 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 		return orderings;
 	}
 
+
+	@Override
+	public List<Ordering> getAllCustOrders(Integer custId) {
+		List<Ordering> orderings = new ArrayList<>();
+		try (Connection connection = connectionPool.getConnection();
+			 PreparedStatement statement = connection
+					 .prepareStatement("SELECT * FROM ordering WHERE customer_id = ? ;"))
+		{
+			statement.setObject(1, custId);
+			ResultSet set = statement.executeQuery();
+			while (set.next()) {
+				Ordering order = transformer.getObject(set);
+				orderings.add(order);
+			}
+			return orderings;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return orderings;
+	}
+
+
+
+
 	@Override
 	public Integer getFilteredObjectNumber(Map<String, Object> parameters) {
 		String query = null;
