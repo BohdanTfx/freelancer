@@ -58,7 +58,7 @@ public class AdminController extends HttpServlet implements Responsable {
         developerService = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
         customerService = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
         adminService = (AdminService) ApplicationContext.getInstance().getBean("adminService");
-        orderCounterService = (OrderCounterService)ApplicationContext.getInstance().getBean("orderCounterService");
+        orderCounterService = (OrderCounterService) ApplicationContext.getInstance().getBean("orderCounterService");
         questionService = (QuestionService) ApplicationContext.getInstance().getBean("questionService");
         testService = (TestService) ApplicationContext.getInstance().getBean("testService");
         answerService = (AnswerService) ApplicationContext.getInstance().getBean("answerService");
@@ -83,6 +83,9 @@ public class AdminController extends HttpServlet implements Responsable {
                     break;
                 case "admin/tests":
                     getTests(request, response);
+                    break;
+                case "admin/questions":
+                    getQuestions(request, response);
                     break;
                 case "admin/technologies":
                     getTechnologies(request, response);
@@ -122,6 +125,12 @@ public class AdminController extends HttpServlet implements Responsable {
                 case "admin/tech/questions":
                     getQuestionsByTechnologyId(request, response);
                     break;
+                case "admin/test/delete":
+                    deleteTest(request, response);
+                    break;
+                case "admin/question/delete":
+                    deleteQuestion(request, response);
+                    break;
                 default:
 
             }
@@ -157,8 +166,8 @@ public class AdminController extends HttpServlet implements Responsable {
     private void startCountdownExpireTime(AdminCandidate candidate, int secDelay) {
         ScheduledExecutorService scheduledExecutorService =
                 Executors.newScheduledThreadPool(1);
-        scheduledExecutorService.schedule(() ->  adminCandidateService.remove(candidate)
-        , secDelay, TimeUnit.HOURS);
+        scheduledExecutorService.schedule(() -> adminCandidateService.remove(candidate)
+                , secDelay, TimeUnit.HOURS);
     }
 
     private String getAdminCreatingMessage() {
@@ -194,11 +203,10 @@ public class AdminController extends HttpServlet implements Responsable {
         adminCandidateService.remove(adminCandidateService.getAdminCandidateByKey(uuid));
     }
 
-    private void sendDevAndCustAmount(HttpServletRequest request,HttpServletResponse response) throws IOException {
-        Map<String,Integer> map = new HashMap<>();
-        map.put("devAmount",developerService.getAllWorkers().size());
-        map.put("custAmount",customerService.findAll().size());
-
+    private void sendDevAndCustAmount(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("devAmount", developerService.getAllWorkers().size());
+        map.put("custAmount", customerService.findAll().size());
         sendResponse(response, map, mapper);
     }
 
@@ -208,13 +216,12 @@ public class AdminController extends HttpServlet implements Responsable {
         Map<Integer, Technology> technologyMap = new HashMap<>();
         techs.forEach(technology -> technologyMap.put(technology.getId(),
                 technology));
-        Map<Integer, Test> testMap = new HashMap<>();
         for (int i = 0; i < tests.size(); i++) {
             tests.forEach(test -> {
                 test.setTechnology(technologyMap.get(test.getTechId()));
-                testMap.put(test.getId(), test);
             });
         }
+        sendResponse(response, tests, mapper);
     }
 
     private void getQuestionsByTechnologyId(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -266,14 +273,14 @@ public class AdminController extends HttpServlet implements Responsable {
         List<Answer> answers = mapper.readValue(paramAnswers, new TypeReference<List<Answer>>() {
         });
         int multiple = 0;
-        for(Answer answer:answers){
-            if(answer.getCorrect()) multiple++;
+        for (Answer answer : answers) {
+            if (answer.getCorrect()) multiple++;
         }
-        question.setMultiple(multiple>1);
+        question.setMultiple(multiple > 1);
         question = writeQuestionInDB(question, request);
-        if(question == null){
+        if (question == null) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-        }else{
+        } else {
             writeAnswersInDB(question.getId(), answers, request);
             response.getWriter().write(question.getId());
         }
@@ -301,46 +308,75 @@ public class AdminController extends HttpServlet implements Responsable {
         }
     }
 
-    private void sendCreationOrdersAmount(HttpServletRequest request,HttpServletResponse response) throws IOException {
+    private void deleteTest(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String paramTest = request.getParameter("test");
+        if (paramTest == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+        Test test = mapper.readValue(paramTest, new TypeReference<Test>() {
+        });
+        test.setDeleted(true);
+        testService.modify(test);
+    }
+
+    private void getQuestions(HttpServletRequest request, HttpServletResponse response) {
+        List<Question> questions = questionService.findAll();
+        List<Technology> techs = technologyService.findAll();
+        Map<Integer, Technology> technologyMap = new HashMap<>();
+        techs.forEach(technology -> technologyMap.put(technology.getId(),
+                technology));
+        for (int i = 0; i < questions.size(); i++) {
+            questions.forEach(test -> {
+                test.setTechnology(technologyMap.get(test.getTechId()));
+            });
+        }
+        sendResponse(response, questions, mapper);
+    }
+
+
+    private void deleteQuestion(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String paramQuestion = request.getParameter("question");
+        if (paramQuestion == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+        Question question = mapper.readValue(paramQuestion, new TypeReference<Question>() {
+        });
+        question.setDeleted(true);
+        questionService.modify(question);
+    }
+
+
+    private void sendCreationOrdersAmount(HttpServletRequest request, HttpServletResponse response) throws IOException {
         List<OrderCounter> list = orderCounterService.getAllForLast30Days();
-        Map<LocalDate,Integer> map = new TreeMap<>();
-        Map<String,Object> resultMap = new HashMap<>();
+        Map<LocalDate, Integer> map = new TreeMap<>();
+        Map<String, Object> resultMap = new HashMap<>();
         List<Integer> listDays = new ArrayList<>();
         List<String> listMonth = new ArrayList<>();
 
         Calendar cal = Calendar.getInstance();
         for (int i = 0; i < 30; i++) {
             cal.add(Calendar.DATE, -1);
-            map.put(new java.sql.Date(cal.getTimeInMillis()).toLocalDate(),0);
+            map.put(new java.sql.Date(cal.getTimeInMillis()).toLocalDate(), 0);
         }
-
-
-        for (OrderCounter o:list){
-            if(map.containsKey(o.getDate().toLocalDate())){
-                map.put(o.getDate().toLocalDate(),o.getCount());
+        for (OrderCounter o : list) {
+            if (map.containsKey(o.getDate().toLocalDate())) {
+                map.put(o.getDate().toLocalDate(), o.getCount());
             }
         }
-
-
-        for (LocalDate date:map.keySet()) {
+        for (LocalDate date : map.keySet()) {
             listDays.add(date.getDayOfMonth());
             listMonth.add(date.getMonth().toString());
         }
+        resultMap.put("orderValues", map.values());
+        resultMap.put("listDays", listDays);
+        resultMap.put("listMonth", listMonth);
 
-        resultMap.put("orderValues",map.values());
-        resultMap.put("listDays",listDays);
-        resultMap.put("listMonth",listMonth);
-
-        sendResponse(response,resultMap,mapper);
-
-
-
+        sendResponse(response, resultMap, mapper);
     }
 
-
-
-
-    private void fillAdminPage(HttpServletRequest request,HttpServletResponse response) throws IOException {
+    private void fillAdminPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         Admin admin = (Admin) session.getAttribute("user");
         String adminJson = new Gson().toJson(admin);

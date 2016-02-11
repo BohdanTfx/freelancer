@@ -70,6 +70,16 @@ angular.module('FreelancerApp')
                 });
         });
 
+        /*createtestAPI.getAllQuestions().success(function (data) {
+            $scope.allQuestions = data;
+        }).error(function () {
+            Notification
+                .error({
+                    title: 'Error!',
+                    message: 'Something went bad. Please try again.'
+                });
+        });*/
+
         createtestAPI.getAllTechnologies().success(function (data) {
             $scope.technologies = data;
         }).error(function () {
@@ -138,7 +148,6 @@ angular.module('FreelancerApp')
             }
         }
 
-
         $scope.testReset = function () {
             $scope.test = {};
             $scope.pages = [];
@@ -171,9 +180,9 @@ angular.module('FreelancerApp')
             } else {
                 var correctAnswers = 0;
                 for (var i = 0; i < $scope.answers.length; i++) {
-                    if($scope.answers[i].correct) correctAnswers++;
+                    if ($scope.answers[i].correct) correctAnswers++;
                 }
-                if(correctAnswers<1){
+                if (correctAnswers < 1) {
                     Notification
                         .error({
                             title: 'Error!',
@@ -207,5 +216,126 @@ angular.module('FreelancerApp')
             $scope.answers = [];
             $scope.answers.push(Object.assign({}, answer));
             $scope.question = {};
+        }
+
+        $scope.setDelTest = function (test) {
+            $scope.delTest = test;
+        };
+
+        $scope.deleteTest = function () {
+            if ($scope.delTest == 'undefined') {
+                Notification
+                    .error({
+                        title: 'Error!',
+                        message: 'Something went bad. Please try again.'
+                    });
+                return;
+            }
+            var testJSON = JSON.stringify($scope.delTest);
+            createtestAPI.deleteTest(testJSON).success(function () {
+                for (var i = 0; i < $scope.tests.length; i++) {
+                    if ($scope.tests[i].id == $scope.delTest.id) {
+                        $scope.tests.splice(i, 1);
+                        break;
+                    }
+                }
+                Notification
+                    .success({
+                        title: 'Success!',
+                        message: 'Test was successfully deleted.'
+                    });
+            });
+        }
+
+
+        $scope.setDelQuestion = function (question) {
+            $scope.delQuestion = question;
+        }
+
+        $scope.deleteQuestion = function () {
+            if ($scope.delQuestion == 'undefined') {
+                Notification
+                    .error({
+                        title: 'Error!',
+                        message: 'Something went bad. Please try again.'
+                    });
+                return;
+            }
+            var questionJSON = JSON.stringify($scope.delQuestion);
+            createtestAPI.deleteQuestion(questionJSON).success(function () {
+                for (var i = 0; i < $scope.tests.length; i++) {
+                    if ($scope.allQuestions[i].id == $scope.delQuestion.id) {
+                        $scope.allQuestions.splice(i, 1);
+                        break;
+                    }
+                }
+                Notification
+                    .success({
+                        title: 'Success!',
+                        message: 'Test was successfully deleted.'
+                    });
+            });
+        }
+
+        $scope.sortField = undefined;
+        $scope.reverse = false;
+
+        $scope.sort = function (fieldName) {
+            if ($scope.sortField === fieldName) {
+                $scope.reverse = !$scope.reverse;
+            } else {
+                $scope.sortField = fieldName;
+                $scope.reverse = false;
+            }
+        };
+
+        $scope.isSortUp = function (fieldName) {
+            return $scope.sortField === fieldName && !$scope.reverse;
+        };
+        $scope.isSortDown = function (fieldName) {
+            return $scope.sortField === fieldName && $scope.reverse;
+        };
+
+
+        // Question tab: pagination
+        $scope.openQuestionPage = function (page) {
+            if (page == 'last')
+                $scope.questionItemListStart = 'last';
+            else {
+                $scope.questionItemListStart = page;
+                $scope.getQuestionsByTechIdForQuestTab($scope.questTabTechId);
+            }
+        }
+
+        $scope.fillQuestionTabPagination = function (data) {
+            $scope.questionPages = data;
+
+            for (var page = 0; page < data.length; page++) {
+                var item = data[page];
+                if (item.first == 'current') {
+                    if (item.second > 3)
+                        $scope.questTabShowFirst = true;
+                    else
+                        $scope.questTabShowFirst = false;
+                    if (item.second + 4 >= $scope.maxPage)
+                        $scope.questTabShowLast = false;
+                    else
+                        $scope.questTabShowLast = true;
+                }
+            }
+        }
+
+        $scope.getQuestionsByTechIdForQuestTab = function (id) {
+            $scope.techIsChosen = true;
+            createtestAPI.getQuestionsByTechId($scope.questionItemListStart, id).success(function (data) {
+                $scope.allQuestions = data.items;
+                $scope.fillQuestionTabPagination(data.pages);
+            }).error(function () {
+                Notification
+                    .error({
+                        title: 'Error!',
+                        message: 'Something went bad. Please try again.'
+                    });
+            });
         }
     });

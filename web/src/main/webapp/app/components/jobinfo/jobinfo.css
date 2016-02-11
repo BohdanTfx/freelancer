@@ -18,6 +18,16 @@
     list-style: outside none none;
 }
 
+.job-info .job-title {
+    font-family: normal;
+    font-weight: bold;
+}
+
+.job-info .user-name {
+    font-family: normal;
+    font-weight: bold;
+}
+
 .job-info p > a {
     cursor: hand;
 }
@@ -35,7 +45,7 @@
     text-align: center;
 }
 
-.job-info .right-side h2{
+.job-info .right-side h3{
     margin-top: 0;
 }
 

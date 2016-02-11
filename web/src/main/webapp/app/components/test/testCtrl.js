@@ -1,5 +1,5 @@
 angular.module('FreelancerApp')
-    .controller('testCtrl', function ($scope, testAPI, $stateParams, $log, $interval) {
+    .controller('testCtrl', function ($scope, testAPI, $stateParams, $log, $interval, Notification) {
 
         $scope.testFinished = false;
         $scope.hideCssClass = '';
@@ -45,7 +45,11 @@ angular.module('FreelancerApp')
             $scope.test = data;
             $scope.intervalCtrl();
         }).error(function () {
-            alert(404);
+            Notification
+                .error({
+                    title: 'Error!',
+                    message: 'Something went bad. Please try again.'
+                });
         });
 
 

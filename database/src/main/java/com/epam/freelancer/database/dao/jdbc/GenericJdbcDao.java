@@ -95,7 +95,7 @@ public abstract class GenericJdbcDao<T extends BaseEntity<ID>, ID> implements
 	@Override
 	public List<T> getAll() {
 		List<T> entities = new ArrayList<>();
-		String query = "SELECT * FROM " + table;
+		String query = "SELECT * FROM " + table + " WHERE is_deleted IS NOT TRUE";
 		try (Connection connection = connectionPool.getConnection();
 				PreparedStatement statement = connection
 						.prepareStatement(query);
@@ -190,7 +190,7 @@ public abstract class GenericJdbcDao<T extends BaseEntity<ID>, ID> implements
 		builder.append(step);
 
 		return builder.toString();
-	}
+}
 
 	@Override
 	public Integer getObjectNumber() {
