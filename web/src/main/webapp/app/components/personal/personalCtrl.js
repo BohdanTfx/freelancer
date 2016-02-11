@@ -10,6 +10,7 @@ angular.module('FreelancerApp')
         $scope.getDevPersonal = function () {
 
             personalAPI.getDevPersonal().success(function (data) {
+                var random = Math.random();
                 $scope.user = data.dev;
 
                 //check Registration date
@@ -34,12 +35,11 @@ angular.module('FreelancerApp')
                 if (typeof data.allTechs != 'undefined') {
                     $scope.allTechs = data.allTechs;
                 }
-
                 //check for empty image
                 if(typeof $scope.user.imgUrl == 'undefined'){
                     $scope.img = 'images/profile/no-image.png';
                 } else {
-                    $scope.img = $scope.user.imgUrl + 'md.jpg';
+                    $scope.img = $scope.user.imgUrl + 'md.jpg?id=' + random;
                 }
                 devTemp = clone($scope.user);
                 techsTemp = clone($scope.techs);
@@ -52,6 +52,7 @@ angular.module('FreelancerApp')
 
         $scope.getCustPersonal = function () {
             personalAPI.getCustPersonal().success(function (data) {
+                var random = Math.random();
                 var custTemp, contTemp;
                 $scope.user = data.cust;
                 $scope.contact = data.cont;
@@ -78,7 +79,7 @@ angular.module('FreelancerApp')
                     $scope.img = 'images/profile/no-image.png';
                 }
                 else {
-                    $scope.img = $scope.user.imgUrl + 'md.jpg';
+                    $scope.img = $scope.user.imgUrl + 'md.jpg?id=' + random;
                 }
                 custTemp = clone($scope.user);
                 contTemp = clone($scope.contact);
@@ -89,8 +90,9 @@ angular.module('FreelancerApp')
             $scope.getCustPersonal();
         }
 
-        if($rootScope.role == 'admin'){
+        $scope.getAdminPersonal = function () {
             personalAPI.getAdminPersonal().success(function (data){
+                var random = Math.random();
                 $scope.user = data;
 
                 //check Registration date
@@ -103,12 +105,15 @@ angular.module('FreelancerApp')
                     $scope.img = 'images/profile/no-image.png';
                 }
                 else {
-                    $scope.img = $scope.user.imgUrl + 'md.jpg';
+                    $scope.img = $scope.user.imgUrl + 'md.jpg?id=' + random;
                 }
 
                 adminTemp = clone($scope.user);
             });
+        };
 
+        if ($rootScope.role == 'admin') {
+            $scope.getAdminPersonal();
         }
 
 
@@ -519,37 +524,31 @@ angular.module('FreelancerApp')
             var img = new Image();
             var canvas = document.createElement("canvas");
             var file = document.getElementById('file').files[0];
-            if (file.type != 'image/jpeg' || file.type != 'image/gif' || file.type != 'image/png') {
-                Notification.error({
-                    title: 'Error!',
-                    message: 'Only for .jpeg, .png or .gif. Try again!'
-                });
-                return;
-            }
-            img.src = URL.createObjectURL(file);
-            var ctx = canvas.getContext("2d");
-            img.onload = function () {
-                ctx = canvas.getContext("2d");
-                var maxWidth = 2000, // Max width for the image
-                    ratio = 0,  // Used for aspect ratio
-                    width = img.width,    // Current image width
-                    height = img.height;  // Current image height
+            if (file.type == 'image/jpeg' || file.type == 'image/gif' || file.type == 'image/png') {
+                img.src = URL.createObjectURL(file);
+                var ctx = canvas.getContext("2d");
+                img.onload = function () {
+                    ctx = canvas.getContext("2d");
+                    var maxWidth = 2000, // Max width for the image
+                        ratio = 0,  // Used for aspect ratio
+                        width = img.width,    // Current image width
+                        height = img.height;  // Current image height
 
-                if (width > maxWidth) {
-                    ratio = maxWidth / width;   // get ratio for scaling image
-                    height = height * ratio;    // Reset height to match scaled image
-                    width = width * ratio;    // Reset width to match scaled image
-                }
-                canvas.width = width;
-                canvas.height = height;
-                ctx.fillStyle = '#fff';  /// set white fill style
-                ctx.fillRect(0, 0, width, height);
-                ctx.drawImage(this, 0, 0, width, height);
-                var dataURL = canvas.toDataURL("image/jpg");
-                var base = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+                    if (width > maxWidth) {
+                        ratio = maxWidth / width;   // get ratio for scaling image
+                        height = height * ratio;    // Reset height to match scaled image
+                        width = width * ratio;    // Reset width to match scaled image
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.fillStyle = '#fff';  /// set white fill style
+                    ctx.fillRect(0, 0, width, height);
+                    ctx.drawImage(this, 0, 0, width, height);
+                    var dataURL = canvas.toDataURL("image/jpg");
+                    var base = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 
-                    if($rootScope.role =='developer'){
-                        personalAPI.sendDevImage(base).success(function (data){
+                    if ($rootScope.role == 'developer') {
+                        personalAPI.sendDevImage(base).success(function (data) {
                             $scope.result = data;
                             $scope.getDevPersonal();
                             Notification.success({
@@ -563,8 +562,8 @@ angular.module('FreelancerApp')
                             });
                         });
                     }
-                    if($rootScope.role =='customer'){
-                        personalAPI.sendCustImage(base).success(function (data){
+                    if ($rootScope.role == 'customer') {
+                        personalAPI.sendCustImage(base).success(function (data) {
                             $scope.result = data;
                             $scope.getCustPersonal();
                             Notification.success({
@@ -578,9 +577,10 @@ angular.module('FreelancerApp')
                             });
                         });
                     }
-                    if($rootScope.role =='admin'){
-                        personalAPI.sendAdminImage(base).success(function (data){
+                    if ($rootScope.role == 'admin') {
+                        personalAPI.sendAdminImage(base).success(function (data) {
                             $scope.result = data;
+                            $scope.getAdminPersonal();
                             Notification.success({
                                 title: 'Changes saved!',
                                 message: 'The image is uploaded!'
@@ -593,6 +593,13 @@ angular.module('FreelancerApp')
                         });
                     }
                 }
+            } else {
+                Notification.error({
+                    title: 'Error!',
+                    message: 'Only for .jpeg, .png or .gif. Try again!'
+                });
+
+            }
 
 
         };

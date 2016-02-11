@@ -76,10 +76,8 @@
                     <md-tabs md-dynamic-height md-border-bottom>
                         <md-tab label="Feedbacks">
                             <div class="tab-pane fade in active" id="menu1">
-                                <span style="color: firebrick">{{comerr}}</span>
-                                <span style="color: darkgreen">{{comsuc}}</span>
 
-                                <div ng-if="show" class="form-group cust-comm-div">
+                                <div ng-if="feedShow" class="form-group cust-comm-div">
                                     <br/>
                                     <label>Rate him:
                                         <uib-rating ng-model="rate" max="max" readonly="false"
@@ -219,7 +217,7 @@
                             data-dismiss="modal">
         <span
                 class="glyphicon glyphicon-thumbs-up"></span>
-                        Hire
+                        Follow
                     </button>
                 </div>
             </div>

@@ -490,7 +490,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
 	}
 
 	private Boolean checkConfirmCode(Developer developer, String confirmCode, HttpServletResponse response) throws IOException {
-		if (developer.getConfirmCode().equals(confirmCode)) {
+		if (developer.getConfirmCode().equals(confirmCode)) 		if (developer.getConfirmCode().equals(confirmCode)) {
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
 			response.getWriter().write(new Gson().toJson("good"));

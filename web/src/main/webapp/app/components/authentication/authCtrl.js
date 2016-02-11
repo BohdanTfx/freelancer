@@ -32,12 +32,7 @@ angular
 														return;
 													}
 													if (response.isFirst) {
-														$location.path('/personal');
-														$http.post('/user/firstTimeEnter?id=' + response.id).success(function () {
-															alert('suc');
-														}).error(function () {
-															alert('error');
-														});
+														$location.path('/personal')
 													}
 													else {
 														if (response.role == 'developer')
