@@ -109,9 +109,9 @@
 	<div class="panel panel-info" ng-repeat="developer in developers"
 		ng-if="developersLoading == false">
 		<div class="panel-heading">
-			<a
-				href="/#/public/developer/{{developer.fname}}{{developer.lname}}/{{developer.id}}"
-				class="panel-title">{{developer.fname}} {{developer.lname}}</a>
+			<a class="panel-title developer-link"
+				href="/#/public/developer/{{developer.fname}}{{developer.lname}}/{{developer.id}}"><i
+				class="fa fa-link"></i> {{developer.fname}} {{developer.lname}}</a>
 		</div>
 		<div class="panel-body developer-panel-body">
 			<div class="col-xs-8 col-sm-10">
