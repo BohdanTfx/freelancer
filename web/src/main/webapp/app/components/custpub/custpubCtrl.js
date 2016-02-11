@@ -6,23 +6,25 @@ angular.module('FreelancerApp')
 
         if ($rootScope.role == 'customer') {
             $scope.show = true;
+            $scope.feedShow = false;
         } else {
             $scope.show = false;
+            $scope.feedShow = true;
         }
 
         $scope.wmDis = false;
-        if($rootScope.id = $stateParams.custId) {
+        if ($rootScope.id == $stateParams.custId) {
             $scope.wmDis = true;
         }
 
         $scope.deleteFeed = function (devId, feedId) {
             custpubAPI.deleteFeed(devId, feedId).success(function () {
-                $scope.feed();
                 Notification
                     .success({
                         title: 'Success!',
                         message: 'Feedback deleted.'
                     });
+                $scope.feed();
             }).error(function () {
                 Notification
                     .error({
@@ -104,7 +106,7 @@ angular.module('FreelancerApp')
 
         $scope.sendSms = function () {
             var data = 'phone=' + $scope.phone + '&order_id=' + $scope.hireord +
-                '&dev_id=' + $scope.query + "&message=" + $scope.hiremes + '&cust_id=' + $rootScope.id + '&author=dev';
+                '&dev_id=' + $rootScope.id + "&message=" + $scope.hiremes + '&cust_id=' + $scope.query + '&author=dev';
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
             $http.post('/user/sms', data).success(function () {
@@ -132,7 +134,6 @@ angular.module('FreelancerApp')
         };
 
         $scope.rating();
-
 
         var getCust = function (cust_id) {
             custpubAPI.getCustById(cust_id).success(
@@ -212,6 +213,7 @@ angular.module('FreelancerApp')
                     $scope.comerr = undefined;
 
                     $scope.feed();
+                    $scope.emptyComm = false;
                     $scope.rating();
 
                     $scope.noneFeed = undefined;
