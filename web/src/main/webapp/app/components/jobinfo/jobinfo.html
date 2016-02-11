@@ -59,6 +59,11 @@
                                         </span>
                                     </span>
                                 </li>
+                            <li>
+                                <div class="btn btm-sm btn-danger" ng-disabled="disCompBut" data-toggle="modal"
+                                     data-target=".bs-example-modal-sm" style="padding: 3px">Complain
+                                </div>
+                            </li>
                             </ul>
                             </p>
                         </div>
@@ -228,6 +233,27 @@
                     </button>
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Are you sure ?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal"><span
+                        class="glyphicon glyphicon-share-alt"></span> Close
+                </button>
+                <button type="button" id="delete1" class="btn btn-danger" ng-click="complain()"
+                        data-dismiss="modal"><span
+                        class="glyphicon glyphicon-remove-sign"></span> Complain
+                </button>
             </div>
         </div>
     </div>

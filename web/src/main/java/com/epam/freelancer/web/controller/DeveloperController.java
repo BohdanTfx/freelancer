@@ -34,7 +34,6 @@ public class DeveloperController extends HttpServlet implements Responsable {
 	private DeveloperQAService developerQAService;
 	private DeveloperService developerService;
 	private OrderingService orderingService;
-	private OrderingService orderingService;
 	private UserManager userManager;
 
 	public DeveloperController() {
