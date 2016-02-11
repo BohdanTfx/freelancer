@@ -10,12 +10,12 @@
                 <md-tab label="Proposed">
                     <md-content class="md-padding" style="min-height: 450px;">
 
-                        <div ng-switch="subscribedWorks.length">
+                        <div ng-switch="notAcceptedWorks.length">
                             <div ng-switch-when="0">
                                 <h5 class="help-block">No projects</h5>
                             </div>
                             <div ng-switch-default>
-                                <div ng-repeat="project in subscribedWorks">
+                                <div ng-repeat="project in notAcceptedWorks">
                                     <div class="panel panel-default">
 
 

@@ -12,6 +12,9 @@ angular.module('FreelancerApp')
                 $scope.firstWorks = data.subscribedWorks;
                 $scope.secondWorks = data.processedWorks;
                 $scope.thirdWorks = data.finishedWorks;
+                $scope.notAcceptedWorks = data.notAcceptedWorks;
+
+
 
             }).error(function () {
                 Notification
@@ -59,6 +62,7 @@ angular.module('FreelancerApp')
                         $scope.workers = dataWorkers.workers;
                         $scope.workerInfo = dataWorkers.workerInfo;
 
+                        console.log($scope.workers);
 
                         $mdDialog.show({
                             controller: DialogController,

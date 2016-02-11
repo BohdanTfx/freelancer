@@ -33,6 +33,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
     private ObjectMapper mapper;
     private DeveloperQAService developerQAService;
     private DeveloperService developerService;
+    private OrderingService orderingService;
     private UserManager userManager;
 
     public DeveloperController() {
@@ -47,6 +48,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
                 .getBean("developerService");
         userManager = (UserManager) ApplicationContext.getInstance().getBean(
                 "userManager");
+        orderingService = (OrderingService) ApplicationContext.getInstance().getBean("orderingService");
     }
 
     @Override
@@ -122,40 +124,33 @@ public class DeveloperController extends HttpServlet implements Responsable {
         HttpSession session = request.getSession();
         UserEntity user = (UserEntity) session.getAttribute("user");
 
-        List<Ordering> allProjects = developerService
-                .getDeveloperPortfolio(user.getId());
-        List<Ordering> devSubscribedProjects = developerService
-                .getDeveloperSubscribedProjects(user.getId());
 
-        for (Ordering order : devSubscribedProjects) {
-            order.setTechnologies(technologyService
-                    .findTechnolodyByOrderingId(order.getId()));
-        }
+       List<Worker> allWorks = developerService.getAllWorkersByDevId(user.getId());
+       List<Ordering> subscribedWorks = developerService.getDeveloperSubscribedProjects(user.getId());
+       List<Ordering> finishedWorks = new ArrayList<>();
+       List<Ordering> worksInProgress = new ArrayList<>();
+       List<Ordering> notAcceptedWorks = new ArrayList<>();
 
-        List<Ordering> devFinishedProjects = new ArrayList<>();
-        List<Ordering> devProjectsInProcess = new ArrayList<>();
-        allProjects.forEach(ordering -> {
-            if (ordering.getEnded()) {
-                devFinishedProjects.add(ordering);
-            } else {
-                devProjectsInProcess.add(ordering);
+       allWorks.forEach(worker -> {
+           Ordering order = orderingService.findById(worker.getOrderId());
+            if(worker.getAccepted()){
+                if(order.getStarted() && order.getEnded()){
+                    finishedWorks.add(order);
+                }else{
+                    worksInProgress.add(order);
+                }
+            }else {
+                notAcceptedWorks.add(order);
             }
-        });
+       });
 
-        for (Ordering order : devFinishedProjects) {
-            order.setTechnologies(technologyService
-                    .findTechnolodyByOrderingId(order.getId()));
-        }
 
-        for (Ordering order : devProjectsInProcess) {
-            order.setTechnologies(technologyService
-                    .findTechnolodyByOrderingId(order.getId()));
-        }
 
         Map<String, List> resultMap = new HashMap<>();
-        resultMap.put("finishedWorks", devFinishedProjects);
-        resultMap.put("subscribedWorks", devSubscribedProjects);
-        resultMap.put("processedWorks", devProjectsInProcess);
+        resultMap.put("finishedWorks", finishedWorks);
+        resultMap.put("subscribedWorks", subscribedWorks);
+        resultMap.put("processedWorks", worksInProgress);
+        resultMap.put("notAcceptedWorks", notAcceptedWorks);
         sendResponse(response, resultMap, mapper);
     }
 
@@ -224,12 +219,18 @@ public class DeveloperController extends HttpServlet implements Responsable {
         Integer orderId = Integer.parseInt(request.getParameter("order_id"));
 
         Map<String, Object> resultMap = new HashMap<>();
-        List<Developer> developers = developerService
-                .getDevelopersByIdOrder(orderId);
+
+        List<Worker> allWorkersOfOrder = developerService.getAllWorkersByOrderId(orderId);
+        List<Developer> acceptedDevelopers = new ArrayList<>();
+
+        allWorkersOfOrder.forEach(worker ->{
+               if(worker.getAccepted()){
+                   acceptedDevelopers.add(developerService.findById(worker.getDevId()));}
+        });
         Worker worker = developerService.getWorkerByDevIdAndOrderId(
                 user.getId(), orderId);
         resultMap.put("workerInfo", worker);
-        resultMap.put("workers", developers);
+        resultMap.put("workers", acceptedDevelopers);
 
         sendResponse(response, resultMap, mapper);
     }

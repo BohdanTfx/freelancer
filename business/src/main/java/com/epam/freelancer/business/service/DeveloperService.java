@@ -166,6 +166,13 @@ public class DeveloperService extends UserService<Developer> {
                 idOrder);
     }
 
+    public List<Worker> getAllWorkersByOrderId(Integer idOrder) {
+        return ((WorkerDao) workerDao).getAllWorkersByOrderId(idOrder);
+    }
+    public List<Worker> getAllWorkersByDevId(Integer idDev) {
+        return ((WorkerDao) workerDao).getAllWorkersByDevId(idDev);
+    }
+
     public Contact createContact(Contact contact) {
         return contactDao.save(contact);
     }

@@ -409,12 +409,17 @@ private void createOrder(HttpServletRequest request,
         UserEntity user = (UserEntity) session.getAttribute("user");
         Integer orderId = Integer.parseInt(request.getParameter("order_id"));
 
-        Map<String,Object> resultMap = new HashMap<>();
-        List<Developer> developers = developerService
-                .getDevelopersByIdOrder(orderId);
+        Map<String, Object> resultMap = new HashMap<>();
 
-        resultMap.put("workers",developers);
-        sendResponse(response,resultMap,mapper);
+        List<Worker> allWorkersOfOrder = developerService.getAllWorkersByOrderId(orderId);
+        List<Developer> acceptedDevelopers = new ArrayList<>();
+
+        allWorkersOfOrder.forEach(worker ->{
+            if(worker.getAccepted()){
+                acceptedDevelopers.add(developerService.findById(worker.getDevId()));}
+        });
+        resultMap.put("workers", acceptedDevelopers);
+        sendResponse(response, resultMap, mapper);
     }
 
 
