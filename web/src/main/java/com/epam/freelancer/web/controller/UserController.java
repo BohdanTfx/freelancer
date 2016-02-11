@@ -283,21 +283,21 @@ public class UserController extends HttpServlet implements Responsable {
             String applicationPath = request.getServletContext().getRealPath("");
             String uploadFilePath = null;
             if ("developer".equals(ue.getRole())) {
-                uploadFilePath = applicationPath + File.separator + "uploads" + File.separator + "developer" + File.separator + ue.getId();
+                uploadFilePath = applicationPath + "uploads" + File.separator + "developer" + File.separator + ue.getId();
                 saveImage(uploadFilePath, encodeImage, response);
                 Developer developer = (Developer) ue;
                 developer.setImgUrl("uploads/developer/" + ue.getId() + "/");
                 developerService.updateDeveloper(developer);
             }
             if ("customer".equals(ue.getRole())) {
-                uploadFilePath = applicationPath + File.separator + "uploads" + File.separator + "customer" + File.separator + ue.getId();
+                uploadFilePath = applicationPath + "uploads" + File.separator + "customer" + File.separator + ue.getId();
                 saveImage(uploadFilePath, encodeImage, response);
                 Customer customer = (Customer) ue;
                 customer.setImgUrl("uploads/customer/" + ue.getId() + "/");
                 customerService.modify(customer);
             }
             if("admin".equals(ue.getRole())) {
-                uploadFilePath = applicationPath + File.separator + "uploads" + File.separator + "admin" + File.separator + ue.getId();
+                uploadFilePath = applicationPath + "uploads" + File.separator + "admin" + File.separator + ue.getId();
                 saveImage(uploadFilePath, encodeImage, response);
                 Admin admin = (Admin) ue;
                 admin.setImgUrl("uploads/admin/" +ue.getId() + "/");
