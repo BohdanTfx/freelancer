@@ -29,7 +29,7 @@ public class FollowerManyToManyJdbcDao extends
 		String query = "SELECT " + secondTable + ".* FROM " + secondTable
 				+ ", " + table + " WHERE " + secondTable + ".id = " + table
 				+ "." + secondIdName + " AND " + table + "." + firstIdName
-				+ " = ?";
+				+ " = ? AND "+table+".is_deleted = FALSE ";
 		try (Connection connection = dataSource.getConnection();
 			 PreparedStatement statement = connection
 					 .prepareStatement(query)) {
