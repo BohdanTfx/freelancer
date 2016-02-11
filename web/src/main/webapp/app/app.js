@@ -92,10 +92,6 @@
 					url : '/forgot',
 					templateUrl : 'app/components/forgotpass/forgot.html',
 					controller : 'forgotCtrl'
-				}).state('custworks', {
-					url : '/custworks',
-					templateUrl : 'app/components/custworks/custworks.html',
-					controller : 'custworksCtrl'
 				});
 
 				$locationProvider.html5Mode(false);

@@ -3,6 +3,9 @@
         <md-content>
             <md-tabs md-dynamic-height md-border-bottom>
 
+
+
+             <div ng-if="role === 'developer'">
                 <!--Start Tab Proposed projects-->
                 <md-tab label="Proposed">
                     <md-content class="md-padding" style="min-height: 450px;">
@@ -70,21 +73,20 @@
                         </div>
                     </md-content>
                 </md-tab>
-
+             </div>
 
 
 
 
                 <!--Start Tab Subscribed projects-->
-                <md-tab label="Subscribed">
+                <md-tab label="{{firstTitle}}">
                     <md-content class="md-padding" style="min-height: 450px;">
-
-                        <div ng-switch="subscribedWorks.length">
+                        <div ng-switch="firstWorks.length">
                             <div ng-switch-when="0">
                                 <h5 class="help-block">No projects</h5>
                             </div>
                             <div ng-switch-default>
-                                 <div ng-repeat="project in subscribedWorks | orderBy:sortField:reverse">
+                                 <div ng-repeat="project in firstWorks">
                                     <div class="panel panel-default">
 
                                         <a ng-href="/#/orders/{{project.id}}">
@@ -142,12 +144,12 @@
                 <md-tab label="In progress">
                     <md-content class="md-padding" style="min-height: 450px;">
 
-                        <div ng-switch="processedWorks.length">
+                        <div ng-switch="secondWorks.length">
                             <div ng-switch-when="0">
                                 <h5 class="help-block">No projects</h5>
                             </div>
                             <div ng-switch-default>
-                                 <div ng-repeat="project in processedWorks | orderBy:sortField:reverse">
+                                 <div ng-repeat="project in secondWorks ">
                                     <div class="panel panel-default">
                                         <div class="row project-block panel-body"
                                              ng-click="showTabDialog($event,project)">
@@ -194,22 +196,22 @@
 
                             </div>
                         </div>
-
 
                     </md-content>
                 </md-tab>
                 <!--End Tab Projects in process-->
 
-                <!--Start Tab Finished projects-->
+
+                <!--Start Tab Projects in process-->
                 <md-tab label="Finished">
                     <md-content class="md-padding" style="min-height: 450px;">
 
-                        <div ng-switch="finishedWorks.length">
+                        <div ng-switch="secondWorks.length">
                             <div ng-switch-when="0">
                                 <h5 class="help-block">No projects</h5>
                             </div>
                             <div ng-switch-default>
-                                 <div ng-repeat="project in finishedWorks | orderBy:sortField:reverse">
+                                <div ng-repeat="project in thirdWorks ">
                                     <div class="panel panel-default">
                                         <div class="row project-block panel-body"
                                              ng-click="showTabDialog($event,project)">
@@ -257,10 +259,11 @@
                             </div>
                         </div>
 
-
                     </md-content>
                 </md-tab>
-                <!--End Tab Finished projects-->
+                <!--End Tab Projects in process-->
+
+
 
 
             </md-tabs>

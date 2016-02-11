@@ -1,7 +1,7 @@
 <md-dialog style="max-width:50%;">
     <div class="mywork">
         <div class="modal-header">
-            <div class="md-toolbar-tools modal-subheader" >
+            <div class="md-toolbar-tools modal-subheader">
                 {{project.title}}
                 <span flex></span>
                 <md-button class="md-icon-button" ng-click="cancel()">
@@ -9,10 +9,10 @@
                 </md-button>
             </div>
         </div>
-        <md-dialog-content >
+        <md-dialog-content>
             <md-tabs md-dynamic-height md-border-bottom>
                 <md-tab label="Details">
-                    <md-content class="md-padding" >
+                    <md-content class="md-padding">
 
 
                         <div class="row">
@@ -50,9 +50,14 @@
                                 </span>
                                 </span><br/>
                                 <span><strong>Payment type:</strong> {{project.payType}}</span><br/>
-                                <span> <strong>Payment</strong> {{workerInfo.newHourly | number:1}} $ p/h</span><br>
-                                <span><strong>Worked time:</strong> {{workerInfo.sumHours}} h</span><br/>
 
+                                <span ng-if="workerInfo !== 'undefined' ">
+                                    <span> <strong>Payment</strong> {{workerInfo.newHourly | number:1}} $ p/h</span><br>
+                                    <span><strong>Worked time:</strong> {{workerInfo.sumHours}} h</span><br/>
+                                </span>
+                                <span ng-if="workerInfo == 'undefined' ">
+                                    <span> <strong>Payment </strong> {{project.payment | number:1}} $ p/h</span>
+                                </span>
 
                             </div>
                         </div>
@@ -68,7 +73,8 @@
 
                                     <a ng-href="/#/public/customer/custname/{{customer.id}}">
                                         <div>
-                                            <img class="unit-cust-image" src="{{customer.imgUrl==null? '/images/profile/no-profile-img.jpg' : customer.imgUrl}}"
+                                            <img class="unit-cust-image"
+                                                 src="{{customer.imgUrl==null? '/images/profile/no-profile-img.jpg' : customer.imgUrl}}"
                                                  alt=""/>
                                             {{customer.fname}}
                                             {{customer.lname}}
@@ -87,9 +93,10 @@
 
 
                                         <a href="/#/public/developer/devname/{{devWorker.id}}">
-                                        <div class="members-unit-dev">
+                                            <div class="members-unit-dev">
                                                 <div class="unit-foto">
-                                                    <img style="width: 100%" src="{{devWorker.imgUrl==null? '/images/profile/no-profile-img.jpg' : devWorker.imgUrl}}"
+                                                    <img style="width: 100%"
+                                                         src="{{devWorker.imgUrl==null? '/images/profile/no-profile-img.jpg' : devWorker.imgUrl}}"
                                                          alt=""/>
                                                 </div>
                                                 <div class="unit-name-dev">

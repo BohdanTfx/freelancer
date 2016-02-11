@@ -84,8 +84,8 @@ public class CustomerController extends HttpServlet implements Responsable {
                     case "cust/getPersonalData":
                         fillCustomerPersonalPage(request, response);
                         break;
-                     case "cust/order/followers":
-                           getFollowerByIdOrder(request, response);
+                     case "cust/workersByIdOrder":
+                         sendWorkersByIdOrder(request, response);
                           break;
                          default:
             }
@@ -402,9 +402,19 @@ private void createOrder(HttpServletRequest request,
        sendResponse(response,resultMap,mapper);
     }
 
-    public void getFollowerByIdOrder(HttpServletRequest request,HttpServletResponse response){
+    private void sendWorkersByIdOrder(HttpServletRequest request,
+                                      HttpServletResponse response) throws IOException
+    {
+        HttpSession session = request.getSession();
+        UserEntity user = (UserEntity) session.getAttribute("user");
+        Integer orderId = Integer.parseInt(request.getParameter("order_id"));
 
+        Map<String,Object> resultMap = new HashMap<>();
+        List<Developer> developers = developerService
+                .getDevelopersByIdOrder(orderId);
 
+        resultMap.put("workers",developers);
+        sendResponse(response,resultMap,mapper);
     }
 
 
