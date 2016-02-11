@@ -1,5 +1,5 @@
 angular.module('FreelancerApp')
-    .controller('testsCtrl', function ($scope, testsAPI, $log, $interval) {
+    .controller('testsCtrl', function ($scope, testsAPI, $log, $interval, Notification) {
 
         $scope.smt = {};
         $scope.smt.passedTest = false;
@@ -16,7 +16,11 @@ angular.module('FreelancerApp')
 
             $scope.testsDivision();
         }).error(function () {
-            alert(404);
+            Notification
+                .error({
+                    title: 'Error!',
+                    message: 'Something went bad. Please try again.'
+                });
         });
 
         $scope.sortField = undefined;

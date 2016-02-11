@@ -19,7 +19,7 @@ public class TestJdbcDao extends GenericJdbcDao<Test, Integer> implements TestDa
 	@Override
 	public List<Test> getTestsByTechId(Integer id) {
 		List<Test> tests = new ArrayList<>();
-		String query = "SELECT * FROM " + table + " WHERE tech_id = ?";
+		String query = "SELECT * FROM " + table + " WHERE is_deleted IS NOT TRUE";
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection
 					 .prepareStatement(query)) {
@@ -40,7 +40,7 @@ public class TestJdbcDao extends GenericJdbcDao<Test, Integer> implements TestDa
 	@Override
 	public List<Test> getTestsByAdminId(Integer id) {
 		List<Test> tests = new ArrayList<>();
-		String query = "SELECT * FROM " + table + " WHERE admin_id = ?";
+		String query = "SELECT * FROM " + table + " WHERE admin_id = ? AND is_deleted IS NOT TRUE";
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection
 					 .prepareStatement(query)) {

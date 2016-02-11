@@ -22,7 +22,11 @@ angular.module('FreelancerApp')
                 getData();
             }
         }).error(function () {
-            alert("Order doesn't exist");
+            Notification
+                .error({
+                    title: 'Error!',
+                    message: "Order doesn't exist."
+                });
         });
 
         $scope.complain = function (orderId) {
@@ -55,14 +59,17 @@ angular.module('FreelancerApp')
                 }
                 $scope.getCustomerContact();
             }).error(function (e) {
-                alert(404);
+                Notification
+                    .success({
+                        title: 'Error!',
+                        message: "Customer doesn't exist."
+                    })
             });
 
             $scope.getCustomerContact = function () {
                 orderAPI.getCustomerContactById($scope.order.customerId).success(function (data) {
                     $scope.customer.contact = data;
-                }).error(function (e) {
-                    alert(404);
+                }).error(function(){
                 })
             };
 
@@ -78,7 +85,6 @@ angular.module('FreelancerApp')
                 }
                 $scope.calcCustRate();
             }).error(function () {
-                alert(404);
             });
 
             orderAPI.getCustomerHistory($scope.order.customerId).success(function (data) {
@@ -87,7 +93,6 @@ angular.module('FreelancerApp')
                     $scope.emptyHistory = true;
                 }
             }).error(function () {
-                alert(404);
             });
 
             orderAPI.getFollowers(orderId).success(function (data) {
@@ -105,13 +110,11 @@ angular.module('FreelancerApp')
                     $scope.isSubscriber();
                 }
             }).error(function () {
-                alert(404);
             });
 
             orderAPI.getOrderTechs(orderId).success(function (data) {
                 $scope.techs = data;
             }).error(function () {
-                alert(404);
             });
 
             $scope.calcCustRate = function () {

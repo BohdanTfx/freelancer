@@ -36,7 +36,7 @@
                             </div>
                         </div>
                         <div class="col-sm-8 col-xs-12 hr">
-                            <h2><em><span class="fa fa-briefcase"></span> {{order.title}}</em></h2>
+                            <h2 class="job-title"><span class="fa fa-briefcase"></span> {{order.title}}</h2>
 
                             <p class="position">
                             <h5>{{position}}</h5>
@@ -73,7 +73,7 @@
                                      style="background-image: url('{{customer.imgUrl}}')"></div>
                             </div>
                             <div class="col-lg-7 col-sm-12">
-                                <h2><em>{{customer.fname}} {{customer.lname}}</em></h2>
+                                <h3 class="user-name">{{customer.fname}} {{customer.lname}}</h3>
                                 <ul class="list-inline ratings" title="Ratings">
                                     <uib-rating ng-model="custRate" max="5" readonly="true"
                                                 on-leave="overStar = null" titles="['1','2','3','4','5']"
@@ -81,8 +81,8 @@
                                 </ul>
                                 <md-divider></md-divider>
                                 <ul class="list-unstyled">
-                                    <li>Skype: {{customer.contact.skype}}</li>
-                                    <li>
+                                    <li ng-show="customer.contact != undefined">Skype: {{customer.contact.skype}}</li>
+                                    <li ng-show="customer.regDate != undefined">
                                         On site since<br/>
                                         {{customer.regDate | date:'MMM d, y'}}
                                     </li>
@@ -108,7 +108,7 @@
                                                          style="background-image: url('{{follower.developer.imgUrl}}')"></div>
 
                                                     <p>
-                                                        <a ng-href="/#/public/dev-name/{{follower.developer.id}}"><em>{{follower.developer.fname}}
+                                                        <a ng-href="/#/public/developer/{{follower.developer.fname}}-{{follower.developer.lname}}/{{follower.developer.id}}"><em>{{follower.developer.fname}}
                                                             {{follower.developer.lname}}</em></a>
                                                     </p>
 
@@ -225,7 +225,6 @@
                     <button type="button" ng-click="subscribe(message)"
                             class="btn btn-primary pull-right">
                         Subscribe
-                    </button>
                     </button>
                 </div>
             </div>
