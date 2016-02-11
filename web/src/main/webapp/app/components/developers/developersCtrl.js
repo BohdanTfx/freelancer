@@ -13,6 +13,18 @@ angular
 					$scope.filter.tooltip.title = 'Open filter';
 					$scope.filter.tooltip.locked = true;
 
+					window.onbeforeunload = function() {
+						var state = {};
+						state.location = window.location.href;
+						state.content = $scope.filter;
+						localStorage.setItem("openTaskStateReloadedData", JSON
+								.stringify(state));
+					};
+
+					var data = getSavedStateData();
+					if (data !== undefined)
+						$scope.filter = data;
+
 					$scope.filterToggle = function() {
 						if (filterOpen) {
 							$scope.filterState = '';
@@ -123,7 +135,8 @@ angular
 													message : 'Some errors occurred'
 															+ ' while loading payment limits! Please, try again.'
 												});
-									})
+									});
+
 				});
 
 function getTimeZones() {

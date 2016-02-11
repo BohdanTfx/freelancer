@@ -4,9 +4,9 @@
 			'FreelancerApp',
 			[ 'ngRoute', 'ui.router', 'ngCookies', 'ngMaterial', 'ngAnimate',
 					'ngAria', 'ngMessages', 'isteven-multi-select', 'rzModule',
-					'ui.bootstrap', 'ui-notification','googlechart' ]).config(
+					'ui.bootstrap', 'ui-notification', 'googlechart' ]).config(
 			function($stateProvider, $urlRouterProvider, $locationProvider,
-					NotificationProvider ) {
+					NotificationProvider) {
 				$urlRouterProvider.otherwise('/home');
 
 				NotificationProvider.setOptions({
@@ -64,17 +64,17 @@
 					templateUrl : 'app/components/authentication/auth.html',
 					controller : 'authCtrl'
 				}).state('pubdev', {
-                    url: '/public/developer/:devName/:devId',
+					url : '/public/developer/:devName/:devId',
 					templateUrl : 'app/components/pubdev/pubdev.html',
 					controller : 'pubdevCtrl'
-                }).state('custpub', {
-                    url: '/public/customer/:custName/:custId',
-                    templateUrl: 'app/components/custpub/custpub.html',
-                    controller: 'custpubCtrl'
+				}).state('custpub', {
+					url : '/public/customer/:custName/:custId',
+					templateUrl : 'app/components/custpub/custpub.html',
+					controller : 'custpubCtrl'
 				}).state('admin', {
-					url: '/admin/statistics',
-					templateUrl: 'app/components/admin/adminStatistics.html',
-					controller: 'adminCtrl'
+					url : '/admin/statistics',
+					templateUrl : 'app/components/admin/adminStatistics.html',
+					controller : 'adminCtrl'
 				}).state('signupadmin', {
 					url : '/signup/:uuid',
 					templateUrl : 'app/components/signup/signup.html',
@@ -94,36 +94,37 @@
 						$rootScope.logout = function() {
 							AuthenticationService.ClearCredentials();
 						};
-                        $rootScope.checking = function (data) {
-                            var path = $location.path();
-                            if (typeof data.id != 'undefined') {
-                                switch (path) {
-                                    case '/auth':
-                                        $location.path('/');
-                                        break;
-                                    case '/signup':
-                                        $location.path('/');
-                                        break;
-                                }
-                            } else {
-                                if (path.indexOf('/orders') > -1) {
-                                    $location.path('/');
-                                }
-                                if (path.indexOf('/personal') > -1) {
-                                    $location.path('/');
-                                }
-                                if (path.indexOf('/myworks') > -1) {
-                                    $location.path('/');
-                                }
-                                if (path.indexOf('/tests') > -1) {
-                                    $location.path('/');
-                                }
-                                if (path.indexOf('/public') > -1) {
-                                    $location.path('/');
-                                }
-                            }
-                        };
-                        $rootScope.$on('$locationChangeStart', function (event, next, current, $scope) {
+						$rootScope.checking = function(data) {
+							var path = $location.path();
+							if (typeof data.id != 'undefined') {
+								switch (path) {
+								case '/auth':
+									$location.path('/');
+									break;
+								case '/signup':
+									$location.path('/');
+									break;
+								}
+							} else {
+								if (path.indexOf('/orders') > -1) {
+									$location.path('/');
+								}
+								if (path.indexOf('/personal') > -1) {
+									$location.path('/');
+								}
+								if (path.indexOf('/myworks') > -1) {
+									$location.path('/');
+								}
+								if (path.indexOf('/tests') > -1) {
+									$location.path('/');
+								}
+								if (path.indexOf('/public') > -1) {
+									$location.path('/');
+								}
+							}
+						};
+						$rootScope.$on('$locationChangeStart', function(event,
+								next, current, $scope) {
 							$rootScope.globals = {};
 							$rootScope.logged = false;
 							$http.post('/user/isAuth').success(function(data) {
@@ -133,11 +134,13 @@
 								$rootScope.role = data.role;
 								$rootScope.logged = true;
 
-                                $rootScope.checking($rootScope);
+								$rootScope.checking($rootScope);
 							}).error(function() {
-                                $rootScope.checking($rootScope);
+								$rootScope.checking($rootScope);
 							});
 						});
+
+						getSavedStateData();
 					} ]);
 
 })();
