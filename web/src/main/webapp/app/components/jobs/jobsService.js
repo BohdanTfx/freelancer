@@ -168,10 +168,3 @@ angular
 						}
 					}
 				});
-
-function isNotEmpty(obj) {
-	for ( var prop in obj)
-		if (obj.hasOwnProperty(prop) && obj[prop] !== undefined)
-			return true;
-	return false;
-}
