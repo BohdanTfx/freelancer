@@ -13,14 +13,6 @@ angular
 					$scope.filter.tooltip.title = 'Open filter';
 					$scope.filter.tooltip.locked = true;
 
-					window.onbeforeunload = function() {
-						var state = {};
-						state.location = window.location.href;
-						state.content = $scope.filter;
-						localStorage.setItem("openTaskStateReloadedData", JSON
-								.stringify(state));
-					};
-
 					var data = getSavedStateData();
 					if (data !== undefined)
 						$scope.filter = data;
@@ -58,6 +50,18 @@ angular
 					$scope.timeZones = getTimeZones();
 
 					$scope.doFilter = function() {
+						// var filterData = developersService.getFilterContent(
+						// $scope.filter, $scope.filter.payment.min,
+						// $scope.filter.payment.max);
+						// var queryParams = transformToUrlQuery(filterData);
+						// var newUrl = getURLWithoutParameters();
+						// if (queryParams.length > 0) {
+						// newUrl += '?' + queryParams;
+						// if (window.location.href != newUrl)
+						// window.history.pushState('data', 'title',
+						// newUrl);
+						// }
+
 						developersService.loadDevelopers($scope.filter,
 								$scope.last, $scope.itemListStart,
 								$scope.developersLoading, $scope.itesStep,
@@ -136,109 +140,4 @@ angular
 															+ ' while loading payment limits! Please, try again.'
 												});
 									});
-
 				});
-
-function getTimeZones() {
-	return [ {
-		zone : "-12",
-		title : "-12 Baker island, Howland island",
-		ticked : false
-	}, {
-		zone : "-11",
-		title : "-11 American Samoa, Niue",
-		ticked : false
-	}, {
-		zone : "-10",
-		title : "-10 Hawaii",
-		ticked : false
-	}, {
-		zone : "-9",
-		title : "-9 Marquesas Islands, Gamblie Islands",
-		ticked : false
-	}, {
-		zone : "-8",
-		title : "-8 British Columbia, Mexico, California",
-		ticked : false
-	}, {
-		zone : "-7",
-		title : "-7 British Columbia, US Arizona",
-		ticked : false
-	}, {
-		zone : "-6",
-		title : "-6 Canada Saskatchewan, Costa Rica, Guatemala, Honduras",
-		ticked : false
-	}, {
-		zone : "-5",
-		title : "-5 Colombia, Cuba, Ecuador, Peru",
-		ticked : false
-	}, {
-		zone : "-4",
-		title : "-4 Venezuela, Bolivia, Brazil,	Barbados",
-		ticked : false
-	}, {
-		zone : "-3",
-		title : "-3 Newfoundland, Argentina, Chile",
-		ticked : false
-	}, {
-		zone : "-2",
-		title : "-2 South Georgia",
-		ticked : false
-	}, {
-		zone : "-1",
-		title : "-1 Capa Verde",
-		ticked : false
-	}, {
-		zone : "0",
-		title : "0 Ghana, Iceland, Senegal",
-		ticked : false
-	}, {
-		zone : "1",
-		title : "+1 Algeria, Nigeria, Tunisia",
-		ticked : false
-	}, {
-		zone : "2",
-		title : "+2 Ukraine, Zambia, Egypt",
-		ticked : false
-	}, {
-		zone : "3",
-		title : "+3 Belarus, Iraq, Iran",
-		ticked : false
-	}, {
-		zone : "4",
-		title : "+4 Armenia, Georgia, Oman",
-		ticked : false
-	}, {
-		zone : "5",
-		title : "+5 Kazakhstan, Pakistan, India",
-		ticked : false
-	}, {
-		zone : "6",
-		title : "+6 Ural, Bangladesh",
-		ticked : false
-	}, {
-		zone : "7",
-		title : "+7 Western Indonesai, Thailand",
-		ticked : false
-	}, {
-		zone : "8",
-		title : "+8 Hong Kong, China, Taiwan, Australia",
-		ticked : false
-	}, {
-		zone : "9",
-		title : "+9 Timor,Japan",
-		ticked : false
-	}, {
-		zone : "10",
-		title : "+10 New Guinea, Australia",
-		ticked : false
-	}, {
-		zone : "11",
-		title : "+11 Solomon Islands, Vanuatu",
-		ticked : false
-	}, {
-		zone : "12",
-		title : "+12 New zealand, Kamchatka, Kiribati",
-		ticked : false
-	} ];
-}
