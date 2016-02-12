@@ -20,22 +20,11 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import com.epam.freelancer.business.manager.UserManager;
 import com.epam.freelancer.business.util.SmsSender;
-import com.google.gson.Gson;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 
-import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.service.CustomerService;
 import com.epam.freelancer.business.service.DeveloperService;
 import com.epam.freelancer.business.service.FeedbackService;
@@ -81,13 +70,16 @@ public class CustomerController extends HttpServlet implements Responsable {
             String path = FrontController.getPath(request);
 
             switch (path) {
-                    case "cust/getPersonalData":
-                        fillCustomerPersonalPage(request, response);
-                        break;
-                     case "cust/workersByIdOrder":
-                         sendWorkersByIdOrder(request, response);
-                          break;
-                         default:
+                case "cust/getPersonalData":
+                    fillCustomerPersonalPage(request, response);
+                    break;
+                case "cust/workersByIdOrder":
+                    sendWorkersByIdOrder(request, response);
+                    break;
+                case "cust/dev/isWorker":
+                    isWorker(request, response);
+                    break;
+                default:
             }
 
         } catch (Exception e) {
@@ -151,8 +143,12 @@ private void createOrder(HttpServletRequest request,
                     break;
                 case "cust/uploadImage":
                     uploadImage(request, response);
+                    break;
                 case "cust/allWorks":
                     fillCustomerMyWorksPage(request, response);
+                    break;
+                case "cust/dev/accept":
+                    acceptDeveloper(request, response);
                     break;
                 default:
             }
@@ -365,7 +361,7 @@ private void createOrder(HttpServletRequest request,
         try {
             file = new File("../target/WEB-INF/userData/" + fileName + ".jpg");
             FileUtils.writeByteArrayToFile(file, encodImage);
-        } catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -422,5 +418,79 @@ private void createOrder(HttpServletRequest request,
         sendResponse(response, resultMap, mapper);
     }
 
+    private void acceptDeveloper(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String paramCustomer = request.getParameter("customer");
+        if (paramCustomer == null) {
+            response.sendError(HttpServletResponse.SC_CONFLICT);
+            return;
+        }
+        Customer customer = mapper.readValue(paramCustomer, new TypeReference<Customer>() {
+        });
+        HttpSession session = request.getSession();
+        UserEntity ue = (UserEntity) session.getAttribute("user");
+        if (ue.getId() != customer.getId()) {
+            response.sendError(HttpServletResponse.SC_CONFLICT);
+            return;
+        }
+        String paramDevId = request.getParameter("devId");
+        if (paramDevId == null || "".equals(paramDevId) || !paramDevId.matches("[0-9]*")) {
+            response.sendError(HttpServletResponse.SC_CONFLICT);
+            return;
+        }
+        Integer devId = Integer.parseInt(paramDevId);
+        Developer dev = developerService.findById(devId);
+        String jobName = request.getParameter("jobName");
+        String paramJobId = request.getParameter("jobId");
+        if (paramJobId == null || "".equals(paramJobId) || !paramJobId.matches("[0-9]*")) {
+            response.sendError(HttpServletResponse.SC_CONFLICT);
+            return;
+        }
+        Integer jobId = Integer.parseInt(paramJobId);
+        addInWorker(dev, jobId);
+        sendDevAcceptSms(jobName, customer, dev);
+    }
+
+    private void addInWorker(Developer dev, Integer orderId) {
+        Worker worker = new Worker();
+        worker.setDevId(dev.getId());
+        worker.setNewHourly(dev.getHourly());
+        worker.setOrderId(orderId);
+        developerService.createWorker(worker);
+    }
+
+    private boolean sendDevAcceptSms(String jobName, Customer customer, Developer dev) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Hello! You are accepted on project \"" + jobName + "\" by ");
+        stringBuilder.append(customer.getFname() + " " + customer.getLname() + "!");
+        Contact contact = developerService.getContactByDevId(dev.getId());
+        if (contact == null)
+            return false;
+        String phone = contact.getPhone();
+        if (phone == null || "".equals(phone)) {
+            return false;
+        }
+        String[] strs = new SmsSender().sendSms(phone, stringBuilder.toString(), customer.getFname());
+        return true;
+    }
+
+    private void isWorker(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String paramFollower = request.getParameter("follower");
+        if (paramFollower == null || "".equals(paramFollower)) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+        Follower follower = mapper.readValue(paramFollower, new TypeReference<Follower>() {
+        });
+        if (follower == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+        Worker worker = developerService.getWorkerByDevIdAndOrderId(follower.getDevId(), follower.getOrderId());
+        Boolean isWorker = false;
+        if(worker!=null){
+            isWorker = true;
+        }
+        sendResponse(response,isWorker,mapper);
+    }
 
 }

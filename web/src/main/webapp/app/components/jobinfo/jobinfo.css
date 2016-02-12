@@ -92,3 +92,8 @@
     margin: auto 15px auto 15px;
     float: left;
 }
+
+.job-info .btn-accept {
+    padding: 2.5px 10px;
+    margin: 5px 15px 10px 15px;
+}

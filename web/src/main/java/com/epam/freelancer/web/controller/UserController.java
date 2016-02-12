@@ -199,15 +199,15 @@ public class UserController extends HttpServlet implements Responsable {
                     sendResponse(response, orderingService.findPaymentLimits(),
                             mapper);
                     break;
-			    case "user/technologies":
+			case "user/technologies":
                     sendResponse(response, technologyService.findAll(), mapper);
                     break;
                 case "user/orders/isCompAlrEx":
                     isComplainAlreadyExist(request, response);
                     break;
-			    case "user/developers/filter":
-				    filterDevelopers(request, response);
-				    return;
+			case "user/developers/filter":
+				filterDevelopers(request, response);
+				return;
                 case "user/order":
                     getOrderById(request, response);
                     break;
