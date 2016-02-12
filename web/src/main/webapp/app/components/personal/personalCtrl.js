@@ -1,5 +1,5 @@
 angular.module('FreelancerApp')
-    .controller('personalCtrl',['$scope', '$http','personalAPI', '$log', '$rootScope','$mdDialog', 'Notification', function($scope, $http, personalAPI, $log, $rootScope, $mdDialog, Notification){
+    .controller('personalCtrl', ['$scope', '$http', 'personalAPI', '$log', '$rootScope', '$mdDialog', 'Notification', '$translate', function ($scope, $http, personalAPI, $log, $rootScope, $mdDialog, Notification, $translate) {
         var devTemp, techsTemp, contTemp, custTemp, adminTemp;
 
         $scope.newPassword = '';
@@ -137,14 +137,14 @@ angular.module('FreelancerApp')
                 personalAPI.sendDevData(devJson, techsJson, contactJson).success(function (data){
                     $scope.result = data;
                     Notification.success({
-                        title: 'Changes saved!',
-                        message: 'All data is updated!'
+                        title: $translate.instant('notification.success'),
+                        message: $translate.instant('personal.all-data-was-up')
                     });
 
                 }).error(function () {
                     Notification.error({
-                            title: 'Error!',
-                            message: 'Something wrong with saved data. Try again!'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('personal.smth-wrong-sav-data')
                         });
                 });
             }
@@ -158,13 +158,13 @@ angular.module('FreelancerApp')
                 personalAPI.sendCustData(custJson, contactJson).success(function (data){
                     $scope.result = data;
                     Notification.success({
-                        title: 'Changes saved!',
+                        title: $translate.instant('personal.all-data-was-up'),
                         message: 'All data is updated!'
                     });
                 }).error(function () {
                     Notification.error({
-                        title: 'Error!',
-                        message: 'Something wrong with saved data. Try again!'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('personal.smth-wrong-sav-data')
                     });
                 });
             }
@@ -178,13 +178,13 @@ angular.module('FreelancerApp')
                 personalAPI.sendAdminData(adminJson).success(function (data){
                     $scope.result = data;
                     Notification.success({
-                        title: 'Changes saved!',
-                        message: 'All data is updated!'
+                        title: $translate.instant('notification.success'),
+                        message: $translate.instant('personal.all-data-was-up')
                     });
                 }).error(function () {
                     Notification.error({
-                        title: 'Error!',
-                        message: 'Something wrong with saved data. Try again!'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('personal.smth-wrong-sav-data')
                     });
                 });
             }
@@ -267,8 +267,8 @@ angular.module('FreelancerApp')
                     $scope.showTabDialog();
                 }).error(function (response) {
                     Notification.error({
-                        title: 'Error!',
-                        message: 'Wrong old password. Try again!'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('personal.wrong-old-pass')
                     });
                 });
             }
@@ -282,8 +282,8 @@ angular.module('FreelancerApp')
 
                 }).error(function (response) {
                     Notification.error({
-                        title: 'Error!',
-                        message: 'Wrong old password. Try again!'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('personal.wrong-old-pass')
                     });
                 });
             }
@@ -296,8 +296,8 @@ angular.module('FreelancerApp')
 
                 }).error(function (response) {
                     Notification.error({
-                        title: 'Error!',
-                        message: 'Wrong old password. Try again!'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('personal.wrong-old-pass')
                     });
                 });
             }
@@ -316,8 +316,8 @@ angular.module('FreelancerApp')
 
                 }).error(function (response) {
                     Notification.error({
-                        title: 'Error!',
-                        message: 'Wrong confirm code. Try again!'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('personal.wrong-confirm-code')
                     });
                 });
             }
@@ -328,8 +328,8 @@ angular.module('FreelancerApp')
                     $scope.showDialogConfirm();
                 }).error(function (response) {
                     Notification.error({
-                        title: 'Error!',
-                        message: 'Wrong confirm code. Try again!'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('personal.wrong-confirm-code')
                     });
                 });
             }
@@ -341,8 +341,8 @@ angular.module('FreelancerApp')
                     $scope.showDialogConfirm();
                 }).error(function (response) {
                     Notification.error({
-                        title: 'Error!',
-                        message: 'Wrong confirm code. Try again!'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('personal.wrong-confirm-code')
                     });
                 });
             }
@@ -358,8 +358,8 @@ angular.module('FreelancerApp')
 
                 }).error(function (response) {
                     Notification.error({
-                        title: 'Error!',
-                        message: 'Something wrong with change email. Try again!'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('personal.wrong-change-em')
                     });
                 });
             }
@@ -372,8 +372,8 @@ angular.module('FreelancerApp')
 
                 }).error(function (response) {
                     Notification.error({
-                        title: 'Error!',
-                        message: 'Something wrong with change email. Try again!'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('personal.wrong-change-em')
                     });
                 });
             }
@@ -387,8 +387,8 @@ angular.module('FreelancerApp')
 
                 }).error(function (response) {
                     Notification.error({
-                        title: 'Error!',
-                        message: 'Something wrong with change email. Try again!'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('personal.wrong-change-em')
                     });
                 });
             }
@@ -552,13 +552,13 @@ angular.module('FreelancerApp')
                             $scope.result = data;
                             $scope.getDevPersonal();
                             Notification.success({
-                                title: 'Changes saved!',
-                                message: 'The image was uploaded!'
+                                title: $translate.instant('notification.success'),
+                                message: $translate.instant('personal.suc-upload-img')
                             });
                         }).error(function () {
                             Notification.error({
-                                title: 'Error!',
-                                message: 'Something wrong with upload image. Try again!'
+                                title: $translate.instant('notification.error'),
+                                message: $translate.instant('personal.wrong-upload-img')
                             });
                         });
                     }
@@ -567,13 +567,13 @@ angular.module('FreelancerApp')
                             $scope.result = data;
                             $scope.getCustPersonal();
                             Notification.success({
-                                title: 'Changes saved!',
-                                message: 'The image is uploaded!'
+                                title: $translate.instant('notification.success'),
+                                message: $translate.instant('personal.suc-upload-img')
                             });
                         }).error(function () {
                             Notification.error({
-                                title: 'Error!',
-                                message: 'Something wrong with upload image. Try again!'
+                                title: $translate.instant('notification.error'),
+                                message: $translate.instant('personal.wrong-upload-img')
                             });
                         });
                     }
@@ -582,21 +582,21 @@ angular.module('FreelancerApp')
                             $scope.result = data;
                             $scope.getAdminPersonal();
                             Notification.success({
-                                title: 'Changes saved!',
-                                message: 'The image is uploaded!'
+                                title: $translate.instant('notification.success'),
+                                message: $translate.instant('personal.suc-upload-img')
                             });
                         }).error(function () {
                             Notification.error({
-                                title: 'Error!',
-                                message: 'Something wrong with upload image. Try again!'
+                                title: $translate.instant('notification.error'),
+                                message: $translate.instant('personal.wrong-upload-img')
                             });
                         });
                     }
                 }
             } else {
                 Notification.error({
-                    title: 'Error!',
-                    message: 'Only for .jpeg, .png or .gif. Try again!'
+                    title: $translate.instant('notification.error'),
+                    message: $translate.instant('personal.jpg-png-gif')
                 });
 
             }
