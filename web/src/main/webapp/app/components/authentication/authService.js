@@ -54,7 +54,7 @@ angular
 								});
 								$rootScope.globals = {};
 
-                                $location.path('/');
+								$location.path('/');
 							};
 
 							service.initSocial = function($scope) {
@@ -117,7 +117,8 @@ angular
 										.success(
 												function(data, status, headers,
 														config) {
-													$scope.linkedinUrl = data.linkedinUrl;
+													$scope.social.linkedin.url = data.linkedinUrl;
+													$scope.social.linkedin.available = true;
 												})
 										.error(
 												function(data, status, headers,
@@ -134,7 +135,7 @@ angular
 																});
 													}
 												});
-                            };
+							};
 
 							return service;
 						} ])

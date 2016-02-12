@@ -62,7 +62,8 @@ angular
 								})
 								.success(
 										function(data, status, headers, config) {
-											$scope.linkedinUrl = data.linkedinUrl;
+											$scope.social.linkedin.url = data.linkedinUrl;
+											$scope.social.linkedin.available = true;
 										})
 								.error(
 										function(data, status, headers, config) {
@@ -74,12 +75,12 @@ angular
 										});
 					}
 
-					this.createUser = function($http, user,adminUUID,roleAdmin,adminAPI) {
-						if(adminUUID!=undefined || roleAdmin==true){
+					this.createUser = function($http, user, adminUUID,
+							roleAdmin, adminAPI) {
+						if (adminUUID != undefined || roleAdmin == true) {
 							roleAdmin = false;
 							adminAPI.removeUUID(adminUUID);
 						}
-
 
 						console.log(user);
 						var config = {

@@ -11,9 +11,13 @@ angular
 						function($scope, $rootScope, $location, $cookieStore,
 								AuthenticationService, $http) {
 							$scope.user = {};
+							$scope.social = {};
+							$scope.social.linkedin = {};
+							$scope.social.linkedin.available = false;
+
 							$scope.doClose = function() {
-                                $scope.showError = false;
-                            };
+								$scope.showError = false;
+							};
 
 							$scope.login = function() {
 								AuthenticationService
@@ -23,24 +27,26 @@ angular
 										.success(
 												function(response) {
 													AuthenticationService
-														.SetCredentials(
-														response.fname,
-														response.lname,
-														response.role);
+															.SetCredentials(
+																	response.fname,
+																	response.lname,
+																	response.role);
 													if (response.role == 'admin') {
-														$location.path('/personal');
+														$location
+																.path('/personal');
 														return;
 													}
 													if (response.isFirst) {
-														$location.path('/personal')
-													}
-													else {
+														$location
+																.path('/personal')
+													} else {
 														if (response.role == 'developer')
-															$location.path('/orders');
+															$location
+																	.path('/orders');
 														if (response.role == 'customer')
-															$location.path('/developers');
+															$location
+																	.path('/developers');
 													}
-
 												})
 										.error(
 												function(response) {

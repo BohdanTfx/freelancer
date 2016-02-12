@@ -2,30 +2,28 @@ angular
 		.module('FreelancerApp')
 		.controller(
 				'signupCtrl',
-				function($scope, signupAPI, $log, $http,$location,createadminAPI) {
+				function($scope, signupAPI, $log, $http, $location,
+						createadminAPI) {
 					$scope.page = {};
 					$scope.user = {};
 					$scope.signup = false;
 					$scope.signupForm = {};
+					$scope.social = {};
+					$scope.social.linkedin = {};
+					$scope.social.linkedin.available = false;
 
 					$scope.roleAdmin = false;
 					$scope.adminUUID = $location.search().uuid;
 
-					if($scope.adminUUID!=undefined){
-						createadminAPI.checkAvailableUUID($scope.adminUUID).success(function(data){
-							$scope.roleAdmin = data;
-							$scope.signup = data;
-							}
-						);
+					if ($scope.adminUUID != undefined) {
+						createadminAPI.checkAvailableUUID($scope.adminUUID)
+								.success(function(data) {
+									$scope.roleAdmin = data;
+									$scope.signup = data;
+								});
 					}
 
-
-
-
-
 					$scope.roles = [ "developer", "customer" ];
-
-
 
 					$scope.chooseRole = function(signup, role) {
 						$scope.role = role;
@@ -40,7 +38,9 @@ angular
 					}
 
 					$scope.createUser = function() {
-						signupAPI.createUser($http, $scope.user,$scope.adminUUID,$scope.roleAdmin,createadminAPI);
+						signupAPI.createUser($http, $scope.user,
+								$scope.adminUUID, $scope.roleAdmin,
+								createadminAPI);
 					}
 
 					$scope.resetInputs = function() {
