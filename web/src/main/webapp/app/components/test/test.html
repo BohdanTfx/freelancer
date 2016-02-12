@@ -7,7 +7,7 @@
         </div>
 
         <h3 ng-show="testFinished"
-            class="text-center">Results:
+            class="text-center">{{"test.results" | translate}}:
             <span ng-class="resultColor">{{result.message}}</span>
         </h3>
 
@@ -36,23 +36,23 @@
             <div class="test-result" ng-switch-when="true">
                 <table class="col-md-12 text-center">
                     <tr class="row">
-                        <td><i class="fa fa-line-chart"></i> Your score</td>
+                        <td><i class="fa fa-line-chart"></i> {{"test.your-score" | translate}}</td>
                         <td>{{result.rate | number : 2}} %</td>
                     </tr>
                     <tr class="row results_border_bottom">
-                        <td><i class="fa fa-bar-chart"></i> Min pass score</td>
+                        <td><i class="fa fa-bar-chart"></i> {{"tests.min-pass-score" | translate}}</td>
                         <td>{{test.passScore}} %</td>
                     </tr>
                     <tr class="row">
-                        <td><i class="fa fa-check-circle"></i> Fully correct answers</td>
+                        <td><i class="fa fa-check-circle"></i> {{"test.fully-correct" | translate}}</td>
                         <td>{{result.success}}</td>
                     </tr>
                     <tr class="row">
-                        <td><i class="fa fa-exclamation-circle"></i> Partly correct answers</td>
+                        <td><i class="fa fa-exclamation-circle"></i> {{"test.partly-correct" | translate}}</td>
                         <td>{{result.partlyCorrect}}</td>
                     </tr>
                     <tr class="row">
-                        <td><i class="fa fa-minus-circle"></i> Fully incorrect answers</td>
+                        <td><i class="fa fa-minus-circle"></i> {{"test.fully-incorrect" | translate}}</td>
                         <td>{{result.errors}}</td>
                     </tr>
                 </table>
@@ -62,10 +62,10 @@
 
         <div class="text-center">
             <md-button ng-hide="testFinished" ng-click="submitAnswers()"
-                       class="md-raised md-primary btn-pass-test vertical-align-center">Send answers
+                       class="md-raised md-primary btn-pass-test vertical-align-center">{{"test.send-answers-btn" | translate}}
             </md-button>
             <md-button ng-show="testFinished" ng-click="redirect()"
-                       class="md-raised md-primary btn-pass-test vertical-align-center">Go to tests history
+                       class="md-raised md-primary btn-pass-test vertical-align-center">{{"test.tests-history-btn" | translate}}
             </md-button>
         </div>
 

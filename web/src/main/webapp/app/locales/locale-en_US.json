@@ -107,6 +107,14 @@
   "tests.repass-test":"Repass test",
   "tests.repass-unblock":"Repass unblock in",
 
+  "test.results":"Results",
+  "test.your-score":"Your score",
+  "test.fully-correct":"Fully correct answers",
+  "test.partly-correct":"Partly correct answers",
+  "test.fully-incorrect":"Fully incorrect answers",
+  "test.send-answers-btn":"Send answers",
+  "test.tests-history-btn":"Go to tests history",
+
 
   "jobinfo.no-order":"Order not found",
   "jobinfo.subscribe":"Subscribe",

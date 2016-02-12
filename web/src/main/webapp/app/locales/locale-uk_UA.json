@@ -106,6 +106,13 @@
   "tests.repass-test":"Перездати тест",
   "tests.repass-unblock":"Перездача стане можливою через ",
 
+  "test.results":"Результати",
+  "test.your-score":"Ваш результат",
+  "test.fully-correct":"Повністю правильні відповіді",
+  "test.partly-correct":"Частково правильні відповіді",
+  "test.fully-incorrect":"Повністю неправильні відповіді",
+  "test.send-answers-btn":"Відправити відповіді",
+  "test.tests-history-btn":"Перейти до історії тестів",
 
   "jobinfo.no-order":"Замовлення не знайдено",
   "jobinfo.subscribe":"Підписатись",

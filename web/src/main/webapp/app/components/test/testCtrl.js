@@ -1,5 +1,5 @@
 angular.module('FreelancerApp')
-    .controller('testCtrl', function ($scope, testAPI, $stateParams, $log, $interval, Notification) {
+    .controller('testCtrl', function ($scope, testAPI, $stateParams, $log, $interval, Notification, $translate) {
 
         $scope.testFinished = false;
         $scope.hideCssClass = '';
@@ -47,8 +47,8 @@ angular.module('FreelancerApp')
         }).error(function () {
             Notification
                 .error({
-                    title: 'Error!',
-                    message: 'Something went bad. Please try again.'
+                    title: $translate.instant('notification.error'),
+                    message: $translate.instant('notification.smth-wrong')
                 });
         });
 
@@ -99,8 +99,8 @@ angular.module('FreelancerApp')
             }).error(function () {
                 Notification
                     .error({
-                        title: 'Error!',
-                        message: 'Something went bad. Please try again.'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('notification.smth-wrong')
                     });
             });
         }
