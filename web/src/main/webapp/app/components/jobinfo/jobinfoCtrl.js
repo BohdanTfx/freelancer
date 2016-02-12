@@ -7,7 +7,9 @@ angular.module('FreelancerApp')
 
         $scope.user.subscribed = false;
 
-        if ($scope.user.role == 'developer') {
+        if ($scope.user.role == 'customer') {
+            $scope.isCust = true;
+        } else if ($scope.user.role == 'developer') {
             $scope.isDev = true;
         } else {
             $scope.show = false;
@@ -58,6 +60,10 @@ angular.module('FreelancerApp')
                     $scope.customer.imgUrl = 'images/profile/no-profile-img-head.gif';
                 }
                 $scope.getCustomerContact();
+
+                if ($scope.isCust && $scope.user.id == $scope.customer.id) {
+                    $scope.isJobOwner = true;
+                }
             }).error(function (e) {
                 Notification
                     .success({
@@ -69,7 +75,7 @@ angular.module('FreelancerApp')
             $scope.getCustomerContact = function () {
                 orderAPI.getCustomerContactById($scope.order.customerId).success(function (data) {
                     $scope.customer.contact = data;
-                }).error(function(){
+                }).error(function () {
                 })
             };
 
@@ -102,6 +108,7 @@ angular.module('FreelancerApp')
                 } else {
                     for (var i in $scope.followers) {
                         $scope.setDevRating($scope.followers[i]);
+                        $scope.setIsWorkerInFollower(i);
                     }
                     for (var i = 0; i < $scope.followers.length; i++) {
                         if (typeof $scope.followers[i].developer.imgUrl == 'undefined' || $scope.followers[i].developer.imgUrl == null)
@@ -129,6 +136,14 @@ angular.module('FreelancerApp')
             };
 
         }
+
+        $scope.setIsWorkerInFollower = function (i) {
+            orderAPI.isWorker(JSON.stringify($scope.followers[i])).success(function (data) {
+                $scope.followers[i].worker = data;
+                console.log("data = " + data);
+                console.log("is worker = " + $scope.followers[i].worker);
+            });
+        };
 
         $scope.getNumber = function (count) {
 
@@ -217,7 +232,6 @@ angular.module('FreelancerApp')
                         }
                     }
                 }
-
             }).error(function () {
                 Notification
                     .error({
@@ -228,5 +242,20 @@ angular.module('FreelancerApp')
 
         };
 
+        $scope.acceptFollower = function (devId) {
+            orderAPI.acceptFollower(devId, $scope.order.id, $scope.order.title, JSON.stringify($scope.customer)).success(function () {
+                for(var i = 0; i<$scope.followers.length; i++){
+                    if($scope.followers[i].devId == devId){
+                        $scope.followers[i].worker = true;
+                        break;
+                    }
+                }
+                Notification
+                    .success({
+                        title: 'Success!',
+                        message: 'Developer will have notification that he is accepted on project.'
+                    });
+            })
+        }
 
     });

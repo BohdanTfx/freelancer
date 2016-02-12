@@ -88,24 +88,22 @@
                     </div>
                     <md-content>
                         <md-tabs md-dynamic-height md-border-bottom>
-                            <md-tab label="Followers">
+                            <md-tab label="Subscribers">
                                 <md-content class="md-padding">
                                     <div class="tab-pane fade in active">
-                                        <p class="noFollowers" ng-if="noFollowers">There are no followers on this
+                                        <p class="noFollowers" ng-if="noFollowers">There are no subscribers on this
                                             project</p>
 
                                         <div ng-repeat="follower in followers">
                                             <div class="row">
                                                 <div class="col-sm-9">
                                                     <br/>
-
                                                     <div class="follower"
                                                          style="background-image: url('{{follower.developer.imgUrl}}')"></div>
                                                     <p>
                                                         <a ng-href="/#/public/developer/{{follower.developer.fname}}-{{follower.developer.lname}}/{{follower.developer.id}}"><em>{{follower.developer.fname}}
                                                             {{follower.developer.lname}}</em></a>
                                                     </p>
-
                                                     <p>{{follower.message}}</p>
                                                 </div>
                                                 <div class="col-sm-3 text-center">
@@ -120,7 +118,15 @@
                                                     <span>Rate:</span>
                                                     <span ng-if="follower.developer.hourly==undefined">unknown</span>
                                                     <span ng-if="follower.developer.hourly!=undefined"><span
-                                                            class="fa fa-usd"></span>{{follower.developer.hourly}}&#47hr</span>
+                                                            class="fa fa-usd"></span>{{follower.developer.hourly}}&#47hr</span><br/>
+                                                    <button ng-show="isJobOwner"
+                                                            type="button"
+                                                            class="btn btn-success btn-accept"
+                                                            ng-click="acceptFollower(follower.devId)"
+                                                            ng-disabled="follower.worker">
+                                                        <span ng-hide="follower.worker">Accept</span>
+                                                        <span ng-show="follower.worker">Accepted</span>
+                                                    </button>
                                                 </div>
                                             </div>
                                             <br/>

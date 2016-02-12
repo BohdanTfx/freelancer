@@ -1,8 +1,8 @@
 package com.epam.freelancer.web.controller;
 
 import java.io.File;
+
 import com.epam.freelancer.business.context.ApplicationContext;
-import com.epam.freelancer.business.service.*;
 import com.epam.freelancer.database.model.*;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
@@ -18,27 +18,15 @@ import java.io.IOException;
 import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import com.epam.freelancer.business.manager.UserManager;
 import com.epam.freelancer.business.util.SmsSender;
-import com.google.gson.Gson;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 
-import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.service.CustomerService;
 import com.epam.freelancer.business.service.DeveloperService;
 import com.epam.freelancer.business.service.FeedbackService;
@@ -84,10 +72,13 @@ public class CustomerController extends HttpServlet implements Responsable {
             String path = FrontController.getPath(request);
 
             switch (path) {
-                    case "cust/getPersonalData":
-                        fillCustomerPersonalPage(request, response);
-                        break;
-                    default:
+                case "cust/getPersonalData":
+                    fillCustomerPersonalPage(request, response);
+                    break;
+                case "cust/dev/isWorker":
+                    isWorker(request, response);
+                    break;
+                default:
             }
 
         } catch (Exception e) {
@@ -96,30 +87,29 @@ public class CustomerController extends HttpServlet implements Responsable {
         }
     }
 
-private void createOrder(HttpServletRequest request,
-        HttpServletResponse response) throws IOException
-        {
+    private void createOrder(HttpServletRequest request,
+                             HttpServletResponse response) throws IOException {
         UserEntity customer = (UserEntity) request.getSession().getAttribute(
-        "user");
+                "user");
         try {
-        String requestData = request.getReader().readLine();
-        Map<String, String> data = mapper.readValue(requestData,
-        new TypeReference<Map<String, String>>() {
-        });
-        data.put("customer_id", customer.getId().toString());
-        orderingService.create(data
-        .entrySet()
-        .stream()
-        .collect(
-        Collectors.toMap(Map.Entry::getKey,
-        e -> new String[] { e.getValue() })));
+            String requestData = request.getReader().readLine();
+            Map<String, String> data = mapper.readValue(requestData,
+                    new TypeReference<Map<String, String>>() {
+                    });
+            data.put("customer_id", customer.getId().toString());
+            orderingService.create(data
+                    .entrySet()
+                    .stream()
+                    .collect(
+                            Collectors.toMap(Map.Entry::getKey,
+                                    e -> new String[]{e.getValue()})));
         } catch (Exception e) {
-        e.printStackTrace();
-        response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
-        return;
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
+            return;
         }
         response.sendError(HttpServletResponse.SC_OK);
-        }
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -132,10 +122,10 @@ private void createOrder(HttpServletRequest request,
                     updatePersonalData(request, response);
                     break;
                 case "cust/getFeedForCust":
-                     getFeedbacksByIdForCust(request, response);
-                     break;
+                    getFeedbacksByIdForCust(request, response);
+                    break;
                 case "cust/getContForCust":
-                     getContForCust(request, response);
+                    getContForCust(request, response);
                     break;
                 case "cust/history":
                     getCustomerHistory(request, response);
@@ -151,6 +141,8 @@ private void createOrder(HttpServletRequest request,
                     break;
                 case "cust/uploadImage":
                     uploadImage(request, response);
+                case "cust/dev/accept":
+                    acceptDeveloper(request, response);
                 default:
             }
         } catch (Exception e) {
@@ -216,7 +208,7 @@ private void createOrder(HttpServletRequest request,
 
                 sendResponse(response, feedbacks, mapper);
 
-            }catch (Exception e) {
+            } catch (Exception e) {
                 response.sendError(500);
             }
         }
@@ -243,41 +235,40 @@ private void createOrder(HttpServletRequest request,
         }
     }
 
-private void fillCustomerPersonalPage(HttpServletRequest request,
-        HttpServletResponse response) throws IOException
-        {
-            HttpSession session = request.getSession();
-            Customer customer = (Customer) session.getAttribute("user");
-            Contact contact = customerService.getContactByCustomerId(customer.getId());
+    private void fillCustomerPersonalPage(HttpServletRequest request,
+                                          HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession();
+        Customer customer = (Customer) session.getAttribute("user");
+        Contact contact = customerService.getContactByCustomerId(customer.getId());
 
-            String customerJson = new Gson().toJson(customer);
-            String contactJson = new Gson().toJson(contact);
-            String resultJson = "{\"cust\":" + customerJson + ",\"cont\":" + contactJson +"}";
-            if(contactJson.length() == 0){
-                resultJson = "{\"cust\":" + customerJson + "}";
-            }
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write(resultJson);
+        String customerJson = new Gson().toJson(customer);
+        String contactJson = new Gson().toJson(contact);
+        String resultJson = "{\"cust\":" + customerJson + ",\"cont\":" + contactJson + "}";
+        if (contactJson.length() == 0) {
+            resultJson = "{\"cust\":" + customerJson + "}";
         }
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(resultJson);
+    }
 
     private void updatePersonalData(HttpServletRequest request,
                                     HttpServletResponse response) throws IOException {
-        Customer    customer = null;
-        Contact     contact = null;
+        Customer customer = null;
+        Contact contact = null;
         SimpleDateFormat format = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a");
         mapper.setDateFormat(format);
         String customerJson = request.getParameter("customer");
         try {
             customer = mapper.readValue(customerJson, Customer.class);
-        } catch(Exception e){
+        } catch (Exception e) {
             LOG.warn("Some problem with mapper Customer Controller");
         }
         String contactJson = request.getParameter("contact");
-        if(contactJson.length() != 0 ) {
+        if (contactJson.length() != 0) {
             contact = mapper.readValue(contactJson, Contact.class);
         }
-        if(customerService.getContactByCustomerId(customer.getId()) == null){
+        if (customerService.getContactByCustomerId(customer.getId()) == null) {
             contact.setCustomId(customer.getId());
             customerService.createContact(contact);    /// NEED METHOD CREATE
         } else {
@@ -297,22 +288,22 @@ private void fillCustomerPersonalPage(HttpServletRequest request,
         String newPassword = request.getParameter("newPassword");
         HttpSession session = request.getSession();
         Customer customer = (Customer) session.getAttribute("user");
-        StringBuilder confirmPhoneCode =  new StringBuilder();
+        StringBuilder confirmPhoneCode = new StringBuilder();
         UserManager userManager = new UserManager();
 
         if (customer != null) {
-            if(userManager.validCredentials(customer.getEmail(), password, customer)){
+            if (userManager.validCredentials(customer.getEmail(), password, customer)) {
                 SecureRandom random = new SecureRandom();
-                for(int i = 0; i < 4; i++){
+                for (int i = 0; i < 4; i++) {
                     confirmPhoneCode.append(String.valueOf(random.nextInt(9)));
                 }
                 customer.setConfirmCode(confirmPhoneCode.toString());
-                try{
+                try {
                     String phoneNumber = customerService.getContactByCustomerId(customer.getId()).getPhone();
                     SmsSender smsSender = new SmsSender();
                     smsSender.sendSms(phoneNumber, "Confirm code: " + confirmPhoneCode.toString(),
                             "e-freelance");
-                } catch(NullPointerException e){
+                } catch (NullPointerException e) {
                     LOG.warn("The phone number is empty");
                 }
                 String confirmCodeJson = new Gson().toJson(confirmPhoneCode);
@@ -335,7 +326,7 @@ private void fillCustomerPersonalPage(HttpServletRequest request,
         HttpSession session = request.getSession();
         Customer customer = (Customer) session.getAttribute("user");
 
-        if(customer.getConfirmCode().equals(confirmCode)){
+        if (customer.getConfirmCode().equals(confirmCode)) {
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(new Gson().toJson("good"));
@@ -352,17 +343,17 @@ private void fillCustomerPersonalPage(HttpServletRequest request,
     }
 
     private void uploadImage(HttpServletRequest request,
-                             HttpServletResponse response){
+                             HttpServletResponse response) {
         HttpSession session = request.getSession();
         Customer customer = (Customer) session.getAttribute("user");
-        String  imageJson = request.getParameter("image");
+        String imageJson = request.getParameter("image");
         byte[] encodImage = Base64.decodeBase64(imageJson);
         String fileName = customer.getFname() + customer.getLname();
         File file = null;
         try {
             file = new File("../target/WEB-INF/userData/" + fileName + ".jpg");
             FileUtils.writeByteArrayToFile(file, encodImage);
-        } catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -370,5 +361,79 @@ private void fillCustomerPersonalPage(HttpServletRequest request,
         customerService.modify(customer);
     }
 
+    private void acceptDeveloper(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String paramCustomer = request.getParameter("customer");
+        if (paramCustomer == null) {
+            response.sendError(HttpServletResponse.SC_CONFLICT);
+            return;
+        }
+        Customer customer = mapper.readValue(paramCustomer, new TypeReference<Customer>() {
+        });
+        HttpSession session = request.getSession();
+        UserEntity ue = (UserEntity) session.getAttribute("user");
+        if (ue.getId() != customer.getId()) {
+            response.sendError(HttpServletResponse.SC_CONFLICT);
+            return;
+        }
+        String paramDevId = request.getParameter("devId");
+        if (paramDevId == null || "".equals(paramDevId) || !paramDevId.matches("[0-9]*")) {
+            response.sendError(HttpServletResponse.SC_CONFLICT);
+            return;
+        }
+        Integer devId = Integer.parseInt(paramDevId);
+        Developer dev = developerService.findById(devId);
+        String jobName = request.getParameter("jobName");
+        String paramJobId = request.getParameter("jobId");
+        if (paramJobId == null || "".equals(paramJobId) || !paramJobId.matches("[0-9]*")) {
+            response.sendError(HttpServletResponse.SC_CONFLICT);
+            return;
+        }
+        Integer jobId = Integer.parseInt(paramJobId);
+        addInWorker(dev, jobId);
+        sendDevAcceptSms(jobName, customer, dev);
+    }
+
+    private void addInWorker(Developer dev, Integer orderId) {
+        Worker worker = new Worker();
+        worker.setDevId(dev.getId());
+        worker.setNewHourly(dev.getHourly());
+        worker.setOrderId(orderId);
+        developerService.createWorker(worker);
+    }
+
+    private boolean sendDevAcceptSms(String jobName, Customer customer, Developer dev) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Hello! You are accepted on project \"" + jobName + "\" by ");
+        stringBuilder.append(customer.getFname() + " " + customer.getLname() + "!");
+        Contact contact = developerService.getContactByDevId(dev.getId());
+        if (contact == null)
+            return false;
+        String phone = contact.getPhone();
+        if (phone == null || "".equals(phone)) {
+            return false;
+        }
+        String[] strs = new SmsSender().sendSms(phone, stringBuilder.toString(), customer.getFname());
+        return true;
+    }
+
+    private void isWorker(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String paramFollower = request.getParameter("follower");
+        if (paramFollower == null || "".equals(paramFollower)) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+        Follower follower = mapper.readValue(paramFollower, new TypeReference<Follower>() {
+        });
+        if (follower == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+        Worker worker = developerService.getWorkerByDevIdAndOrderId(follower.getDevId(), follower.getOrderId());
+        Boolean isWorker = false;
+        if(worker!=null){
+            isWorker = true;
+        }
+        sendResponse(response,isWorker,mapper);
+    }
 
 }
