@@ -75,6 +75,19 @@
   "createtest.incorrect":"Incorrect",
   "createtest.create-que-button":"Create question",
   "createtest.reset-button":"Reset",
+  "createtest.test-create-success":"Test was successfully created.",
+  "createtest.test-delete-success":"Test was successfully deleted.",
+  "createtest.question-create-success":"Question was successfully created.",
+  "createtest.question-delete-success":"Question was successfully deleted.",
+  "createtest.err-correct-answers":"Set one or more correct answers.",
+  "createtest.err-answers":"Min count of answers is 2. Please add answers in question.",
+  "createtest.err-questions":"Min count of questions is 3. Please add questions in test.",
+  "createtest.test-delete-message":"Would you like to delete test?",
+  "createtest.test-delete-description":"Be careful! If you delete test only data base administrator can recover it!",
+  "createtest.test-delete":"Delete test",
+  "createtest.question-delete-message":"Would you like to delete question?",
+  "createtest.question-delete-description":"Be careful! If you delete question only data base administrator can recover it!",
+  "createtest.question-delete":"Delete question",
 
 
   "jobinfo.no-order":"Order not found",
@@ -101,7 +114,13 @@
   "jobinfo.message":"Message...",
   "jobinfo.are-you-sure":"Are you sure ?",
   "jobinfo.close":"Close",
-
+  "jobinfo.order-doesnt-exist":"Order doesn't exist",
+  "jobinfo.complaining-success":"Admin will review your complaint.",
+  "jobinfo.complaining-error":"Error while complaining order.",
+  "jobinfo.customer-doesnt-exist":"Customer doesn't exist.",
+  "jobinfo.subscribed-success":"You successfully subscribed on this project.",
+  "jobinfo.unsubscribed-success":"You successfully unsubscribed from this project.",
+  "jobinfo.follower-accept-success":"Developer will have notification that he is accepted on project.",
 
 
   "home.title":"Welcome to OpenTask",
@@ -224,5 +243,6 @@
   "personal.jpg-png-gif": "Only for .jpeg, .png or .gif. Try again!",
 
   "notification.error": "Error",
-  "notification.success": "Success"
+  "notification.success": "Success",
+  "notification.smth-wrong": "Something went bad. Please, try again."
 }

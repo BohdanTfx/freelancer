@@ -73,6 +73,14 @@
   "createtest.incorrect":"Неправильно",
   "createtest.create-que-button":"Створити питання",
   "createtest.reset-button":"Скинути",
+  "createtest.test-create-success":"Тест успішно створений.",
+  "createtest.test-delete-success":"Тест успішно видалений.",
+  "createtest.question-create-success":"Питання успішно створено.",
+  "createtest.question-delete-success":"Питання успішно видалено.",
+  "createtest.err-correct-answers":"Вкажіть як мінімум одну правильну відповідь.",
+  "createtest.err-answers":"Мінімальна кількість відповідей = 2. Добавте відповіді до питання.",
+  "createtest.err-questions":"Мінімальна кількість питань = 3. Добавте питання до тесту.",
+
 
 
   "jobinfo.no-order":"Замовлення не знайдено",
@@ -99,7 +107,19 @@
   "jobinfo.message":"Повідомлення...",
   "jobinfo.are-you-sure":"Ви впевнені?",
   "jobinfo.close":"Закрити",
-
+  "jobinfo.order-doesnt-exist":"Замовлення не існує",
+  "jobinfo.complaining-success":"Адміністратор перегляна вашу скаргу.",
+  "jobinfo.complaining-error":"Помилка під час подачі скарги.",
+  "jobinfo.customer-doesnt-exist":"Даного замовника не існує.",
+  "jobinfo.subscribed-success":"Ви успішно підписались на проект.",
+  "jobinfo.unsubscribed-success":"Ви успішно відписались з проекту.",
+  "jobinfo.follower-accept-success":"Розробник отримає повідомлення про те, що він прийнятий на проект.",
+  "createtest.test-delete-message":"Ви хочете видалити тест?",
+  "createtest.test-delete-description":"Якщо ви видалите тест, тільки адміністратор бази даних зможе його відновити!",
+  "createtest.test-delete":"Видалити тест",
+  "createtest.question-delete-message":"Ви хочете видалити патання?",
+  "createtest.question-delete-description":"Якщо ви видалите питання, тільки адміністратор бази даних зможе його відновити!",
+  "createtest.question-delete":"Видалити питання",
 
 
   "home.title":"Відкрий для себе OpenTask",
@@ -127,6 +147,7 @@
   "home.cust-logged-search-create-button-up-case":"Створити нове замовлення",
   "home.sign-up-button-low-case":"зареєструватися",
   "home.log-in-button": "увійти",
+
   "custpub.notfound-customer": "Замовника не знайдено",
   "custpub.follow-me": "Підписуйся",
   "custpub.onsite-sinse": "На сайті з",
@@ -181,6 +202,7 @@
   "pubdev.passed": "Пройшов",
   "pubdev.not-passed": "Не пройшов",
   "pubdev.there-is-not-test": "Немає зданих тестів",
+
   "personal.upload": "Завантажити",
   "personal.name": "Ім'я",
   "personal.surname": "Прізвище",
@@ -221,5 +243,7 @@
   "personal.jpg-png-gif": "Тільки для .jpeg, .png чи .gif форматів. Спробуйте ще раз!",
 
   "notification.error": "Помилка",
-  "notification.success": "Успшіно"
+  "notification.success": "Успшіно",
+  "notification.smth-wrong": "Щось пішло не так. Будь ласка, спробуйте ще раз."
+
 }

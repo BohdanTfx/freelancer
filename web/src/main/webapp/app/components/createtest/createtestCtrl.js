@@ -1,5 +1,5 @@
 angular.module('FreelancerApp')
-    .controller('createtestCtrl', function ($scope, createtestAPI, Notification, $log) {
+    .controller('createtestCtrl', function ($scope, createtestAPI, Notification, $log, $translate) {
         $scope.availableQuestions = [];
 
         $scope.chosenQuestions = [];
@@ -54,8 +54,8 @@ angular.module('FreelancerApp')
             }).error(function () {
                 Notification
                     .error({
-                        title: 'Error!',
-                        message: 'Something went bad. Please try again.'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('notification.smth-wrong')
                     });
             });
         }
@@ -65,8 +65,8 @@ angular.module('FreelancerApp')
         }).error(function () {
             Notification
                 .error({
-                    title: 'Error!',
-                    message: 'Something went bad. Please try again.'
+                    title: $translate.instant('notification.error'),
+                    message: $translate.instant('notification.smth-wrong')
                 });
         });
 
@@ -85,8 +85,8 @@ angular.module('FreelancerApp')
         }).error(function () {
             Notification
                 .error({
-                    title: 'Error!',
-                    message: 'Something went bad. Please try again.'
+                    title: $translate.instant('notification.error'),
+                    message: $translate.instant('notification.smth-wrong')
                 });
         });
 
@@ -94,8 +94,8 @@ angular.module('FreelancerApp')
             if ($scope.chosenQuestions.length < 3) {
                 Notification
                     .error({
-                        title: 'Error!',
-                        message: 'Min count of questions is 3. Please add questions in test.'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('createtest.err-questions')
                     });
             } else {
                 var testJSON = JSON.stringify($scope.test);
@@ -110,14 +110,14 @@ angular.module('FreelancerApp')
                     $scope.testReset();
                     Notification
                         .success({
-                            title: 'Success!',
-                            message: 'Test was successfully created.'
+                            title: $translate.instant('notification.success'),
+                            message: $translate.instant('createtest.test-create-success')
                         });
                 }).error(function () {
                     Notification
                         .error({
-                            title: 'Error!',
-                            message: 'Something went bad. Please try again.'
+                            title: $translate.instant('notification.error'),
+                            message: $translate.instant('notification.smth-wrong')
                         });
                 });
             }
@@ -173,8 +173,8 @@ angular.module('FreelancerApp')
             if ($scope.answers.length < 2) {
                 Notification
                     .error({
-                        title: 'Error!',
-                        message: 'Min count of answers is 2. Please add answers in question.'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('createtest.err-answers')
                     });
                 return;
             } else {
@@ -185,8 +185,8 @@ angular.module('FreelancerApp')
                 if (correctAnswers < 1) {
                     Notification
                         .error({
-                            title: 'Error!',
-                            message: 'Set one or more correct answers.'
+                            title: $translate.instant('notification.error'),
+                            message: $translate.instant('createtest.err-correct-answers')
                         });
                     return;
                 }
@@ -200,14 +200,14 @@ angular.module('FreelancerApp')
                 $scope.getQuestionsByTechId($scope.chosenTechID);
                 Notification
                     .success({
-                        title: 'Success!',
-                        message: 'Question was successfully created.'
+                        title: $translate.instant('notification.success'),
+                        message: $translate.instant('createtest.question-create-success')
                     });
             }).error(function () {
                 Notification
                     .error({
-                        title: 'Error!',
-                        message: 'Something went bad. Please try again.'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('notification.smth-wrong')
                     });
             });
         }
@@ -226,8 +226,8 @@ angular.module('FreelancerApp')
             if ($scope.delTest == 'undefined') {
                 Notification
                     .error({
-                        title: 'Error!',
-                        message: 'Something went bad. Please try again.'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('notification.smth-wrong')
                     });
                 return;
             }
@@ -241,8 +241,8 @@ angular.module('FreelancerApp')
                 }
                 Notification
                     .success({
-                        title: 'Success!',
-                        message: 'Test was successfully deleted.'
+                        title: $translate.instant('notification.success'),
+                        message: $translate.instant('createtest.test-delete-success')
                     });
             });
         }
@@ -256,8 +256,8 @@ angular.module('FreelancerApp')
             if ($scope.delQuestion == 'undefined') {
                 Notification
                     .error({
-                        title: 'Error!',
-                        message: 'Something went bad. Please try again.'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('notification.smth-wrong')
                     });
                 return;
             }
@@ -271,8 +271,8 @@ angular.module('FreelancerApp')
                 }
                 Notification
                     .success({
-                        title: 'Success!',
-                        message: 'Test was successfully deleted.'
+                        title: $translate.instant('notification.success'),
+                        message: $translate.instant('createtest.question-delete-success')
                     });
             });
         }
@@ -333,8 +333,8 @@ angular.module('FreelancerApp')
             }).error(function () {
                 Notification
                     .error({
-                        title: 'Error!',
-                        message: 'Something went bad. Please try again.'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('notification.smth-wrong')
                     });
             });
         }

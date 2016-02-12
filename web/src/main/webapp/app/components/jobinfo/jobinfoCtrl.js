@@ -1,5 +1,5 @@
 angular.module('FreelancerApp')
-    .controller('jobinfoCtrl', function ($scope, orderAPI, $stateParams, $rootScope, $log, $http, Notification) {
+    .controller('jobinfoCtrl', function ($scope, orderAPI, $stateParams, $rootScope, $log, $http, Notification, $translate) {
 
         $scope.user = {};
         $scope.user.id = $rootScope.id;
@@ -26,8 +26,8 @@ angular.module('FreelancerApp')
         }).error(function () {
             Notification
                 .error({
-                    title: 'Error!',
-                    message: "Order doesn't exist."
+                    title: $translate.instant('notification.error'),
+                    message: $translate.instant('jobinfo.order-doesnt-exist')
                 });
         });
 
@@ -35,14 +35,14 @@ angular.module('FreelancerApp')
             orderAPI.toComplain($stateParams.orderId).success(function () {
                 Notification
                     .success({
-                        title: 'Success!',
-                        message: 'Admin will review your complaint.'
+                        title: $translate.instant('notification.success'),
+                        message: $translate.instant('jobinfo.complaining-success')
                     })
             }).error(function () {
                 Notification
                     .success({
-                        title: 'Error!',
-                        message: 'Error while complaining order.'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('jobinfo.complaining-error')
                     })
             });
         };
@@ -67,8 +67,8 @@ angular.module('FreelancerApp')
             }).error(function (e) {
                 Notification
                     .success({
-                        title: 'Error!',
-                        message: "Customer doesn't exist."
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('jobinfo.customer-doesnt-exist')
                     })
             });
 
@@ -185,8 +185,8 @@ angular.module('FreelancerApp')
             $http.post('/user/order/subscribe', data).success(function (data) {
                 Notification
                     .success({
-                        title: 'Success!',
-                        message: 'You successfully subscribed on this project'
+                        title: $translate.instant('notification.success'),
+                        message: $translate.instant('jobinfo.subscribed-success')
                     });
                 if (data.developer.imgUrl == 'undefined' || data.developer.imgUrl == null) {
                     data.developer.imgUrl = 'images/profile/no-image.png';
@@ -199,8 +199,8 @@ angular.module('FreelancerApp')
             }).error(function () {
                 Notification
                     .error({
-                        title: 'Error!',
-                        message: 'Something went bad. Please try again.'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('notification.smth-wrong')
                     });
             });
 
@@ -221,8 +221,8 @@ angular.module('FreelancerApp')
             $http.post('/user/order/unsubscribe', data).success(function () {
                 Notification
                     .success({
-                        title: 'Success!',
-                        message: 'You successfully unsubscribed from this project'
+                        title: $translate.instant('notification.success'),
+                        message: $translate.instant('jobinfo.unsubscribed-success')
                     });
                 $scope.user.subscribed = false;
                 for (var i in $scope.followers) {
@@ -236,8 +236,8 @@ angular.module('FreelancerApp')
             }).error(function () {
                 Notification
                     .error({
-                        title: 'Error!',
-                        message: 'Something went bad. Please try again.'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('notification.smth-wrong')
                     });
             });
 
@@ -253,8 +253,8 @@ angular.module('FreelancerApp')
                 }
                 Notification
                     .success({
-                        title: 'Success!',
-                        message: 'Developer will have notification that he is accepted on project.'
+                        title: $translate.instant('notification.success'),
+                        message: $translate.instant('jobinfo.follower-accept-success')
                     });
             })
         }
