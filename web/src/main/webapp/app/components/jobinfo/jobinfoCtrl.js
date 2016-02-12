@@ -113,7 +113,7 @@ angular.module('FreelancerApp')
                     for (var i = 0; i < $scope.followers.length; i++) {
                         if (typeof $scope.followers[i].developer.imgUrl == 'undefined' || $scope.followers[i].developer.imgUrl == null)
                             $scope.followers[i].developer.imgUrl = 'images/profile/no-image.png';
-                        else $scope.followers[i].developer.imgUrl+='md.jpg';
+                        else $scope.followers[i].developer.imgUrl += 'md.jpg';
                     }
                     $scope.isSubscriber();
                 }
@@ -245,8 +245,8 @@ angular.module('FreelancerApp')
 
         $scope.acceptFollower = function (devId) {
             orderAPI.acceptFollower(devId, $scope.order.id, $scope.order.title, JSON.stringify($scope.customer)).success(function () {
-                for(var i = 0; i<$scope.followers.length; i++){
-                    if($scope.followers[i].devId == devId){
+                for (var i = 0; i < $scope.followers.length; i++) {
+                    if ($scope.followers[i].devId == devId) {
                         $scope.followers[i].worker = true;
                         break;
                     }

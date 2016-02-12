@@ -6,7 +6,7 @@ angular.module('FreelancerApp')
         $scope.deleteFeedId = $rootScope.id;
 
         $scope.wmDis = false;
-        if($rootScope.id == $stateParams.devId) {
+        if ($rootScope.id == $stateParams.devId) {
             $scope.wmDis = true;
         }
 
