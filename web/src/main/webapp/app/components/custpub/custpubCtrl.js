@@ -1,5 +1,5 @@
 angular.module('FreelancerApp')
-    .controller('custpubCtrl', function ($scope, custpubAPI, $log, $http, $location, $filter, $stateParams, $rootScope, Notification) {
+    .controller('custpubCtrl', function ($scope, custpubAPI, $log, $http, $location, $filter, $stateParams, $rootScope, Notification, $translate) {
 
         $scope.query = $stateParams.custId;
         $scope.deleteFeedId = $rootScope.id;
@@ -21,15 +21,15 @@ angular.module('FreelancerApp')
             custpubAPI.deleteFeed(devId, feedId).success(function () {
                 Notification
                     .success({
-                        title: 'Success!',
-                        message: 'Feedback deleted.'
+                        title: $translate.instant('notification.success'),
+                        message: $translate.instant('custpub.notif-feed-notif')
                     });
                 $scope.feed();
             }).error(function () {
                 Notification
                     .error({
-                        title: 'Error!',
-                        message: 'Something wrong. Try again!'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('custpub.notif-smth-wrong-try')
                     });
             });
         };
@@ -74,8 +74,14 @@ angular.module('FreelancerApp')
         custpubAPI.getOrdPubHist($scope.query).success(
             function (data, status, headers, config) {
                 $scope.orders = data;
-            }).error(function () {
+                if (data.length == 0) {
+                    $scope.emptyHist = true;
+                    $scope.noneHist = $translate.instant('custpub.there-is-no-hist');
+                }
 
+            }).error(function () {
+                $scope.emptyHist = true;
+                $scope.noneHist = $translate.instant('custpub.there-is-no-hist');
             });
 
         $scope.feed = function () {
@@ -93,11 +99,11 @@ angular.module('FreelancerApp')
                     }
                     else {
                         $scope.emptyComm = true;
-                        $scope.noneFeed = 'There is no feedback';
+                        $scope.noneFeed = $translate.instant('custpub.there-is-no-feed');
                     }
                 }).error(function () {
                     $scope.emptyComm = true;
-                    $scope.noneFeed = 'There is no feedback';
+                    $scope.noneFeed = $translate.instant('custpub.there-is-no-feed');
                 });
         };
 
@@ -112,14 +118,14 @@ angular.module('FreelancerApp')
             $http.post('/user/sms', data).success(function () {
                 Notification
                     .success({
-                        title: 'Success!',
-                        message: 'You are followed him.'
+                        title: $translate.instant('notification.success'),
+                        message: $translate.instant('custpub.you-are-follow-him')
                     });
             }).error(function () {
                 Notification
                     .error({
-                        title: 'Error!',
-                        message: 'Error. Please try again.'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('custpub.error')
                     });
             });
         };
@@ -154,18 +160,17 @@ angular.module('FreelancerApp')
                     $scope.regDate = data.regDate;
                     if (typeof data.overview != 'undefined' && data.overview != null) {
                         $scope.overview = data.overview;
-                        $scope.overHead = 'Overview';
+                        $scope.overHead = $translate.instant('custpub.overview');
                     } else {
                         $scope.overview = undefined;
                         $scope.overHead = undefined;
-                        $scope.noneOver = 'Nothing to show';
+                        $scope.noneOver = $translate.instant('custpub.nothing-to-show');
                     }
 
                 }).error(function () {
                     $scope.freelancerNotFound = true;
                 });
         };
-
         getCust($scope.query);
 
         $scope.send = function () {
@@ -176,15 +181,15 @@ angular.module('FreelancerApp')
             $http.post('/user/send', data).success(function () {
                 Notification
                     .success({
-                        title : 'Success',
-                        message : 'Your email was successfully sent to '+ $rootScope.name
+                        title: $translate.instant('notification.success'),
+                        message: $translate.instant('custpub.your-email-was-succ-sent-to') + $rootScope.name
                     });
                 $scope.dataLoading = false;
             }).error(function () {
                 Notification
                     .error({
-                        title : 'Error',
-                        message : 'An error occurred while sending email to ' +$rootScope.name + '. Please try again.'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('custpub.an-error-occured-while-sending-to') + $rootScope.name + $translate.instant('custpub.try-again')
                     });
                 $scope.dataLoading = false;
             });
@@ -197,8 +202,8 @@ angular.module('FreelancerApp')
             } else {
                 Notification
                     .error({
-                        title : 'Error',
-                        message : 'Rating cant be 0'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('custpub.rating-cant-be')
                     });
                 $scope.comsuc = undefined;
                 return;
@@ -207,8 +212,8 @@ angular.module('FreelancerApp')
                 $http.post('/user/comment', data).success(function () {
                     Notification
                         .success({
-                            title : 'Success',
-                            message : 'Feedback was successfully added.'
+                            title: $translate.instant('notification.success'),
+                            message: $translate.instant('custpub.feed-was-succ-added')
                         });
                     $scope.comerr = undefined;
 
@@ -222,16 +227,16 @@ angular.module('FreelancerApp')
                 }).error(function () {
                     Notification
                         .error({
-                            title : 'Error',
-                            message : 'Please, input message and try again'
+                            title: $translate.instant('notification.error'),
+                            message: $translate.instant('custpub.please-inp-mess-and-try')
                         });
                     $scope.comsuc = undefined;
                 });
             } else {
                 Notification
                     .error({
-                        title : 'Error',
-                        message : 'Error, while sending feedback.'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('custpub.error-while-send-feed')
                     });
                 $scope.comsuc = undefined;
             }
