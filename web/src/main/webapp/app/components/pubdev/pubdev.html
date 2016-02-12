@@ -5,7 +5,7 @@
                 <div class="panel-body fl-left">
                     <img class="devpub-not-found" src="/images/profile/no-profile-img-head.gif" alt=""/>
 
-                    <h2 class="devpub-free-not-found">Freelancer not found</h2>
+                    <h2 class="devpub-free-not-found">{{"pubdev.freelancer-not-found" | translate}}</h2>
                 </div>
             </div>
         </div>
@@ -39,8 +39,7 @@
                              data-target=".bs-example-modal-md1">
                                     <span
                                             class="glyphicon glyphicon-thumbs-up"></span>
-                            Hire
-                            me
+                            {{"pubdev.hire-me" | translate}}
                         </div>
                         Rating:
                         <uib-rating ng-model="rateq" max="5" readonly="true"
@@ -49,7 +48,7 @@
                         <br/>
                         <span class="devpub-sp">{{hourly}}</span>
                         <p>
-                            Technologies:
+                            {{"pubdev.technologies" | translate}}:
                             <br/>
                             <span ng-repeat="tech in techs">
                                 <span class="label label-success devpub-lb">{{tech.name}}</span>
@@ -62,16 +61,13 @@
                         <p>
                         <h5>{{skype}}</h5>
                         </p>
-                        <p>On site since:
+                        <p>{{"pubdev.onsite-sinse" | translate}}:
                             {{regDate |date:'longDate'}}
                         </p>
-                        <span style="color: firebrick">{{messerr}}</span>
-                        <span style="color: darkgreen">{{messuc}}</span>
                         <div ng-disabled="wmDis" class="btn btn-block btn-danger" data-toggle="modal"
                              data-target=".bs-example-modal-md">
                             <span class="glyphicon glyphicon-envelope"></span>
-                            Write
-                            me
+                            {{"pubdev.write-me" | translate}}
                             <img ng-if="dataLoading"
                                  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
                         </div>
@@ -80,25 +76,25 @@
 
                 <md-content>
                     <md-tabs md-dynamic-height md-border-bottom>
-                        <md-tab label="Feedbacks">
+                        <md-tab label="{{'custpub.feedbacks' | translate}}">
                             <div class="tab-pane fade in active" id="menu1">
                                 <div ng-if="show" class="form-group devpub-comm-div">
                                     <br/>
-                                    <label>Rate him:
+                                    <label>{{"pubdev.rate-him" | translate}}:
                                         <uib-rating ng-model="rate" max="max" readonly="false"
                                                     on-leave="overStar = null" titles="['one','two','three']"
                                                     aria-labelledby="default-rating"></uib-rating>
                                     </label>
                                     <br/>
                             <textarea type="text" class="form-control" ng-model="feedback" rows="2"
-                                      placeholder="Comment ..."
+                                      placeholder="..."
                                       required></textarea>
                                     <br/>
                                     <button type="button" ng-click="comment(rate, feedback)"
                                             class="btn btn-primary pull-right comm-but">
                                 <span
                                         class="glyphicon glyphicon-comment"></span>
-                                        Send
+                                        {{"pubdev.send" | translate}}
                                     </button>
                                 </div>
                                 <br/>
@@ -133,9 +129,10 @@
                                 </div>
                             </div>
                         </md-tab>
-                        <md-tab label="Portfolio">
+                        <md-tab label="{{'pubdev.portfolio' | translate}}">
                             <md-content class="md-padding">
-                                <p class="devpub-emptyPort" ng-if="emptyPort">He has no portfolio</p>
+                                <p class="devpub-emptyPort" ng-if="emptyPort">{{"pubdev.he-has-no-port" |
+                                    translate}}</p>
 
                                 <div ng-repeat="port in ports">
                                     <h4 class="tit">
@@ -161,7 +158,7 @@
 
                             </md-content>
                         </md-tab>
-                        <md-tab label="Test">
+                        <md-tab label="{{'pubdev.test' | translate}}">
                             <md-content class="md-padding">
                                 <p class="devpub-emptyTest" ng-if="emptyTest">There is no test</p>
 
@@ -171,7 +168,7 @@
                                     <div>
                                         <div class="qa-left">
                                             <div class="devpub-clear-div">
-                                                <p>Point: {{qa.rate}} / 100</p>
+                                                <p>{{"pubdev.point" | translate}} {{qa.rate}} / 100</p>
                                                 <p><span
                                                         class="label label-success devpub-lb">{{qa.test.technology.name}}</span>
                                                 </p>
@@ -218,7 +215,7 @@
     <span
             aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title">Send mail to {{fname}} {{lname}}</h4>
+                <h4 class="modal-title"> {{"pubdev.send-mail-to" | translate}} {{fname}} {{lname}}</h4>
             </div>
             <div class="modal-footer">
                 <div class="form-group">
@@ -232,7 +229,7 @@
                             data-dismiss="modal">
         <span
                 class="glyphicon glyphicon-envelope"></span>
-                        Send
+                        {{"pubdev.send" | translate}}
                     </button>
                 </div>
             </div>
@@ -251,7 +248,7 @@
     <span
             aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title">Hire on your existing project</h4>
+                <h4 class="modal-title">{{"pubdev.hire-on-your" | translate}}</h4>
             </div>
             <div class="modal-footer">
                 <div class="form-group">
@@ -267,7 +264,7 @@
                             data-dismiss="modal">
         <span
                 class="glyphicon glyphicon-thumbs-up"></span>
-                        Hire
+                        {{"pubdev.hire" | translate}}
                     </button>
                 </div>
             </div>
