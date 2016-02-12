@@ -89,6 +89,24 @@
   "createtest.question-delete-description":"Be careful! If you delete question only data base administrator can recover it!",
   "createtest.question-delete":"Delete question",
 
+  "tests.tab-tests-results":"Tests results",
+  "tests.tab-all-tests":"All tests",
+  "tests.test-name":"Test name",
+  "tests.technology":"Technology",
+  "tests.expire-date":"Expire date",
+  "tests.your-rate":"Your Rate",
+  "tests.no-passed-tests":"You didn't pass any tests",
+  "tests.search-by-test-name":"Search by test name",
+  "tests.search-by-technology":"Search by technology",
+  "tests.passed":"Passed",
+  "tests.allowed":"Allowed",
+  "tests.min-pass-score":"Min Pass Score",
+  "tests.no-tests":"We don't have any tests for you now. Check it later",
+  "tests.no-results":"No results",
+  "tests.pass-test":"Pass test",
+  "tests.repass-test":"Repass test",
+  "tests.repass-unblock":"Repass unblock in",
+
 
   "jobinfo.no-order":"Order not found",
   "jobinfo.subscribe":"Subscribe",
@@ -121,6 +139,9 @@
   "jobinfo.subscribed-success":"You successfully subscribed on this project.",
   "jobinfo.unsubscribed-success":"You successfully unsubscribed from this project.",
   "jobinfo.follower-accept-success":"Developer will have notification that he is accepted on project.",
+  "jobinfo.tab-subscribers":"Subscribers",
+  "jobinfo.tab-feedbacks-about-customer":"Feedbacks about customer",
+  "jobinfo.tab-customer-projects-history":"Customer projects history",
 
 
   "home.title":"Welcome to OpenTask",
