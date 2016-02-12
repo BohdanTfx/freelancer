@@ -1,5 +1,5 @@
 angular.module('FreelancerApp')
-    .controller('testsCtrl', function ($scope, testsAPI, $log, $interval, Notification) {
+    .controller('testsCtrl', function ($scope, testsAPI, $log, $interval, Notification, $translate) {
 
         $scope.smt = {};
         $scope.smt.passedTest = false;
