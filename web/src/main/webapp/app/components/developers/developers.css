@@ -20,6 +20,18 @@
 	position: relative;
 }
 
+.developer-link {
+	text-decoration-line: unset !important;
+}
+
+.developer-link .fa-link {
+	color: transparent;
+}
+
+.developer-link:hover .fa-link {
+	color: #31708f;
+}
+
 @media only screen and (max-width:599px) {
 	.developer-list-img {
 		width: 50px;

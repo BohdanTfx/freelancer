@@ -16,7 +16,7 @@
 					verticalSpacing : 20,
 					horizontalSpacing : 20,
 					positionX : 'right',
-					positionY : 'bottom'
+					positionY : 'top'
 				});
 
 				// routes
@@ -154,7 +154,8 @@
                                 }
                             }
                         };
-                        $rootScope.$on('$locationChangeStart', function (event, next, current, $scope) {
+						$rootScope.$on('$locationChangeStart', function(event,
+								next, current, $scope) {
 							$rootScope.globals = {};
 							$rootScope.logged = false;
 							$http.post('/user/isAuth').success(function(data) {
@@ -169,6 +170,8 @@
                                 $rootScope.checking($rootScope);
 							});
 						});
+
+						getSavedStateData();
 					} ]);
 
 })();
