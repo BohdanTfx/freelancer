@@ -1,5 +1,5 @@
 angular.module('FreelancerApp')
-    .controller('custpubCtrl', function ($scope, custpubAPI, $log, $http, $location, $filter, $stateParams, $rootScope, Notification) {
+    .controller('custpubCtrl', function ($scope, custpubAPI, $log, $http, $location, $filter, $stateParams, $rootScope, Notification, $translate) {
 
         $scope.query = $stateParams.custId;
         $scope.deleteFeedId = $rootScope.id;
@@ -74,8 +74,14 @@ angular.module('FreelancerApp')
         custpubAPI.getOrdPubHist($scope.query).success(
             function (data, status, headers, config) {
                 $scope.orders = data;
-            }).error(function () {
+                if (data.length == 0) {
+                    $scope.emptyHist = true;
+                    $scope.noneHist = $translate.instant('custpub.there-is-no-hist');
+                }
 
+            }).error(function () {
+                $scope.emptyHist = true;
+                $scope.noneHist = $translate.instant('custpub.there-is-no-hist');
             });
 
         $scope.feed = function () {
@@ -93,11 +99,11 @@ angular.module('FreelancerApp')
                     }
                     else {
                         $scope.emptyComm = true;
-                        $scope.noneFeed = 'There is no feedback';
+                        $scope.noneFeed = $translate.instant('custpub.there-is-no-feed');
                     }
                 }).error(function () {
                     $scope.emptyComm = true;
-                    $scope.noneFeed = 'There is no feedback';
+                    $scope.noneFeed = $translate.instant('custpub.there-is-no-feed');
                 });
         };
 
@@ -154,18 +160,17 @@ angular.module('FreelancerApp')
                     $scope.regDate = data.regDate;
                     if (typeof data.overview != 'undefined' && data.overview != null) {
                         $scope.overview = data.overview;
-                        $scope.overHead = 'Overview';
+                        $scope.overHead = $translate.instant('custpub.overview');
                     } else {
                         $scope.overview = undefined;
                         $scope.overHead = undefined;
-                        $scope.noneOver = 'Nothing to show';
+                        $scope.noneOver = $translate.instant('custpub.nothing-to-show');
                     }
 
                 }).error(function () {
                     $scope.freelancerNotFound = true;
                 });
         };
-
         getCust($scope.query);
 
         $scope.send = function () {

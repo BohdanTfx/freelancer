@@ -97,7 +97,23 @@
   "home.cust-logged-label-create-orders":"You can create new order, and people will be able to find your order in search and contact with you to discuss all condition of offer. Press button \"Create new order\" to get started.",
   "home.cust-logged-search-create-button-up-case":"Create new order",
   "home.sign-up-button-low-case":"sign up",
-  "home.log-in-button":"log in"
-
+  "home.log-in-button": "log in",
+  "custpub.notfound-customer": "Customer not found",
+  "custpub.follow-me": "Follow me",
+  "custpub.onsite-sinse": "On site since",
+  "custpub.write-me": "Write me",
+  "custpub.rate-him": "Rate him",
+  "custpub.send": "Send",
+  "custpub.delete-feedback": "Delete feedback",
+  "custpub.has-no-project": "He has no project",
+  "custpub.send-mail-to": "Send mail to",
+  "custpub.follow-customer": "Follow customer",
+  "custpub.follow": "Follow",
+  "custpub.history": "History",
+  "custpub.feedbacks": "Feedbacks",
+  "custpub.there-is-no-feed": "There is no feedbacks",
+  "custpub.nothing-to-show": "Nothing to show",
+  "custpub.overview": "Overview",
+  "custpub.there-is-no-hist": "There is no history"
 
 }
