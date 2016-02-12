@@ -1,5 +1,5 @@
 angular.module('FreelancerApp')
-    .controller('homeCtrl', function ($scope) {
+    .controller('homeCtrl', function ($scope,$translate) {
         $scope.myInterval = 4000;
         $scope.noWrapSlides = false;
         var slides = $scope.slides = [];

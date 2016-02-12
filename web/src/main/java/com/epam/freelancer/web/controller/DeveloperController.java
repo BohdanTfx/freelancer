@@ -143,9 +143,6 @@ public class DeveloperController extends HttpServlet implements Responsable {
 				notAcceptedWorks.add(order);
 			}
 		});
-
-
-
 		Map<String, List> resultMap = new HashMap<>();
 		resultMap.put("finishedWorks", finishedWorks);
 		resultMap.put("subscribedWorks", subscribedWorks);
