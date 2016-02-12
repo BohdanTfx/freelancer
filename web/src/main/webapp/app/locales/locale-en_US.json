@@ -98,6 +98,7 @@
   "home.cust-logged-search-create-button-up-case":"Create new order",
   "home.sign-up-button-low-case":"sign up",
   "home.log-in-button": "log in",
+
   "custpub.notfound-customer": "Customer not found",
   "custpub.follow-me": "Follow me",
   "custpub.onsite-sinse": "On site since",
@@ -140,6 +141,18 @@
   "pubdev.rate-him": "Rate him",
   "pubdev.test": "Test",
   "pubdev.portfolio": "Portfolio",
+  "pubdev.freel-will-see-your-invit": "Freelancer will see your invitation",
+  "pubdev.error-while-send-invit-try-again": "Error, while sending invitation. Please, try again.",
+  "pubdev.the-message-was-sent-succ": "The message was sent successfully",
+  "pubdev.error-while-send-message-try": "Error while sending message. Please, try again",
+  "pubdev.smth-went-bad-try": "Something went bad. Please, try again",
+  "pubdev.empty-fields": "Fields or field are/is empty. Please, try again",
+  "pubdev.hr": "hr",
+  "pubdev.out-of-date": "Out of date",
+  "pubdev.passed": "Passed",
+  "pubdev.not-passed": "Not passed",
+  "pubdev.there-is-not-test": "There is not test",
+
   "notification.error": "Error",
   "notification.success": "Success"
 }

@@ -160,7 +160,8 @@
                         </md-tab>
                         <md-tab label="{{'pubdev.test' | translate}}">
                             <md-content class="md-padding">
-                                <p class="devpub-emptyTest" ng-if="emptyTest">There is no test</p>
+                                <p class="devpub-emptyTest" ng-if="emptyTest">{{"pubdev.there-is-not-test" |
+                                    translate}}</p>
 
                                 <div ng-repeat="qa in qas">
                                     <h3 class="devpub-test-name">{{qa.test.name}}</h3>

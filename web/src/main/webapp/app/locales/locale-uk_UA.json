@@ -120,6 +120,7 @@
   "custpub.feed-was-succ-added": "Комент був успішно доданий.",
   "custpub.please-inp-mess-and-try": "Будь ласка, введіть повідомлення і спробуйте ще раз.",
   "custpub.error-while-send-feed": "Помилка, при надсиланні коментаря.",
+
   "pubdev.freelancer-not-found": "Фрілансера не знайдено",
   "pubdev.hire-me": "Наняти мене",
   "pubdev.technologies": "Технології",
@@ -134,6 +135,18 @@
   "pubdev.rate-him": "Оцініть мене",
   "pubdev.test": "Тести",
   "pubdev.portfolio": "Портфоліо",
+  "pubdev.freel-will-see-your-invit": "Фрілансер побачить ваше запрошення найближчим часом",
+  "pubdev.error-while-send-invit-try-again": "Помилка, при надсиланні запрошення. Будь ласка, спробуйте ще раз",
+  "pubdev.the-message-was-sent-succ": "Повідомлення було успішно надіслане",
+  "pubdev.error-while-send-message-try": "Помилка надсилання повідомлення. Будь ласка, спробуйте ще раз",
+  "pubdev.smth-went-bad-try": "Щось пішло не так. Будь ласка, спробуйте ще раз",
+  "pubdev.empty-fields": "Незаповнені поля. Будь ласка, спробуйте ще раз",
+  "pubdev.hr": "годину",
+  "pubdev.out-of-date": "Не актуальне",
+  "pubdev.passed": "Пройшов",
+  "pubdev.not-passed": "Не пройшов",
+  "pubdev.there-is-not-test": "Немає зданих тестів",
+
   "notification.error": "Помилка",
   "notification.success": "Успшіно"
 }
