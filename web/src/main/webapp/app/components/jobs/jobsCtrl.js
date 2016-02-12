@@ -3,31 +3,39 @@ var filterOpen = false;
 angular.module('FreelancerApp')
 		.controller(
 				'jobsCtrl',
-    function ($scope, jobsAPI, $log, $http, Notification) {
-        $scope.filter = {};
+				function($scope, jobsAPI, $log, $http, Notification) {
+					$scope.filter = {};
 					$scope.hourly = {};
 					$scope.ordersLoading = true;
 					$scope.filterButtonStyle = 'fa-angle-double-down';
+					$scope.filter.tooltip = {};
+					$scope.filter.tooltip.title = 'Open filter';
+					$scope.filter.tooltip.locked = true;
 
 					$scope.filterToggle = function() {
 						if (filterOpen) {
 							$scope.filterState = '';
 							$scope.filterButtonStyle = 'fa-angle-double-down';
+							$scope.filter.tooltip.title = 'Open filter';
+							$scope.filter.tooltip.locked = true;
 							filterOpen = false;
 						} else {
 							$scope.filterState = 'in';
 							$scope.filterButtonStyle = 'fa-angle-double-up';
+							$scope.filter.tooltip.title = 'Close filter';
+							$scope.filter.tooltip.locked = false;
 							filterOpen = true;
 						}
-                    };
+					}
 
-        $scope.setOrderID = function (orderID) {
-            $scope.compOrderID = orderID;
-        };
+					$scope.setOrderID = function(orderID) {
+						$scope.compOrderID = orderID;
+					};
 
-        $scope.complain = function () {
-            jobsAPI.toComplain($http, $scope, $scope.compOrderID, Notification);
-        };
+					$scope.complain = function() {
+						jobsAPI.toComplain($http, $scope, $scope.compOrderID,
+								Notification);
+					};
 
 					$scope.itemsPerPage = [ {
 						number : 5,
@@ -46,13 +54,13 @@ angular.module('FreelancerApp')
 
 					$scope.doFilter = function() {
 						jobsAPI.loadOrders($scope, $http);
-                    };
+					};
 
 					$scope.changeStep = function() {
 						localStorage.setItem("freelancerOrdersStep",
 								$scope.itesStep.number);
 						jobsAPI.loadOrders($scope, $http);
-                    };
+					};
 
 					$scope.openPage = function(page) {
 						if (page == 'last')
@@ -61,7 +69,7 @@ angular.module('FreelancerApp')
 							$scope.itemListStart = page;
 							jobsAPI.loadOrders($scope, $http);
 						}
-                    };
+					};
 
 					jobsAPI.loadLimits($scope, $http);
 					jobsAPI.loadOrders($scope, $http);

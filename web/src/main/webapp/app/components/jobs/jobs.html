@@ -7,8 +7,12 @@
 					<label><i class="fa fa-wrench"></i> Filter</label>
 					<div class="pull-right">
 						<button
-							class="btn btn-warning order-open-filter-btn animated slideInUp"
-							data-tooltip="yes" title="Open filter" data-placement="left">
+							class="btn btn-warning order-open-filter-btn animated slideInUp">
+							<md-tooltip md-direction="bottom"
+								ng-switch="filter.tooltip.locked"> <i
+								class="fa fa-unlock-alt" ng-switch-when="true"></i> <i
+								ng-switch-when="false" class="fa fa-lock"></i>
+							{{filter.tooltip.title}} </md-tooltip>
 							<i class="fa {{filterButtonStyle}} fa-2x"></i>
 						</button>
 					</div>
@@ -113,12 +117,17 @@
 			<div class="panel panel-info" ng-repeat="order in orders"
 				ng-if="ordersLoading == false">
 				<div class="panel-heading">
-					<div class="panel-title">{{order.title}}
-                        <div class="btn btm-sm btn-danger pull-right" ng-disabled="order.isComplaint" data-toggle="modal"
-                             data-target=".bs-example-modal-sm" ng-click="setOrderID(order.id)" style="padding: 3px">
-                            Complain
-                        </div>
-                    </div>
+					<div class="panel-title">
+						<a class="panel-title developer-link"
+							href="/#/orders/{{order.id}}"><i class="fa fa-link"></i>
+							{{order.title}}</a>
+
+						<div class="btn btm-sm btn-danger pull-right"
+							ng-disabled="order.isComplaint" data-toggle="modal"
+							data-target=".bs-example-modal-sm"
+							ng-click="setOrderID(order.id)" style="padding: 3px">
+							Complain</div>
+					</div>
 				</div>
 				<div class="panel-body">
 					<div class="row">
@@ -155,26 +164,32 @@
 	</div>
 </div>
 
-<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Are you sure ?</h4>
-            </div>
-			<div class="modal-body">
-				<p>This message will be send to administration and we will review this ordering.</p>
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog"
+	aria-labelledby="mySmallModalLabel">
+	<div class="modal-dialog modal-sm">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title">Are you sure ?</h4>
 			</div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal"><span
-                        class="glyphicon glyphicon-share-alt"></span> Close
-                </button>
-                <button type="button" id="delete1" class="btn btn-danger" ng-click="complain(complainOrderID)"
-                        data-dismiss="modal"><span
-                        class="glyphicon glyphicon-remove-sign"></span> Complain
-                </button>
-            </div>
-        </div>
-    </div>
+			<div class="modal-body">
+				<p>This message will be send to administration and we will
+					review this ordering.</p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary" data-dismiss="modal">
+					<span class="glyphicon glyphicon-share-alt"></span>
+					Close
+				</button>
+				<button type="button" id="delete1" class="btn btn-danger"
+					ng-click="complain(complainOrderID)" data-dismiss="modal">
+					<span class="glyphicon glyphicon-remove-sign"></span>
+					Complain
+				</button>
+			</div>
+		</div>
+	</div>
 </div>
