@@ -97,7 +97,11 @@ angular.module('FreelancerApp')
                 $scope.testFinished = true;
                 $scope.hideCssClass = '.ng-hide';
             }).error(function () {
-                alert("Server is busy");
+                Notification
+                    .error({
+                        title: 'Error!',
+                        message: 'Something went bad. Please try again.'
+                    });
             });
         }
     });

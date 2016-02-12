@@ -111,6 +111,24 @@ public abstract class GenericJdbcDao<T extends BaseEntity<ID>, ID> implements
 	}
 
 	@Override
+	public List<T> getAllWithDeleted() {
+		List<T> entities = new ArrayList<>();
+		String query = "SELECT * FROM " + table;
+		try (Connection connection = connectionPool.getConnection();
+			 PreparedStatement statement = connection
+					 .prepareStatement(query);
+			 ResultSet set = statement.executeQuery()) {
+			while (set.next()) {
+				T entity = transformer.getObject(set);
+				entities.add(entity);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return entities;
+	}
+
+	@Override
 	public List<T> filterAll(Map<String, Object> parameters, Integer start,
 			Integer step)
 	{

@@ -17,6 +17,8 @@ public interface GenericDao<T, ID> {
 
 	List<T> getAll();
 
+	List<T> getAllWithDeleted();
+
 	List<T> filterAll(Map<String, Object> parameters, Integer start,
 			Integer step);
 	
