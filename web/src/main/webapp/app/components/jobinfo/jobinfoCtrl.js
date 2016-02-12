@@ -57,7 +57,7 @@ angular.module('FreelancerApp')
             orderAPI.getCustomerById($scope.order.customerId).success(function (data) {
                 $scope.customer = data;
                 if ($scope.customer.imgUrl == 'undefined' || $scope.customer.imgUrl == null) {
-                    $scope.customer.imgUrl = 'images/profile/no-profile-img-head.gif';
+                    $scope.customer.imgUrl = 'images/profile/no-image.png';
                 }
                 $scope.getCustomerContact();
 
@@ -86,7 +86,7 @@ angular.module('FreelancerApp')
                 } else {
                     for (var i = 0; i < $scope.feedbacks.length; i++) {
                         if (typeof $scope.feedbacks[i].developer.imgUrl == 'undefined' || $scope.feedbacks[i].developer.imgUrl == null)
-                            $scope.feedbacks[i].developer.imgUrl = 'images/profile/no-profile-img-head.gif';
+                            $scope.feedbacks[i].developer.imgUrl = 'images/profile/no-image.png';
                     }
                 }
                 $scope.calcCustRate();
@@ -112,7 +112,8 @@ angular.module('FreelancerApp')
                     }
                     for (var i = 0; i < $scope.followers.length; i++) {
                         if (typeof $scope.followers[i].developer.imgUrl == 'undefined' || $scope.followers[i].developer.imgUrl == null)
-                            $scope.followers[i].developer.imgUrl = 'images/profile/no-profile-img-head.gif';
+                            $scope.followers[i].developer.imgUrl = 'images/profile/no-image.png';
+                        else $scope.followers[i].developer.imgUrl+='md.jpg';
                     }
                     $scope.isSubscriber();
                 }
@@ -188,7 +189,7 @@ angular.module('FreelancerApp')
                         message: 'You successfully subscribed on this project'
                     });
                 if (data.developer.imgUrl == 'undefined' || data.developer.imgUrl == null) {
-                    data.developer.imgUrl = 'images/profile/no-profile-img-head.gif';
+                    data.developer.imgUrl = 'images/profile/no-image.png';
                 }
                 $scope.followers.push(data);
                 $scope.user.subscribed = true;

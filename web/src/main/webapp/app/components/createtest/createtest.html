@@ -3,16 +3,16 @@
         <md-content class="md-padding">
             <h2>{{"createtest.title" | translate}}</h2>
             <md-tabs md-dynamic-height md-border-bottom>
-                <md-tab label="Tests">
+                <md-tab label="{{'createtest.tab-tests' | translate}}">
                     <md-content class="md-padding">
                         <div class="row filter" ng-hide="tests.length == 0">
                             <div class="form-group col-md-6 col-xs-12">
-                                <label for="test_name">Search by test name:</label>
+                                <label for="test_name">{{'createtest.search-by-test-name' | translate}}:</label>
                                 <input type="text" ng-model="search.name" class="form-control" id="test_name"
                                        placeholder="&#xF002;" style="font-family:Arial, FontAwesome">
                             </div>
                             <div class="form-group col-md-6 col-xs-12">
-                                <label for="tech_name">Search by technology:</label>
+                                <label for="tech_name">{{'createtest.search-by-technology' | translate}}:</label>
                                 <input type="text" ng-model="search.technology.name" class="form-control"
                                        id="tech_name"
                                        placeholder="&#xF002;" style="font-family:Arial, FontAwesome">
@@ -28,7 +28,7 @@
                                             <div class="panel-title col-md-12">
                                                 <div class="col-md-4 col-sm-5 col-xs-5">
                                                     <a ng-click="sort('name')">
-                                                        <i class="fa fa-tasks"></i> Test name
+                                                        <i class="fa fa-tasks"></i> {{"createtest.label-test-name" | translate}}
                                                         <i class="glyphicon"
                                                            ng-class="{'glyphicon-arrow-up' : isSortUp('name'),
                                                                           'glyphicon-arrow-down' : isSortDown('name')}">
@@ -37,7 +37,7 @@
                                                 </div>
                                                 <div class="col-md-3 col-sm-5 col-xs-4">
                                                     <a ng-click="sort('technology')">
-                                                        <i class="fa fa-tv"></i> Technology
+                                                        <i class="fa fa-tv"></i> {{"createtest.label-technology" | translate}}
                                                         <i class="glyphicon"
                                                            ng-class="{'glyphicon-arrow-up' : isSortUp('technology'),
                                                                           'glyphicon-arrow-down' : isSortDown('technology')}">
@@ -45,7 +45,7 @@
                                                     </a></div>
                                                 <div class="col-md-3 hidden-sm hidden-xs text-center">
                                                     <a ng-click="sort('passScore')">
-                                                        <i class="fa fa-bar-chart"></i> Min Pass Score
+                                                        <i class="fa fa-bar-chart"></i> {{"createtest.label-min-score" | translate}}
                                                         <i class="glyphicon"
                                                            ng-class="{'glyphicon-arrow-up' : isSortUp('passScore'),
                                                                           'glyphicon-arrow-down' : isSortDown('passScore')}">
@@ -61,8 +61,7 @@
 
                             <!--start body-->
                             <div ng-show="tests.length == 0">
-                                <h5>There aren't any tests. If you want you can create test in "Create test" tab on this
-                                    page.</h5>
+                                <h5>{{"createtest.no-tests" | translate}}.</h5>
                             </div>
                             <div class="tests-body"
                                  ng-repeat="test in tests | orderBy:sortField:reverse | filter:search">
@@ -95,10 +94,10 @@
                     </md-content>
                 </md-tab>
 
-                <md-tab label="Questions">
+                <md-tab label="{{'createtest.tab-questions' | translate}}">
                     <md-content class="md-padding">
                         <div ng-hide="techIsChosen">
-                            <h5>Please, choose technology below.</h5>
+                            <h5>{{"createtest.tab-questions-start-message" | translate}}.</h5>
                         </div>
                         <div class="row filter">
                             <div class="form-group col-md-9 col-xs-12">
@@ -115,7 +114,10 @@
                                 </md-input-container>
                             </div>
                         </div>
-                        <div ng-show="techIsChosen" class="questions-tab">
+                        <div ng-show="allQuestions.length == 0">
+                            <h5>{{"createtest.no-questions" | translate}}.</h5>
+                        </div>
+                        <div ng-show="techIsChosen && allQuestions.length > 0" class="questions-tab">
                             <div class="pagination dark animated fadeIn">
                                 <div class="col-xs-6">
                                     <button type="button"
@@ -167,8 +169,8 @@
 
                         <!--start body-->
                         <div ng-show="questions.length == 0">
-                            <h5>There aren't any tests. If you want you can create test in "Create test" tab on this
-                                page.</h5>
+                            <h5>{{"createtest.no-questions" |
+                                translate}}</h5>
                         </div>
                         <div class="questions-body"
                              ng-repeat="question in allQuestions | orderBy:sortField:reverse | filter:search">
@@ -242,7 +244,7 @@
                                 <div class="row">
                                     <div class="col-md-6 col-xs-12">
                                         <md-input-container class="md-icon-float md-block">
-                                            <label>{{"createtest.lable-min-score" | translate}}</label>
+                                            <label>{{"createtest.label-min-score" | translate}}</label>
                                             <md-icon md-font-icon="fa-line-chart" class="fa md-hue-2"
                                                      style="display:inline-block;"></md-icon>
                                             <input required name="passScore" ng-model="test.passScore" type="number"
