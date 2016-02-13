@@ -13,18 +13,12 @@ angular.module('FreelancerApp')
             return $http.get("/admin/statistics/orders");
         };
 
-
-        dataFactory.sendLinkToEmail = function (email) {
-            return $http.post('/admin/create/new/admin?email=' + email);
+        dataFactory.getStatisticPopularTests = function () {
+            return $http.get("/admin/statistics/tests");
         };
 
-        dataFactory.checkAvailableUUID = function (uuid) {
-            return $http.post('/admin/check/uuid?uuid=' + uuid);
-        };
 
-        dataFactory.removeUUID = function (uuid) {
-            return $http.post('/admin/remove/uuid?uuid=' + uuid);
-        };
+
 
 
 
