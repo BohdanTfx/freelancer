@@ -1,11 +1,11 @@
-var filterOpen = false;
-
 angular
 		.module('FreelancerApp')
 		.controller(
 				'developersCtrl',
 				function($scope, developersService, $log, $http, Notification,
-						$translate, $rootScope, $timeout) {
+						$translate, $rootScope) {
+					var filterOpen = false;
+					var resourceLoadingCounter = 0;
 					$scope.filter = {}
 					$scope.developersLoading = true;
 					$scope.filterButtonStyle = 'fa-angle-double-down';
@@ -14,13 +14,6 @@ angular
 					$scope.filter.tooltip.title = $translate
 							.instant('filter.open');
 					$scope.filter.tooltip.locked = true;
-					$timeout(function() {
-						initSelectTranslation($translate);
-					});
-
-					var data = getSavedStateData();
-					if (data !== undefined)
-						$scope.filter = data;
 
 					$scope.filterToggle = function() {
 						if (filterOpen) {
@@ -130,6 +123,8 @@ angular
 							.loadTechnologies($scope, $http)
 							.success(function(data, status, headers, config) {
 								$scope.technologies = data;
+								resourceLoadingCounter++;
+								checkAndRestoreFilterData();
 							})
 							.error(
 									function(data, status, headers, config) {
@@ -140,7 +135,7 @@ angular
 															+ ' while loading technologies! Please, try again.'
 												});
 									});
-					$scope.doFilter();
+
 					developersService
 							.loadPaymentLimits()
 							.success(function(data, status, headers, config) {
@@ -155,6 +150,9 @@ angular
 										return '$' + value;
 									}
 								};
+
+								resourceLoadingCounter++;
+								checkAndRestoreFilterData();
 							})
 							.error(
 									function(data, status, headers, config) {
@@ -193,11 +191,6 @@ angular
 										+ 'time-zones-select.empty')
 										+ '<span class="caret"></span>');
 
-						$('#technologiesSelect > span.multiSelect > button')
-								.html(
-										$translate.instant('developers.'
-												+ 'technologies-select.empty')
-												+ '<span class="caret"></span>');
 						$(
 								'#technologiesSelect button[ng-if="helperStatus.all"]')
 								.html(
@@ -222,5 +215,56 @@ angular
 						$('#technologiesSelect input.inputFilter').html(
 								$translate.instant('developers.'
 										+ 'technologies-select.search'));
+
+						// here is where the magic happens
+						$('#technologiesSelect > span.multiSelect > button')
+								.html(
+										$translate.instant('developers.'
+												+ 'technologies-select.empty')
+												+ '<span class="caret"></span>');
 					}
+
+					function checkAndRestoreFilterData() {
+						if (resourceLoadingCounter == 2) {
+							var data = getSavedStateData();
+							if (data !== undefined) {
+								$scope.filter.firstName = data.firstName;
+								$scope.filter.lastName = data.lastName;
+								$scope.filter.position = data.position;
+								$scope.filter.payment.min = data.payment.min;
+								$scope.filter.payment.max = data.payment.max;
+
+								var savedTechs = data.selectedTechnologies;
+								for (var i = 0; i < $scope.technologies.length; i++) {
+									var technology = $scope.technologies[i];
+									for (var j = 0; j < savedTechs.length; j++) {
+										var savedTechnology = savedTechs[j];
+										if (savedTechnology.id == technology.id)
+											technology.ticked = true;
+									}
+								}
+
+								var savedZones = data.selectedZones;
+								for (var i = 0; i < $scope.timeZones.length; i++) {
+									var zone = $scope.timeZones[i];
+									for (var j = 0; j < savedZones.length; j++) {
+										var savedZone = savedZones[j];
+										if (savedZone.zone == zone.zone)
+											zone.ticked = true;
+									}
+								}
+							}
+
+							initSelectTranslation($translate);
+							$scope.doFilter();
+						}
+					}
+
+					window.onbeforeunload = function() {
+						var state = {};
+						state.location = window.location.href;
+						state.content = $scope.filter;
+						localStorage.setItem("openTaskStateReloadedData", JSON
+								.stringify(state));
+					};
 				});
