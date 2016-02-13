@@ -122,7 +122,9 @@
 	"pagination.item-5":"Показувати 5 елементів на сторінку",
 	"pagination.item-10":"Показувати 10 елементів на сторінку",
 	"pagination.item-15":"Показувати 15 елементів на сторінку",
-	"pagination.first":"Перший"
+	"pagination.first":"Перший",
+	
+	"list.empty":"Список порожній"
 
 
 }

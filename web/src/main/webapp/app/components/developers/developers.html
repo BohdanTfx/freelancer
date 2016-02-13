@@ -108,6 +108,8 @@
 	<div class="col-xs-12 cabinet-top" ng-if="developersLoading">
 		<div class="load-animation"></div>
 	</div>
+	<h4 class="text-center text-shadow-white"
+		ng-if="developers.length == 0">{{"list.empty" | translate}}</h4>
 	<div class="panel panel-info" ng-repeat="developer in developers"
 		ng-if="developersLoading == false">
 		<div class="panel-heading">

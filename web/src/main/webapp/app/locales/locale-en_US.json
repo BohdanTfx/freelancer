@@ -129,6 +129,8 @@
 	"pagination.item-5":"Show 5 items on page",
 	"pagination.item-10":"Show 10 items on page",
 	"pagination.item-15":"Show 15 items on page",
-	"pagination.first":"First"
+	"pagination.first":"First"б
+	
+	"list.empty":"List is empty"
 
 }

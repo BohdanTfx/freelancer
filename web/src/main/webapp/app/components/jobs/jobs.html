@@ -114,6 +114,8 @@
 			<div class="col-xs-12 cabinet-top" ng-if="ordersLoading">
 				<div class="load-animation"></div>
 			</div>
+			<h4 class="text-center text-shadow-white" ng-if="orders.length == 0">{{"list.empty"
+				| translate}}</h4>
 			<div class="panel panel-info" ng-repeat="order in orders"
 				ng-if="ordersLoading == false">
 				<div class="panel-heading">
