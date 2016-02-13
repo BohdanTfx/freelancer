@@ -1,5 +1,5 @@
 angular.module('FreelancerApp')
-    .controller('statisticsCtrl', function($scope, statisticsAPI ,$mdDialog){
+    .controller('statisticsCtrl', function($scope, statisticsAPI ,$mdDialog,Notification){
         $scope.admin = {};
         $scope.element = {};
         $scope.admin.email = "";
@@ -21,8 +21,15 @@ angular.module('FreelancerApp')
         statisticsAPI.getStatisticPopularTests().success(function(data){
             console.log(data);
 
-            $scope.showTestStat(data.tests,data.amounts);
-
+            if(data.tests.length>4) {
+                $scope.showTestStat(data.tests, data.amounts);
+            }else{
+                Notification
+                    .info({
+                        title: 'Info!',
+                        message: 'Not enought data for Test Statistic'
+                    });
+            }
 
 
         });
