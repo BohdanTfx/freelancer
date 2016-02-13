@@ -97,7 +97,38 @@
   "home.cust-logged-label-create-orders":"You can create new order, and people will be able to find your order in search and contact with you to discuss all condition of offer. Press button \"Create new order\" to get started.",
   "home.cust-logged-search-create-button-up-case":"Create new order",
   "home.sign-up-button-low-case":"sign up",
-  "home.log-in-button":"log in"
+  "home.log-in-button":"log in",
 
+
+	"developers.filter":"Filter",
+	"developers.search-for":"Search for",
+	"developers.name-placeholder":"Enter part of name",
+	"developers.lastname-placeholder":"Enter part of last name",
+	"developers.position":"Search for position",
+	"developers.position-placeholder":"Enter part of position",
+	"developers.techologies":"Techologies",
+	"developers.payment-per-hour":"Payment per hour",
+	"developers.time-zones":"Time zones",
+	"developers.payment":"Payment",
+	"developers.date":"Date",
+	"developers.time-zones-select.select-all":"Select all time zones",
+	"developers.time-zones-select.select-none":"Deselect time zones",
+	"developers.time-zones-select.reset":"Reset",
+	"developers.time-zones-select.search":"Choose time zones",
+	"developers.time-zones-select.empty":"Time zones are not selected",
+	"developers.technologies-select.select-all":"Select all technologies",
+	"developers.technologies-select.select-none":"Deselect technologies",
+	"developers.technologies-select.reset":"Reset",
+	"developers.technologies-select.search":"Choose technologies",
+	"developers.technologies-select.empty":"Technologies are not selected",
+
+	"filter.do-filter":"Do filter",
+	"filter.close":"Close filter",
+	"filter.open":"Open filter",
+	
+	"pagination.item-5":"Show 5 items on page",
+	"pagination.item-10":"Show 10 items on page",
+	"pagination.item-15":"Show 15 items on page",
+	"pagination.first":"First"
 
 }

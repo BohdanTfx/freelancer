@@ -4,14 +4,19 @@ angular
 		.module('FreelancerApp')
 		.controller(
 				'developersCtrl',
-				function($scope, developersService, $log, $http, Notification) {
+				function($scope, developersService, $log, $http, Notification,
+						$translate, $rootScope, $timeout) {
 					$scope.filter = {}
 					$scope.developersLoading = true;
 					$scope.filterButtonStyle = 'fa-angle-double-down';
 					$scope.filter.payment = {};
 					$scope.filter.tooltip = {};
-					$scope.filter.tooltip.title = 'Open filter';
+					$scope.filter.tooltip.title = $translate
+							.instant('filter.open');
 					$scope.filter.tooltip.locked = true;
+					$timeout(function() {
+						initSelectTranslation($translate);
+					});
 
 					var data = getSavedStateData();
 					if (data !== undefined)
@@ -21,13 +26,15 @@ angular
 						if (filterOpen) {
 							$scope.filterState = '';
 							$scope.filterButtonStyle = 'fa-angle-double-down';
-							$scope.filter.tooltip.title = 'Open filter';
+							$scope.filter.tooltip.title = $translate
+									.instant('filter.open');
 							$scope.filter.tooltip.locked = true;
 							filterOpen = false;
 						} else {
 							$scope.filterState = 'in';
 							$scope.filterButtonStyle = 'fa-angle-double-up';
-							$scope.filter.tooltip.title = 'Close filter';
+							$scope.filter.tooltip.title = $translate
+									.instant('filter.close');
 							$scope.filter.tooltip.locked = false;
 							filterOpen = true;
 						}
@@ -35,14 +42,32 @@ angular
 
 					$scope.itemsPerPage = [ {
 						number : 5,
-						text : "Show 5 items on page"
+						text : $translate.instant('pagination.item-5')
 					}, {
 						number : 10,
-						text : "Show 10 items on page"
+						text : $translate.instant('pagination.item-10')
 					}, {
 						number : 15,
-						text : "Show 15 items on page"
+						text : $translate.instant('pagination.item-15')
 					} ];
+
+					$rootScope.$on('$translateChangeSuccess', function() {
+						if (filterOpen)
+							$scope.filter.tooltip.title = $translate
+									.instant('filter.open');
+						else
+							$scope.filter.tooltip.title = $translate
+									.instant('filter.close');
+
+						$scope.itemsPerPage[0].text = $translate
+								.instant('pagination.item-5');
+						$scope.itemsPerPage[1].text = $translate
+								.instant('pagination.item-10');
+						$scope.itemsPerPage[2].text = $translate
+								.instant('pagination.item-15');
+
+						initSelectTranslation($translate);
+					});
 
 					$scope.itesStep = $scope.itemsPerPage[developersService
 							.getStep($scope) / 5 - 1];
@@ -140,4 +165,62 @@ angular
 															+ ' while loading payment limits! Please, try again.'
 												});
 									});
+
+					function initSelectTranslation($translate) {
+						$('#timeZonesSelect button[ng-if="helperStatus.all"]')
+								.html(
+										'&#x2714 '
+												+ $translate
+														.instant('developers.'
+																+ 'time-zones-select.select-all'));
+						$('#timeZonesSelect button[ng-if="helperStatus.none"]')
+								.html(
+										'&times '
+												+ $translate
+														.instant('developers.'
+																+ 'time-zones-select.select-none'));
+						$('#timeZonesSelect button[ng-if="helperStatus.reset"]')
+								.html(
+										'<i class="fa fa-rotate-right"></i> '
+												+ $translate
+														.instant('developers.'
+																+ 'time-zones-select.reset'));
+						$('#timeZonesSelect input.inputFilter').html(
+								$translate.instant('developers.'
+										+ 'time-zones-select.search'));
+						$('#timeZonesSelect > span.multiSelect > button').html(
+								$translate.instant('developers.'
+										+ 'time-zones-select.empty')
+										+ '<span class="caret"></span>');
+
+						$('#technologiesSelect > span.multiSelect > button')
+								.html(
+										$translate.instant('developers.'
+												+ 'technologies-select.empty')
+												+ '<span class="caret"></span>');
+						$(
+								'#technologiesSelect button[ng-if="helperStatus.all"]')
+								.html(
+										'&#x2714 '
+												+ $translate
+														.instant('developers.'
+																+ 'technologies-select.select-all'));
+						$(
+								'#technologiesSelect button[ng-if="helperStatus.none"]')
+								.html(
+										'&times '
+												+ $translate
+														.instant('developers.'
+																+ 'technologies-select.select-none'));
+						$(
+								'#technologiesSelect button[ng-if="helperStatus.reset"]')
+								.html(
+										'<i class="fa fa-rotate-right"></i> '
+												+ $translate
+														.instant('developers.'
+																+ 'technologies-select.reset'));
+						$('#technologiesSelect input.inputFilter').html(
+								$translate.instant('developers.'
+										+ 'technologies-select.search'));
+					}
 				});

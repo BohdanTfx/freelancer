@@ -2,7 +2,8 @@
 <div class="panel panel-primary">
 	<div class="panel-heading" id="filterHeader" ng-click="filterToggle()">
 		<div class="panel-title relative-element">
-			<label><i class="fa fa-wrench"></i> Filter</label>
+			<label><i class="fa fa-wrench"></i> {{"developers.filter" |
+				translate}}</label>
 			<div class="pull-right">
 				<button
 					class="btn btn-warning order-open-filter-btn animated slideInUp">
@@ -19,39 +20,41 @@
 		class="panel-collapse collapse {{filterState}}">
 		<div class="panel-body form-horizontal">
 			<div class="form-group">
-				<label class="control-label col-sm-2"> Search for </label>
+				<label class="control-label col-sm-2">
+					{{"developers.search-for" | translate}} </label>
 				<div class="col-sm-4">
 					<input class="form-control" name="developer_firstName"
 						id="developer_firstName" ng-model="filter.firstName"
-						placeholder="Enter part of name">
+						placeholder="{{'developers.name-placeholder' | translate}}">
 				</div>
 				<div class="col-sm-4">
 					<input class="form-control" name="developer_lastName"
 						id="developer_lastName" ng-model="filter.lastName"
-						placeholder="Enter part of last name">
+						placeholder="{{'developers.lastname-placeholder' | translate}}">
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="developer_position">
-					Search for position</label>
+					{{"developers.position" | translate}}</label>
 				<div class="col-sm-8">
 					<input class="form-control" name="developer_position"
-						id="developer_position" placeholder="Enter part of position"
+						id="developer_position"
+						placeholder="{{'developers.position-placeholder' | translate}}"
 						ng-model="filter.position">
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="developer_technologies">
-					Techologies </label>
+					{{"developers.techologies" | translate}} </label>
 				<div class="col-sm-8">
 					<div isteven-multi-select input-model="technologies"
-						output-model="filter.selectedTechnologies" button-label="name"
-						item-label="name" tick-property="ticked"></div>
+						id="technologiesSelect" output-model="filter.selectedTechnologies"
+						button-label="name" item-label="name" tick-property="ticked"></div>
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="developer_payment">
-					Payment per hour</label>
+					{{"developers.payment-per-hour" | translate}}</label>
 				<div class="col-sm-8">
 					<rzslider rz-slider-model="filter.payment.min"
 						rz-slider-high="filter.payment.max"
@@ -60,17 +63,17 @@
 			</div>
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="timeZoneSelect">
-					Time zones </label>
+					{{"developers.time-zones" | translate}} </label>
 				<div class="col-sm-8">
 					<div isteven-multi-select input-model="timeZones"
-						output-model="filter.selectedZones" button-label="title"
-						item-label="title" tick-property="ticked"></div>
+						id="timeZonesSelect" output-model="filter.selectedZones"
+						button-label="title" item-label="title" tick-property="ticked"></div>
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="col-xs-offset-8 col-xs-2">
 					<button class="btn btn-info full-width" ng-click="doFilter()">
-						<i class="fa fa-search"></i> Do filter
+						<i class="fa fa-search"></i> {{"filter.do-filter" | translate}}
 					</button>
 				</div>
 			</div>
@@ -82,7 +85,7 @@
 		<button ng-click="openPage(0)" class="page dark gradient"
 			ng-if="showFirst">
 			<i class="fa fa-caret-left"></i>
-			<span>First</span>
+			<span>{{"pagination.first" | translate}}</span>
 		</button>
 		<div data-pagination="yes" class="inline-block">
 			<button ng-repeat="page in pages"
@@ -116,7 +119,7 @@
 		<div class="panel-body developer-panel-body">
 			<div class="col-xs-8 col-sm-10">
 				<img class="img-rounded animated zoomIn developer-list-img"
-					ng-src="{{developer.imgUrl==null? '/images/profile/no-profile-img.jpg' : developer.imgUrl}}"
+					ng-src="{{developer.imgUrl==null? '/images/profile/no-image.png' : developer.imgUrl}}"
 					alt="developer img">
 				<div>
 					<h4>{{developer.position}}</h4>
@@ -125,14 +128,16 @@
 			</div>
 			<div class="col-xs-4 col-sm-2">
 				<div class="form-group">
-					<label for="name" class="control-label">Date</label>
+					<label for="name" class="control-label">{{"developers.date"
+						| translate}}</label>
 					<div class="col-xs-12">
 						<div class="label label-warning form-control">
 							{{developer.regDate | date:'mediumDate'}}</div>
 					</div>
 				</div>
 				<div class="form-group">
-					<label for="name" class="control-label">Payment:</label>
+					<label for="name" class="control-label">{{"developers.payment"
+						| translate}}:</label>
 					<div class="col-xs-12">
 						<div class="label label-info form-control">
 							{{developer.hourly | number:2}} $</div>

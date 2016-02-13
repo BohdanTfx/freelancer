@@ -91,9 +91,38 @@
   "home.cust-logged-label-create-orders":"Ви можете створити нове замовлення і всі охочі зможуть знайти його в пошуку та з'язатись з вами щоб обговорити деталі. Натисніть \"Створити нове замовлення\" щоб перейти на створення замовлень.",
   "home.cust-logged-search-create-button-up-case":"Створити нове замовлення",
   "home.sign-up-button-low-case":"зареєструватися",
-  "home.log-in-button":"увійти"
+  "home.log-in-button":"увійти",
+  
+  "developers.filter":"Фільтр",
+	"developers.search-for":"Шукати по",
+	"developers.name-placeholder":"Введіть частину імені",
+	"developers.lastname-placeholder":"Введіть частину прізвища",
+	"developers.position":"Шукати по позиції",
+	"developers.position-placeholder":"Введіть частину позиції",
+	"developers.techologies":"Технології",
+	"developers.payment-per-hour":"Оплата за годину",
+	"developers.time-zones":"Часові зони",
+	"developers.payment":"Оплата",
+	"developers.date":"Дата",
+	"developers.time-zones-select.select-all":"Вибрати усі часові зони",
+	"developers.time-zones-select.select-none":"Не вибирати жодної часової зони",
+	"developers.time-zones-select.reset":"Скасувати",
+	"developers.time-zones-select.search":"Вибрати часові зони",
+	"developers.time-zones-select.empty":"Жодна часова зона не вибрана",
+	"developers.technologies-select.select-all":"Вибрати усі технології",
+	"developers.technologies-select.select-none":"Не вибирати жодної технології",
+	"developers.technologies-select.reset":"Скасувати",
+	"developers.technologies-select.search":"Вибрати технології",
+	"developers.technologies-select.empty":"Жодна технологія не вибрана",
 
-
+	"filter.do-filter":"Відфільтрувати",
+	"filter.close":"Закрити фільтр",
+	"filter.open":"Відкрити фільтр",
+	
+	"pagination.item-5":"Показувати 5 елементів на сторінку",
+	"pagination.item-10":"Показувати 10 елементів на сторінку",
+	"pagination.item-15":"Показувати 15 елементів на сторінку",
+	"pagination.first":"Перший"
 
 
 }
