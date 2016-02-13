@@ -129,8 +129,19 @@
 	"pagination.item-5":"Show 5 items on page",
 	"pagination.item-10":"Show 10 items on page",
 	"pagination.item-15":"Show 15 items on page",
-	"pagination.first":"First"б
+	"pagination.first":"First",
 	
-	"list.empty":"List is empty"
+	"list.empty":"List is empty",
+	
+	"orders.search-title":"Search title",
+	"orders.order-type":"Order pay type",
+	"orders.payment.hourly":"Hourly",
+	"orders.payment.fixed":"Fixed",
+	"order.payment.hourly":"hourly",
+	"order.payment.fixed":"fixed",
+	"orders.complain.dialog-title":"Are you sure?",
+	"orders.complain.main-text":"This message will be send to administration and we will review this ordering.",
+	"orders.complain.close":"Close",
+	"orders.complain":"Complain"
 
 }

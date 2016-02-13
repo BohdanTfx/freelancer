@@ -47,10 +47,10 @@ angular
 					$rootScope.$on('$translateChangeSuccess', function() {
 						if (filterOpen)
 							$scope.filter.tooltip.title = $translate
-									.instant('filter.open');
+									.instant('filter.close');
 						else
 							$scope.filter.tooltip.title = $translate
-									.instant('filter.close');
+									.instant('filter.open');
 
 						$scope.itemsPerPage[0].text = $translate
 								.instant('pagination.item-5');

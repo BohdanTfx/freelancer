@@ -4,7 +4,8 @@
 			<div class="panel-heading" id="filterHeader"
 				ng-click="filterToggle()">
 				<div class="panel-title">
-					<label><i class="fa fa-wrench"></i> Filter</label>
+					<label><i class="fa fa-wrench"></i> {{"developers.filter" |
+						translate}}</label>
 					<div class="pull-right">
 						<button
 							class="btn btn-warning order-open-filter-btn animated slideInUp">
@@ -23,7 +24,7 @@
 				<div class="panel-body form-horizontal">
 					<div class="form-group">
 						<label class="control-label col-sm-2" for="order_title">
-							Search title </label>
+							{{"orders.search-title" | translate}}</label>
 						<div class="col-sm-8">
 							<input class="form-control" id="order_title" name="order_title"
 								placeholder="Enter title" ng-model="filter.title">
@@ -31,23 +32,23 @@
 					</div>
 					<div class="form-group">
 						<label class="control-label col-sm-2" for="order_technologies">
-							Techologies </label>
+							{{"developers.techologies" | translate}} </label>
 						<div class="col-sm-8">
 							<div isteven-multi-select input-model="tech"
-								output-model="selectedTechs" button-label="name"
-								item-label="name" tick-property="ticked"></div>
+								id="technologiesSelect" output-model="selectedTechs"
+								button-label="name" item-label="name" tick-property="ticked"></div>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="control-label col-sm-2" for="order_pay_type">
-							Order pay type </label>
+							{{"orders.order-type" | translate}}</label>
 						<div class="col-sm-8">
 							<div class="row">
 								<div class="col-sm-5">
 									<md-checkbox md-no-ink ng-true-value="false"
 										ng-false-value="true"
 										ng-model="payment.hourly.options.disabled" class="md-warn">
-									Hourly </md-checkbox>
+									{{"orders.payment.hourly" | translate}} </md-checkbox>
 									<rzslider rz-slider-model="payment.hourly.first"
 										rz-slider-high="payment.hourly.second"
 										rz-slider-options="payment.hourly.options"></rzslider>
@@ -56,7 +57,8 @@
 									<md-checkbox md-no-ink ng-true-value="false"
 										ng-false-value="true"
 										ng-model="payment.fixed.options.disabled"
-										class="md-warn empty-margin-left"> Fixed </md-checkbox>
+										class="md-warn empty-margin-left">
+									{{"orders.payment.fixed" | translate}} </md-checkbox>
 									<rzslider rz-slider-model="payment.fixed.first"
 										rz-slider-high="payment.fixed.second"
 										rz-slider-options="payment.fixed.options"></rzslider>
@@ -66,17 +68,17 @@
 					</div>
 					<div class="form-group">
 						<label class="control-label col-sm-2" for="timeZoneSelect">
-							Time zones </label>
+							{{"developers.time-zones" | translate}} </label>
 						<div class="col-sm-8">
 							<div isteven-multi-select input-model="timeZones"
-								output-model="selectedZones" button-label="title"
-								item-label="title" tick-property="ticked"></div>
+								id="timeZonesSelect" output-model="selectedZones"
+								button-label="title" item-label="title" tick-property="ticked"></div>
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="col-xs-offset-8 col-xs-2">
 							<button class="btn btn-info full-width" ng-click="doFilter()">
-								<i class="fa fa-search"></i> Do filter
+								<i class="fa fa-search"></i> {{"filter.do-filter" | translate}}
 							</button>
 						</div>
 					</div>
@@ -90,7 +92,7 @@
 				<button ng-click="openPage(0)" class="page dark gradient"
 					ng-if="showFirst">
 					<i class="fa fa-caret-left"></i>
-					<span>First</span>
+					<span>{{"pagination.first" | translate}}</span>
 				</button>
 				<div data-pagination="yes" class="inline-block">
 					<button ng-repeat="page in pages"
@@ -128,7 +130,7 @@
 							ng-disabled="order.isComplaint" data-toggle="modal"
 							data-target=".bs-example-modal-sm"
 							ng-click="setOrderID(order.id)" style="padding: 3px">
-							Complain</div>
+							{{"orders.complain" | translate}}</div>
 					</div>
 				</div>
 				<div class="panel-body">
@@ -136,15 +138,23 @@
 						<div class="col-xs-8 col-sm-10">{{order.descr}}</div>
 						<div class="col-xs-4 col-sm-2">
 							<div class="form-group">
-								<label for="name" class="control-label">Date</label>
+								<label for="name" class="control-label">{{"developers.date"
+									| translate}}</label>
 								<div class="col-xs-12">
 									<div class="label label-warning form-control">
 										{{order.date | date:'mediumDate'}}</div>
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="name" class="control-label">Payment:
-									{{order.payType}}</label>
+								<label for="name" class="control-label">{{"developers.payment"
+									| translate}}:
+									<div class="inline-block" ng-switch on="order.payType">
+										<div ng-switch-when="hourly">{{"order.payment.hourly" |
+											translate}}</div>
+										<div ng-switch-when="fixed">{{"order.payment.fixed" |
+											translate}}</div>
+									</div>
+								</label>
 								<div class="col-xs-12">
 									<div class="label label-info form-control">
 										{{order.payment | number:2}} $</div>
@@ -175,21 +185,21 @@
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title">Are you sure ?</h4>
+				<h4 class="modal-title">{{"orders.complain.dialog-title" |
+					translate}}</h4>
 			</div>
 			<div class="modal-body">
-				<p>This message will be send to administration and we will
-					review this ordering.</p>
+				<p>{{"orders.complain.main-text" | translate}}</p>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary" data-dismiss="modal">
 					<span class="glyphicon glyphicon-share-alt"></span>
-					Close
+					{{"orders.complain.close" | translate}}
 				</button>
 				<button type="button" id="delete1" class="btn btn-danger"
 					ng-click="complain(complainOrderID)" data-dismiss="modal">
 					<span class="glyphicon glyphicon-remove-sign"></span>
-					Complain
+					{{"orders.complain" | translate}}
 				</button>
 			</div>
 		</div>

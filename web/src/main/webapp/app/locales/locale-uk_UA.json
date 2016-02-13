@@ -124,7 +124,17 @@
 	"pagination.item-15":"Показувати 15 елементів на сторінку",
 	"pagination.first":"Перший",
 	
-	"list.empty":"Список порожній"
+	"list.empty":"Список порожній",
 
+	"orders.search-title":"Пошук по заголовку",
+	"orders.order-type":"Тип оплати замовлення",
+	"orders.payment.hourly":"Погодинний",
+	"orders.payment.fixed":"Фіксований",
+	"order.payment.hourly":"погодинна",
+	"order.payment.fixed":"фіксована",
+	"orders.complain.dialog-title":"Ви впевнені?",
+	"orders.complain.main-text":"Це повідомлення буде надіслане адміністрації і ми переглянемо замовлення.",
+	"orders.complain.close":"Закрити",
+	"orders.complain":"Поскаржитися"
 
 }
