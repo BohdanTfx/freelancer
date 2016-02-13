@@ -5,7 +5,7 @@
 
              <div ng-if="role === 'developer'">
                 <!--Start Tab Proposed projects-->
-                <md-tab label="Proposed">
+                <md-tab label="Accepted">
                     <md-content class="md-padding" style="min-height: 450px;">
 
                         <div ng-switch="notAcceptedWorks.length">
@@ -55,11 +55,12 @@
                                             </a>
 
                                             <div class="col-xs-2 ">
-                                                <md-button class=" md-raised md-primary full-width" ng-click=""  style="margin-left: 0;">
+                                                <md-button class=" md-raised md-primary full-width" ng-click="showAcceptConfirm($event,project)"  style="margin-left: 0;">
                                                     Accept
                                                 </md-button>
-                                                <md-button class=" md-raised md-warn full-width"  style="margin-left: 0;">
-                                                    Decline
+
+                                                <md-button class=" md-raised md-warn full-width"  ng-click="showRejectConfirm($event,project)" style="margin-left: 0;">
+                                                    Reject
                                                 </md-button>
                                                 <!--<button type="button" class="btn btn-success btn-lg ">Accept</button>-->
                                                 <!--<button type="button" class="btn btn-danger btn-lg">Decline</button>-->
@@ -268,4 +269,3 @@
         </md-content>
     </div>
 </div>
-

@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -109,6 +110,12 @@ public class DeveloperController extends HttpServlet implements Responsable {
                     break;
                 case "dev/changeEmail":
                     changeEmail(request, response);
+                    break;
+                case "dev/acceptOrdering":
+                    acceptOrdering(request, response);
+                    break;
+                case "dev/rejectOrdering":
+                    rejectOrdering(request, response);
                     break;
                 default:
             }
@@ -496,5 +503,34 @@ public class DeveloperController extends HttpServlet implements Responsable {
             return false;
         }
         return true;
+    }
+
+    private void acceptOrdering(HttpServletRequest request, HttpServletResponse response){
+        HttpSession session = request.getSession();
+        Developer dev = (Developer) session.getAttribute("user");
+        Integer orderId = Integer.parseInt(request.getParameter("order_id"));
+
+        Worker worker = developerService.getWorkerByDevIdAndOrderId(dev.getId(),orderId);
+        worker.setAccepted(true);
+        worker.setNewHourly(dev.getHourly());
+        developerService.updateWorker(worker);
+
+        Ordering ordering = orderingService.findById(orderId);
+        ordering.setStarted(true);
+        ordering.setStartedDate(new Timestamp(new java.util.Date().getTime()));
+        orderingService.modify(ordering);
+
+        orderingService.findOrderFollowers(orderId).forEach(follower -> {
+           orderingService.deleteFollower(follower);
+        });
+    }
+
+    private void rejectOrdering(HttpServletRequest request, HttpServletResponse response){
+        HttpSession session = request.getSession();
+        Developer dev = (Developer) session.getAttribute("user");
+        Integer orderId = Integer.parseInt(request.getParameter("order_id"));
+
+        Worker worker = developerService.getWorkerByDevIdAndOrderId(dev.getId(),orderId);
+        developerService.deleteWorker(worker);
     }
 }

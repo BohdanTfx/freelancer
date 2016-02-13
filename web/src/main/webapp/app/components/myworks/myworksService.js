@@ -27,10 +27,13 @@ angular.module('FreelancerApp')
             return $http.post("/cust/allWorks");
         };
 
-        //
-        //dataFactory.getFollowers = function (orderId) {
-        //    return $http.post("/user/order/followers?orderId=" + orderId);
-        //};
+        dataFactory.acceptOrdering = function(order){
+            return $http.post("/dev/acceptOrdering?order_id="+order);
+        };
+
+        dataFactory.rejectOrdering = function(order_id){
+            return $http.post("/dev/rejectOrdering?order_id="+order_id);
+        };
 
 
 

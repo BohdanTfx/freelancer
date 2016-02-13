@@ -14,8 +14,6 @@ angular.module('FreelancerApp')
                 $scope.thirdWorks = data.finishedWorks;
                 $scope.notAcceptedWorks = data.notAcceptedWorks;
 
-
-
             }).error(function () {
                 Notification
                     .error({
@@ -80,7 +78,7 @@ angular.module('FreelancerApp')
                         Notification
                             .error({
                                 title: 'Error!',
-                                message: 'Something went bad. Please try again.asdasdad!!!!!!!!!!!!!!!!!11111111'
+                                message: 'Something went bad. Please try again.'
                             });
                     });
             }else{
@@ -114,6 +112,82 @@ angular.module('FreelancerApp')
 
         };
 
+        $scope.showAcceptConfirm = function(ev,project) {
+            // Appending dialog to document.body to cover sidenav in docs app
+            var confirm = $mdDialog.confirm()
+                .title('Are you sure?')
+                .textContent('After accepting, you will begin to do this ordering. The ordering will appear in tab "IN PROGRESS"')
+                .targetEvent(ev)
+                .ok('Accept ordering')
+                .cancel('Let me think');
+            $mdDialog.show(confirm).then(function() {
+                myworksAPI.acceptOrdering(project.id).success(function(){
+                    myworksAPI.getAllDeveloperWorks().success(function (data) {
+                        $scope.firstTitle = 'Subscribed';
+
+                        $scope.firstWorks = data.subscribedWorks;
+                        $scope.secondWorks = data.processedWorks;
+                        $scope.thirdWorks = data.finishedWorks;
+                        $scope.notAcceptedWorks = data.notAcceptedWorks;
+
+                    }).error(function () {
+                        Notification
+                            .error({
+                                title: 'Error!',
+                                message: 'Something went bad. Please try again.'
+                            });
+                    });
+
+
+                    Notification
+                        .success({
+                            title: 'Success!',
+                            message: 'You successfully have accepted the ordering.'
+                        });
+                })
+            }, function() {
+
+            });
+        };
+
+        $scope.showRejectConfirm = function(ev,project) {
+            // Appending dialog to document.body to cover sidenav in docs app
+            var confirm = $mdDialog.confirm()
+                .title('Are you sure?')
+                .textContent('After rejecting, you will not see this order in tab "ACCEPTED" any more.')
+                .targetEvent(ev)
+                .ok('Reject ordering')
+                .cancel('I want to think');
+            $mdDialog.show(confirm).then(function() {
+                myworksAPI.rejectOrdering(project.id).success(function(){
+                    myworksAPI.getAllDeveloperWorks().success(function (data) {
+                        $scope.firstTitle = 'Subscribed';
+
+                        $scope.firstWorks = data.subscribedWorks;
+                        $scope.secondWorks = data.processedWorks;
+                        $scope.thirdWorks = data.finishedWorks;
+                        $scope.notAcceptedWorks = data.notAcceptedWorks;
+
+                    }).error(function () {
+                        Notification
+                            .error({
+                                title: 'Error!',
+                                message: 'Something went bad. Please try again.'
+                            });
+                    });
+
+
+                    Notification
+                        .success({
+                            title: 'Success!',
+                            message: 'You successfully have rejected the ordering.'
+                        });
+                })
+            }, function() {
+
+            });
+        };
+
     });
 
 
@@ -134,7 +208,10 @@ function DialogController($scope, $mdDialog, project, customer, workers, workerI
     $scope.cancel = function () {
         $mdDialog.cancel();
     };
-
 }
+
+
+
+
 
 
