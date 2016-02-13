@@ -3,6 +3,9 @@ angular.module('FreelancerApp')
 
         $scope.query = $stateParams.custId;
         $scope.deleteFeedId = $rootScope.id;
+        $scope.feedback = '';
+        $scope.hiremes = '';
+        $scope.mes = '';
 
         if ($rootScope.role == 'customer') {
             $scope.show = true;
@@ -111,6 +114,7 @@ angular.module('FreelancerApp')
 
 
         $scope.sendSms = function () {
+            alert($scope.hiremes);
             var data = 'phone=' + $scope.phone + '&order_id=' + $scope.hireord +
                 '&dev_id=' + $rootScope.id + "&message=" + $scope.hiremes + '&cust_id=' + $scope.query + '&author=dev';
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
@@ -121,12 +125,14 @@ angular.module('FreelancerApp')
                         title: $translate.instant('notification.success'),
                         message: $translate.instant('custpub.you-are-follow-him')
                     });
+                $scope.hiremes = '';
             }).error(function () {
                 Notification
                     .error({
                         title: $translate.instant('notification.error'),
                         message: $translate.instant('custpub.error')
                     });
+                $scope.hiremes = '';
             });
         };
 
@@ -185,6 +191,7 @@ angular.module('FreelancerApp')
                         message: $translate.instant('custpub.your-email-was-succ-sent-to') + $rootScope.name
                     });
                 $scope.dataLoading = false;
+                $scope.mes = '';
             }).error(function () {
                 Notification
                     .error({
@@ -192,10 +199,12 @@ angular.module('FreelancerApp')
                         message: $translate.instant('custpub.an-error-occured-while-sending-to') + $rootScope.name + $translate.instant('custpub.try-again')
                     });
                 $scope.dataLoading = false;
+                $scope.mes = '';
             });
         };
 
         $scope.comment = function (rate, feedback) {
+            $scope.feedback = '';
             if (rate != 0) {
                 var data = 'comment=' + feedback + '&id=' + $scope.id + '&rate=' + rate + '&role=dev';
                 $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';

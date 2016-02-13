@@ -86,9 +86,9 @@
                                                     aria-labelledby="default-rating"></uib-rating>
                                     </label>
                                     <br/>
-                            <textarea type="text" class="form-control" ng-model="feedback" rows="2"
+                            <textarea type="text" class="form-control" rows="2"
                                       placeholder="..."
-                                      required></textarea>
+                                      required ng-model="$parent.$parent.feedback"></textarea>
                                     <br/>
                                     <button type="button" ng-click="comment(rate, feedback)"
                                             class="btn btn-primary pull-right comm-but">
@@ -223,7 +223,7 @@
 
                 <br/>
 
-    <textarea type="text" class="form-control" ng-model="$parent.mes" rows="5" placeholder="Text ..."
+    <textarea type="text" class="form-control" ng-model="mes" rows="5" placeholder="Text ..."
               required></textarea>
                     <br/>
                     <button type="button" ng-disabled="mesSemdDis" ng-click="send()" class="btn btn-success"
