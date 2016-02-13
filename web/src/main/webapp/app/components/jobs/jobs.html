@@ -35,7 +35,7 @@
 							{{"developers.techologies" | translate}} </label>
 						<div class="col-sm-8">
 							<div isteven-multi-select input-model="tech"
-								id="technologiesSelect" output-model="selectedTechs"
+								id="technologiesSelect" output-model="filter.selectedTechs"
 								button-label="name" item-label="name" tick-property="ticked"></div>
 						</div>
 					</div>
@@ -47,21 +47,22 @@
 								<div class="col-sm-5">
 									<md-checkbox md-no-ink ng-true-value="false"
 										ng-false-value="true"
-										ng-model="payment.hourly.options.disabled" class="md-warn">
-									{{"orders.payment.hourly" | translate}} </md-checkbox>
-									<rzslider rz-slider-model="payment.hourly.first"
-										rz-slider-high="payment.hourly.second"
-										rz-slider-options="payment.hourly.options"></rzslider>
+										ng-model="filter.payment.hourly.options.disabled"
+										class="md-warn"> {{"orders.payment.hourly" |
+									translate}} </md-checkbox>
+									<rzslider rz-slider-model="filter.payment.hourly.first"
+										rz-slider-high="filter.payment.hourly.second"
+										rz-slider-options="filter.payment.hourly.options"></rzslider>
 								</div>
 								<div class="col-sm-offset-2 col-sm-5">
 									<md-checkbox md-no-ink ng-true-value="false"
 										ng-false-value="true"
-										ng-model="payment.fixed.options.disabled"
+										ng-model="filter.payment.fixed.options.disabled"
 										class="md-warn empty-margin-left">
 									{{"orders.payment.fixed" | translate}} </md-checkbox>
-									<rzslider rz-slider-model="payment.fixed.first"
-										rz-slider-high="payment.fixed.second"
-										rz-slider-options="payment.fixed.options"></rzslider>
+									<rzslider rz-slider-model="filter.payment.fixed.first"
+										rz-slider-high="filter.payment.fixed.second"
+										rz-slider-options="filter.payment.fixed.options"></rzslider>
 								</div>
 							</div>
 						</div>
@@ -71,7 +72,7 @@
 							{{"developers.time-zones" | translate}} </label>
 						<div class="col-sm-8">
 							<div isteven-multi-select input-model="timeZones"
-								id="timeZonesSelect" output-model="selectedZones"
+								id="timeZonesSelect" output-model="filter.selectedZones"
 								button-label="title" item-label="title" tick-property="ticked"></div>
 						</div>
 					</div>

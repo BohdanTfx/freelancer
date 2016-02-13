@@ -121,6 +121,9 @@
 	"developers.technologies-select.reset":"Reset",
 	"developers.technologies-select.search":"Choose technologies",
 	"developers.technologies-select.empty":"Technologies are not selected",
+	"developers.loading.error.developers":"Some errors occurred while loading developers!",
+	"developers.loading.error.technologies":"Some errors occurred while loading technologies! Please, try again.",
+	"developers.loading.error.payment.limits":"Some errors occurred while loading payment limits! Please, try again.",
 
 	"filter.do-filter":"Do filter",
 	"filter.close":"Close filter",
@@ -142,6 +145,10 @@
 	"orders.complain.dialog-title":"Are you sure?",
 	"orders.complain.main-text":"This message will be send to administration and we will review this ordering.",
 	"orders.complain.close":"Close",
-	"orders.complain":"Complain"
+	"orders.complain":"Complain",
+	"orders.loading.error.orders":"Some errors occurred while loading orders!",
+	
+	"message.error":"Error!",
+	"message.success":"Success!"
 
 }

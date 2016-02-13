@@ -114,6 +114,10 @@
 	"developers.technologies-select.reset":"Скасувати",
 	"developers.technologies-select.search":"Вибрати технології",
 	"developers.technologies-select.empty":"Жодна технологія не вибрана",
+	"developers.loading.error.developers":"Під час завантаження розробників сталася помилка!",
+	"developers.loading.error.technologies":"Під час завантаження технологій сталася помилка! Будь ласка, спробуйте ще раз.",
+	"developers.loading.error.payment.limits":"Під час завантаження меж оплати сталася помилка! Будь ласка, спробуйте ще раз.",
+	
 
 	"filter.do-filter":"Відфільтрувати",
 	"filter.close":"Закрити фільтр",
@@ -135,6 +139,10 @@
 	"orders.complain.dialog-title":"Ви впевнені?",
 	"orders.complain.main-text":"Це повідомлення буде надіслане адміністрації і ми переглянемо замовлення.",
 	"orders.complain.close":"Закрити",
-	"orders.complain":"Поскаржитися"
+	"orders.complain":"Поскаржитися",
+	"orders.loading.error.orders":"Під час завантаження замовлень сталася помилка!",
+
+	"message.error":"Помилка!",
+	"message.success":"Успіх!"
 
 }

@@ -80,26 +80,32 @@ angular
 						// newUrl);
 						// }
 
-						developersService.loadDevelopers($scope.filter,
-								$scope.last, $scope.itemListStart,
-								$scope.developersLoading, $scope.itesStep,
-								$scope.filter.payment.min,
-								$scope.filter.payment.max).success(
-								function(data, status, headers, config) {
-									$scope.maxPage = data.maxPage;
-									developersService.fillPagination(
-											data.pages, $scope);
-									$scope.developers = data.items;
+						developersService
+								.loadDevelopers($scope.filter, $scope.last,
+										$scope.itemListStart,
+										$scope.developersLoading,
+										$scope.itesStep,
+										$scope.filter.payment.min,
+										$scope.filter.payment.max)
+								.success(
+										function(data, status, headers, config) {
+											$scope.maxPage = data.maxPage;
+											developersService.fillPagination(
+													data.pages, $scope);
+											$scope.developers = data.items;
 
-									$scope.developersLoading = false;
-								}).error(
-								function(data, status, headers, config) {
-									Notification.error({
-										title : 'Error!',
-										message : 'Some errors occurred'
-												+ ' while loading developers!'
-									});
-								});
+											$scope.developersLoading = false;
+										})
+								.error(
+										function(data, status, headers, config) {
+											Notification
+													.error({
+														title : $translate
+																.instant('message.error'),
+														message : $translate
+																.instant('developers.loading.error.developers')
+													});
+										});
 					}
 
 					$scope.changeStep = function() {
@@ -130,9 +136,10 @@ angular
 									function(data, status, headers, config) {
 										Notification
 												.error({
-													title : 'Error!',
-													message : 'Some errors occurred'
-															+ ' while loading technologies! Please, try again.'
+													title : $translate
+															.instant('message.error'),
+													message : $translate
+															.instant('developers.loading.error.technologies')
 												});
 									});
 
@@ -158,9 +165,10 @@ angular
 									function(data, status, headers, config) {
 										Notification
 												.error({
-													title : 'Error!',
-													message : 'Some errors occurred'
-															+ ' while loading payment limits! Please, try again.'
+													title : $translate
+															.instant('message.error'),
+													message : $translate
+															.instant('developers.loading.error.payment.limits')
 												});
 									});
 

@@ -5,6 +5,7 @@ angular
 				function($scope, jobsAPI, $log, $http, Notification,
 						$translate, $rootScope) {
 					var filterOpen = false;
+					var resourceLoadingCounter = 0;
 					$scope.filter = {};
 					$scope.hourly = {};
 					$scope.ordersLoading = true;
@@ -76,27 +77,101 @@ angular
 					$scope.timeZones = getTimeZones();
 
 					$scope.doFilter = function() {
-						jobsAPI.loadOrders($scope, $http);
+						jobsAPI
+								.loadOrders($scope)
+								.success(
+										function(data, status, headers, config) {
+											$scope.maxPage = data.maxPage;
+											jobsAPI.fillPagination(data.pages,
+													$scope);
+											jobsAPI.fillOrders(data.items,
+													$scope);
+
+											$scope.ordersLoading = false;
+										})
+								.error(
+										function(data, status, headers, config) {
+											Notification
+													.error({
+														title : $translate
+																.instant('message.error'),
+														message : $translate
+																.instant('developers.loading.error.technologies')
+													});
+										});
 					};
 
 					$scope.changeStep = function() {
 						localStorage.setItem("freelancerOrdersStep",
 								$scope.itesStep.number);
-						jobsAPI.loadOrders($scope, $http);
+						$scope.doFilter();
 					};
 
 					$scope.openPage = function(page) {
-						if (page == 'last')
-							jobsAPI.loadOrders($scope, $http, 1);
-						else {
+						if (page == 'last') {
+							$scope.last = 1;
+							$scope.doFilter();
+						} else {
 							$scope.itemListStart = page;
-							jobsAPI.loadOrders($scope, $http);
+							$scope.last = undefined;
+							$scope.doFilter();
 						}
 					};
 
-					jobsAPI.loadLimits($scope, $http);
-					jobsAPI.loadOrders($scope, $http);
-					jobsAPI.loadTechnologies($scope, $http);
+					jobsAPI
+							.loadLimits()
+							.success(function(data, status, headers, config) {
+								$scope.filter.payment = data;
+								$scope.filter.payment.hourly.options = {
+									floor : $scope.filter.payment.hourly.first,
+									ceil : $scope.filter.payment.hourly.second,
+									disabled : true,
+									translate : function(value) {
+										return '$' + value;
+									}
+								};
+								$scope.filter.payment.fixed.options = {
+									floor : $scope.filter.payment.fixed.first,
+									ceil : $scope.filter.payment.fixed.second,
+									disabled : true,
+									translate : function(value) {
+										return '$' + value;
+									}
+								};
+
+								resourceLoadingCounter++;
+								checkAndRestoreFilterData();
+							})
+							.error(
+									function(data, status, headers, config) {
+										Notification
+												.error({
+													title : $translate
+															.instant('message.error'),
+													message : $translate
+															.instant('developers.loading.error.payment.limits')
+												});
+									});
+
+					jobsAPI
+							.loadTechnologies()
+							.success(function(data, status, headers, config) {
+								$scope.tech = data;
+								resourceLoadingCounter++;
+								checkAndRestoreFilterData();
+							})
+							.error(
+									function(data, status, headers, config) {
+										Notification
+												.error({
+													title : $translate
+															.instant('message.error'),
+													message : $translate
+															.instant('developers.loading.error.technologies')
+												});
+									});
+
+					$scope.doFilter();
 
 					function initSelectTranslation($translate) {
 						$('#timeZonesSelect button[ng-if="helperStatus.all"]')
@@ -157,4 +232,45 @@ angular
 												+ 'technologies-select.empty')
 												+ '<span class="caret"></span>');
 					}
+
+					function checkAndRestoreFilterData() {
+						if (resourceLoadingCounter == 2) {
+							var data = getSavedStateData();
+							if (data !== undefined) {
+								$scope.filter.title = data.title;
+								$scope.filter.payment = data.payment;
+
+								var savedTechs = data.selectedTechs;
+								for (var i = 0; i < $scope.tech.length; i++) {
+									var technology = $scope.tech[i];
+									for (var j = 0; j < savedTechs.length; j++) {
+										var savedTechnology = savedTechs[j];
+										if (savedTechnology.id == technology.id)
+											technology.ticked = true;
+									}
+								}
+
+								var savedZones = data.selectedZones;
+								for (var i = 0; i < $scope.timeZones.length; i++) {
+									var zone = $scope.timeZones[i];
+									for (var j = 0; j < savedZones.length; j++) {
+										var savedZone = savedZones[j];
+										if (savedZone.zone == zone.zone)
+											zone.ticked = true;
+									}
+								}
+							}
+
+							initSelectTranslation($translate);
+							$scope.doFilter();
+						}
+					}
+
+					window.onbeforeunload = function() {
+						var state = {};
+						state.location = window.location.href;
+						state.content = $scope.filter;
+						localStorage.setItem("openTaskStateReloadedData", JSON
+								.stringify(state));
+					};
 				});
