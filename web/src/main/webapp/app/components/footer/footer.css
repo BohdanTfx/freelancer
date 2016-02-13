@@ -31,7 +31,7 @@ html, body {
 }
 
 .footer-content ul {
-/*padding: 2em 0;*/
+color:#728aa3;
 width: 75%;
 margin:auto;
 }
@@ -41,6 +41,3 @@ margin:auto;
     /*color:#ffffff;*/
 /*}*/
 
-md-select:placeholder-shown {
-    border: 5px solid red;
-}

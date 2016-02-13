@@ -7,7 +7,7 @@ angular.module('FreelancerApp') .directive('ngTranslateLanguageSelect', function
         '<span class="language-select" ng-if="visible">'+
         '<md-input-container class="language-select">'+
         '<md-select ng-model="currentLocaleDisplayName" placeholder="{{\'directives.language-select.Language\' | translate}}"' +
-        'class="inner-elements-color-blue-light" >'+
+        'class="inner-elements-color-gray" >'+
         '<md-option ng-click="changeLanguage(localesDisplayNames[0])">{{localesDisplayNames[0]}}</md-option>'+
         '<md-option ng-click="changeLanguage(localesDisplayNames[1])">{{localesDisplayNames[1]}}</md-option>'+
         '</md-select>'+

@@ -85,7 +85,7 @@
 </head>
 
 <body>
-<div class="main-wrapper page-wrap " >
+<div class="main-wrapper page-wrap ">
 
     <!--[if lt IE 8]>
     <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a
@@ -144,41 +144,42 @@
 
             </div>
         </div>
-</header>
+    </header>
 
 
-<div ng-switch on="logged">
-    <div ng-switch-when="true">
-        <div class="MenuController">
-            <md-toolbar class="md-menu-toolbar">
-                <md-menu-bar
-                        class="menuIcons "><a href="#/home"> <i
-                        class="fa fa-home menuIconBtn home-btn"></i>
-                </a>
+    <div ng-switch on="logged">
+        <div ng-switch-when="true">
+            <div class="MenuController">
+                <md-toolbar class="md-menu-toolbar">
+                    <md-menu-bar
+                            class="menuIcons "><a href="#/home"> <i
+                            class="fa fa-home menuIconBtn home-btn"></i>
+                    </a>
 
 
-                    <md-menu md-offset="49">
-                        <button ng-click="$mdOpenMenu()" class="menuIconBtn">
-                            <i class="fa fa-search"></i>
-                        </button>
-                        <md-menu-content width=3 md-position-mode=target-left
-                                         class="menuContent">
-                            <md-menu-item>
-                                <md-button ng-href="/#/orders"> {{"index.menu-orders" | translate}}</md-button>
-                            </md-menu-item>
-                            <md-menu-item>
-                                <md-button ng-href="/#/developers"> {{"index.menu-developers" | translate}}</md-button>
-                            </md-menu-item>
-                        </md-menu-content>
-                    </md-menu>
+                        <md-menu md-offset="49">
+                            <button ng-click="$mdOpenMenu()" class="menuIconBtn">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            <md-menu-content width=3 md-position-mode=target-left
+                                             class="menuContent">
+                                <md-menu-item>
+                                    <md-button ng-href="/#/orders"> {{"index.menu-orders" | translate}}</md-button>
+                                </md-menu-item>
+                                <md-menu-item>
+                                    <md-button ng-href="/#/developers"> {{"index.menu-developers" | translate}}
+                                    </md-button>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
 
 
-                    <md-menu md-offset="49">
-                        <button ng-click="$mdOpenMenu()" class="menuIconBtn">
-                            <i class="fa fa-briefcase"></i>
-                        </button>
-                        <md-menu-content width=3 md-position-mode=target-left
-                                         class="menuContent">
+                        <md-menu md-offset="49">
+                            <button ng-click="$mdOpenMenu()" class="menuIconBtn">
+                                <i class="fa fa-briefcase"></i>
+                            </button>
+                            <md-menu-content width=3 md-position-mode=target-left
+                                             class="menuContent">
 
 
                                 <span ng-switch="role">
@@ -221,27 +222,27 @@
                                 </span>
                             </span>
 
-                        </md-menu-content>
+                            </md-menu-content>
 
-                    </md-menu>
+                        </md-menu>
 
 
-                    <md-menu md-offset="49">
-                        <button ng-click="$mdOpenMenu()" class="menuIconBtn">
-                            <i class="fa fa-user "></i>
-                        </button>
+                        <md-menu md-offset="49">
+                            <button ng-click="$mdOpenMenu()" class="menuIconBtn">
+                                <i class="fa fa-user "></i>
+                            </button>
 
-                        <md-menu-content width=3 md-position-mode=target-left
-                                         class="menuContent">
-                            <md-menu-item>
-                                <md-button ng-href="/#/personal">
-                                    {{"index.menu-personal" | translate}}
-                                </md-button>
-                            </md-menu-item>
+                            <md-menu-content width=3 md-position-mode=target-left
+                                             class="menuContent">
+                                <md-menu-item>
+                                    <md-button ng-href="/#/personal">
+                                        {{"index.menu-personal" | translate}}
+                                    </md-button>
+                                </md-menu-item>
 
-                            <md-menu-item>
-                                <md-button ng-href="/#/tests"> {{"index.menu-tests" | translate}}</md-button>
-                            </md-menu-item>
+                                <md-menu-item>
+                                    <md-button ng-href="/#/tests"> {{"index.menu-tests" | translate}}</md-button>
+                                </md-menu-item>
 
                             <span ng-switch="role">
                                 <span ng-switch-when="developer">
@@ -261,38 +262,32 @@
                                 <span ng-switch-default>
                                 </span>
                             </span>
-                        </md-menu-content>
-                    </md-menu>
+                            </md-menu-content>
+                        </md-menu>
 
 
-                </md-menu-bar>
-            </md-toolbar>
-        </div>
+                    </md-menu-bar>
+                </md-toolbar>
+            </div>
 
-        <div class="">
             <div class="menu-offset menu-header-offset content-full-screen-height">
                 <div class="container">
                     <div ui-view></div>
                 </div>
             </div>
+
         </div>
 
-    </div>
 
-
-    <div>
         <div ng-switch-default>
             <div class="menu-header-offset-unlog content-full-screen-height">
-                <div >
+                <div>
                     <div ui-view></div>
                 </div>
             </div>
         </div>
 
     </div>
-
-
-</div>
 
 </div>
 <footer class="site-footer">
