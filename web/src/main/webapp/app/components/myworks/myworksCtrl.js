@@ -14,6 +14,10 @@ angular.module('FreelancerApp')
                 $scope.thirdWorks = data.finishedWorks;
                 $scope.notAcceptedWorks = data.notAcceptedWorks;
 
+                console.log(data);
+
+
+
             }).error(function () {
                 Notification
                     .error({
@@ -28,6 +32,10 @@ angular.module('FreelancerApp')
                 $scope.firstWorks = data.availableWorks;
                 $scope.secondWorks = data.inProgressWorks;
                 $scope.thirdWorks = data.finishedWorks;
+
+
+                console.log(data);
+                console.log($scope.firstWorks);
 
             }).error(function () {
                 Notification
@@ -59,8 +67,6 @@ angular.module('FreelancerApp')
                     function (dataWorkers) {
                         $scope.workers = dataWorkers.workers;
                         $scope.workerInfo = dataWorkers.workerInfo;
-
-                        console.log($scope.workers);
 
                         $mdDialog.show({
                             controller: DialogController,
@@ -98,8 +104,9 @@ angular.module('FreelancerApp')
                                 workerInfo: $scope.workerInfo
                             },
                             clickOutsideToClose: true
+                        }).when(function(){
+                            alert('Після діал вікна');
                         });
-
                     }
                 ).error(function () {
                         Notification
@@ -191,11 +198,13 @@ angular.module('FreelancerApp')
     });
 
 
-function DialogController($scope, $mdDialog, project, customer, workers, workerInfo) {
+function DialogController($scope, $mdDialog, project, customer, workers, workerInfo,$rootScope,myworksAPI,Notification) {
     $scope.project = project;
     $scope.customer = customer;
     $scope.workers = workers;
-    $scope.workerInfo = workerInfo
+    $scope.workerInfo = workerInfo;
+    $scope.role = $rootScope.role;
+
 
     if($scope.workerInfo == undefined){
         $scope.workerInfo = 'undefined';
@@ -208,6 +217,49 @@ function DialogController($scope, $mdDialog, project, customer, workers, workerI
     $scope.cancel = function () {
         $mdDialog.cancel();
     };
+
+    $scope.finishOrdering = function(order_id){
+        myworksAPI.finishOrdering(order_id).success(function(){
+            Notification
+                .success({
+                    title: 'Success!',
+                    message: 'The ordering is finished.'
+                });
+
+            $scope.cancel();
+             myworksAPI.getAllCustomerWorks().success(function (data) {
+                $scope.firstTitle = 'Available';
+
+                $scope.firstWorks = data.availableWorks;
+                $scope.secondWorks = data.inProgressWorks;
+                $scope.thirdWorks = data.finishedWorks;
+
+
+                console.log(data);
+                console.log($scope.firstWorks);
+
+
+            }).error(function () {
+                Notification
+                    .error({
+                        title: 'Error!',
+                        message: 'Something went bad. Please try again.'
+                    });
+            });
+
+
+
+        }).error(function(){
+            Notification
+                .error({
+                    title: 'Error!',
+                    message: 'Something went bad. Please try again.'
+                });
+        });
+
+    }
+
+
 }
 
 

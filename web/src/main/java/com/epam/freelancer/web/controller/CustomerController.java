@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -149,6 +150,9 @@ private void createOrder(HttpServletRequest request,
                     break;
                 case "cust/dev/accept":
                     acceptDeveloper(request, response);
+                    break;
+                case "cust/finishOrdering":
+                    finishOrdering(request, response);
                     break;
                 default:
             }
@@ -491,6 +495,16 @@ private void createOrder(HttpServletRequest request,
             isWorker = true;
         }
         sendResponse(response,isWorker,mapper);
+    }
+
+    private void finishOrdering(HttpServletRequest request,HttpServletResponse response){
+        Integer orderId = Integer.parseInt(request.getParameter("order_id"));
+
+        Ordering ordering =  orderingService.findById(orderId);
+        ordering.setEnded(true);
+        ordering.setEndedDate(new Timestamp(new java.util.Date().getTime()));
+        orderingService.modify(ordering);
+
     }
 
 }

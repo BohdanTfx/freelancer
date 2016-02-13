@@ -117,8 +117,16 @@
         </md-dialog-content>
 
         <md-dialog-actions>
+
+            <div ng-if=" role='customer'&& project.started == true && project.ended == false">
+                <md-button class="md-warn" ng-click="finishOrdering(project.id)" md-autofocus>
+                    Finish project
+                </md-button>
+            </div>
+
+
             <md-button ng-click="cancel()" md-autofocus>
-                Got it
+                Back
             </md-button>
         </md-dialog-actions>
     </div>
