@@ -530,6 +530,11 @@ public class DeveloperController extends HttpServlet implements Responsable {
         Developer dev = (Developer) session.getAttribute("user");
         Integer orderId = Integer.parseInt(request.getParameter("order_id"));
 
+        orderingService.findOrderFollowers(orderId).forEach(follower ->{
+            if(follower.getDevId()==dev.getId()){
+            orderingService.deleteFollower(follower);}
+        });
+
         Worker worker = developerService.getWorkerByDevIdAndOrderId(dev.getId(),orderId);
         developerService.deleteWorker(worker);
     }
