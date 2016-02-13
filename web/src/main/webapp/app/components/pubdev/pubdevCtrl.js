@@ -4,6 +4,9 @@ angular.module('FreelancerApp')
         $scope.userrole = $rootScope.role;
         $scope.hireord = '';
         $scope.deleteFeedId = $rootScope.id;
+        $scope.feedback = '';
+        $scope.mes = '';
+        $scope.hiremes = '';
 
         $scope.wmDis = false;
         if($rootScope.id == $stateParams.devId) {
@@ -88,7 +91,7 @@ angular.module('FreelancerApp')
                 } else {
                     $scope.overview = undefined;
                     $scope.overHead = undefined;
-                    $scope.noneOver = $translate.instant('custpub-nothing-to-show');
+                    $scope.noneOver = $translate.instant('custpub.nothing-to-show');
                 }
                 $scope.position = data.position;
 
@@ -185,6 +188,7 @@ angular.module('FreelancerApp')
                         title: $translate.instant('notification.success'),
                         message: $translate.instant('pubdev.freel-will-see-your-invit')
                     });
+                $scope.hiremes = '';
             }).error(function () {
                 Notification
                     .error({
@@ -192,6 +196,7 @@ angular.module('FreelancerApp')
                         message: $translate.instant('pubdev.error-while-send-invit-try-again')
                     });
             });
+            $scope.hiremes = '';
         };
 
         pubdevAPI.getAvailableCustOrders($scope.query).success(function (data) {
@@ -207,9 +212,10 @@ angular.module('FreelancerApp')
 
         $scope.send = function () {
             $scope.dataLoading = true;
+            alert($scope.mes);
             var data = 'message=' + $scope.mes + '&email=' + $scope.email + '&subject=Customer sent you message: ' + $rootScope.name + ' ' + $rootScope.lastName;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
-
+            $scope.mes = '';
             $http.post('/user/send', data).success(function () {
                 Notification
                     .success({
@@ -225,9 +231,11 @@ angular.module('FreelancerApp')
                     });
                 $scope.dataLoading = false;
             });
+            $scope.mes = '';
         };
 
         $scope.comment = function (rate, feedback) {
+            $scope.feedback = '';
             if (rate != 0) {
                 var data = 'comment=' + feedback + '&id=' + $scope.id + '&rate=' + rate + '&role=customer';
                 $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
