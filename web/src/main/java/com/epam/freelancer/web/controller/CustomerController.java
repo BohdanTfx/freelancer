@@ -47,6 +47,7 @@ public class CustomerController extends HttpServlet implements Responsable {
     private DeveloperService developerService;
     private TechnologyService technologyService;
     private ObjectMapper mapper;
+    private OrderCounterService orderCounterService;
 
     public CustomerController() {
         testService = (TestService) ApplicationContext.getInstance().getBean(
@@ -62,6 +63,7 @@ public class CustomerController extends HttpServlet implements Responsable {
                 .getBean("feedbackService");
         orderingService = (OrderingService) ApplicationContext.getInstance()
                 .getBean("orderingService");
+        orderCounterService = (OrderCounterService) ApplicationContext.getInstance().getBean("orderCounterService");
     }
 
     @Override
@@ -106,6 +108,7 @@ private void createOrder(HttpServletRequest request,
         .collect(
         Collectors.toMap(Map.Entry::getKey,
         e -> new String[] { e.getValue() })));
+        incrementOrderCreationStatiscts();
         } catch (Exception e) {
         e.printStackTrace();
         response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
@@ -113,6 +116,22 @@ private void createOrder(HttpServletRequest request,
         }
         response.sendError(HttpServletResponse.SC_OK);
         }
+
+
+
+    private void incrementOrderCreationStatiscts() {
+        OrderCounter counter = orderCounterService.getOrderCounterByDate(
+                new java.sql.Date(new java.util.Date().getTime()));
+        if (counter != null) {
+            orderCounterService.incrementCounter(counter.getId());
+        } else {
+            String[] count = {"1"};
+            Map<String, String[]> map = new HashMap<>();
+            map.put("count", count);
+            orderCounterService.create(map);
+        }
+
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
