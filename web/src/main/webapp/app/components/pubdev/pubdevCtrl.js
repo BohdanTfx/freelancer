@@ -212,7 +212,6 @@ angular.module('FreelancerApp')
 
         $scope.send = function () {
             $scope.dataLoading = true;
-            alert($scope.mes);
             var data = 'message=' + $scope.mes + '&email=' + $scope.email + '&subject=Customer sent you message: ' + $rootScope.name + ' ' + $rootScope.lastName;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
             $scope.mes = '';
