@@ -124,7 +124,6 @@ public class DeveloperController extends HttpServlet implements Responsable {
         HttpSession session = request.getSession();
         UserEntity user = (UserEntity) session.getAttribute("user");
 
-
         List<Worker> allWorks = developerService.getAllWorkersByDevId(user.getId());
         List<Ordering> subscribedWorks = developerService.getDeveloperSubscribedProjects(user.getId());
         List<Ordering> finishedWorks = new ArrayList<>();
@@ -133,7 +132,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
 
         allWorks.forEach(worker -> {
             Ordering order = orderingService.findById(worker.getOrderId());
-            if (worker.getAccepted()) {
+            if (worker.getAccepted()!=null && worker.getAccepted()) {
                 if (order.getStarted() && order.getEnded()) {
                     finishedWorks.add(order);
                 } else {

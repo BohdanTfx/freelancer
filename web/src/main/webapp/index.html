@@ -74,211 +74,225 @@
 
     <link rel="stylesheet" href="app/components/custpub/custpub.css">
     <link rel="stylesheet" href="app/components/order/newOrder.css">
-<link rel="stylesheet" href="app/components/developers/developers.css">
+    <link rel="stylesheet" href="app/components/developers/developers.css">
     <link rel="stylesheet" href="app/components/statistics/statistics.css">
     <link rel="stylesheet" href="app/components/createtest/createtest.css">
     <link rel="stylesheet" href="app/components/createadmin/createadmin.css">
     <link rel="stylesheet" href="app/components/forgotpass/forgot.css">
 
+    <link rel="stylesheet" href="app/components/footer/footer.css">
+
 </head>
 
-<body class="main-wrapper">
+<body>
+<div class="main-wrapper page-wrap ">
 
-<!--[if lt IE 8]>
-<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
-    your browser</a> to improve your experience.</p>
-<![endif]-->
+    <!--[if lt IE 8]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a
+            href="http://browsehappy.com/">upgrade
+        your browser</a> to improve your experience.</p>
+    <![endif]-->
 
-<header class="main-header">
-    <div class="header-lower">
-        <div class="auto-container clearfix">
+    <header class="main-header">
+        <div class="header-lower">
+            <div class="auto-container clearfix">
 
-            <div class="outer-box">
-                <div class="logo">
-                    <a href="#/home"> <img alt="Site logo"
-                                           class="img-logo img-png animated rotateIn" data-tooltip="yes"
-                                           title="Home" data-placement="right" src="/images/logo.png">
-							<h1 class="text-shadow-white logo-text animated flipInY"><span class="first">Open</span><span class="second">Task</span></h1>
-                    </a>
-                </div>
-            </div>
+                <div class="outer-box">
+                    <div class="logo">
+                        <a href="#/home"> <img alt="Site logo"
+                                               class="img-logo img-png animated rotateIn" data-tooltip="yes"
+                                               title="Home" data-placement="right" src="/images/logo.png">
 
-            <nav class="main-menu">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse"
-                            data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
+                            <h1 class="text-shadow-white logo-text animated flipInY"><span
+                                    class="first">Open</span><span class="second">Task</span></h1>
+                        </a>
+                    </div>
                 </div>
 
-                <div class="navbar-collapse collapse clearfix">
-
-                    <ul class="navigation" ng-switch on="logged">
-                        <li class="hvr-underline-from-center">
-                            <div ng-translate-language-select></div>
-                        </li>
-                    </ul>
-
-                    <ul class="navigation" ng-switch on="logged">
-                        <li class="hvr-underline-from-center" ng-switch-when="false"><a
-                                href="#/auth"> <i class="fa fa-sign-in"></i>{{"index.header-signin" | translate}}
-                        </a></li>
-                        <li class="hvr-underline-from-center" ng-switch-when="false"><a
-                                href="#/signup"> <i class="fa fa-user-plus"></i>{{"index.header-signup" | translate}}
-                        </a></li>
-
-
-                    </ul>
-                    <ul class="navigation " ng-switch on="logged">
-                        <li class="hvr-underline-from-center" ng-switch-when="true"><a
-                                href="#/personal"> <i class="fa fa-user"></i>{{name}}
-                            {{lastName}}
-                        </a></li>
-                        <li id="logout" ng-click="logout()"
-                            class="hvr-underline-from-center" ng-switch-when="true"><a
-                                href="#/logout"> <i class="fa fa-sign-out"></i>{{"index.header-logout" | translate}}
-                        </a></li>
-                    </ul>
-                </div>
-            </nav>
-
-        </div>
-    </div>
-    </div>
-</header>
-
-
-<div ng-switch on="logged">
-    <div ng-switch-when="true">
-        <div class="MenuController">
-            <md-toolbar class="md-menu-toolbar">
-                <md-menu-bar
-                        class="menuIcons "><a href="#/home"> <i
-                        class="fa fa-home menuIconBtn home-btn"></i>
-                </a>
-
-
-                    <md-menu md-offset="49">
-                        <button ng-click="$mdOpenMenu()" class="menuIconBtn">
-                            <i class="fa fa-search"></i>
+                <nav class="main-menu">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse"
+                                data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
                         </button>
-                        <md-menu-content width=3 md-position-mode=target-left
-                                         class="menuContent">
-                            <md-menu-item>
-                                <md-button ng-href="/#/orders"> {{"index.menu-orders" | translate}}</md-button>
-                            </md-menu-item>
-                            <md-menu-item>
-                                <md-button ng-href="/#/developers"> {{"index.menu-developers" | translate}}</md-button>
-                            </md-menu-item>
-                        </md-menu-content>
-                    </md-menu>
+                    </div>
+
+                    <div class="navbar-collapse collapse clearfix">
+                        <ul class="navigation" ng-switch on="logged">
+                            <li class="hvr-underline-from-center" ng-switch-when="false"><a
+                                    href="#/auth"> <i class="fa fa-sign-in"></i>{{"index.header-signin" | translate}}
+                            </a></li>
+                            <li class="hvr-underline-from-center" ng-switch-when="false"><a
+                                    href="#/signup"> <i class="fa fa-user-plus"></i>{{"index.header-signup" |
+                                translate}}
+                            </a></li>
+                        </ul>
+                        <ul class="navigation " ng-switch on="logged">
+                            <li class="hvr-underline-from-center" ng-switch-when="true"><a
+                                    href="#/personal"> <i class="fa fa-user"></i>{{name}}
+                                {{lastName}}
+                            </a></li>
+                            <li id="logout" ng-click="logout()"
+                                class="hvr-underline-from-center" ng-switch-when="true"><a
+                                    href="#/logout"> <i class="fa fa-sign-out"></i>{{"index.header-logout" | translate}}
+                            </a></li>
+                        </ul>
+                    </div>
+                </nav>
+
+            </div>
+        </div>
+    </header>
 
 
-                           <md-menu md-offset="49">
-                               <button ng-click="$mdOpenMenu()" class="menuIconBtn">
-                                   <i class="fa fa-briefcase"></i>
-                               </button>
-                               <md-menu-content width=3 md-position-mode=target-left
-                                                class="menuContent">
+    <div ng-switch on="logged">
+        <div ng-switch-when="true">
+            <div class="MenuController">
+                <md-toolbar class="md-menu-toolbar">
+                    <md-menu-bar
+                            class="menuIcons "><a href="#/home"> <i
+                            class="fa fa-home menuIconBtn home-btn"></i>
+                    </a>
+
+
+                        <md-menu md-offset="49">
+                            <button ng-click="$mdOpenMenu()" class="menuIconBtn">
+                                <i class="fa fa-search"></i>
+                            </button>
+                            <md-menu-content width=3 md-position-mode=target-left
+                                             class="menuContent">
+                                <md-menu-item>
+                                    <md-button ng-href="/#/orders"> {{"index.menu-orders" | translate}}</md-button>
+                                </md-menu-item>
+                                <md-menu-item>
+                                    <md-button ng-href="/#/developers"> {{"index.menu-developers" | translate}}
+                                    </md-button>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
+
+
+                        <md-menu md-offset="49">
+                            <button ng-click="$mdOpenMenu()" class="menuIconBtn">
+                                <i class="fa fa-briefcase"></i>
+                            </button>
+                            <md-menu-content width=3 md-position-mode=target-left
+                                             class="menuContent">
 
 
                                 <span ng-switch="role">
                                 <span ng-switch-when="developer">
                                     <md-menu-item>
                                         <md-menu-item>
-                                            <md-button ng-href="/#/myworks">{{"index.menu-myworks" | translate}}</md-button>
+                                            <md-button ng-href="/#/myworks">{{"index.menu-myworks" | translate}}
+                                            </md-button>
                                         </md-menu-item>
                                     </md-menu-item>
                                 </span>
                                  <span ng-switch-when="customer">
                                     <md-menu-item>
-                                        <md-button ng-href="/#/order/create">{{"index.menu-create-order" | translate}}</md-button>
+                                        <md-button ng-href="/#/order/create">{{"index.menu-create-order" | translate}}
+                                        </md-button>
                                     </md-menu-item>
                                      <md-menu-item>
-                                         <md-button ng-href="/#/myworks">{{"index.menu-myworks" | translate}}</md-button>
+                                         <md-button ng-href="/#/myworks">{{"index.menu-myworks" | translate}}
+                                         </md-button>
                                      </md-menu-item>
                                 </span>
                                     <span ng-switch-when="admin">
                                     <md-menu-item>
-                                        <md-button ng-href="/#/admin/statistics">{{"index.menu-statistics" | translate}}</md-button>
+                                        <md-button ng-href="/#/admin/statistics">{{"index.menu-statistics" |
+                                            translate}}
+                                        </md-button>
                                     </md-menu-item>
                                          <md-menu-item>
-                                             <md-button ng-href="/#/tests/creating">{{"index.menu-create-test" | translate}}</md-button>
+                                             <md-button ng-href="/#/tests/creating">{{"index.menu-create-test" |
+                                                 translate}}
+                                             </md-button>
                                          </md-menu-item>
                                           <md-menu-item>
-                                              <md-button ng-href="/#/admin/new/admin">{{"index.menu-create-admin" | translate}}</md-button>
+                                              <md-button ng-href="/#/admin/new/admin">{{"index.menu-create-admin" |
+                                                  translate}}
+                                              </md-button>
                                           </md-menu-item>
                                 </span>
                                 <span ng-switch-default>
                                 </span>
                             </span>
 
-                               </md-menu-content>
+                            </md-menu-content>
 
-                           </md-menu>
+                        </md-menu>
 
 
-                    <md-menu md-offset="49">
-                        <button ng-click="$mdOpenMenu()" class="menuIconBtn">
-                            <i class="fa fa-user "></i>
-                        </button>
+                        <md-menu md-offset="49">
+                            <button ng-click="$mdOpenMenu()" class="menuIconBtn">
+                                <i class="fa fa-user "></i>
+                            </button>
 
-                        <md-menu-content width=3 md-position-mode=target-left
-                                         class="menuContent">
-                            <md-menu-item>
-                                <md-button ng-href="/#/personal">
-                                    {{"index.menu-personal" | translate}}
-                                </md-button>
-                            </md-menu-item>
+                            <md-menu-content width=3 md-position-mode=target-left
+                                             class="menuContent">
+                                <md-menu-item>
+                                    <md-button ng-href="/#/personal">
+                                        {{"index.menu-personal" | translate}}
+                                    </md-button>
+                                </md-menu-item>
 
-                            <md-menu-item>
-                                <md-button ng-href="/#/tests"> {{"index.menu-tests" | translate}}</md-button>
-                            </md-menu-item>
+                                <md-menu-item>
+                                    <md-button ng-href="/#/tests"> {{"index.menu-tests" | translate}}</md-button>
+                                </md-menu-item>
 
                             <span ng-switch="role">
                                 <span ng-switch-when="developer">
                                     <md-menu-item>
-                                        <md-button type="submit" ng-href="/#/public/developer/devname/{{id}}"> {{"index.menu-public-page" | translate}}
+                                        <md-button type="submit" ng-href="/#/public/developer/devname/{{id}}">
+                                            {{"index.menu-public-page" | translate}}
                                         </md-button>
                                     </md-menu-item>
                                 </span>
                                  <span ng-switch-when="customer">
                                     <md-menu-item>
-                                        <md-button ng-href="/#/public/customer/custname/{{id}}">{{"index.menu-public-page" | translate}}
+                                        <md-button ng-href="/#/public/customer/custname/{{id}}">
+                                            {{"index.menu-public-page" | translate}}
                                         </md-button>
                                     </md-menu-item>
                                 </span>
                                 <span ng-switch-default>
                                 </span>
                             </span>
-                        </md-menu-content>
-                    </md-menu>
+                            </md-menu-content>
+                        </md-menu>
 
 
-                </md-menu-bar>
-            </md-toolbar>
+                    </md-menu-bar>
+                </md-toolbar>
+            </div>
+
+            <div class="menu-offset menu-header-offset content-full-screen-height">
+                <div class="container">
+                    <div ui-view></div>
+                </div>
+            </div>
+
         </div>
 
-        <!-- Main view for templates -->
-        <div class="menu-offset menu-header-offset">
-            <div class="container">
-                <div ui-view></div>
+
+        <div ng-switch-default>
+            <div class="menu-header-offset-unlog content-full-screen-height">
+                <div>
+                    <div ui-view></div>
+                </div>
             </div>
         </div>
-    </div>
 
-
-    <div ng-switch-default>
-        <div class="menu-header-offset-unlog">
-            <div class="">
-                <div ui-view></div>
-            </div>
-        </div>
     </div>
 
 </div>
+<footer class="site-footer">
+    <div ng-include="'app/components/footer/footer.html'"></div>
+</footer>
 
 </body>
 
