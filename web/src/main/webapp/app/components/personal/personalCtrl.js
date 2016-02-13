@@ -21,8 +21,6 @@ angular.module('FreelancerApp')
                 //check send e-mail
                 if ($scope.user.sendEmail == undefined) {
                     $scope.email = $scope.user.email;
-                } else {
-                    $scope.email = $scope.user.sendEmail;
                 }
 
                 //check for empty Json
@@ -32,6 +30,7 @@ angular.module('FreelancerApp')
                 if(typeof data.contacts != 'undefined'){
                     $scope.contact = data.contacts;
                 }
+
                 if (typeof data.allTechs != 'undefined') {
                     $scope.allTechs = data.allTechs;
                 }

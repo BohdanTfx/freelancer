@@ -1,3 +1,35 @@
+.personal-page .edit-buttons {
+    margin-top: 25px;
+}
+
+.personal-page .item-label {
+    margin: 0px;
+    line-height: 26px;
+    height: 30px;
+    vertical-align: baseline;
+    padding: 2px 2px 1px;
+}
+
+.personal-page .profile-tab md-input-container {
+    margin: 0;
+}
+
+.personal-page .md-select-value {
+    padding: 0px;
+}
+
+.personal-page .black-text{
+    color: black !important;
+}
+
+.personal-page .row {
+    margin: 0;
+}
+
+.personal-page .row md-select {
+    margin-bottom: 25px;
+}
+
 .editClass{
     border: none !important;
     background: none !important;

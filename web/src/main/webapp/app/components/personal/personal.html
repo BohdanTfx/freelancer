@@ -1,519 +1,533 @@
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="row">
-                        <div id="tab-content" class="panel panel-default" style="border: none;">
-                            <div class="col-xs-12 col-sm-12" style="background: none;">
-                                <div class="col-xs-6 col-sm-3" style="padding-top: 50px;">
-                                    <ANY ng-switch="editClass">
-                                        <ANY ng-switch-when="editClass">
-                                            <div class="ih-item circle img">
-                                                <img class="center-block img-thumbnail img-responsive"
-                                                     style="border-radius: 50%;" src="{{img}}">
-                                            </div>
-                                        </ANY>
-                                        <ANY ng-switch-when="">
-                                            <div class="ih-item circle img">
-                                                <div class="ih-item circle img">
-                                                    <img class="center-block img-thumbnail img-responsive"
-                                                         style="border-radius: 50%;" src="{{img}}">
-                                                </div>
-                                                <md-input-container>
-                                                    <form>
-                                                        <input type="file" id="file" aria-label="Input">
-                                                        <button ng-click="uploadFromDevice($event)" class="btn btn-primary btn-block"
-                                                                style="margin-right: 10px;">
-                                                            <span class="fa fa-floppy-o"></span> Upload
-                                                        </button>
-                                                    </form>
-
-                                                </md-input-container>
-                                            </div>
-                                        </ANY>
-                                    </ANY>
-
-
+<div class="personal-page">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <!-- start left-side-->
+                <div class="col-sm-3 col-xs-4">
+                    <ANY ng-switch="editClass">
+                        <ANY ng-switch-when="editClass">
+                            <div class="ih-item circle img">
+                                <img class="center-block img-thumbnail img-responsive"
+                                     style="border-radius: 50%;" src="{{img}}">
+                            </div>
+                        </ANY>
+                        <ANY ng-switch-when="">
+                            <div class="ih-item circle img">
+                                <div class="ih-item circle img">
+                                    <img class="center-block img-thumbnail img-responsive"
+                                         style="border-radius: 50%;" src="{{img}}">
+                                </div>
+                                <md-input-container>
                                     <form>
                                         <input type="file" id="file" aria-label="Input">
-                                        <button ng-click="uploadFromDevice($event)" class="btn btn-primary btn-block"
+                                        <button ng-click="uploadFromDevice($event)"
+                                                class="btn btn-primary btn-block"
                                                 style="margin-right: 10px;">
-                                            <span class="fa fa-floppy-o"></span> {{"personal.upload" | translate}}
+                                            <span class="fa fa-floppy-o"></span> Upload
                                         </button>
                                     </form>
 
-
-
-                                </div>
-
-                                <md-content class="col-xs-8 col-sm-9">
-                                    <md-tabs md-dynamic-height md-border-bottom>
-                                        <md-tab label="{{'personal.profile' | translate}}">
-                                            <md-content class="md-padding" style="min-height: 450px;">
-                                                <div class="col-xs-12 col-sm-10 per-box-none">
-                                                    <p>
-                                                        <strong class="col-xs-12 col-sm-4 per-pad">{{"personal.login" |
-                                                            translate}}/e-mail:</strong>
-                                                        <md-input-container class="col-xs-6 col-sm-6 per-box-none">
-                                                            <input name="lname" ng-required="true"
-                                                                   ng-class="editClass"
-                                                                   ng-readonly="true"
-                                                                   ng-model="user.email" aria-label="Input">
-                                                        </md-input-container>
-                                                            <span ng-if="editClass === ''">
-                                                                <span ng-hide="saveForm.lname.$invalid && (saveForm.$submitted || saveForm.lname.$dirty)">&#160;&#160;</span>
-                                                                <span ng-show="saveForm.lname.$invalid && (saveForm.$submitted || saveForm.lname.$dirty)">&#160;&#160;</span>
-                                                            </span>
-                                                    </p>
-                                                </div>
-                                                <div class="col-xs-12 col-sm-10">
-                                                    <form name="saveForm" ng-submit="saveForm.$valid && save()"
-                                                          novalidate ng-submit="save()">
-                                                        <p class="per-line">
-                                                            <strong class="col-xs-8 col-sm-4 per-pad"
-                                                                    style="padding-left: 0px;!important;">{{"personal.name"
-                                                                | translate}}:</strong>
-                                                            <md-input-container class="col-xs-6 col-sm-6 per-box-none" md-is-error="saveForm.fname.$invalid && (saveForm.$submitted || saveForm.fname.$dirty)">
-                                                                <input name="fname"
-                                                                       ng-required="true"
-                                                                       ng-class="editClass"
-                                                                       ng-readonly="editClass == 'editClass'"
-                                                                       ng-model="user.fname"
-                                                                       aria-label="Input">
-                                                            </md-input-container>
-                                                            <span ng-if="editClass === ''">
-                                                                <span ng-hide="saveForm.fname.$invalid && (saveForm.$submitted || saveForm.fname.$dirty)"
-                                                                      class="ng-hide per-glyphicon glyphicon-ok per-val"></span>
-                                                                <span ng-show="saveForm.fname.$invalid && (saveForm.$submitted || saveForm.fname.$dirty)"
-                                                                      class="ng-hide per-glyphicon glyphicon-remove per-er"></span>
-                                                            </span>
-                                                        </p>
-
-                                                        <p>
-                                                            <strong class="col-xs-12 col-sm-4">{{"personal.surname" |
-                                                                translate}}:</strong>
-                                                            <md-input-container class="col-xs-6 col-sm-6 per-box-none"
-                                                                                md-is-error="saveForm.lname.$invalid && (saveForm.$submitted || saveForm.lname.$dirty)">
-                                                                <input name="lname" ng-required="true"
-                                                                       ng-class="editClass"
-                                                                       ng-readonly="editClass == 'editClass'"
-                                                                       ng-model="user.lname" required aria-label="Input">
-                                                            </md-input-container>
-                                                            <span ng-if="editClass === ''">
-                                                                <span ng-hide="saveForm.lname.$invalid && (saveForm.$submitted || saveForm.lname.$dirty)"
-                                                                      class="ng-hide per-glyphicon glyphicon-ok per-val"></span>
-                                                                <span ng-show="saveForm.lname.$invalid && (saveForm.$submitted || saveForm.lname.$dirty)"
-                                                                      class="ng-hide per-glyphicon glyphicon-remove per-er"></span>
-                                                            </span>
-                                                        </p>
-
-                                                        <p ng-show="role == 'developer'">
-                                                            <strong class="col-xs-12 col-sm-4">{{"personal.position" |
-                                                                translate}}: </strong>
-
-                                                            <md-input-container class="col-xs-6 col-sm-6 per-box-none"
-                                                                                md-is-error="saveForm.position.$invalid && (saveForm.$submitted || saveForm.position.$dirty)">
-                                                                <input name="position" type="text" ng-class="editClass"
-                                                                       ng-readonly="editClass == 'editClass'"
-                                                                       ng-model="user.position"
-                                                                       ng-required="true"
-                                                                       aria-label="Input">
-                                                            </md-input-container>
+                                </md-input-container>
+                            </div>
+                        </ANY>
+                    </ANY>
+                    <form>
+                        <input type="file" id="file" aria-label="Input">
+                        <button ng-click="uploadFromDevice($event)" class="btn btn-primary btn-block"
+                                style="margin-right: 10px;">
+                            <span class="fa fa-floppy-o"></span> {{"personal.upload" | translate}}
+                        </button>
+                    </form>
+                </div>
+                <!-- end left-side-->
+                <!-- start right-side-->
+                <div class="col-sm-9 col-xs-8 ">
+                    <div id="tab-content" class="panel panel-default" style="border: none;">
+                        <md-content>
+                            <md-tabs md-dynamic-height md-border-bottom>
+                                <md-tab label="{{'personal.profile' | translate}}">
+                                    <md-content class="md-padding profile-tab" style="min-height: 450px;">
+                                        <!-- login/email-->
+                                        <div class="row">
+                                            <strong class="col-sm-4 col-xs-12 item-label">
+                                                {{"personal.login" | translate}}/e-mail:
+                                            </strong>
+                                            <md-input-container class="col-sm-6 col-xs-12">
+                                                <input name="lname" ng-required="true"
+                                                       ng-class="editClass"
+                                                       ng-readonly="true"
+                                                       ng-model="user.email" aria-label="Input">
+                                            </md-input-container>
+                                            <span ng-if="editClass === ''">
+                                                <span ng-hide="saveForm.lname.$invalid && (saveForm.$submitted || saveForm.lname.$dirty)">&#160;&#160;</span>
+                                                <span ng-show="saveForm.lname.$invalid && (saveForm.$submitted || saveForm.lname.$dirty)">&#160;&#160;</span>
+                                            </span>
+                                        </div>
+                                        <form name="saveForm" ng-submit="saveForm.$valid && save()"
+                                              novalidate ng-submit="save()">
+                                            <!-- fname-->
+                                            <div class="row">
+                                                <strong class="col-sm-4 col-xs-12 item-label">
+                                                    {{"personal.name" | translate}}:
+                                                </strong>
+                                                <md-input-container class="col-sm-6 col-xs-12"
+                                                                    md-is-error="saveForm.fname.$invalid && (saveForm.$submitted || saveForm.fname.$dirty)">
+                                                    <input name="fname"
+                                                           ng-required="true"
+                                                           ng-class="editClass"
+                                                           ng-readonly="editClass == 'editClass'"
+                                                           ng-model="user.fname"
+                                                           aria-label="Input">
+                                                </md-input-container>
+                                                <span ng-if="editClass === ''">
+                                                    <span ng-hide="saveForm.fname.$invalid && (saveForm.$submitted || saveForm.fname.$dirty)"
+                                                          class="ng-hide per-glyphicon glyphicon-ok per-val"></span>
+                                                    <span ng-show="saveForm.fname.$invalid && (saveForm.$submitted || saveForm.fname.$dirty)"
+                                                          class="ng-hide per-glyphicon glyphicon-remove per-er"></span>
+                                                </span>
+                                            </div>
+                                            <!-- lname-->
+                                            <div class="row">
+                                                <strong class="col-sm-4 col-xs-12 item-label">
+                                                    {{"personal.surname" | translate}}:
+                                                </strong>
+                                                <md-input-container class="col-sm-6 col-xs-12"
+                                                                    md-is-error="saveForm.lname.$invalid && (saveForm.$submitted || saveForm.lname.$dirty)">
+                                                    <input name="lname" ng-required="true"
+                                                           ng-class="editClass"
+                                                           ng-readonly="editClass == 'editClass'"
+                                                           ng-model="user.lname" required aria-label="Input">
+                                                </md-input-container>
+                                                <span ng-if="editClass === ''">
+                                                    <span ng-hide="saveForm.lname.$invalid && (saveForm.$submitted || saveForm.lname.$dirty)"
+                                                          class="ng-hide per-glyphicon glyphicon-ok per-val"></span>
+                                                    <span ng-show="saveForm.lname.$invalid && (saveForm.$submitted || saveForm.lname.$dirty)"
+                                                          class="ng-hide per-glyphicon glyphicon-remove per-er"></span>
+                                                </span>
+                                            </div>
+                                            <!-- position-->
+                                            <div ng-show="role == 'developer' && (user.position != undefined || hide == true)"
+                                                 class="row">
+                                                <strong class="col-sm-4 col-xs-12 item-label">
+                                                    {{"personal.position" | translate}}:
+                                                </strong>
+                                                <md-input-container class="col-sm-6 col-xs-12"
+                                                                    md-is-error="saveForm.position.$invalid && (saveForm.$submitted || saveForm.position.$dirty)">
+                                                    <input name="position" type="text" ng-class="editClass"
+                                                           ng-readonly="editClass == 'editClass'"
+                                                           ng-model="user.position"
+                                                           ng-required="true"
+                                                           aria-label="Input">
+                                                </md-input-container>
                                                             <span ng-if="editClass === ''">
                                                             <span ng-hide="saveForm.position.$invalid && (saveForm.$submitted || saveForm.position.$dirty)"
                                                                   class="ng-hide per-glyphicon glyphicon-ok per-val"></span>
                                                             <span ng-show="saveForm.position.$invalid && (saveForm.$submitted || saveForm.position.$dirty)"
                                                                   class="ng-hide per-glyphicon glyphicon-remove per-er"></span>
                                                             </span>
-                                                        </p>
+                                            </div>
+                                            <!-- pay-->
+                                            <div ng-show="role == 'developer' && (user.hourly != undefined || hide == true)"
+                                                 class="row">
+                                                <strong class="col-sm-4 col-xs-12 item-label">
+                                                    {{"personal.pay" | translate}}: </strong>
 
-                                                        <p ng-show="role == 'developer'">
-                                                            <strong class="col-xs-12 col-sm-4"
-                                                                    style="padding-top: 5px;!important;">{{"personal.pay"
-                                                                | translate}}: </strong>
+                                                <md-input-container class="col-sm-6 col-xs-12">
+                                                    <input name="hourly" ng-class="editClass"
+                                                           ng-readonly="editClass == 'editClass'"
+                                                           ng-model="user.hourly"
+                                                           class="col-xs-12 col-sm-6"
+                                                           type="number" step="0.1" required
+                                                           aria-label="Input">
+                                                </md-input-container>
+                                                <span ng-if="editClass === ''">
+                                                    <span ng-hide="saveForm.hourly.$invalid && (saveForm.$submitted || saveForm.hourly.$dirty)"
+                                                          class="ng-hide per-glyphicon glyphicon-ok per-val "></span>
+                                                    <span ng-show="saveForm.hourly.$invalid && (saveForm.$submitted || saveForm.hourly.$dirty)"
+                                                          class="ng-hide per-glyphicon glyphicon-remove per-er"></span>
+                                                </span>
+                                            </div>
+                                            <!-- phone-->
+                                            <div ng-show="role != 'admin' && (contact.phone != undefined || hide == true)"
+                                                 class="row">
+                                                <strong class="col-sm-4 col-xs-12 item-label">
+                                                    {{"personal.phone" | translate}}:
+                                                </strong>
 
-                                                            <md-input-container class="col-xs-6 col-sm-6 per-box-none">
-                                                                <input name="hourly" ng-class="editClass"
-                                                                       ng-readonly="editClass == 'editClass'"
-                                                                       ng-model="user.hourly"
-                                                                       class="col-xs-12 col-sm-6 per-control"
-                                                                       type="number" step="0.1" required
-                                                                       aria-label="Input">
-                                                            </md-input-container>
+                                                <md-input-container class="col-sm-6 col-xs-12"
+                                                                    md-is-error="saveForm.phone.$invalid && (saveForm.$submitted || saveForm.phone.$dirty)">
+                                                    <input ng-required="true" name="phone" type="text"
+                                                           ng-pattern="/^\+[0-9]+$/" ng-class="editClass"
+                                                           ng-readonly="editClass == 'editClass'"
+                                                           ng-model="contact.phone"
+                                                           ng-minlength="12"
+                                                           md-maxlength="14"
+                                                           aria-label="Input">
+                                                </md-input-container>
+                                                <span ng-if="editClass === ''">
+                                                    <span ng-hide="saveForm.phone.$invalid"
+                                                          class="ng-hide per-glyphicon glyphicon-ok per-val"></span>
+                                                    <span ng-show="saveForm.phone.$invalid"
+                                                          class="ng-hide per-glyphicon glyphicon-remove per-er"></span>
+                                                </span>
+                                            </div>
+                                            <!-- skype-->
+                                            <div ng-show="role != 'admin' && (contact.skype != undefined || hide == true)"
+                                                 class="row">
+                                                <strong class="col-sm-4 col-xs-12 item-label">Skype:</strong>
 
-                                                            <span ng-if="editClass === ''">
-                                                                <span ng-hide="saveForm.hourly.$invalid && (saveForm.$submitted || saveForm.hourly.$dirty)"
-                                                                      class="ng-hide per-glyphicon glyphicon-ok per-val "></span>
-                                                                <span ng-show="saveForm.hourly.$invalid && (saveForm.$submitted || saveForm.hourly.$dirty)"
-                                                                      class="ng-hide per-glyphicon glyphicon-remove per-er"></span>
+                                                <md-input-container class="col-sm-6 col-xs-12">
+                                                    <input name="skype"
+                                                           ng-class="editClass"
+                                                           ng-readonly="editClass == 'editClass'"
+                                                           ng-model="contact.skype"
+                                                           class="box-none"
+                                                           aria-label="Input">
+                                                </md-input-container>
+
+                                            </div>
+                                            <!-- regDate-->
+                                            <div ng-show="user.regDate != undefined" class="row">
+                                                <strong class="col-sm-4 col-xs-12 item-label">
+                                                    {{"pubdev.onsite-sinse" | translate}}:
+                                                </strong>
+
+                                                <md-input-container class="col-sm-6 col-xs-12">
+                                                    <input name="regDate"
+                                                           class="black-text"
+                                                           ng-class="editClass"
+                                                           ng-readonly="editClass == ''"
+                                                           value="{{user.regDate | date:'MM/dd/yyyy'}}"
+                                                           disabled aria-label="Input">
+                                                </md-input-container>
+
+                                            </div>
+                                            <!-- time zone-->
+                                            <div class="row">
+                                                <strong class="col-sm-4 col-xs-12 item-label">
+                                                    {{"personal.time-zone" | translate}}:
+                                                </strong>
+                                                <md-input-container class="col-sm-6 col-xs-12">
+                                                    <md-select ng-class="editClass"
+                                                               ng-disabled="editClass != ''"
+                                                               ng-init="user.zone"
+                                                               ng-model="user.zone"
+                                                               aria-label="Input">
+                                                        <md-option ng-repeat="zone in timeZones"
+                                                                   value="{{zone.zone}}">
+                                                            <span class="black-text">{{zone.title}}</span>
+                                                        </md-option>
+                                                    </md-select>
+                                                </md-input-container>
+                                            </div>
+                                            <!-- language-->
+                                            <div class="row">
+                                                <strong class="col-sm-4 col-xs-12 item-label">
+                                                    {{"personal.language" | translate}}:
+                                                </strong>
+                                                <md-input-container class="col-sm-6 col-xs-12">
+                                                    <md-select ng-model="user.lang"
+                                                               ng-class="editClass"
+                                                               ng-disabled="editClass != ''"
+                                                               aria-label="Input">
+                                                        <md-option value="en"><span class="black-text">{{"personal.english" |
+                                                                        translate}}</span>
+                                                        </md-option>
+                                                        <md-option value="uk-UA"><span class="black-text">{{"personal.ukraine" |
+                                                                        translate}}</span>
+                                                        </md-option>
+                                                    </md-select>
+                                                </md-input-container>
+                                            </div>
+                                            <!-- skills-->
+                                            <div ng-show="role == 'developer' && (techs != undefined || hide == true)"
+                                                 class="row" style="margin-bottom: 25px">
+                                                <ANY ng-switch="editClass">
+                                                    <ANY ng-switch-when="editClass">
+                                                        <strong class="col-sm-4 col-xs-12 item-label">
+                                                            {{"personal.skills" | translate}}:
+                                                        </strong>
+
+                                                        <div class="col-sm-6 col-xs-12">
+                                                            <span ng-repeat="tech in techs">
+                                                                <span class="label label-info tags tag-template">{{tech.name}}</span>
                                                             </span>
-                                                        </p>
-                                                        <p ng-hide="role == 'admin'">
-                                                            <strong class="col-xs-12 col-sm-4">{{"personal.phone" |
-                                                                translate}}: </strong>
-
-                                                            <md-input-container class="col-xs-6 col-sm-6 per-box-none"
-                                                                                md-is-error="saveForm.phone.$invalid && (saveForm.$submitted || saveForm.phone.$dirty)">
-                                                                <input ng-required="true" name="phone" type="text"
-                                                                       ng-pattern="/^\+[0-9]+$/" ng-class="editClass"
-                                                                       ng-readonly="editClass == 'editClass'"
-                                                                       ng-model="contact.phone"
-                                                                       ng-minlength="12"
-                                                                       md-maxlength="14"
-                                                                       aria-label="Input">
-                                                            </md-input-container>
-                                                            <span ng-if="editClass === ''">
-                                                                <span ng-hide="saveForm.phone.$invalid" class="ng-hide per-glyphicon glyphicon-ok per-val"></span>
-                                                                <span ng-show="saveForm.phone.$invalid" class="ng-hide per-glyphicon glyphicon-remove per-er"></span>
-                                                            </span>
-                                                        </p>
-                                                        <p ng-hide="role == 'admin'" class="per-line">
-                                                            <strong class="col-xs-12 col-sm-4">Skype: </strong>
-
-                                                            <md-input-container class="col-xs-6 col-sm-6 per-box-none">
-                                                                <input name="skype"
-                                                                       ng-class="editClass"
-                                                                       ng-readonly="editClass == 'editClass'"
-                                                                       ng-model="contact.skype"
-                                                                       class="box-none"
-                                                                       aria-label="Input">
-                                                            </md-input-container>
-
-                                                        </p>
+                                                        </div>
+                                                    </ANY>
+                                                    <ANY ng-switch-when="">
                                                         <p>
-                                                            <strong class="col-xs-12 col-sm-4">{{"pubdev.onsite-sinse" |
-                                                                translate}}: </strong>
+                                                            <strong class="col-sm-4 col-xs-12 item-label">
+                                                                {{"personal.skills" | translate}}:
+                                                            </strong>
 
-                                                            <md-input-container class="col-xs-6 col-sm-6 per-box-none">
-                                                                <input name="regDate"
-                                                                       ng-class="editClass"
-                                                                       ng-readonly="editClass == ''"
-                                                                       value="{{user.regDate | date:'MM/dd/yyyy'}}"
-                                                                       disabled aria-label="Input">
-                                                            </md-input-container>
-
-                                                        </p>
-                                                        <p class="per-line">
-                                                            <strong class="col-xs-12 col-sm-4"
-                                                                    style="padding-left: 0px;!important;">{{"personal.time-zone"
-                                                                | translate}}: </strong>
-                                                            <span style="padding-top:10px;!important">
-                                                            <md-input-container class="col-xs-6 col-sm-6 per-box-none">
-                                                                <md-select ng-class="editClass"
-                                                                           ng-disabled="editClass != ''"
-                                                                           ng-init="user.zone"
-                                                                           ng-model="user.zone"
-                                                                           aria-label="Input">
-                                                                    <md-option ng-repeat="zone in timeZones"
-                                                                               value="{{zone.zone}}">
-                                                                        {{zone.title}}
-                                                                    </md-option>
-                                                                </md-select>
-                                                            </md-input-container>
-                                                            </span>
-
-                                                            <!--<span ng-if="editClass === ''">-->
-                                                            <!--<span ng-show="zone.zone.$valid" class="ng-hide per-glyphicon glyphicon-ok per-val"></span>-->
-                                                            <!--<span ng-hide="zone.zone.$valid" class="ng-hide per-glyphicon glyphicon-remove per-er"></span>-->
-                                                            <!--</span>-->
-
-                                                        </p>
-                                                        <p>
-                                                            <strong class="col-xs-8 col-sm-4"
-                                                                    style="padding-left: 0px;!important; padding-top: 15px;">{{"personal.language"
-                                                                | translate}}: </strong>
-
-                                                            <md-input-container class="col-xs-6 col-sm-6 per-box-none per-pad ">
-                                                                <md-select ng-model="user.lang"
-                                                                           ng-class="editClass"
-                                                                           ng-disabled="editClass != ''"
-                                                                           aria-label="Input"
-                                                                           style="margin-top: 10px;">
-                                                                    <md-option value="en">{{"personal.english" |
-                                                                        translate}}
-                                                                    </md-option>
-                                                                    <md-option value="uk-UA">{{"personal.ukraine" |
-                                                                        translate}}
-                                                                    </md-option>
-                                                                </md-select>
-                                                            </md-input-container>
-
-                                                        </p>
-                                                        <div ng-show="role == 'developer'" class="col-xs-8 col-sm-9" style="padding-left: 0px;!important;">
-                                                            <ANY ng-switch="editClass">
-                                                                <ANY ng-switch-when="editClass">
-                                                                    <p style="padding-top: 15px;">
-                                                                        <strong class="col-xs-6 col-sm-4"
-                                                                                style="padding-left: 0px;!important;padding-top:10px;!important;">{{"personal.skills"
-                                                                            | translate}}: </strong>
-                                                                    </p>
-                                                                    <p class="col-xs-6 col-sm-6" style="padding-left: 50px;!important;">
-                                                                        <span ng-repeat="tech in techs">
-                                                                            <span class="label label-info tags tag-template">{{tech.name}}</span>
-                                                                        </span>
-                                                                    </p>
-                                                                </ANY>
-                                                                <ANY ng-switch-when="">
-                                                                    <p>
-                                                                        <strong class="col-xs-6 col-sm-4" style="padding-left: 0px;!important;padding-top:10px;!important;">
-                                                                            {{"personal.skills" | translate}}:
-                                                                        </strong>
-
-                                                                    <div class="col-xs-6 col-sm-8 per-pad" style="position:relative;!important; padding-left:60px;!important;">
-                                                                        <tags-input ng-model="techs"
-                                                                                    display-property="name"
-                                                                                    placeholder="Add a technologies"
-                                                                                    replace-spaces-with-dashes="false"
-                                                                                    template="tag-template"
-                                                                                    addFromAutocompleteOnly="true">
-                                                                            <auto-complete source="allTechs"
-                                                                                           min-length="0"
-                                                                                           load-on-focus="true"
-                                                                                           load-on-empty="true"
-                                                                                           max-results-to-show="32"
-                                                                                           template="autocomplete-template"
-                                                                                           loadOnDownArrow="true"></auto-complete>
-                                                                        </tags-input>
-                                                                        <script type="text/ng-template" id="tag-template">
-                                                                            <div class="tag-template">
-                                                                                <div class="left-panel">
-                                                                                    <span>{{$getDisplayText()}}</span>
-                                                                                    <a class="remove-button" ng-click="$removeTag()">&#10006;</a>
-                                                                                </div>
-                                                                            </div>
-                                                                        </script>
-
-                                                                        <script type="text/ng-template" id="autocomplete-template">
-                                                                            <div class="autocomplete-template">
-                                                                                <div class="left-panel">
-
-                                                                                </div>
-
-                                                                                <div>
-                                                                                    <span ng-bind-html="$highlight($getDisplayText())"></span>
-                                                                                </div>
-                                                                            </div>
-                                                                        </script>
-
-                                                                    </div>
-                                                                    </p>
-                                                                </ANY>
-                                                            </ANY>
-                                                        </div>
-                                                        <p ng-hide="role == 'admin'" style="clear: both;">
-                                                            <strong class="col-xs-12 col-sm-4"
-                                                                    style="padding-top: 20px;">{{"personal.description"
-                                                                | translate}}: </strong>
-                                                            <md-input-container class="col-xs-6 col-sm-6">
-                                                                <textarea cols="120" name="name" ng-class="editClass"
-                                                                          ng-readonly="editClass == 'editClass'"
-                                                                          ng-model="user.overview" aria-label="Input"></textarea>
-                                                            </md-input-container>
-                                                        </p>
-
-                                                        <div ng-hide="hide" class="col-xs-12 col-sm-12">
-
-                                                            <button aria-label="Primary" class="btn btn-info full-width"
-                                                                    ng-click="enableEditor()">
-                                                                <span class="fa fa-edit"></span> {{"personal.edit" |
-                                                                translate}}:
-                                                            </button>
-                                                        </div>
-                                                        <!--/col-->
-                                                        <div ng-show="hide" class="col-xs-12 col-sm-6">
-
-                                                            <button aria-label="Primary" type="submit" class="btn btn-primary btn-block"
-                                                                    style="margin-right: 10px;">
-                                                                <span class="fa fa-floppy-o"></span> {{"personal.save" |
-                                                                translate}}:
-                                                            </button>
-                                                        </div>
-                                                        <div ng-show="hide" class="col-xs-12 col-sm-6">
-
-                                                            <button class="btn btn-info btn-block btn-warning"
-                                                                    ng-click="disableEditor()"
-                                                                    style="margin-left: 10px;">
-                                                                <span class="fa fa-remove"></span> {{"personal.cancel" |
-                                                                translate}}:
-                                                            </button>
-                                                        </div>
-
-
-                                                    </form>
-                                                </div>
-                                                <!--Button on page profile-->
-
-
-                                            </md-content>
-                                        </md-tab>
-                                        <md-tab label="{{'personal.change-pass' | translate}}">
-                                            <md-content class="md-padding" style="min-height: 450px;">
-                                                <div style="padding-top: 50px;">
-                                                    <form name="passForm" novalidate
-                                                          ng-submit="passForm.$valid && changePassword()" ng-submit="changePassword()">
-                                                        <div class="per-line" style="padding-top: 30px;">
-                                                            <!--<strong class="col-xs-12 col-sm-4 per-pad">Old-->
-                                                                <!--password:</strong>-->
-                                                            <md-input-container class="col-xs-8 col-sm-8"
-                                                                                md-is-error="passForm.oldPassword.$invalid && (passForm.$submitted || passForm.oldPassword.$dirty)">
-                                                                <label>{{"personal.old-password" | translate}}:</label>
-                                                                <input name="oldPassword" type="password"
-                                                                       ng-required="true" ng-model="password">
-                                                                <div ng-messages="passForm.oldPassword.$error"
-                                                                     ng-if="passForm.$submitted || passForm.oldPassword.$touched">
-                                                                    <div ng-message="required">
-                                                                        {{"personal.this-is-required" | translate}}:
+                                                        <div class="col-sm-6 col-xs-12">
+                                                            <div class="col-sm-8">
+                                                                <div isteven-multi-select input-model="allTechs"
+                                                                     output-model="techs" button-label="name"
+                                                                     item-label="name" tick-property="ticked"></div>
+                                                            </div>
+                                                            <!--<tags-input ng-model="techs"
+                                                                        display-property="name"
+                                                                        placeholder="Add a technologies"
+                                                                        replace-spaces-with-dashes="false"
+                                                                        template="tag-template"
+                                                                        addFromAutocompleteOnly="true">
+                                                                <auto-complete source="allTechs"
+                                                                               min-length="0"
+                                                                               load-on-focus="true"
+                                                                               load-on-empty="true"
+                                                                               max-results-to-show="32"
+                                                                               template="autocomplete-template"
+                                                                               loadOnDownArrow="true"></auto-complete>
+                                                            </tags-input>
+                                                            <script type="text/ng-template" id="tag-template">
+                                                                <div class="tag-template">
+                                                                    <div class="left-panel">
+                                                                        <span>{{$getDisplayText()}}</span>
+                                                                        <a class="remove-button"
+                                                                           ng-click="$removeTag()">&#10006;</a>
                                                                     </div>
                                                                 </div>
-                                                            </md-input-container>
-                                                        </div>
+                                                            </script>
 
-                                                        <div>
-                                                            <!--<strong class="col-xs-12 col-sm-4 per-pad">New-->
-                                                                <!--password:</strong>-->
-                                                            <md-input-container class="col-xs-8 col-sm-8"
-                                                                                md-is-error="passForm.newPassword.$invalid && (passForm.$submitted || passForm.newPassword.$dirty)">
-                                                                <label>{{"personal.new-password" | translate}}:</label>
-                                                                <input name="newPassword"
-                                                                       type="password"
-                                                                       ng-required="true"
-                                                                       ng-model="newPassword"
-                                                                       ng-required="true"
-                                                                       md-maxlength="50"
-                                                                       ng-minlength="8"
-                                                                       ng-model="confirmPassword">
-                                                                <div ng-messages="passForm.newPassword.$error"
-                                                                     ng-if="passForm.$submitted || passForm.newPassword.$touched">
-                                                                    <div ng-message="minlength">
-                                                                        {{"personal.the-name-error-8" | translate}}.
+                                                            <script type="text/ng-template"
+                                                                    id="autocomplete-template">
+                                                                <div class="autocomplete-template">
+                                                                    <div class="left-panel">
+
                                                                     </div>
-                                                                    <div ng-message="md-maxlength">
-                                                                        {{"personal.the-name-error" | translate}}.
-                                                                    </div>
-                                                                    <div ng-message="required">
-                                                                        {{"personal.this-is-required" | translate}}.
+
+                                                                    <div>
+                                                                        <span ng-bind-html="$highlight($getDisplayText())"></span>
                                                                     </div>
                                                                 </div>
-                                                            </md-input-container>
+                                                            </script>-->
+                                                        </div>
+                                                        </p>
+                                                    </ANY>
+                                                </ANY>
+                                            </div>
+                                            <!-- description-->
+                                            <p ng-show="role != 'admin' && (user.overview != undefined || hide==true)"
+                                               style="clear: both;">
+                                                <strong class="col-sm-4 col-xs-12 item-label">
+                                                    {{"personal.description" | translate}}:
+                                                </strong>
+                                                <md-input-container class="col-sm-6 col-xs-12">
+                                                    <textarea cols="120" name="name" ng-class="editClass"
+                                                              ng-readonly="editClass == 'editClass'"
+                                                              ng-model="user.overview"
+                                                              aria-label="Input"></textarea>
+                                                </md-input-container>
+                                            </p>
+                                            <!-- edit button-->
+                                            <div ng-hide="hide" class="col-xs-12 col-sm-12">
+                                                <button aria-label="Primary"
+                                                        class="btn btn-info full-width edit-buttons"
+                                                        ng-click="enableEditor()">
+                                                    <span class="fa fa-edit"></span> {{"personal.edit" |
+                                                    translate}}:
+                                                </button>
+                                            </div>
+                                            <!-- save button-->
+                                            <div ng-show="hide" class="col-xs-12 col-sm-6">
 
-                                                        </div>
-                                                        <div>
-                                                            <!--<strong class="col-xs-12 col-sm-4 per-pad">Confirm-->
-                                                                <!--password:</strong>-->
-                                                            <md-input-container class="col-xs-8 col-sm-8"
-                                                                                md-is-error="passForm.confirmPassword.$invalid && (passForm.$submitted || passForm.confirmPassword.$dirty)">
-                                                                <label>{{"personal.confirm-pass" | translate}}</label>
-                                                                <input name="confirmPassword"
-                                                                       type="password"
-                                                                       ng-required="true"
-                                                                       md-maxlength="50"
-                                                                       ng-model="confirmPassword"
-                                                                       match="newPassword">
-                                                                <div ng-messages="passForm.confirmPassword.$error"
-                                                                     ng-if="passForm.$submitted || passForm.confirmPassword.$touched">
-                                                                    <div ng-message="required">
-                                                                        {{"personal.this-is-required" | translate}}.
-                                                                    </div>
-                                                                    <div ng-message="md-maxlength">
-                                                                        {{"personal.the-name-error" | translate}}.
-                                                                    </div>
-                                                                    <div ng-message="match">
-                                                                        {{"personal.pass-must-be-matching" |
-                                                                        translate}}.
-                                                                    </div>
-                                                                </div>
-                                                            </md-input-container>
-                                                        </div>
+                                                <button aria-label="Primary" type="submit"
+                                                        class="btn btn-primary btn-block edit-buttons"
+                                                        style="margin-right: 10px;">
+                                                    <span class="fa fa-floppy-o"></span> {{"personal.save" |
+                                                    translate}}:
+                                                </button>
+                                            </div>
+                                            <!-- cancel button-->
+                                            <div ng-show="hide" class="col-xs-12 col-sm-6">
+                                                <button class="btn btn-info btn-block btn-warning edit-buttons"
+                                                        ng-click="disableEditor()"
+                                                        style="margin-left: 10px;">
+                                                    <span class="fa fa-remove"></span> {{"personal.cancel" |
+                                                    translate}}:
+                                                </button>
+                                            </div>
+                                        </form>
+                                        <!--Button on page profile-->
+                                    </md-content>
+                                </md-tab>
+                                <md-tab label="{{'personal.change-pass' | translate}}">
+                                    <md-content class="md-padding" style="min-height: 450px;">
+                                        <div style="padding-top: 50px;">
+                                            <form name="passForm" novalidate
+                                                  ng-submit="passForm.$valid && changePassword()"
+                                                  ng-submit="changePassword()">
+                                                <div style="padding-top: 30px;">
+                                                    <!--<strong class="col-xs-12 col-sm-4 per-pad">Old-->
+                                                    <!--password:</strong>-->
+                                                    <md-input-container class="col-xs-8 col-sm-8"
+                                                                        md-is-error="passForm.oldPassword.$invalid && (passForm.$submitted || passForm.oldPassword.$dirty)">
+                                                        <label>{{"personal.old-password" | translate}}:</label>
+                                                        <input name="oldPassword" type="password"
+                                                               ng-required="true" ng-model="password">
 
-                                                        <div class="col-xs-11" style="position:absolute; bottom:0;">
-                                                            <div class="col-xs-6">
-                                                                <button ng-hide="passForm.confirmPassword.$invalid" type="submit" class="btn btn-info full-width">
-                                                                    <span class="glyphicon glyphicon-ok" ></span>
-                                                                    {{"personal.change-pass" | translate}}
-                                                                </button>
-                                                                <button ng-show="passForm.confirmPassword.$invalid" ng-disabled="true" type="submit" class="btn btn-default btn-block full-width">
-                                                                    <i class="fa fa-times"></i> {{"personal.change-pass"
-                                                                    | translate}}
-                                                                </button>
-                                                            </div>
-                                                            <div class="col-xs-6">
-                                                                <button class="btn btn-warning full-width"
-                                                                        ng-click="resetPassword()">
-                                                                    <span class="fa fa-times"></span> {{"personal.reset"
-                                                                    | translate}}
-                                                                </button>
+                                                        <div ng-messages="passForm.oldPassword.$error"
+                                                             ng-if="passForm.$submitted || passForm.oldPassword.$touched">
+                                                            <div ng-message="required">
+                                                                {{"personal.this-is-required" | translate}}:
                                                             </div>
                                                         </div>
-                                                    </form>
+                                                    </md-input-container>
                                                 </div>
-                                            </md-content>
-                                        </md-tab>
-                                        <md-tab label="{{'personal.change-send-em' | translate}}">
-                                            <md-content class="md-padding" style="min-height: 450px;">
-                                                <div style="overflow-x: hidden; padding-top: 50px;">
-                                                    <form novalidate
-                                                          name="emailForm"
-                                                          ng-submit="emailForm.$valid && changeSendingEmail()"
-                                                          ng-submit="changeSendingEmail()">
-                                                        <div>
-                                                            <strong class="col-xs-12 col-sm-4">{{"personal.curr-send-em"
-                                                                | translate}}: </strong>
 
-                                                            <md-input-container class="col-xs-6 col-sm-5 box-none">
-                                                                <input name="email" type="email" ng-class="editClass"
-                                                                       ng-readonly="true"
-                                                                       ng-model="email"
-                                                                       aria-label="Input">
-                                                            </md-input-container>
+                                                <div>
+                                                    <!--<strong class="col-xs-12 col-sm-4 per-pad">New-->
+                                                    <!--password:</strong>-->
+                                                    <md-input-container class="col-xs-8 col-sm-8"
+                                                                        md-is-error="passForm.newPassword.$invalid && (passForm.$submitted || passForm.newPassword.$dirty)">
+                                                        <label>{{"personal.new-password" | translate}}:</label>
+                                                        <input name="newPassword"
+                                                               type="password"
+                                                               ng-required="true"
+                                                               ng-model="newPassword"
+                                                               ng-required="true"
+                                                               md-maxlength="50"
+                                                               ng-minlength="8"
+                                                               ng-model="confirmPassword">
 
-                                                        </div>
-                                                        <div>
-                                                            <strong class="col-xs-12 col-sm-4">{{"personal.new-send-em"
-                                                                | translate}}: </strong>
-                                                            <md-input-container class="col-xs-6 col-sm-5 box-none">
-                                                                <label>{{"personal.new-em" | translate}}</label>
-                                                                <input name="newEmail"
-                                                                       type="email"
-                                                                       ng-model="newEmail"
-                                                                       aria-label="Input"
-                                                                       ng-required="true">
-                                                            </md-input-container>
-                                                        </div>
-
-                                                        <div class="col-xs-11" style="position:absolute; bottom:0;">
-
-                                                            <div class="col-xs-5">
-                                                                <button ng-hide="emailForm.newEmail.$invalid" type="submit" class="btn btn-info full-width">
-                                                                    <span class="glyphicon glyphicon-ok" ></span>
-                                                                    {{"personal.change-send-em" | translate}}
-                                                                </button>
-                                                                <button ng-show="emailForm.newEmail.$invalid" ng-disabled="true" type="submit" class="btn btn-default btn-block full-width">
-                                                                    <i class="fa fa-times"></i>
-                                                                    {{"personal.change-send-em" | translate}}
-                                                                </button>
-                                                                <!--<button class="btn btn-info full-width">-->
-                                                                <!--<i class="fa fa-floppy-o"></i> Change sending e-mail-->
-                                                                <!--</button>-->
+                                                        <div ng-messages="passForm.newPassword.$error"
+                                                             ng-if="passForm.$submitted || passForm.newPassword.$touched">
+                                                            <div ng-message="minlength">
+                                                                {{"personal.the-name-error-8" | translate}}.
                                                             </div>
-                                                            <div class="col-xs-5">
-                                                                <button class="btn btn-warning full-width"
-                                                                        ng-click="resetEmail()">
-                                                                    <i class="fa fa-times"></i> {{"personal.reset" |
-                                                                    translate}}
-                                                                </button>
+                                                            <div ng-message="md-maxlength">
+                                                                {{"personal.the-name-error" | translate}}.
+                                                            </div>
+                                                            <div ng-message="required">
+                                                                {{"personal.this-is-required" | translate}}.
                                                             </div>
                                                         </div>
-                                                    </form>
+                                                    </md-input-container>
+
                                                 </div>
-                                            </md-content>
-                                        </md-tab>
-                                    </md-tabs>
-                                </md-content>
-                            </div>
-                        </div>
+                                                <div>
+                                                    <!--<strong class="col-xs-12 col-sm-4 per-pad">Confirm-->
+                                                    <!--password:</strong>-->
+                                                    <md-input-container class="col-xs-8 col-sm-8"
+                                                                        md-is-error="passForm.confirmPassword.$invalid && (passForm.$submitted || passForm.confirmPassword.$dirty)">
+                                                        <label>{{"personal.confirm-pass" | translate}}</label>
+                                                        <input name="confirmPassword"
+                                                               type="password"
+                                                               ng-required="true"
+                                                               md-maxlength="50"
+                                                               ng-model="confirmPassword"
+                                                               match="newPassword">
+
+                                                        <div ng-messages="passForm.confirmPassword.$error"
+                                                             ng-if="passForm.$submitted || passForm.confirmPassword.$touched">
+                                                            <div ng-message="required">
+                                                                {{"personal.this-is-required" | translate}}.
+                                                            </div>
+                                                            <div ng-message="md-maxlength">
+                                                                {{"personal.the-name-error" | translate}}.
+                                                            </div>
+                                                            <div ng-message="match">
+                                                                {{"personal.pass-must-be-matching" |
+                                                                translate}}.
+                                                            </div>
+                                                        </div>
+                                                    </md-input-container>
+                                                </div>
+
+                                                <div class="col-xs-11" style="position:absolute; bottom:0;">
+                                                    <div class="col-xs-6">
+                                                        <button ng-hide="passForm.confirmPassword.$invalid"
+                                                                type="submit" class="btn btn-info full-width">
+                                                            <span class="glyphicon glyphicon-ok"></span>
+                                                            {{"personal.change-pass" | translate}}
+                                                        </button>
+                                                        <button ng-show="passForm.confirmPassword.$invalid"
+                                                                ng-disabled="true" type="submit"
+                                                                class="btn btn-default btn-block full-width">
+                                                            <i class="fa fa-times"></i> {{"personal.change-pass"
+                                                            | translate}}
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-xs-6">
+                                                        <button class="btn btn-warning full-width"
+                                                                ng-click="resetPassword()">
+                                                            <span class="fa fa-times"></span> {{"personal.reset"
+                                                            | translate}}
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </md-content>
+                                </md-tab>
+                                <md-tab label="{{'personal.change-send-em' | translate}}">
+                                    <md-content class="md-padding" style="min-height: 450px;">
+                                        <div style="overflow-x: hidden; padding-top: 50px;">
+                                            <form novalidate
+                                                  name="emailForm"
+                                                  ng-submit="emailForm.$valid && changeSendingEmail()"
+                                                  ng-submit="changeSendingEmail()">
+                                                <div>
+                                                    <strong class="col-xs-12 col-sm-4">{{"personal.curr-send-em"
+                                                        | translate}}: </strong>
+
+                                                    <md-input-container class="col-xs-6 col-sm-5 box-none">
+                                                        <input name="email" type="email" ng-class="editClass"
+                                                               ng-readonly="true"
+                                                               ng-model="email"
+                                                               aria-label="Input">
+                                                    </md-input-container>
+
+                                                </div>
+                                                <div>
+                                                    <strong class="col-xs-12 col-sm-4">{{"personal.new-send-em"
+                                                        | translate}}: </strong>
+                                                    <md-input-container class="col-xs-6 col-sm-5 box-none">
+                                                        <label>{{"personal.new-em" | translate}}</label>
+                                                        <input name="newEmail"
+                                                               type="email"
+                                                               ng-model="newEmail"
+                                                               aria-label="Input"
+                                                               ng-required="true">
+                                                    </md-input-container>
+                                                </div>
+
+                                                <div class="col-xs-11" style="position:absolute; bottom:0;">
+
+                                                    <div class="col-xs-5">
+                                                        <button ng-hide="emailForm.newEmail.$invalid" type="submit"
+                                                                class="btn btn-info full-width">
+                                                            <span class="glyphicon glyphicon-ok"></span>
+                                                            {{"personal.change-send-em" | translate}}
+                                                        </button>
+                                                        <button ng-show="emailForm.newEmail.$invalid"
+                                                                ng-disabled="true" type="submit"
+                                                                class="btn btn-default btn-block full-width">
+                                                            <i class="fa fa-times"></i>
+                                                            {{"personal.change-send-em" | translate}}
+                                                        </button>
+                                                        <!--<button class="btn btn-info full-width">-->
+                                                        <!--<i class="fa fa-floppy-o"></i> Change sending e-mail-->
+                                                        <!--</button>-->
+                                                    </div>
+                                                    <div class="col-xs-5">
+                                                        <button class="btn btn-warning full-width"
+                                                                ng-click="resetEmail()">
+                                                            <i class="fa fa-times"></i> {{"personal.reset" |
+                                                            translate}}
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </md-content>
+                                </md-tab>
+                            </md-tabs>
+                        </md-content>
                     </div>
                 </div>
+                <!-- end right-side-->
             </div>
         </div>
     </div>
