@@ -67,7 +67,7 @@
   "myworks.accept-confirm-ok":"Accept ordering",
   "myworks.accept-confirm-cancel":"Let me think",
   "myworks.reject-confirm-title":"Are you sure?",
-  "myworks.accept-confirm-textContent":"After rejecting, you will not see this order in tab 'ACCEPTED' any more.",
+  "myworks.reject-confirm-textContent":"After rejecting, you will not see this order in tab 'ACCEPTED' any more.",
   "myworks.reject-confirm-ok":"Reject ordering",
   "myworks.reject-confirm-cancel":"I want to think",
   "myworks.not-finished-yet":"not finished yet",
