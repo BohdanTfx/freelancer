@@ -1,26 +1,103 @@
-<div class="statistics-page">
-    <div class="container" style="background-color: #ffffff;min-height: 450px;">
+<div id="tab-content" class="panel panel-default">
+    <div class="statistics">
+        <md-content>
+            <md-tabs md-dynamic-height md-border-bottom>
 
-        <h3>{{"admin.statistics" | translate}}</h3>
+                    <!--Start Tab Proposed projects-->
+                    <md-tab label="Users">
+                        <md-content class="md-padding" style="min-height: 450px;">
+
+                            <h4>{{"admin.statistics-dev-cust" | translate}}</h4>
+                            <div google-chart chart="chart"></div>
+
+                        </md-content>
+                    </md-tab>
 
 
-        <div class="row" style="padding: 20px;">
-            <div class="col-sm-5">
-                <h4>{{"admin.statistics-dev-cust" | translate}}</h4>
+                <!--Start Tab Subscribed projects-->
+                <md-tab label="Orders">
+                    <md-content class="md-padding" style="min-height: 450px;">
 
-                <div google-chart chart="chart"></div>
-            </div>
-            <div class="col-sm-7">
-                <h4>{{"admin.statistics-orders" | translate}}</h4>
+                        <h4>{{"admin.statistics-orders" | translate}}</h4>
+                        <div google-chart chart="chartObject"></div>
 
-                <div google-chart chart="chartObject"></div>
-            </div>
-        </div>
+                    </md-content>
+                </md-tab>
+
+                <!--Start Tab Projects in process-->
+                <md-tab label="Tests">
+                    <md-content class="md-padding" style="min-height: 450px;">
+                        <h4>TESTs</h4>
+                        <div google-chart chart="chartTests"></div>
+                    </md-content>
+                </md-tab>
+                <!--End Tab Projects in process-->
+
+
+
+            </md-tabs>
+        </md-content>
     </div>
-
-    <md-switch ng-model="element" aria-label="Switch 1">
-        Switch 1: {{ element }}
-    </md-switch>
-
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<div class="statistics-page">-->
+    <!--<div class="container" style="background-color: #ffffff;min-height: 450px;">-->
+
+        <!--<h3>{{"admin.statistics" | translate}}</h3>-->
+
+
+        <!--<div class="row" style="padding: 20px;">-->
+            <!--<div class="col-sm-5">-->
+                <!--<h4>{{"admin.statistics-dev-cust" | translate}}</h4>-->
+
+                <!--<div google-chart chart="chart"></div>-->
+            <!--</div>-->
+            <!--<div class="col-sm-7">-->
+                <!--<h4>{{"admin.statistics-orders" | translate}}</h4>-->
+
+                <!--<div google-chart chart="chartObject"></div>-->
+            <!--</div>-->
+        <!--</div>-->
+
+
+        <!--div class="row" style="padding: 20px;">-->
+        <!--<div class="col-sm-8">-->
+            <!--<h4>{{"admin.statistics-dev-cust" | translate}}</h4>-->
+
+            <!--<div google-chart chart="chartTests" style="height:600px; width:100%;"></div>-->
+        <!--</div>-->
+        <!--<div class="col-sm-2">-->
+
+        <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+
+
+
+<!--</div>-->
 

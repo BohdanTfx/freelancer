@@ -8,7 +8,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TestJdbcDao extends GenericJdbcDao<Test, Integer> implements TestDao {
 
@@ -56,5 +58,28 @@ public class TestJdbcDao extends GenericJdbcDao<Test, Integer> implements TestDa
 			e.printStackTrace();
 		}
 		return tests;
+	}
+
+	@Override
+	public Map<Test,Integer> getPopularTests(){
+		Map<Test,Integer> map = new HashMap<>();
+		String query = " SELECT dq.test_id as id,t.tech_id,t.name,t.admin_id,t.pass_score,t.sec_per_quest,t.version,t.is_deleted,COUNT(t.id) AS amount" +
+				" FROM developer_qa dq JOIN test t ON dq.test_id = t.id " +
+				"  GROUP BY t.tech_id " +
+				" ORDER BY COUNT(t.id) DESC LIMIT 5";
+		try (Connection connection = connectionPool.getConnection();
+			 PreparedStatement statement = connection
+					 .prepareStatement(query)) {
+			try (ResultSet set = statement.executeQuery()) {
+				while (set.next()) {
+					Test test;
+					test = transformer.getObject(set);
+					map.put(test,set.getInt("amount"));
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return map;
 	}
 }

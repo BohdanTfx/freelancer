@@ -81,6 +81,9 @@ public class AdminController extends HttpServlet implements Responsable {
                 case "admin/statistics/orders":
                     sendCreationOrdersAmount(request, response);
                     break;
+                case "admin/statistics/tests":
+                    sendCreationPopularTests(request, response);
+                    break;
                 case "admin/tests":
                     getTests(request, response);
                     break;
@@ -383,5 +386,19 @@ public class AdminController extends HttpServlet implements Responsable {
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(adminJson);
+    }
+
+    private void sendCreationPopularTests(HttpServletRequest request, HttpServletResponse response){
+        Map<Test,Integer> testMap = testService.getPopularTests();
+          Map<String,Object> resultMap = new HashMap<>();
+          Set<Test> tests = testMap.keySet();
+          tests.forEach(test ->{
+            test.setTechnology(technologyService.findById(test.getTechId()));
+          });
+         resultMap.put("tests",tests);
+         resultMap.put("amounts", testMap.values());
+
+         sendResponse(response,resultMap,mapper);
+
     }
 }

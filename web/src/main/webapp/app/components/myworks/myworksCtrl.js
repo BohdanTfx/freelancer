@@ -2,12 +2,12 @@
  * Created by Rynik on 30.01.2016.
  */
 angular.module('FreelancerApp')
-    .controller('myworksCtrl', function ($scope, myworksAPI, $log, $mdDialog, $mdMedia, Notification, $rootScope) {
+    .controller('myworksCtrl', function ($scope, myworksAPI, $log, $mdDialog, $mdMedia, Notification, $rootScope,$translate) {
 
         if ($rootScope.role == 'developer') {
 
             myworksAPI.getAllDeveloperWorks().success(function (data) {
-                $scope.firstTitle = 'Subscribed';
+                $scope.firstTitle = $translate.instant("myworks.tab-1-dev");
 
                 $scope.firstWorks = data.subscribedWorks;
                 $scope.secondWorks = data.processedWorks;
@@ -15,27 +15,29 @@ angular.module('FreelancerApp')
                 $scope.notAcceptedWorks = data.notAcceptedWorks;
 
 
-
             }).error(function () {
                 Notification
                     .error({
-                        title: 'Error!',
-                        message: 'Something went bad. Please try again.'
+                        title: $translate.instant("myworks.msg-error-title"),
+                        message: $translate.instant("myworks.msg-error-descr")
                     });
             });
         } else {
             myworksAPI.getAllCustomerWorks().success(function (data) {
-                $scope.firstTitle = 'Available';
-
+                $scope.firstTitle =  $translate.instant("myworks.tab-1-cust");
                 $scope.firstWorks = data.availableWorks;
                 $scope.secondWorks = data.inProgressWorks;
                 $scope.thirdWorks = data.finishedWorks;
 
+
+                console.log(data);
+                console.log($scope.firstWorks);
+
             }).error(function () {
                 Notification
                     .error({
-                        title: 'Error!',
-                        message: 'Something went bad. Please try again.'
+                        title: $translate.instant("myworks.msg-error-title"),
+                        message: $translate.instant("myworks.msg-error-descr")
                     });
             });
 
@@ -52,8 +54,8 @@ angular.module('FreelancerApp')
                 ).error(function () {
                         Notification
                             .error({
-                                title: 'Error!',
-                                message: 'Something went bad. Please try again.'
+                                title: $translate.instant("myworks.msg-error-title"),
+                                message: $translate.instant("myworks.msg-error-descr")
                             });
                     });
 
@@ -61,8 +63,6 @@ angular.module('FreelancerApp')
                     function (dataWorkers) {
                         $scope.workers = dataWorkers.workers;
                         $scope.workerInfo = dataWorkers.workerInfo;
-
-                        console.log($scope.workers);
 
                         $mdDialog.show({
                             controller: DialogController,
@@ -79,8 +79,8 @@ angular.module('FreelancerApp')
                 ).error(function () {
                         Notification
                             .error({
-                                title: 'Error!',
-                                message: 'Something went bad. Please try again.asdasdad!!!!!!!!!!!!!!!!!11111111'
+                                title: $translate.instant("myworks.msg-error-title"),
+                                message: $translate.instant("myworks.msg-error-descr")
                             });
                     });
             }else{
@@ -101,40 +101,163 @@ angular.module('FreelancerApp')
                             },
                             clickOutsideToClose: true
                         });
-
                     }
                 ).error(function () {
                         Notification
                             .error({
-                                title: 'Error!',
-                                message: 'Something went bad. Please try again.'
+                                title: $translate.instant("myworks.msg-error-title"),
+                                message: $translate.instant("myworks.msg-error-descr")
                             });
                     });
             }
 
         };
 
+        $scope.showAcceptConfirm = function(ev,project) {
+            // Appending dialog to document.body to cover sidenav in docs app
+            var confirm = $mdDialog.confirm()
+                .title ($translate.instant("myworks.accept-confirm-title"))
+                .textContent($translate.instant("myworks.accept-confirm-textContent"))
+                .targetEvent(ev)
+                .ok($translate.instant("myworks.accept-confirm-ok"))
+                .cancel($translate.instant("myworks.accept-confirm-cancel"));
+            $mdDialog.show(confirm).then(function() {
+                myworksAPI.acceptOrdering(project.id).success(function(){
+                    myworksAPI.getAllDeveloperWorks().success(function (data) {
+                        $scope.firstTitle = $translate.instant("myworks.tab-1-dev");
+
+                        $scope.firstWorks = data.subscribedWorks;
+                        $scope.secondWorks = data.processedWorks;
+                        $scope.thirdWorks = data.finishedWorks;
+                        $scope.notAcceptedWorks = data.notAcceptedWorks;
+
+                    }).error(function () {
+                        Notification
+                            .error({
+                                title: $translate.instant("myworks.msg-error-title"),
+                                message: $translate.instant("myworks.msg-error-descr")
+                            });
+                    });
+
+
+                    Notification
+                        .success({
+                            title: $translate.instant("myworks.msg-success-title"),
+                            message: $translate.instant("myworks.msg-success-descr-accepted-order")
+                        });
+                })
+            }, function() {
+
+            });
+        };
+
+        $scope.showRejectConfirm = function(ev,project) {
+            // Appending dialog to document.body to cover sidenav in docs app
+            var confirm = $mdDialog.confirm()
+                .title($translate.instant("myworks.reject-confirm-title"))
+                .textContent($translate.instant("myworks.reject-confirm-textContent"))
+                .targetEvent(ev)
+                .ok($translate.instant("myworks.reject-confirm-ok"))
+                .cancel($translate.instant("myworks.reject-confirm-cancel"));
+            $mdDialog.show(confirm).then(function() {
+                myworksAPI.rejectOrdering(project.id).success(function(){
+                    myworksAPI.getAllDeveloperWorks().success(function (data) {
+                        $scope.firstTitle = 'Subscribed';
+
+                        $scope.firstWorks = data.subscribedWorks;
+                        $scope.secondWorks = data.processedWorks;
+                        $scope.thirdWorks = data.finishedWorks;
+                        $scope.notAcceptedWorks = data.notAcceptedWorks;
+
+                    }).error(function () {
+                        Notification
+                            .error({
+                                title: $translate.instant("myworks.msg-error-title"),
+                                message: $translate.instant("myworks.msg-error-descr")
+                            });
+                    });
+
+
+                    Notification
+                        .success({
+                            title: $translate.instant("myworks.msg-success-title"),
+                            message: $translate.instant("myworks.msg-success-descr-rejected-order")
+                        });
+                })
+            }, function() {
+
+            });
+        };
+
     });
 
 
-function DialogController($scope, $mdDialog, project, customer, workers, workerInfo) {
+function DialogController($scope, $mdDialog, project, customer, workers, workerInfo,$rootScope,myworksAPI,Notification,$translate) {
     $scope.project = project;
     $scope.customer = customer;
     $scope.workers = workers;
-    $scope.workerInfo = workerInfo
+    $scope.workerInfo = workerInfo;
+    $scope.role = $rootScope.role;
+
 
     if($scope.workerInfo == undefined){
         $scope.workerInfo = 'undefined';
     }
 
     if ($scope.project.endedDate == null) {
-        $scope.project.endedDate = 'not finished yet';
+        $scope.project.endedDate =  $translate.instant("myworks.not-finished-yet");
     }
 
     $scope.cancel = function () {
         $mdDialog.cancel();
     };
 
+    $scope.finishOrdering = function(order_id){
+        myworksAPI.finishOrdering(order_id).success(function(){
+            Notification
+                .success({
+                    title: $translate.instant("myworks.msg-success-title"),
+                    message: $translate.instant("myworks.msg-success-descr-finished-order")
+                });
+
+            $scope.cancel();
+             myworksAPI.getAllCustomerWorks().success(function (data) {
+                 $scope.firstTitle =  $translate.instant("myworks.tab-1-cust");
+
+                $scope.firstWorks = data.availableWorks;
+                $scope.secondWorks = data.inProgressWorks;
+                $scope.thirdWorks = data.finishedWorks;
+
+
+                console.log(data);
+                console.log($scope.firstWorks);
+
+
+            }).error(function () {
+                Notification
+                    .error({
+                        title: $translate.instant("myworks.msg-error-title"),
+                        message: $translate.instant("myworks.msg-error-descr")
+                    });
+            });
+
+
+
+        }).error(function(){
+            Notification
+                .error({
+                    title: $translate.instant("myworks.msg-error-title"),
+                    message: $translate.instant("myworks.msg-error-descr")
+                });
+        });
+
+    }
+
+
 }
+
+
+
+
 
 

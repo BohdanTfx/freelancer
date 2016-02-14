@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -46,6 +47,7 @@ public class CustomerController extends HttpServlet implements Responsable {
     private DeveloperService developerService;
     private TechnologyService technologyService;
     private ObjectMapper mapper;
+    private OrderCounterService orderCounterService;
 
     public CustomerController() {
         testService = (TestService) ApplicationContext.getInstance().getBean(
@@ -61,6 +63,7 @@ public class CustomerController extends HttpServlet implements Responsable {
                 .getBean("feedbackService");
         orderingService = (OrderingService) ApplicationContext.getInstance()
                 .getBean("orderingService");
+        orderCounterService = (OrderCounterService) ApplicationContext.getInstance().getBean("orderCounterService");
     }
 
     @Override
@@ -105,6 +108,7 @@ private void createOrder(HttpServletRequest request,
         .collect(
         Collectors.toMap(Map.Entry::getKey,
         e -> new String[] { e.getValue() })));
+        incrementOrderCreationStatiscts();
         } catch (Exception e) {
         e.printStackTrace();
         response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
@@ -112,6 +116,22 @@ private void createOrder(HttpServletRequest request,
         }
         response.sendError(HttpServletResponse.SC_OK);
         }
+
+
+
+    private void incrementOrderCreationStatiscts() {
+        OrderCounter counter = orderCounterService.getOrderCounterByDate(
+                new java.sql.Date(new java.util.Date().getTime()));
+        if (counter != null) {
+            orderCounterService.incrementCounter(counter.getId());
+        } else {
+            String[] count = {"1"};
+            Map<String, String[]> map = new HashMap<>();
+            map.put("count", count);
+            orderCounterService.create(map);
+        }
+
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -149,6 +169,9 @@ private void createOrder(HttpServletRequest request,
                     break;
                 case "cust/dev/accept":
                     acceptDeveloper(request, response);
+                    break;
+                case "cust/finishOrdering":
+                    finishOrdering(request, response);
                     break;
                 default:
             }
@@ -491,6 +514,16 @@ private void createOrder(HttpServletRequest request,
             isWorker = true;
         }
         sendResponse(response,isWorker,mapper);
+    }
+
+    private void finishOrdering(HttpServletRequest request,HttpServletResponse response){
+        Integer orderId = Integer.parseInt(request.getParameter("order_id"));
+
+        Ordering ordering =  orderingService.findById(orderId);
+        ordering.setEnded(true);
+        ordering.setEndedDate(new Timestamp(new java.util.Date().getTime()));
+        orderingService.modify(ordering);
+
     }
 
 }

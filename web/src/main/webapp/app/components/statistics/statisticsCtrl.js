@@ -1,5 +1,5 @@
 angular.module('FreelancerApp')
-    .controller('statisticsCtrl', function($scope, statisticsAPI ,$mdDialog){
+    .controller('statisticsCtrl', function($scope, statisticsAPI ,$mdDialog,Notification){
         $scope.admin = {};
         $scope.element = {};
         $scope.admin.email = "";
@@ -17,6 +17,22 @@ angular.module('FreelancerApp')
                     .targetEvent(ev)
             );
         };
+
+        statisticsAPI.getStatisticPopularTests().success(function(data){
+            console.log(data);
+
+            if(data.tests.length>4) {
+                $scope.showTestStat(data.tests, data.amounts);
+            }else{
+                Notification
+                    .info({
+                        title: 'Info!',
+                        message: 'Not enought data for Test Statistic'
+                    });
+            }
+
+
+        });
 
 
 
@@ -156,6 +172,36 @@ angular.module('FreelancerApp')
 
         }
         ///////////////////////////////////////////////////////////////////////////
+
+
+        $scope.showTestStat = function(testList,amountList) {
+            $scope.chartTests = {};
+
+            $scope.chartTests.type = "ColumnChart";
+
+            $scope.test1 = [{v: testList[0].technology.name},{v: amountList[0]},];
+            $scope.test2 = [{v: testList[1].technology.name},{v: amountList[1]},];
+            $scope.test3 = [{v: testList[2].technology.name},{v: amountList[2]},];
+            $scope.test4 = [{v: testList[3].technology.name},{v: amountList[3]},];
+            $scope.test5 = [{v: testList[4].technology.name},{v: amountList[4]},];
+
+            $scope.chartTests.data = {
+                "cols": [
+                    {id: "t", label: "Topping", type: "string"},
+                    {id: "s", label: "Passed", type: "number"}
+                ], "rows": [
+                    {c: $scope.test1},
+                    {c: $scope.test2},
+                    {c: $scope.test3},
+                    {c: $scope.test4},
+                    {c: $scope.test5},
+                ]
+            };
+
+            $scope.chartTests.options = {
+                'title': 'Most popular tests'
+            };
+        }
 
 
     });
