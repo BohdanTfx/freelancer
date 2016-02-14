@@ -1,9 +1,9 @@
 package com.epam.freelancer.database.dao;
 
-import java.util.List;
-
 import com.epam.freelancer.database.model.BaseEntity;
 import com.epam.freelancer.database.persistence.ConnectionPool;
+
+import java.util.List;
 
 public interface GenericManyToManyDao<F extends BaseEntity<ID>, S extends BaseEntity<ID>, M extends BaseEntity<ID>, ID>
 {
@@ -17,5 +17,5 @@ public interface GenericManyToManyDao<F extends BaseEntity<ID>, S extends BaseEn
 
 	void saveContact(ID firstId, ID secondId);
 
-	public void setConnectionPool(ConnectionPool connectionPool);
+	void setConnectionPool(ConnectionPool connectionPool);
 }

@@ -11,7 +11,7 @@ angular.module('FreelancerApp')
                 $scope.itemListStart = page;
                 $scope.getQuestionsByTechId($scope.chosenTechID);
             }
-        }
+        };
 
         $scope.fillPagination = function (data) {
             $scope.pages = data;
@@ -29,7 +29,7 @@ angular.module('FreelancerApp')
                         $scope.showLast = true;
                 }
             }
-        }
+        };
 
         $scope.getQuestionsByTechId = function (id) {
             if (id != $scope.chosenTechID) {
@@ -58,7 +58,7 @@ angular.module('FreelancerApp')
                         message: $translate.instant('notification.smth-wrong')
                     });
             });
-        }
+        };
 
         createtestAPI.getAllTests().success(function (data) {
             $scope.tests = data;
@@ -121,7 +121,7 @@ angular.module('FreelancerApp')
                         });
                 });
             }
-        }
+        };
 
         $scope.moveRight = function (id) {
             for (var i = 0; i < $scope.availableQuestions.length; i++) {
@@ -131,7 +131,7 @@ angular.module('FreelancerApp')
                     $scope.availableQuestions.size--;
                 }
             }
-        }
+        };
 
         $scope.moveLeft = function (id) {
             for (var i = 0; i < $scope.chosenQuestions.length; i++) {
@@ -146,7 +146,7 @@ angular.module('FreelancerApp')
                     $scope.chosenQuestions.splice(i, 1);
                 }
             }
-        }
+        };
 
         $scope.testReset = function () {
             $scope.test = {};
@@ -154,7 +154,7 @@ angular.module('FreelancerApp')
             $scope.chosenQuestions = [];
             $scope.availableQuestions = [];
             $scope.showLast = false;
-        }
+        };
 
         var question = {};
         var answer = {name: '', correct: false};
@@ -163,11 +163,11 @@ angular.module('FreelancerApp')
 
         $scope.addAnswerForm = function () {
             $scope.answers.push(Object.assign({}, answer));
-        }
+        };
 
         $scope.deleteAnswerForm = function (id) {
             $scope.answers.splice(id, 1);
-        }
+        };
 
         $scope.createQuestion = function () {
             if ($scope.answers.length < 2) {
@@ -210,13 +210,13 @@ angular.module('FreelancerApp')
                         message: $translate.instant('notification.smth-wrong')
                     });
             });
-        }
+        };
 
         $scope.questionReset = function () {
             $scope.answers = [];
             $scope.answers.push(Object.assign({}, answer));
             $scope.question = {};
-        }
+        };
 
         $scope.setDelTest = function (test) {
             $scope.delTest = test;
@@ -245,12 +245,12 @@ angular.module('FreelancerApp')
                         message: $translate.instant('createtest.test-delete-success')
                     });
             });
-        }
+        };
 
 
         $scope.setDelQuestion = function (question) {
             $scope.delQuestion = question;
-        }
+        };
 
         $scope.deleteQuestion = function () {
             if ($scope.delQuestion == 'undefined') {
@@ -275,7 +275,7 @@ angular.module('FreelancerApp')
                         message: $translate.instant('createtest.question-delete-success')
                     });
             });
-        }
+        };
 
         $scope.sortField = undefined;
         $scope.reverse = false;
@@ -305,7 +305,7 @@ angular.module('FreelancerApp')
                 $scope.questionItemListStart = page;
                 $scope.getQuestionsByTechIdForQuestTab($scope.questTabTechId);
             }
-        }
+        };
 
         $scope.fillQuestionTabPagination = function (data) {
             $scope.questionPages = data;
@@ -323,7 +323,7 @@ angular.module('FreelancerApp')
                         $scope.questTabShowLast = true;
                 }
             }
-        }
+        };
 
         $scope.getQuestionsByTechIdForQuestTab = function (id) {
             $scope.techIsChosen = true;

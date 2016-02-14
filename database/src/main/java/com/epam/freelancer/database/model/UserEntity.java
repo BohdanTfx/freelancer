@@ -26,11 +26,11 @@ public interface UserEntity extends BaseEntity<Integer> {
 
 	String getLname();
 
-	void setRole(String role);
+	void setLname(String lname);
 
 	String getRole();
 
-	void setLname(String lname);
+	void setRole(String role);
 
 	String getLang();
 
@@ -40,19 +40,19 @@ public interface UserEntity extends BaseEntity<Integer> {
 
 	void setSalt(String salt);
 
-	public String getRegUrl();
+	String getRegUrl();
 
-	public void setRegUrl(String regUrl);
+	void setRegUrl(String regUrl);
 
-	public Timestamp getRegDate();
+	Timestamp getRegDate();
 
-	public void setRegDate(Timestamp regDate);
+	void setRegDate(Timestamp regDate);
 
-	public void setImgUrl(String imgUrl);
+	String getImgUrl();
 
-	public String getImgUrl();
+	void setImgUrl(String imgUrl);
 
-	public String getConfirmCode();
+	String getConfirmCode();
 
-	public void setConfirmCode(String confirmCode);
+	void setConfirmCode(String confirmCode);
 }
