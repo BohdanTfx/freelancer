@@ -80,10 +80,9 @@
                                         <div class="cust-image-block" style="height: 64px;width: 64px;">
                                             <img class="user-image"
                                             class="unit-cust-image"
-                                                 src="/images/profile/no-image.png"
+                                            src="{{customer.imgUrl==null? '/images/profile/no-image.png' : customer.imgUrl}}"
                                                  alt=""/>
-                                            <!--src="{{customer.imgUrl==null? '/images/profile/no-image.png' : customer.imgUrl}}"-->
-                                        </div>
+                                         </div>
                                         <div class="cust-name-block">
                                             {{customer.fname}}
                                             {{customer.lname}}
