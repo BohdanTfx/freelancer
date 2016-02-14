@@ -48,6 +48,7 @@ public class CustomerController extends HttpServlet implements Responsable {
     private TechnologyService technologyService;
     private ObjectMapper mapper;
     private OrderCounterService orderCounterService;
+    private UserManager userManager;
 
     public CustomerController() {
         testService = (TestService) ApplicationContext.getInstance().getBean(
@@ -61,6 +62,8 @@ public class CustomerController extends HttpServlet implements Responsable {
                 .getBean("developerService");
         feedbackService = (FeedbackService) ApplicationContext.getInstance()
                 .getBean("feedbackService");
+        userManager = (UserManager) ApplicationContext.getInstance().getBean(
+                "userManager");
         orderingService = (OrderingService) ApplicationContext.getInstance()
                 .getBean("orderingService");
         orderCounterService = (OrderCounterService) ApplicationContext.getInstance().getBean("orderCounterService");
@@ -155,11 +158,11 @@ private void createOrder(HttpServletRequest request,
                 case "cust/order/create":
                     createOrder(request, response);
                     break;
-                case "cust/changeCustPassword":
+                case "cust/changePassword":
                     changeCustomerPassword(request, response);
                     break;
                 case "cust/confirmChangePasswordAndEmail":
-                    confirmChangePassword(request, response);
+                    confirmChangePasswordAndEmail(request, response);
                     break;
                 case "cust/uploadImage":
                     uploadImage(request, response);
@@ -169,6 +172,9 @@ private void createOrder(HttpServletRequest request,
                     break;
                 case "cust/dev/accept":
                     acceptDeveloper(request, response);
+                    break;
+                case "cust/changeEmail":
+                    changeEmail(request, response);
                     break;
                 case "cust/finishOrdering":
                     finishOrdering(request, response);
@@ -268,45 +274,56 @@ private void createOrder(HttpServletRequest request,
     private void fillCustomerPersonalPage(HttpServletRequest request,
         HttpServletResponse response) throws IOException
         {
-            HttpSession session = request.getSession();
-            Customer customer = (Customer) session.getAttribute("user");
-            Contact contact = customerService.getContactByCustomerId(customer.getId());
-
-            String customerJson = new Gson().toJson(customer);
-            String contactJson = new Gson().toJson(contact);
-            String resultJson = "{\"cust\":" + customerJson + ",\"cont\":" + contactJson +"}";
-            if(contactJson.length() == 0){
-                resultJson = "{\"cust\":" + customerJson + "}";
-            }
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write(resultJson);
+            Customer customer = (Customer) request.getSession().getAttribute("user");
+            customer.setPassword(null);
+            customer.setSalt(null);
+            customer.setUuid(null);
+            customer.setRegUrl(null);
+            Map<String, Object> resultMap = new HashMap();
+            resultMap.put("cust", customer);
+            resultMap.put("contacts", customerService.getContactByCustomerId(customer.getId()));
+            sendResponse(response, resultMap, mapper);
         }
 
     private void updatePersonalData(HttpServletRequest request,
                                     HttpServletResponse response) throws IOException {
-        Customer    customer = null;
-        Contact     contact = null;
+        String paramCustomer = request.getParameter("customer");
+        String paramContact = request.getParameter("contact");
+
         SimpleDateFormat format = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a");
         mapper.setDateFormat(format);
-        String customerJson = request.getParameter("customer");
-        try {
-            customer = mapper.readValue(customerJson, Customer.class);
-        } catch(Exception e){
-            LOG.warn("Some problem with mapper Customer Controller");
+
+        if (paramCustomer == null || "".equals(paramCustomer)) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
         }
-        String contactJson = request.getParameter("contact");
-        if(contactJson.length() != 0 ) {
-            contact = mapper.readValue(contactJson, Contact.class);
+        Customer customer = mapper.readValue(paramCustomer, new TypeReference<Customer>() {
+        });
+        Customer dbCustomer = customerService.findById(((UserEntity) request.getSession().getAttribute("user")).getId());
+        customer.setPassword(dbCustomer.getPassword());
+        customer.setSalt(dbCustomer.getSalt());
+        customer.setUuid(dbCustomer.getUuid());
+        customer.setRegUrl(dbCustomer.getRegUrl());
+        customerService.modify(customer);
+        if (paramContact == null || "".equals(paramContact)) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
         }
-        if(customerService.getContactByCustomerId(customer.getId()) == null){
-            contact.setCustomId(customer.getId());
+        Contact contact = mapper.readValue(paramContact, Contact.class);
+        contact.setCustomId(customer.getId());
+        Contact oldContact = customerService.getContactByCustomerId(customer.getId());
+        if (oldContact == null) {
             customerService.createContact(contact);
         } else {
-            contact.setCustomId(customer.getId());
+            contact.setId(oldContact.getId());
             customerService.updateContact(contact);
         }
-        customerService.modify(customer);
+        customer.setPassword(null);
+        customer.setSalt(null);
+        customer.setUuid(null);
+        customer.setRegUrl(null);
+        customer.setRole("customer");
+        request.getSession().setAttribute("user", customer);
     }
 
     private void getCustomerHistory(HttpServletRequest
@@ -316,61 +333,58 @@ private void createOrder(HttpServletRequest request,
 
     private void changeCustomerPassword(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String password = request.getParameter("password");
-        String newPassword = request.getParameter("newPassword");
         HttpSession session = request.getSession();
         Customer customer = (Customer) session.getAttribute("user");
-        StringBuilder confirmPhoneCode =  new StringBuilder();
-        UserManager userManager = new UserManager();
-
-        if (customer != null) {
-            if(userManager.validCredentials(customer.getEmail(), password, customer)){
-                SecureRandom random = new SecureRandom();
-                for(int i = 0; i < 4; i++){
-                    confirmPhoneCode.append(String.valueOf(random.nextInt(9)));
-                }
-                customer.setConfirmCode(confirmPhoneCode.toString());
-                try{
-                    String phoneNumber = customerService.getContactByCustomerId(customer.getId()).getPhone();
-                    SmsSender smsSender = new SmsSender();
-                    smsSender.sendSms(phoneNumber, "Confirm code: " + confirmPhoneCode.toString(),
-                            "e-freelance");
-                } catch(NullPointerException e){
-                    LOG.warn("The phone number is empty");
-                }
-                String confirmCodeJson = new Gson().toJson(confirmPhoneCode);
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-                response.getWriter().write(confirmCodeJson);
-            } else {
-                System.out.println("Invalid password");
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                        "Invalid credentials");
-                response.flushBuffer();
-                return;
-            }
+        if (userManager.validCredentials(customer.getEmail(), password, customerService.findById(customer.getId()))) {
+            generatePhoneCode(customer);
+        } else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid credentials");
         }
     }
 
-    private void confirmChangePassword(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void changeEmail(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String email = request.getParameter("email");
+        HttpSession session = request.getSession();
+        Customer customer = (Customer) session.getAttribute("user");
+        if (customer != null) {
+            if (userManager.isEmailAvailable(email) || customer.getEmail().equals(email)) {
+                generatePhoneCode(customer);
+            } else {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid email");
+                return;
+            }
+        } else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid user");
+            return;
+        }
+    }
+
+    private void confirmChangePasswordAndEmail(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String password = request.getParameter("password");
+        String email = request.getParameter("email");
         String confirmCode = request.getParameter("confirmCode");
         HttpSession session = request.getSession();
         Customer customer = (Customer) session.getAttribute("user");
-
-        if(customer.getConfirmCode().equals(confirmCode)){
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write(new Gson().toJson("good"));
-        } else {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-                    "Invalid credentials");
-            response.flushBuffer();
-            return;
+        if (password != null) {
+            if (checkConfirmCode(customer, confirmCode, response)) {
+                customer.setPassword(password);
+                customerService.encodePassword(customer);
+                customerService.modify(customer);
+            }
         }
-
-        customer.setPassword(password);
-        customerService.encodePassword(customer);
-        customerService.modify(customer);
+        if (email != null) {
+            if (checkConfirmCode(customer, confirmCode, response)) {
+                customer = customerService.findById(customer.getId());
+                customer.setSendEmail(email);
+                customerService.modify(customer);
+                customer.setPassword(null);
+                customer.setSalt(null);
+                customer.setUuid(null);
+                customer.setRegUrl(null);
+                customer.setRole("customer");
+                session.setAttribute("user", customer);
+            }
+        }
     }
 
     private void uploadImage(HttpServletRequest request,
@@ -526,4 +540,31 @@ private void createOrder(HttpServletRequest request,
 
     }
 
+    private String generatePhoneCode(Customer customer) {
+        StringBuilder confirmPhoneCode = new StringBuilder();
+        SecureRandom random = new SecureRandom();
+        for (int i = 0; i < 4; i++) {
+            confirmPhoneCode.append(String.valueOf(random.nextInt(9)));
+        }
+        customer.setConfirmCode(confirmPhoneCode.toString());
+        try {
+            String phoneNumber = customerService.getContactByCustomerId(customer.getId()).getPhone();
+            SmsSender smsSender = new SmsSender();
+            smsSender.sendSms(phoneNumber, "Confirm code: " + confirmPhoneCode.toString(),
+                    "e-freelance");
+        } catch (NullPointerException e) {
+            LOG.warn("The phone number is empty");
+        }
+        return confirmPhoneCode.toString();
+    }
+
+    private Boolean checkConfirmCode(Customer customer, String confirmCode, HttpServletResponse response) throws IOException {
+        if (!customer.getConfirmCode().equals(confirmCode)){
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                    "Invalid code");
+            response.flushBuffer();
+            return false;
+        }
+        return true;
+    }
 }

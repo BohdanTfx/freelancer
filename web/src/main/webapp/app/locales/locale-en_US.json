@@ -336,6 +336,9 @@
   "personal.wrong-upload-img": "Something wrong with upload image. Try again!",
   "personal.suc-upload-img": "The image was uploaded!",
   "personal.jpg-png-gif": "Only for .jpeg, .png or .gif. Try again!",
+  "personal.success-email-changing":"Email has been successfully changed",
+  "personal.success-password-changing":"Password has been successfully changed",
+  "personal.email-in-using":"Email is in use. Set free email and try again.",
 
   "notification.error": "Error",
   "notification.success": "Success",
