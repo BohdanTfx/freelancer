@@ -77,10 +77,13 @@
                                 <div class="panel-body">
 
                                     <a ng-href="/#/public/customer/custname/{{customer.id}}">
-                                        <div>
-                                            <img class="unit-cust-image"
-                                                 src="{{customer.imgUrl==null? '/images/profile/no-profile-img.jpg' : customer.imgUrl}}"
+                                        <div class="cust-image-block" style="height: 64px;width: 64px;">
+                                            <img class="user-image"
+                                            class="unit-cust-image"
+                                            src="{{customer.imgUrl==null? '/images/profile/no-image.png' : customer.imgUrl}}"
                                                  alt=""/>
+                                         </div>
+                                        <div class="cust-name-block">
                                             {{customer.fname}}
                                             {{customer.lname}}
                                         </div>
@@ -98,14 +101,16 @@
                                         <a href="/#/public/developer/devname/{{devWorker.id}}">
                                             <div class="members-unit-dev">
                                                 <div class="unit-foto">
-                                                    <img style="width: 100%"
-                                                         src="{{devWorker.imgUrl==null? '/images/profile/no-profile-img.jpg' : devWorker.imgUrl}}"
+                                                    <img class="user-image"
+                                                         src="{{devWorker.imgUrl==null? '/images/profile/no-image.png' : devWorker.imgUrl}}"
                                                          alt=""/>
                                                 </div>
-                                                <div class="unit-name-dev">
-                                                    {{devWorker.fname}}
-                                                    <br> {{devWorker.lname}}
-                                                </div>
+
+                                                    <div class="unit-name-dev">
+                                                        {{devWorker.fname}}
+                                                        <br> {{devWorker.lname}}
+                                                    </div>
+
                                             </div>
                                         </a>
                                     </div>

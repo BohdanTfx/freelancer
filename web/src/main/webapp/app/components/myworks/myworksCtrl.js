@@ -229,8 +229,6 @@ function DialogController($scope, $mdDialog, project, customer, workers, workerI
                 $scope.thirdWorks = data.finishedWorks;
 
 
-                console.log(data);
-                console.log($scope.firstWorks);
 
 
             }).error(function () {

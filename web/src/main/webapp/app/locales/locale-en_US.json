@@ -25,6 +25,17 @@
   "admin.statistics-orders":"Creation orders per month",
 
   "createadmin.invitation":"Invitation admin",
+  "createadmin.descr":" Enter email address of person you want to invite to become a user with permission 'Admin.  This person will receive the letter with instructions. You can send this invitation to the same email   address only once.",
+  "createadmin.input-placeholder":"E-mail",
+  "createadmin.input-error-email":"Invalid e-mail",
+  "createadmin.input-error-req":"This field is required",
+  "createadmin.send-btn":"Send invitation",
+  "createadmin.error-title":"Error",
+  "createadmin.error-invitation-already-sended":"The invitation has been already sent to this email.",
+  "createadmin.error-already-user":"This user is already registered with another role.",
+  "createadmin.error-general":"Something has happened wrong. Please try again later.",
+  "createadmin.succes-title":"Success",
+  "createadmin.succes-sended":"The invitation was sent successfully.",
 
 
   "auth.title":"Sign in",
@@ -56,7 +67,7 @@
   "myworks.accept-confirm-ok":"Accept ordering",
   "myworks.accept-confirm-cancel":"Let me think",
   "myworks.reject-confirm-title":"Are you sure?",
-  "myworks.accept-confirm-textContent":"After rejecting, you will not see this order in tab 'ACCEPTED' any more.",
+  "myworks.reject-confirm-textContent":"After rejecting, you will not see this order in tab 'ACCEPTED' any more.",
   "myworks.reject-confirm-ok":"Reject ordering",
   "myworks.reject-confirm-cancel":"I want to think",
   "myworks.not-finished-yet":"not finished yet",
