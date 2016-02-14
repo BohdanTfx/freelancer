@@ -115,6 +115,21 @@ public abstract class GenericJdbcManyToManyDao<F extends BaseEntity<ID>, S exten
 	}
 
 	@Override
+	public void removeContact(ID firstId, ID secondId) {
+		String query = "DELETE FROM " + table + " WHERE " + firstIdName + " = ?" + " AND "
+				+ secondIdName + " = ?";
+		try (Connection connection = dataSource.getConnection();
+			 PreparedStatement statement = connection
+					 .prepareStatement(query)) {
+			statement.setObject(1, firstId);
+			statement.setObject(2, secondId);
+			statement.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
 	public void setConnectionPool(ConnectionPool connectionPool) {
 		this.dataSource = connectionPool;
 	}

@@ -3,7 +3,7 @@
         <div class="panel-body">
             <div class="row">
                 <!-- start left-side-->
-                <div class="col-sm-3 col-xs-4">
+                <div class="col-sm-3 col-xs-12">
                     <ANY ng-switch="editClass">
                         <ANY ng-switch-when="editClass">
                             <div class="ih-item circle img">
@@ -31,17 +31,10 @@
                             </div>
                         </ANY>
                     </ANY>
-                    <form>
-                        <input type="file" id="file" aria-label="Input">
-                        <button ng-click="uploadFromDevice($event)" class="btn btn-primary btn-block"
-                                style="margin-right: 10px;">
-                            <span class="fa fa-floppy-o"></span> {{"personal.upload" | translate}}
-                        </button>
-                    </form>
                 </div>
                 <!-- end left-side-->
                 <!-- start right-side-->
-                <div class="col-sm-9 col-xs-8 ">
+                <div class="col-sm-9 col-xs-12 ">
                     <div id="tab-content" class="panel panel-default" style="border: none;">
                         <md-content>
                             <md-tabs md-dynamic-height md-border-bottom>
@@ -63,8 +56,7 @@
                                                 <span ng-show="saveForm.lname.$invalid && (saveForm.$submitted || saveForm.lname.$dirty)">&#160;&#160;</span>
                                             </span>
                                         </div>
-                                        <form name="saveForm" ng-submit="saveForm.$valid && save()"
-                                              novalidate ng-submit="save()">
+                                        <form name="saveForm" ng-submit="saveForm.$valid && save()" novalidate>
                                             <!-- fname-->
                                             <div class="row">
                                                 <strong class="col-sm-4 col-xs-12 item-label">
@@ -106,7 +98,7 @@
                                                 </span>
                                             </div>
                                             <!-- position-->
-                                            <div ng-show="role == 'developer' && (user.position != undefined || hide == true)"
+                                            <div ng-if="role == 'developer' && (user.position != undefined || hide == true)"
                                                  class="row">
                                                 <strong class="col-sm-4 col-xs-12 item-label">
                                                     {{"personal.position" | translate}}:
@@ -127,7 +119,7 @@
                                                             </span>
                                             </div>
                                             <!-- pay-->
-                                            <div ng-show="role == 'developer' && (user.hourly != undefined || hide == true)"
+                                            <div ng-if="role == 'developer' && (user.hourly != undefined || hide == true)"
                                                  class="row">
                                                 <strong class="col-sm-4 col-xs-12 item-label">
                                                     {{"personal.pay" | translate}}: </strong>
@@ -240,7 +232,7 @@
                                                 </md-input-container>
                                             </div>
                                             <!-- skills-->
-                                            <div ng-show="role == 'developer' && (techs != undefined || hide == true)"
+                                            <div ng-show="role == 'developer' && ((techs != undefined && techs.length >0 ) || hide == true)"
                                                  class="row" style="margin-bottom: 25px">
                                                 <ANY ng-switch="editClass">
                                                     <ANY ng-switch-when="editClass">
@@ -255,55 +247,16 @@
                                                         </div>
                                                     </ANY>
                                                     <ANY ng-switch-when="">
-                                                        <p>
-                                                            <strong class="col-sm-4 col-xs-12 item-label">
-                                                                {{"personal.skills" | translate}}:
-                                                            </strong>
+                                                        <strong class="col-sm-4 col-xs-12 item-label">
+                                                            {{"personal.skills" | translate}}:
+                                                        </strong>
 
                                                         <div class="col-sm-6 col-xs-12">
-                                                            <div class="col-sm-8">
-                                                                <div isteven-multi-select input-model="allTechs"
-                                                                     output-model="techs" button-label="name"
-                                                                     item-label="name" tick-property="ticked"></div>
+                                                            <div isteven-multi-select input-model="allTechs"
+                                                                 output-model="stechs" button-label="name"
+                                                                 item-label="name" tick-property="ticked">
                                                             </div>
-                                                            <!--<tags-input ng-model="techs"
-                                                                        display-property="name"
-                                                                        placeholder="Add a technologies"
-                                                                        replace-spaces-with-dashes="false"
-                                                                        template="tag-template"
-                                                                        addFromAutocompleteOnly="true">
-                                                                <auto-complete source="allTechs"
-                                                                               min-length="0"
-                                                                               load-on-focus="true"
-                                                                               load-on-empty="true"
-                                                                               max-results-to-show="32"
-                                                                               template="autocomplete-template"
-                                                                               loadOnDownArrow="true"></auto-complete>
-                                                            </tags-input>
-                                                            <script type="text/ng-template" id="tag-template">
-                                                                <div class="tag-template">
-                                                                    <div class="left-panel">
-                                                                        <span>{{$getDisplayText()}}</span>
-                                                                        <a class="remove-button"
-                                                                           ng-click="$removeTag()">&#10006;</a>
-                                                                    </div>
-                                                                </div>
-                                                            </script>
-
-                                                            <script type="text/ng-template"
-                                                                    id="autocomplete-template">
-                                                                <div class="autocomplete-template">
-                                                                    <div class="left-panel">
-
-                                                                    </div>
-
-                                                                    <div>
-                                                                        <span ng-bind-html="$highlight($getDisplayText())"></span>
-                                                                    </div>
-                                                                </div>
-                                                            </script>-->
                                                         </div>
-                                                        </p>
                                                     </ANY>
                                                 </ANY>
                                             </div>
@@ -321,29 +274,28 @@
                                                 </md-input-container>
                                             </p>
                                             <!-- edit button-->
-                                            <div ng-hide="hide" class="col-xs-12 col-sm-12">
-                                                <button aria-label="Primary"
-                                                        class="btn btn-info full-width edit-buttons"
+                                            <div ng-hide="hide" class="col-xs-12 col-sm-10">
+                                                <button aria-label="Primary" type="button"
+                                                        class="btn btn-info edit-buttons"
                                                         ng-click="enableEditor()">
                                                     <span class="fa fa-edit"></span> {{"personal.edit" |
                                                     translate}}:
                                                 </button>
                                             </div>
                                             <!-- save button-->
-                                            <div ng-show="hide" class="col-xs-12 col-sm-6">
+                                            <div ng-show="hide" class="col-xs-12 col-sm-5">
 
                                                 <button aria-label="Primary" type="submit"
-                                                        class="btn btn-primary btn-block edit-buttons"
-                                                        style="margin-right: 10px;">
+                                                        class="btn btn-primary edit-buttons">
                                                     <span class="fa fa-floppy-o"></span> {{"personal.save" |
                                                     translate}}:
                                                 </button>
                                             </div>
                                             <!-- cancel button-->
-                                            <div ng-show="hide" class="col-xs-12 col-sm-6">
-                                                <button class="btn btn-info btn-block btn-warning edit-buttons"
-                                                        ng-click="disableEditor()"
-                                                        style="margin-left: 10px;">
+                                            <div ng-show="hide" class="col-xs-12 col-sm-5">
+                                                <button class="btn btn-info btn-warning edit-buttons"
+                                                        type="button"
+                                                        ng-click="disableEditor()">
                                                     <span class="fa fa-remove"></span> {{"personal.cancel" |
                                                     translate}}:
                                                 </button>
@@ -461,7 +413,7 @@
                                         </div>
                                     </md-content>
                                 </md-tab>
-                                <md-tab label="{{'personal.change-send-em' | translate}}">
+                                <md-tab label="{{'personal.change-send-em' | translate}}" class="email-tab">
                                     <md-content class="md-padding" style="min-height: 450px;">
                                         <div style="overflow-x: hidden; padding-top: 50px;">
                                             <form novalidate
@@ -469,7 +421,7 @@
                                                   ng-submit="emailForm.$valid && changeSendingEmail()"
                                                   ng-submit="changeSendingEmail()">
                                                 <div>
-                                                    <strong class="col-xs-12 col-sm-4">{{"personal.curr-send-em"
+                                                    <strong class="col-xs-12 col-sm-4 item-label">{{"personal.curr-send-em"
                                                         | translate}}: </strong>
 
                                                     <md-input-container class="col-xs-6 col-sm-5 box-none">
@@ -481,7 +433,7 @@
 
                                                 </div>
                                                 <div>
-                                                    <strong class="col-xs-12 col-sm-4">{{"personal.new-send-em"
+                                                    <strong class="col-xs-12 col-sm-4 item-label">{{"personal.new-send-em"
                                                         | translate}}: </strong>
                                                     <md-input-container class="col-xs-6 col-sm-5 box-none">
                                                         <label>{{"personal.new-em" | translate}}</label>
@@ -494,7 +446,6 @@
                                                 </div>
 
                                                 <div class="col-xs-11" style="position:absolute; bottom:0;">
-
                                                     <div class="col-xs-5">
                                                         <button ng-hide="emailForm.newEmail.$invalid" type="submit"
                                                                 class="btn btn-info full-width">

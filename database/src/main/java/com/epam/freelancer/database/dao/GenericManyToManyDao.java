@@ -17,5 +17,7 @@ public interface GenericManyToManyDao<F extends BaseEntity<ID>, S extends BaseEn
 
 	void saveContact(ID firstId, ID secondId);
 
+	void removeContact(ID firstId, ID secondId);
+
 	public void setConnectionPool(ConnectionPool connectionPool);
 }

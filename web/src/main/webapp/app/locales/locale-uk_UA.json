@@ -269,6 +269,9 @@
   "personal.wrong-upload-img": "Щось пішло нетак із завантаженням зображення. Спробуйте ще раз!",
   "personal.suc-upload-img": "Зображення було завантажено!",
   "personal.jpg-png-gif": "Тільки для .jpeg, .png чи .gif форматів. Спробуйте ще раз!",
+  "personal.success-email-changing": "Пошта успішно змінена",
+  "personal.success-password-changing": "Пароль успішно змінено",
+  "personal.email-in-using":"Пошта зайнята. Введіть вільну пошту та спробуйте ще раз.",
 
   "notification.error": "Помилка",
   "notification.success": "Успшіно",
