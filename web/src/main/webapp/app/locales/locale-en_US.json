@@ -149,6 +149,33 @@
 	"orders.loading.error.orders":"Some errors occurred while loading orders!",
 	
 	"message.error":"Error!",
-	"message.success":"Success!"
+	"message.success":"Success!",
+	
+	"signup.become":"Become a new",
+	"signup.google":"Sign up with Google",
+	"signup.linkedin":"Sign up with LinkedIn",
+	"signup.fname":"First name",
+	"signup.lname":"Last name",
+	"signup.email":"Email",
+	"signup.zone":"Time zone",
+	"signup.password":"Password",
+	"signup.confirm":"Confirm password",
+	"signup.required":"This is required.",
+	"signup.maxlength":"This field has to be less than {{value}} characters long.",
+	"signup.minlength":"This field has to be more than {{value}} characters long.",
+	"signup.email.pattern":"This field should looks like email.",
+	"signup.email.available":"This email is already in use. Please type another email.",
+	"signup.password.match":"Passwords must match.",
+	"signup.do-signup":"Sign up.",
+	"signup.reset":"Reset",
+	"signup.get-started":"Get started!",
+	"signup.what-looking":"What are you looking for?!",
+	"signup.developer.agit":"Become a new developer! Communicate with other developers and customers. Get a job and improve your skills.",
+	"signup.developer.agit.2":" Share achievements with others",
+	"signup.customer.agit":"Become a new customer. Create new orders, hiring staff and evaluates their work!",
+	
+	"role.admin":"administrator",
+	"role.developer":"developer",
+	"role.customer":"customer"
 
 }

@@ -143,6 +143,33 @@
 	"orders.loading.error.orders":"Під час завантаження замовлень сталася помилка!",
 
 	"message.error":"Помилка!",
-	"message.success":"Успіх!"
+	"message.success":"Успіх!",
+	
+	"signup.become":"Станьте новим",
+	"signup.google":"Зареєструйтесь через Google",
+	"signup.linkedin":"Зареєструйтесь через LinkedIn",
+	"signup.fname":"Ім'я",
+	"signup.lname":"Прізвище",
+	"signup.email":"Електронна скринька",
+	"signup.zone":"Часова зона",
+	"signup.password":"Пароль",
+	"signup.confirm":"Підтвердіть пароль",
+	"signup.required":"Це поле обов'язкове для заповнення.",
+	"signup.maxlength":"Це поле має мати довжину меншу, ніж {{value}} символів.",
+	"signup.minlength":"Це поле має мати довжину більшу, ніж {{value}} символів.",
+	"signup.email.pattern":"Це поле має виглядати як електронна скринька.",
+	"signup.email.available":"Ця електронна скринька зайнята. Будь ласка вибріть іншу!",
+	"signup.password.match":"Паролі мають співпадати.",
+	"signup.do-signup":"Зареєструватись.",
+	"signup.reset":"Очистити поля вводу",
+	"signup.get-started":"Розпочати!",
+	"signup.what-looking":"Що ви шукаєте?!",
+	"signup.developer.agit":"Станьте новим розробником! Спілкуйтесь з іншими розробниками і замовниками. Отримуйте роботу і покращуйте свої навики.",
+	"signup.developer.agit.2":" Діліться своїми досягненнями з іншими.",
+	"signup.customer.agit":"Станьте новим замовником. Створюйте замовлення, наймайте працівників і оцінюйте їхню роботу!",
+	
+	"role.admin":"адміністратор",
+	"role.developer":"розробник",
+	"role.customer":"замовник"
 
 }
