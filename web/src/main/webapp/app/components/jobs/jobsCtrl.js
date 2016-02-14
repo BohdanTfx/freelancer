@@ -171,8 +171,6 @@ angular
 												});
 									});
 
-					$scope.doFilter();
-
 					function initSelectTranslation($translate) {
 						$('#timeZonesSelect button[ng-if="helperStatus.all"]')
 								.html(
