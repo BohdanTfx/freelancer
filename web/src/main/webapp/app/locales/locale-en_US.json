@@ -24,6 +24,8 @@
   "admin.statistics-dev-cust":"Relation between Customer and Developer",
   "admin.statistics-orders":"Creation orders per month",
 
+  "createadmin.invitation":"Invitation admin",
+
 
   "auth.title":"Sign in",
   "auth.signin-google-button":"Sign in with Google",

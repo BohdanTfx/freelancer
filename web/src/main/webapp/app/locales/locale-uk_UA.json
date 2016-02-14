@@ -25,6 +25,8 @@
   "admin.statistics-dev-cust":"Відношення фрілансерів і замовників",
   "admin.statistics-orders":"Кількість створених замовлень",
 
+  "createadmin.invitation":"Запрошення адміна",
+
   "auth.title":"Авторизація",
   "auth.signin-google-button":"Увійти з Google",
   "auth.signin-linkedin-button":"Увійти з LinkedIn",
