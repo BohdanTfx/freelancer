@@ -213,6 +213,16 @@ angular.module('FreelancerApp')
 
         $scope.send = function () {
             $scope.dataLoading = true;
+            if ($scope.mes == '' || typeof $scope.mes == 'undefined') {
+                Notification
+                    .error({
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('pubdev.empty-fields')
+                    });
+
+                $scope.dataLoading = false;
+                return;
+            }
             var data = 'message=' + $scope.mes + '&email=' + $scope.email + '&subject=Customer sent you message: ' + $rootScope.name + ' ' + $rootScope.lastName;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
             $scope.mes = '';
