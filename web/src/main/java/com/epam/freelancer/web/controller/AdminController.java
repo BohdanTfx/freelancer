@@ -509,7 +509,7 @@ public class AdminController extends HttpServlet implements Responsable {
             String email = admin.getEmail();
             String from = "maksym.rudevych.kn.2013@lpnu.ua";
             String pass = "12.04.1996";
-            String[] to = new String[] {email};
+            String[] to = new String[]{email};
             SendMessageToEmail.sendFromGMail(from, pass, to, "Confirm Code", confirmCode.toString());
         } catch (NullPointerException e) {
             LOG.warn("The phone number is empty");
