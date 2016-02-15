@@ -1,10 +1,12 @@
 package com.epam.freelancer.web.controller;
 
-import java.io.File;
 import com.epam.freelancer.business.context.ApplicationContext;
+import com.epam.freelancer.business.manager.UserManager;
 import com.epam.freelancer.business.service.*;
+import com.epam.freelancer.business.util.SmsSender;
 import com.epam.freelancer.database.model.*;
-import com.google.gson.Gson;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
@@ -14,28 +16,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import com.epam.freelancer.business.manager.UserManager;
-import com.epam.freelancer.business.util.SmsSender;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.FileUtils;
-
-import com.epam.freelancer.business.service.CustomerService;
-import com.epam.freelancer.business.service.DeveloperService;
-import com.epam.freelancer.business.service.FeedbackService;
-import com.epam.freelancer.business.service.OrderingService;
-import com.epam.freelancer.business.service.TechnologyService;
-import com.epam.freelancer.business.service.TestService;
-import com.epam.freelancer.database.model.Contact;
-import com.epam.freelancer.database.model.Customer;
-import com.epam.freelancer.database.model.Feedback;
-import com.epam.freelancer.database.model.UserEntity;
 
 public class CustomerController extends HttpServlet implements Responsable {
     public static final Logger LOG = Logger.getLogger(CustomerController.class);
@@ -94,32 +81,30 @@ public class CustomerController extends HttpServlet implements Responsable {
         }
     }
 
-private void createOrder(HttpServletRequest request,
-        HttpServletResponse response) throws IOException
-        {
+    private void createOrder(HttpServletRequest request,
+                             HttpServletResponse response) throws IOException {
         UserEntity customer = (UserEntity) request.getSession().getAttribute(
-        "user");
+                "user");
         try {
-        String requestData = request.getReader().readLine();
-        Map<String, String> data = mapper.readValue(requestData,
-        new TypeReference<Map<String, String>>() {
-        });
-        data.put("customer_id", customer.getId().toString());
-        orderingService.create(data
-        .entrySet()
-        .stream()
-        .collect(
-        Collectors.toMap(Map.Entry::getKey,
-        e -> new String[] { e.getValue() })));
-        incrementOrderCreationStatiscts();
+            String requestData = request.getReader().readLine();
+            Map<String, String> data = mapper.readValue(requestData,
+                    new TypeReference<Map<String, String>>() {
+                    });
+            data.put("customer_id", customer.getId().toString());
+            orderingService.create(data
+                    .entrySet()
+                    .stream()
+                    .collect(
+                            Collectors.toMap(Map.Entry::getKey,
+                                    e -> new String[]{e.getValue()})));
+            incrementOrderCreationStatiscts();
         } catch (Exception e) {
-        e.printStackTrace();
-        response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
-        return;
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
+            return;
         }
         response.sendError(HttpServletResponse.SC_OK);
-        }
-
+    }
 
 
     private void incrementOrderCreationStatiscts() {
@@ -147,10 +132,10 @@ private void createOrder(HttpServletRequest request,
                     updatePersonalData(request, response);
                     break;
                 case "cust/getFeedForCust":
-                     getFeedbacksByIdForCust(request, response);
-                     break;
+                    getFeedbacksByIdForCust(request, response);
+                    break;
                 case "cust/getContForCust":
-                     getContForCust(request, response);
+                    getContForCust(request, response);
                     break;
                 case "cust/history":
                     getCustomerHistory(request, response);
@@ -244,7 +229,7 @@ private void createOrder(HttpServletRequest request,
 
                 sendResponse(response, feedbacks, mapper);
 
-            }catch (Exception e) {
+            } catch (Exception e) {
                 response.sendError(500);
             }
         }
@@ -272,18 +257,17 @@ private void createOrder(HttpServletRequest request,
     }
 
     private void fillCustomerPersonalPage(HttpServletRequest request,
-        HttpServletResponse response) throws IOException
-        {
-            Customer customer = (Customer) request.getSession().getAttribute("user");
-            customer.setPassword(null);
-            customer.setSalt(null);
-            customer.setUuid(null);
-            customer.setRegUrl(null);
-            Map<String, Object> resultMap = new HashMap();
-            resultMap.put("cust", customer);
-            resultMap.put("contacts", customerService.getContactByCustomerId(customer.getId()));
-            sendResponse(response, resultMap, mapper);
-        }
+                                          HttpServletResponse response) throws IOException {
+        Customer customer = (Customer) request.getSession().getAttribute("user");
+        customer.setPassword(null);
+        customer.setSalt(null);
+        customer.setUuid(null);
+        customer.setRegUrl(null);
+        Map<String, Object> resultMap = new HashMap();
+        resultMap.put("cust", customer);
+        resultMap.put("contacts", customerService.getContactByCustomerId(customer.getId()));
+        sendResponse(response, resultMap, mapper);
+    }
 
     private void updatePersonalData(HttpServletRequest request,
                                     HttpServletResponse response) throws IOException {
@@ -388,10 +372,10 @@ private void createOrder(HttpServletRequest request,
     }
 
     private void uploadImage(HttpServletRequest request,
-                             HttpServletResponse response){
+                             HttpServletResponse response) {
         HttpSession session = request.getSession();
         Customer customer = (Customer) session.getAttribute("user");
-        String  imageJson = request.getParameter("image");
+        String imageJson = request.getParameter("image");
         byte[] encodImage = Base64.decodeBase64(imageJson);
         String fileName = customer.getFname() + customer.getLname();
         File file = null;
@@ -407,37 +391,36 @@ private void createOrder(HttpServletRequest request,
     }
 
 
-    private void fillCustomerMyWorksPage(HttpServletRequest request, HttpServletResponse response){
+    private void fillCustomerMyWorksPage(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         UserEntity user = (UserEntity) session.getAttribute("user");
-       List<Ordering> allWorks = orderingService.getAllCustOrders(user.getId());
-       List<Ordering> finishedWorks = new ArrayList<>();
-       List<Ordering> inProgressWorks = new ArrayList<>();
-       List<Ordering> availableWorks = new ArrayList<>();
-       Map<String,List<Ordering>> resultMap = new HashMap<>();
+        List<Ordering> allWorks = orderingService.getAllCustOrders(user.getId());
+        List<Ordering> finishedWorks = new ArrayList<>();
+        List<Ordering> inProgressWorks = new ArrayList<>();
+        List<Ordering> availableWorks = new ArrayList<>();
+        Map<String, List<Ordering>> resultMap = new HashMap<>();
 
-        allWorks.forEach(ordering ->{
+        allWorks.forEach(ordering -> {
             ordering.setTechnologies(technologyService.findTechnolodyByOrderingId(ordering.getId()));
-            if((ordering.getStarted()!=null && ordering.getStarted()) && (ordering.getEnded()!=null && ordering.getEnded())){
+            if ((ordering.getStarted() != null && ordering.getStarted()) && (ordering.getEnded() != null && ordering.getEnded())) {
                 finishedWorks.add(ordering);
-            }else{
-                if(ordering.getStarted()!=null && ordering.getStarted()){
+            } else {
+                if (ordering.getStarted() != null && ordering.getStarted()) {
                     inProgressWorks.add(ordering);
-                }else{
+                } else {
                     availableWorks.add(ordering);
                 }
             }
         });
-       resultMap.put("finishedWorks",finishedWorks);
-       resultMap.put("inProgressWorks",inProgressWorks);
-       resultMap.put("availableWorks",availableWorks);
+        resultMap.put("finishedWorks", finishedWorks);
+        resultMap.put("inProgressWorks", inProgressWorks);
+        resultMap.put("availableWorks", availableWorks);
 
-       sendResponse(response,resultMap,mapper);
+        sendResponse(response, resultMap, mapper);
     }
 
     private void sendWorkersByIdOrder(HttpServletRequest request,
-                                      HttpServletResponse response) throws IOException
-    {
+                                      HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         UserEntity user = (UserEntity) session.getAttribute("user");
         Integer orderId = Integer.parseInt(request.getParameter("order_id"));
@@ -447,9 +430,10 @@ private void createOrder(HttpServletRequest request,
         List<Worker> allWorkersOfOrder = developerService.getAllWorkersByOrderId(orderId);
         List<Developer> acceptedDevelopers = new ArrayList<>();
 
-        allWorkersOfOrder.forEach(worker ->{
-            if(worker.getAccepted()){
-                acceptedDevelopers.add(developerService.findById(worker.getDevId()));}
+        allWorkersOfOrder.forEach(worker -> {
+            if (worker.getAccepted()) {
+                acceptedDevelopers.add(developerService.findById(worker.getDevId()));
+            }
         });
         resultMap.put("workers", acceptedDevelopers);
         sendResponse(response, resultMap, mapper);
@@ -524,16 +508,16 @@ private void createOrder(HttpServletRequest request,
         }
         Worker worker = developerService.getWorkerByDevIdAndOrderId(follower.getDevId(), follower.getOrderId());
         Boolean isWorker = false;
-        if(worker!=null){
+        if (worker != null) {
             isWorker = true;
         }
-        sendResponse(response,isWorker,mapper);
+        sendResponse(response, isWorker, mapper);
     }
 
-    private void finishOrdering(HttpServletRequest request,HttpServletResponse response){
+    private void finishOrdering(HttpServletRequest request, HttpServletResponse response) {
         Integer orderId = Integer.parseInt(request.getParameter("order_id"));
 
-        Ordering ordering =  orderingService.findById(orderId);
+        Ordering ordering = orderingService.findById(orderId);
         ordering.setEnded(true);
         ordering.setEndedDate(new Timestamp(new java.util.Date().getTime()));
         orderingService.modify(ordering);
@@ -559,7 +543,7 @@ private void createOrder(HttpServletRequest request,
     }
 
     private Boolean checkConfirmCode(Customer customer, String confirmCode, HttpServletResponse response) throws IOException {
-        if (!customer.getConfirmCode().equals(confirmCode)){
+        if (!customer.getConfirmCode().equals(confirmCode)) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST,
                     "Invalid code");
             response.flushBuffer();
