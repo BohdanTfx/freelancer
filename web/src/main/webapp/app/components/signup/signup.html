@@ -12,7 +12,7 @@
 					</md-select>
 				</span>
 				<span ng-if="roleAdmin === true" ng-model="user.role"
-					ng-init="user.role = 'admin'">{{"role.admin" | translate}}</span>
+					ng-init="user.role = 'admin'">{{"role.admin.become" | translate}}</span>
 			</h3>
 
 			<div ng-if="roleAdmin !== true">
@@ -145,18 +145,18 @@
 		</div>
 		<div class="col-xs-12 col-sm-5 animated zoomIn">
 			<img ng-src="/images/role/developer.png" alt="Developer"
-				class="hvr-grow" ng-click="chooseRole(true,'developer')">
+				class="hvr-grow" ng-click="chooseRole(true,0)">
 			<h2 class="text-center inline-block"
-				ng-click="chooseRole(true,'developer')">{{"role.developer" |
+				ng-click="chooseRole(true,0)">{{"role.developer" |
 				translate | capitalize}}</h2>
 			<h4>{{"signup.developer.agit" | translate
 				}}{{"signup.developer.agit.2" | translate }}</h4>
 		</div>
 		<div class="col-xs-12 col-sm-offset-2 col-sm-5 animated zoomIn">
 			<img ng-src="/images/role/customer.png" alt="Customer"
-				class="hvr-grow" ng-click="chooseRole(true,'customer')" />
+				class="hvr-grow" ng-click="chooseRole(true,1)" />
 			<h2 class="text-center inline-block"
-				ng-click="chooseRole(true,'customer')">{{"role.customer" |
+				ng-click="chooseRole(true,1)">{{"role.customer" |
 				translate | capitalize}}</h2>
 			<h4>{{"signup.customer.agit" | translate }}</h4>
 		</div>

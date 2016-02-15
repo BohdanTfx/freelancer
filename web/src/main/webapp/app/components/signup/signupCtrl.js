@@ -1,6 +1,7 @@
 angular.module('FreelancerApp').controller(
 		'signupCtrl',
-		function($scope, signupAPI, $log, $http, $location, createadminAPI) {
+		function($scope, signupAPI, $log, $http, $location, createadminAPI,
+				$translate, $rootScope) {
 			$scope.page = {};
 			$scope.user = {};
 			$scope.signup = false;
@@ -17,15 +18,30 @@ angular.module('FreelancerApp').controller(
 						function(data) {
 							$scope.roleAdmin = data;
 							$scope.signup = data;
+						}).error(
+						function(data, status, headers, config) {
+							Notification.error({
+								title : $translate.instant('message.error'),
+								message : $translate
+										.instant('signup.admin.create.error')
+							});
 						});
 			}
 
-			$scope.roles = [ "developer", "customer" ];
+			$scope.roles = [ $translate.instant('role.developer.become'),
+					$translate.instant('role.customer.become') ];
+
+			$rootScope.$on('$translateChangeSuccess', function() {
+				$scope.roles[0] = $translate.instant('role.developer.become');
+				$scope.roles[1] = $translate.instant('role.customer.become');
+				$scope.user.role = $scope.roles[localStorage
+						.getItem("openTaskSignUpRole")];
+			});
 
 			$scope.chooseRole = function(signup, role) {
-				$scope.role = role;
+				$scope.role = $scope.roles[role];
 				$scope.signup = signup;
-				localStorage.setItem("role", role);
+				localStorage.setItem("openTaskSignUpRole", role);
 			}
 
 			$scope.getCurrentZone = function() {

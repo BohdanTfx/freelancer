@@ -4,18 +4,31 @@ angular
 		.module('FreelancerApp')
 		.service(
 				'signupAPI',
-				function(Notification) {
+				function(Notification, $translate) {
 					var that = this;
 
 					this.checkEmail = function($http, ngModel, email) {
-						$http.get("/user/email", {
-							params : {
-								email : email
-							}
-						}).success(function(data, status, headers, config) {
-							ngModel.$setValidity('emailAvailable', data);
-						}).error(function(data, status, headers, config) {
-						});
+						$http
+								.get("/user/email", {
+									params : {
+										email : email
+									}
+								})
+								.success(
+										function(data, status, headers, config) {
+											ngModel.$setValidity(
+													'emailAvailable', data);
+										})
+								.error(
+										function(data, status, headers, config) {
+											Notification
+													.error({
+														title : $translate
+																.instant('message.error'),
+														message : $translate
+																.instant('signup.email.check.error')
+													});
+										});
 					}
 
 					this.initSocial = function($http, $scope) {
@@ -47,32 +60,31 @@ angular
 													config) {
 												Notification
 														.error({
-															title : 'Error!',
-															message : 'An error occurred while registering via Linkedin. Please try again.'
+															title : $translate
+																	.instant('message.error'),
+															message : $translate
+																	.instant('signup.social.linkedin.error')
 														});
 											});
 							return;
 						}
 
-						$http
-								.get("/user/social", {
-									params : {
-										callbackUrlLinkedIn : document.URL
-									}
-								})
-								.success(
-										function(data, status, headers, config) {
-											$scope.social.linkedin.url = data.linkedinUrl;
-											$scope.social.linkedin.available = true;
-										})
-								.error(
-										function(data, status, headers, config) {
-											Notification
-													.error({
-														title : 'Error!',
-														message : 'An error occurred while registering. Please try again.'
-													});
-										});
+						$http.get("/user/social", {
+							params : {
+								callbackUrlLinkedIn : document.URL
+							}
+						}).success(function(data, status, headers, config) {
+							$scope.social.linkedin.url = data.linkedinUrl;
+							$scope.social.linkedin.available = true;
+						}).error(
+								function(data, status, headers, config) {
+									Notification.error({
+										title : $translate
+												.instant('message.error'),
+										message : $translate
+												.instant('signup.social.error')
+									});
+								});
 					}
 
 					this.createUser = function($http, user, adminUUID,
@@ -98,8 +110,10 @@ angular
 										function(data, status, headers, config) {
 											Notification
 													.error({
-														title : 'Error!',
-														message : 'An error occurred while registering. Please try again.'
+														title : $translate
+																.instant('message.error'),
+														message : $translate
+																.instant('signup.user.create.error')
 													});
 										});
 					}

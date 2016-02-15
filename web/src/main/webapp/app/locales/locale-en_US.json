@@ -173,7 +173,15 @@
 	"signup.developer.agit":"Become a new developer! Communicate with other developers and customers. Get a job and improve your skills.",
 	"signup.developer.agit.2":" Share achievements with others",
 	"signup.customer.agit":"Become a new customer. Create new orders, hiring staff and evaluates their work!",
+	"signup.admin.create.error":"An error occurred while checking uuid. Please try again.",
+	"signup.email.check.error":"An error occurred while checking email. Please try again.",
+	"signup.social.linkedin.error":"An error occurred while registering via Linkedin. Please try again.",
+	"signup.social.error":"An error occurred while accessing social networks. Please try again.",
+	"signup.user.create.error":"An error occurred while registering. Please try again.",
 	
+	"role.admin.become":"administrator",
+	"role.developer.become":"developer",
+	"role.customer.become":"customer",
 	"role.admin":"administrator",
 	"role.developer":"developer",
 	"role.customer":"customer"
