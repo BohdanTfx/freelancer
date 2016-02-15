@@ -4,11 +4,23 @@
             <md-tabs md-dynamic-height md-border-bottom>
 
                     <!--Start Tab Proposed projects-->
-                    <md-tab label="Users">
+                    <md-tab label="General">
                         <md-content class="md-padding" style="min-height: 450px;">
 
-                            <h4>{{"admin.statistics-dev-cust" | translate}}</h4>
-                            <div google-chart chart="chart"></div>
+                        <div class="row">
+                            <div class="col-sm-offset-1 col-sm-5">
+                                <h4>{{"admin.statistics-dev-cust" | translate}}</h4>
+                                <div google-chart chart="chartDevCust"></div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                asdasdasdasd
+
+                            </div>
+                        </div>
+
+
+
 
                         </md-content>
                     </md-tab>
@@ -18,8 +30,18 @@
                 <md-tab label="Orders">
                     <md-content class="md-padding" style="min-height: 450px;">
 
-                        <h4>{{"admin.statistics-orders" | translate}}</h4>
-                        <div google-chart chart="chartObject"></div>
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <h4>{{"admin.statistics-orders" | translate}}</h4>
+                                <div google-chart chart="chartObject"></div>
+                            </div>
+
+                            <div class="col-sm-4" style="overflow: hidden">
+                                <h4>Відношення замовлень в системі</h4>
+                                <div google-chart chart="chartOrders"></div>
+                            </div>
+                        </div>
+
 
                     </md-content>
                 </md-tab>
@@ -27,7 +49,6 @@
                 <!--Start Tab Projects in process-->
                 <md-tab label="Tests">
                     <md-content class="md-padding" style="min-height: 450px;">
-                        <h4>TESTs</h4>
                         <div google-chart chart="chartTests"></div>
                     </md-content>
                 </md-tab>

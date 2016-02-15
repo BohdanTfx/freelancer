@@ -10,11 +10,15 @@ angular.module('FreelancerApp')
         };
 
         dataFactory.getStatisticsCreationOrders = function () {
-            return $http.get("/admin/statistics/orders");
+            return $http.get("/admin/statistics/ordersCreation");
         };
 
         dataFactory.getStatisticPopularTests = function () {
             return $http.get("/admin/statistics/tests");
+        };
+
+        dataFactory.getStatisticOrders = function () {
+            return $http.get("/admin/statistics/orders");
         };
 
 

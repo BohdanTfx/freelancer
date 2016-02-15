@@ -50,6 +50,7 @@ public class AdminController extends HttpServlet implements Responsable {
     private TechnologyService technologyService;
     private Paginator paginator;
     private OrderCounterService orderCounterService;
+    private OrderingService orderingService;
 
     public AdminController() {
         mapper = new ObjectMapper();
@@ -64,6 +65,7 @@ public class AdminController extends HttpServlet implements Responsable {
         answerService = (AnswerService) ApplicationContext.getInstance().getBean("answerService");
         technologyService = (TechnologyService) ApplicationContext.getInstance().getBean("technologyService");
         paginator = new Paginator();
+        orderingService = (OrderingService) ApplicationContext.getInstance().getBean("orderingService");
     }
 
     @Override
@@ -78,8 +80,11 @@ public class AdminController extends HttpServlet implements Responsable {
                 case "admin/getPersonalData":
                     fillAdminPage(request, response);
                     break;
-                case "admin/statistics/orders":
+                case "admin/statistics/ordersCreation":
                     sendCreationOrdersAmount(request, response);
+                    break;
+                case "admin/statistics/orders":
+                    sendOrderStatistic(request, response);
                     break;
                 case "admin/statistics/tests":
                     sendCreationPopularTests(request, response);
@@ -400,5 +405,30 @@ public class AdminController extends HttpServlet implements Responsable {
 
          sendResponse(response,resultMap,mapper);
 
+    }
+
+     private void sendOrderStatistic(HttpServletRequest request,HttpServletResponse response){
+        List<Ordering> allOrders = orderingService.findAll();
+        Integer finishedCount = 0;
+        Integer inProgressCount = 0;
+        Integer availableCount = 0;
+       for (Ordering ordering: allOrders){
+          if(ordering.getStarted() && ordering.getEnded()){
+             finishedCount++;
+          }else{
+            if(ordering.getStarted()){
+                inProgressCount++;
+            }else{
+                availableCount++;
+            }
+          }
+       }
+
+       Map<String,Integer> map = new HashMap<>();
+       map.put("finishedCount",finishedCount);
+       map.put("inProgressCount",inProgressCount);
+       map.put("availableCount",availableCount);
+
+       sendResponse(response,map,mapper);
     }
 }
