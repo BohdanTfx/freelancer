@@ -28,11 +28,6 @@ angular.module('FreelancerApp')
                 $scope.firstWorks = data.availableWorks;
                 $scope.secondWorks = data.inProgressWorks;
                 $scope.thirdWorks = data.finishedWorks;
-
-
-                console.log(data);
-                console.log($scope.firstWorks);
-
             }).error(function () {
                 Notification
                     .error({
@@ -84,11 +79,13 @@ angular.module('FreelancerApp')
                             });
                     });
             }else{
-                myworksAPI.getCustWorkersByIdOrder(projectInfo.id).success(
+                $scope.customer = {};
+                $scope.customer.fname = $rootScope.name;
+                $scope.customer.lname = $rootScope.lastName;
+
+             myworksAPI.getCustWorkersByIdOrder(projectInfo.id).success(
                     function (dataWorkers) {
                         $scope.workers = dataWorkers.workers;
-
-                        console.log($scope.workers);
 
                         $mdDialog.show({
                             controller: DialogController,
