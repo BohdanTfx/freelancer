@@ -240,17 +240,18 @@
                                     </md-button>
                                 </md-menu-item>
 
-                                <md-menu-item>
-                                    <md-button ng-href="/#/tests"> {{"index.menu-tests" | translate}}</md-button>
-                                </md-menu-item>
-
                             <span ng-switch="role">
                                 <span ng-switch-when="developer">
+                                 <md-menu-item>
+                                     <md-button ng-href="/#/tests"> {{"index.menu-tests" | translate}}</md-button>
+                                 </md-menu-item>
+
                                     <md-menu-item>
                                         <md-button type="submit" ng-href="/#/public/developer/devname/{{id}}">
                                             {{"index.menu-public-page" | translate}}
                                         </md-button>
                                     </md-menu-item>
+
                                 </span>
                                  <span ng-switch-when="customer">
                                     <md-menu-item>
