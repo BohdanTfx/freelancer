@@ -99,6 +99,8 @@ angular.module('FreelancerApp')
                 if ($scope.user.regDate != undefined) {
                     $scope.user.regDate = new Date($scope.user.regDate).getTime();
                 }
+                //check send e-mail
+                $scope.email = $scope.user.sendEmail == undefined ? $scope.user.email : $scope.user.sendEmail;
                 //check for empty image
                 if (typeof $scope.user.imgUrl == 'undefined') {
                     $scope.img = 'images/profile/no-image.png';

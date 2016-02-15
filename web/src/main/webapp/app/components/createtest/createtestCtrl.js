@@ -34,6 +34,7 @@ angular.module('FreelancerApp')
         $scope.getQuestionsByTechId = function (id) {
             if (id != $scope.chosenTechID) {
                 $scope.chosenQuestions = [];
+                $scope.itemListStart = 0;
             }
             $scope.chosenTechID = id;
             createtestAPI.getQuestionsByTechId($scope.itemListStart, id).success(function (data) {
