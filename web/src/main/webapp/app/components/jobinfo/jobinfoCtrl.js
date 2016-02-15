@@ -37,7 +37,8 @@ angular.module('FreelancerApp')
                     .success({
                         title: $translate.instant('notification.success'),
                         message: $translate.instant('jobinfo.complaining-success')
-                    })
+                    });
+                $scope.disCompBut = true;
             }).error(function () {
                 Notification
                     .success({

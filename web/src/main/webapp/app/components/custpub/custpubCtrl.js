@@ -6,6 +6,16 @@ angular.module('FreelancerApp')
         $scope.feedback = '';
         $scope.hiremes = '';
         $scope.mes = '';
+        $scope.own = false;
+        $scope.custOwn = false;
+
+        if ($rootScope.id == $stateParams.custId) {
+            $scope.own = true;
+        }
+
+        if ($rootScope.role == 'customer') {
+            $scope.custOwn = true;
+        }
 
         if ($rootScope.role == 'customer') {
             $scope.show = true;
@@ -114,7 +124,14 @@ angular.module('FreelancerApp')
 
 
         $scope.sendSms = function () {
-            alert($scope.hiremes);
+            if (typeof $scope.hiremes == 'undefined' || $scope.hiremes == '' || typeof $scope.hireord == 'undefined' || $scope.hireord == '') {
+                Notification
+                    .error({
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('pubdev.empty-fields')
+                    });
+                return;
+            }
             var data = 'phone=' + $scope.phone + '&order_id=' + $scope.hireord +
                 '&dev_id=' + $rootScope.id + "&message=" + $scope.hiremes + '&cust_id=' + $scope.query + '&author=dev';
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
@@ -181,6 +198,15 @@ angular.module('FreelancerApp')
 
         $scope.send = function () {
             $scope.dataLoading = true;
+            if ($scope.mes == '' || typeof $scope.mes == 'undefined') {
+                Notification
+                    .error({
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('pubdev.empty-fields')
+                    });
+                $scope.dataLoading = false;
+                return;
+            }
             var data = 'message=' + $scope.mes + '&email=' + $scope.email + '&subject=Customer sent you message: ' + $rootScope.name + ' ' + $rootScope.lastName;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
@@ -261,6 +287,7 @@ angular.module('FreelancerApp')
 
             return ratings;
         };
+
 
         $scope.rate = 1;
         $scope.max = 5;

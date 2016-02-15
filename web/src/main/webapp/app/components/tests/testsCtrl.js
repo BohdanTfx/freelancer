@@ -70,7 +70,7 @@ angular.module('FreelancerApp')
             }
             $scope.passedTestList = passedTests;
             $scope.newTestsList = newTests;
-        }
+        };
 
         $scope.testListCtrl = function () {
             if ($scope.smt.passedTest == $scope.smt.allowedTest) {

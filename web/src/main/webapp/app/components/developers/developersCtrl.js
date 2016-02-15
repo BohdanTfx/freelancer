@@ -5,7 +5,7 @@ angular
 		.controller(
 				'developersCtrl',
 				function($scope, developersService, $log, $http, Notification) {
-					$scope.filter = {}
+					$scope.filter = {};
 					$scope.developersLoading = true;
 					$scope.filterButtonStyle = 'fa-angle-double-down';
 					$scope.filter.payment = {};
@@ -31,7 +31,7 @@ angular
 							$scope.filter.tooltip.locked = false;
 							filterOpen = true;
 						}
-					}
+					};
 
 					$scope.itemsPerPage = [ {
 						number : 5,
@@ -82,13 +82,13 @@ angular
 												+ ' while loading developers!'
 									});
 								});
-					}
+					};
 
 					$scope.changeStep = function() {
 						localStorage.setItem("freelancerDevelopersStep",
 								$scope.itesStep.number);
 						$scope.doFilter();
-					}
+					};
 
 					$scope.openPage = function(page) {
 						if (page == 'last') {
@@ -99,7 +99,7 @@ angular
 							$scope.last = undefined;
 							$scope.doFilter();
 						}
-					}
+					};
 
 					developersService
 							.loadTechnologies($scope, $http)

@@ -6,8 +6,6 @@ import com.epam.freelancer.database.transformer.annotation.Table;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 import java.sql.Date;
-import java.sql.Timestamp;
-import java.time.LocalDate;
 
 /**
 * Created by Rynik on 07.02.2016.
@@ -93,9 +91,8 @@ public class OrderCounter implements BaseEntity<Integer>  {
         if (date != null ? !date.equals(that.date) : that.date != null) return false;
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (isDeleted != null ? !isDeleted.equals(that.isDeleted) : that.isDeleted != null) return false;
-        if (version != null ? !version.equals(that.version) : that.version != null) return false;
+        return !(version != null ? !version.equals(that.version) : that.version != null);
 
-        return true;
     }
 
     @Override

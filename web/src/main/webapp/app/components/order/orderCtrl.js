@@ -40,11 +40,11 @@ angular
 														message : 'Some errors occurred while creating order. Please reload page and try again.'
 													});
 										});
-					}
+					};
 
 					$scope.resetInputs = function() {
 						$scope.order.title = "";
-						$scope.order.descr = ""
+						$scope.order.descr = "";
 						$scope.order.pay_type = "";
 						$scope.order.payment = "";
 						$scope.order.zone = $scope.getCurrentZone();
@@ -53,13 +53,13 @@ angular
 								key) {
 							value['ticked'] = false;
 						});
-					}
+					};
 
 					$scope.getCurrentZone = function() {
 						var offset = new Date().getTimezoneOffset(), o = Math
 								.abs(offset);
 						return Math.floor(o / 60);
-					}
+					};
 
 					$scope.timeZones = getTimeZones();
 
@@ -74,7 +74,7 @@ angular
 						var results = query ? $scope.technologies
 								.filter(createFilterFor(query)) : [];
 						return results;
-					}
+					};
 
 					function createFilterFor(query) {
 						var lowercaseQuery = angular.lowercase(query);
@@ -89,7 +89,7 @@ angular
 								|| $scope.order.technologies.length < 1) {
 							$scope.newOrderForm.fakeTechnologies.$setValidity(
 									'emptyTechnologies', false);
-							return;
+
 						} else {
 							$scope.newOrderForm.fakeTechnologies.$setValidity(
 									'emptyTechnologies', true);
@@ -152,7 +152,6 @@ angular
 															- el.maxDecimalPoints) {
 														return false;
 													}
-													;
 												}
 												elem
 														.data(
@@ -188,7 +187,7 @@ angular
 									}
 								} catch (err) {
 								}
-							}
+							};
 							var change_maxlength = function(elem, ev) {
 								try {
 									var el = $(elem)[0];
@@ -208,14 +207,13 @@ angular
 									}
 								} catch (err) {
 								}
-							}
+							};
 							$(elem).on("keypress", function(event) {
 								return checkPositive(elem, event);
-							})
+							});
 							$(elem).on("input", function(event) {
 								return change_maxlength(elem, event);
 							})
 						}
 					}
 				});
-;

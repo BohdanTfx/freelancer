@@ -42,4 +42,4 @@ angular.module('FreelancerApp')
 
 
         return dataFactory;
-    })
+    });

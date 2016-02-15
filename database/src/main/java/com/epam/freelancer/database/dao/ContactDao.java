@@ -7,8 +7,8 @@ import com.epam.freelancer.database.model.Contact;
  */
 public interface ContactDao extends GenericDao<Contact, Integer> {
 
-	public Contact getContactByDevId(Integer id);
+	Contact getContactByDevId(Integer id);
 
-	public Contact getContactByCustId(Integer id);
+	Contact getContactByCustId(Integer id);
 
 }

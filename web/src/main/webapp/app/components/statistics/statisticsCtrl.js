@@ -4,23 +4,7 @@ angular.module('FreelancerApp')
         $scope.element = {};
         $scope.admin.email = "";
 
-        $scope.sendAdminLinkToEmail = function(ev,email) {
-            statisticsAPI.sendLinkToEmail(email);
-
-            $mdDialog.show(
-                $mdDialog.alert()
-                    .parent(angular.element(document.querySelector('#popupContainer')))
-                    .clickOutsideToClose(true)
-                    .title("Attention")
-                    .textContent('The message was sent')
-                    .ok('Got it!')
-                    .targetEvent(ev)
-            );
-        };
-
         statisticsAPI.getStatisticPopularTests().success(function(data){
-            console.log(data);
-
             if(data.tests.length>4) {
                 $scope.showTestStat(data.tests, data.amounts);
             }else{
@@ -34,34 +18,29 @@ angular.module('FreelancerApp')
 
         });
 
-
-
-        //PieChart
-        ///////////////////////////////////////////////////////////////////////////
         statisticsAPI.getStatisticsDevCust().success(function(data){
                 $scope.custAmount = data.custAmount;
                 $scope.devAmount = data.devAmount;
-
-            //alert(data.custAmount+'    '+data.devAmount);
-
-            $scope.showDevCustStat();
-
-
+                $scope.showDevCustStat();
             }).error(function(){
-            alert(404);
+            Notification
+                .error({
+                    title: 'Error!',
+                    message: 'Something went bad. Please, try again.'
+                });
         });
 
 
         $scope.showDevCustStat =  function(){
-            var chart1 = {};
-            chart1.type = "PieChart";
-            chart1.data = [
+            var chartDevCust = {};
+            chartDevCust.type = "PieChart";
+            chartDevCust.data = [
                 ['Component', 'cost'],
                 ['Customers',  $scope.custAmount],
                 ['Developers',  $scope.devAmount]
             ];
 
-            chart1.options = {
+            chartDevCust.options = {
                 displayExactValues: true,
                 width: 400,
                 height: 200,
@@ -69,32 +48,29 @@ angular.module('FreelancerApp')
                 chartArea: {left:10,top:10,bottom:0,height:"100%"}
             };
 
-            $scope.chart = chart1;
+            $scope.chartDevCust = chartDevCust;
        };
-        ///////////////////////////////////////////////////////////////////////////
-
-
-        //LineChart
-        ///////////////////////////////////////////////////////////////////////////
-
 
         statisticsAPI.getStatisticsCreationOrders().success(function(data){
 
-            console.log(data);
             $scope.orderValues = data.orderValues;
             $scope.listDays = data.listDays;
             $scope.listMonth = data.listMonth;
 
 
 
-            $scope.showOrdersStat($scope.orderValues, $scope.listDays,$scope.listMonth);
+            $scope.showOrdersCreationStat($scope.orderValues, $scope.listDays,$scope.listMonth);
 
         }).error(function(){
-            alert(404);
+            Notification
+                .error({
+                    title: 'Error!',
+                    message: 'Something went bad. Please, try again.'
+                });
         });
 
 
-        $scope.showOrdersStat = function(orderValues, listDays,listMonth) {
+        $scope.showOrdersCreationStat = function(orderValues, listDays,listMonth) {
              $scope.chartObject = {
                 "type": "LineChart",
                 "displayed": false,
@@ -170,7 +146,7 @@ angular.module('FreelancerApp')
                 "view": {"columns": [0, 1]}
             }
 
-        }
+        };
         ///////////////////////////////////////////////////////////////////////////
 
 
@@ -202,6 +178,54 @@ angular.module('FreelancerApp')
                 'title': 'Most popular tests'
             };
         }
+
+
+        statisticsAPI.getStatisticOrders().success(function(data){
+
+            $scope.finishedCount = data.finishedCount;
+            $scope.inProgressCount = data.inProgressCount;
+            $scope.availableCount = data.availableCount;
+
+
+            $scope.showOrdersStat($scope.availableCount,$scope.inProgressCount,$scope.finishedCount);
+
+
+        }).error(function(){
+            Notification
+                .error({
+                    title: 'Error!',
+                    message: 'Something went bad. Please, try again.'
+                });
+        });
+
+
+        $scope.showOrdersStat = function(availableCount,inProgressCount,finishedCount){
+            var chartOrders = {};
+            chartOrders.type = "PieChart";
+            chartOrders.data = [
+                ['Component', 'cost'],
+                ['Available',  availableCount],
+                ['In progress',  inProgressCount],
+                ['Finished',  finishedCount]
+            ];
+
+            chartOrders.options = {
+                displayExactValues: true,
+                width: 400,
+                height: 200,
+                is3D: true,
+                chartArea: {left:10,top:10,bottom:0,height:"100%"},
+                slices: {
+                    0: { color: 'purple' },
+                    1: { color: 'green' },
+                    2: { color: 'brown' }
+                }
+            };
+
+            $scope.chartOrders = chartOrders;
+
+        }
+
 
 
     });
