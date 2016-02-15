@@ -17,12 +17,12 @@
 
 			<div ng-if="roleAdmin !== true">
 				<div class="col-xs-12 social-buttons">
-					<div class="col-xs-6">
+					<div class="col-sm-6">
 						<a class="btn btn-block btn-social btn-google-plus"> <i
 							class="fa fa-google-plus"></i> {{"signup.google" | translate}}
 						</a>
 					</div>
-					<div class="col-xs-6">
+					<div class="col-sm-6">
 						<a href="{{social.linkedin.url}}"
 							class="btn btn-block btn-social btn-linkedin  {{social.linkedin.available ? '' : 'disabled'}}">
 							<i class="fa fa-linkedin"></i> {{"signup.linkedin" | translate}}
@@ -120,12 +120,12 @@
 			</md-input-container>
 
 			<div class="col-xs-12">
-				<div class="col-xs-6">
+				<div class="col-sm-6">
 					<button class="btn btn-info full-width">
 						<i class="fa fa-user-plus"></i> {{"signup.do-signup" | translate}}
 					</button>
 				</div>
-				<div class="col-xs-6">
+				<div class="col-sm-6">
 					<button class="btn btn-warning full-width" ng-click="resetInputs()">
 						<i class="fa fa-times"></i> {{"signup.reset" | translate}}
 					</button>
