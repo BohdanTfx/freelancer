@@ -1,12 +1,10 @@
 <div class="animated fadeInLeft create-admin">
 
     <div class="panel create-panel-body" style="background-color: #ffffff">
-        <h3>Invitation admin</h3>
+        <h3> {{'createadmin.invitation' | translate}}</h3>
 
         <p>
-            Enter email address of person you want to invite to become a user with permission "Admin".
-            This person will receive the letter with instructions. You can send this invitation to the same email
-            address only once.
+            {{'createadmin.descr' | translate}}
         </p>
 
         <form name="inviteAdminForm" novalidate
@@ -14,20 +12,20 @@
 
             <!--<div class="row">-->
             <md-input-container class="full-width">
-                <label>E-mail</label><input ng-required="true" type="email" name="email" ng-model="admin.email">
+                <label>{{'createadmin.input-placeholder' | translate}}</label><input ng-required="true" type="email" name="email" ng-model="admin.email">
 
                 <div ng-messages="inviteAdminForm.email.$error " ng-if="inviteAdminForm.$invalid">
-                     <div ng-message="email">Invalid e-mail</div>
+                     <div ng-message="email"> {{'createadmin.input-error-email' | translate}}</div>
                 </div>
                 <div ng-messages="inviteAdminForm.email.$error " ng-if="inviteAdminForm.$submitted">
-                    <div ng-message="required">This field is required.</div>
+                    <div ng-message="required">{{'createadmin.input-error-req' | translate}}</div>
                 </div>
 
 
             </md-input-container>
 
               <md-button class="md-raised md-primary full-width" type="submit" style="margin:0;">
-                <strong>Send invitation</strong>
+                <strong>{{'createadmin.send-btn' | translate}}</strong>
               </md-button>
 
         </form>

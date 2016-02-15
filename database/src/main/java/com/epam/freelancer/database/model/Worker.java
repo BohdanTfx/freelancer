@@ -23,6 +23,8 @@ public class Worker implements BaseEntity<Integer> {
 	@Column(name = "is_deleted")
 	private Boolean isDeleted;
 	@Column
+	private Boolean accepted;
+	@Column
 	private Integer version;
 	private Ordering order;
 	private Developer developer;
@@ -57,6 +59,14 @@ public class Worker implements BaseEntity<Integer> {
 
 	public void setSumHours(Double sumHours) {
 		this.sumHours = sumHours;
+	}
+
+	public Boolean getAccepted() {
+		return accepted;
+	}
+
+	public void setAccepted(Boolean accepted) {
+		this.accepted = accepted;
 	}
 
 	@Override

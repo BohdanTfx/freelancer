@@ -19,7 +19,7 @@ public class QuestionJdbcDao extends GenericJdbcDao<Question, Integer> implement
 	@Override
 	public List<Question> getByTechnology(Integer id) {
 		List<Question> entities = new ArrayList<>();
-		String query = "SELECT * FROM " + table + " WHERE tech_id = ?";
+		String query = "SELECT * FROM " + table + " WHERE tech_id = ? AND is_deleted <> 1";
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection
 						.prepareStatement(query)) {

@@ -3,12 +3,11 @@
         <div class="col-md-12">
             <div class="well panel panel-default">
                 <div class="panel-body fl-left">
-                    <h2 class="order-not-found">Order not found</h2>
+                    <h2 class="order-not-found">{{"jobinfo.no-order" | translate}}</h2>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 
 <div class="container-top" ng-hide="noOrder">
@@ -17,41 +16,40 @@
             <div class="col-md-12">
                 <div class="well panel panel-default">
                     <div class="panel-body">
-
                         <div class="row">
                             <div ng-if="isDev" class="form-group devpub-comm-div">
                                 <div ng-hide="user.subscribed">
                                     <button type="button" data-toggle="modal"
                                             data-target=".bs-example-modal-md1"
                                             class="btn btn-primary pull-left">
-                                        Subscribe
+                                        {{"jobinfo.subscribe" | translate}}
                                     </button>
                                 </div>
                                 <div ng-show="user.subscribed">
                                     <button type="button" ng-click="unsubscribe()"
                                             class="btn btn-primary btn-warn pull-left">
-                                        Unsubscribe
+                                        {{"jobinfo.unsubscribe" | translate}}
                                     </button>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-8 col-xs-12 hr">
-                            <h2><em><span class="fa fa-briefcase"></span> {{order.title}}</em></h2>
+                            <h2 class="job-title"><span class="fa fa-briefcase"></span> {{order.title}}</h2>
 
                             <p class="position">
                             <h5>{{position}}</h5>
-                            <h4 class="details">Details</h4>
+                            <h4 class="details">{{"jobinfo.details" | translate}}</h4>
 
                             <p>{{order.descr}}</p>
 
                             <p>
                             <ul class="list-unstyled">
-                                <li><strong>Date:</strong> {{order.date | date:'MMM d, y'}}</li>
-                                <li><strong>Payment:</strong> {{order.payType}}, {{order.payment | number:2}} $</li>
-                                <li ng-show="order.zone"><strong>Time zone:</strong> {{order.zone}}</li>
-                                <li><strong>Technologies:</strong>
+                                <li><strong>{{"jobinfo.date" | translate}}:</strong> {{order.date | date:'MMM d, y'}}</li>
+                                <li><strong>{{"jobinfo.payment" | translate}}:</strong> {{order.payType}}, {{order.payment | number:2}} $</li>
+                                <li ng-show="order.zone"><strong>{{"jobinfo.time-zone" | translate}}:</strong> {{order.zone}}</li>
+                                <li><strong>{{"jobinfo.technologies" | translate}}:</strong>
                                     <span ng-switch on="techs.length == 0">
-                                        <span ng-switch-when="true">none</span>
+                                        <span ng-switch-when="true">{{"jobinfo.none" | translate}}</span>
                                         <span ng-switch-when="false">
                                             <span ng-repeat="tech in techs">
                                                 <span class="label label-success lb">{{tech.name}}</span>
@@ -59,21 +57,24 @@
                                         </span>
                                     </span>
                                 </li>
+                            <li>
+                                <div class="btn btm-sm btn-danger" ng-disabled="disCompBut" data-toggle="modal"
+                                     data-target=".bs-example-modal-sm" style="padding: 3px">{{"jobinfo.complain" | translate}}
+                                </div>
+                            </li>
                             </ul>
                             </p>
                         </div>
-
                         <div class="col-sm-4 col-xs-12 right-side">
                             <br/>
-
-                            <h4 style="display: inline-block">Customer</h4>
+                            <h4 style="display: inline-block">{{"jobinfo.customer" | translate}}</h4>
 
                             <div class="col-lg-5 col-sm-12 hidden-xs">
                                 <div class="user"
                                      style="background-image: url('{{customer.imgUrl}}')"></div>
                             </div>
                             <div class="col-lg-7 col-sm-12">
-                                <h2><em>{{customer.fname}} {{customer.lname}}</em></h2>
+                                <h3 class="user-name">{{customer.fname}} {{customer.lname}}</h3>
                                 <ul class="list-inline ratings" title="Ratings">
                                     <uib-rating ng-model="custRate" max="5" readonly="true"
                                                 on-leave="overStar = null" titles="['1','2','3','4','5']"
@@ -81,54 +82,55 @@
                                 </ul>
                                 <md-divider></md-divider>
                                 <ul class="list-unstyled">
-                                    <li>Skype: {{customer.contact.skype}}</li>
-                                    <li>
-                                        On site since<br/>
+                                    <li ng-show="customer.contact != undefined">Skype: {{customer.contact.skype}}</li>
+                                    <li ng-show="customer.regDate != undefined">
+                                        {{"jobinfo.on-site-since" | translate}}<br/>
                                         {{customer.regDate | date:'MMM d, y'}}
                                     </li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-
                     <md-content>
                         <md-tabs md-dynamic-height md-border-bottom>
-                            <md-tab label="Followers">
+                            <md-tab label="{{'jobinfo.tab-subscribers' | translate}}">
                                 <md-content class="md-padding">
                                     <div class="tab-pane fade in active">
-                                        <p class="noFollowers" ng-if="noFollowers">There are no followers on this
-                                            project</p>
+                                        <p class="noFollowers" ng-if="noFollowers">{{"jobinfo.no-followers" | translate}}</p>
 
                                         <div ng-repeat="follower in followers">
                                             <div class="row">
                                                 <div class="col-sm-9">
                                                     <br/>
-
                                                     <div class="follower"
                                                          style="background-image: url('{{follower.developer.imgUrl}}')"></div>
-
                                                     <p>
-                                                        <a ng-href="/#/public/dev-name/{{follower.developer.id}}"><em>{{follower.developer.fname}}
+                                                        <a ng-href="/#/public/developer/{{follower.developer.fname}}-{{follower.developer.lname}}/{{follower.developer.id}}"><em>{{follower.developer.fname}}
                                                             {{follower.developer.lname}}</em></a>
                                                     </p>
-
                                                     <p>{{follower.message}}</p>
-
                                                 </div>
                                                 <div class="col-sm-3 text-center">
                                                     <br/>
-                                                    <span>Developer rate</span>
+                                                    <span>{{"jobinfo.dev-rate" | translate}}</span>
                                                     <ul class="list-inline ratings" title="Ratings">
                                                         <uib-rating ng-model="follower.rate" max="5" readonly="true"
                                                                     on-leave="overStar = null"
                                                                     titles="['1','2','3','4','5']"
                                                                     aria-labelledby="default-rating"></uib-rating>
                                                     </ul>
-                                                    <span>Rate:</span>
-                                                    <span ng-if="follower.developer.hourly==undefined">unknown</span>
+                                                    <span>{{"jobinfo.rate" | translate}}:</span>
+                                                    <span ng-if="follower.developer.hourly==undefined">{{"jobinfo.unknown" | translate}}</span>
                                                     <span ng-if="follower.developer.hourly!=undefined"><span
-                                                            class="fa fa-usd"></span>{{follower.developer.hourly}}&#47hr</span>
-
+                                                            class="fa fa-usd"></span>{{follower.developer.hourly}}&#47hr</span><br/>
+                                                    <button ng-show="isJobOwner"
+                                                            type="button"
+                                                            class="btn btn-success btn-accept"
+                                                            ng-click="acceptFollower(follower.devId)"
+                                                            ng-disabled="follower.worker">
+                                                        <span ng-hide="follower.worker">{{"jobinfo.accept" | translate}}</span>
+                                                        <span ng-show="follower.worker">{{"jobinfo.accepted" | translate}}</span>
+                                                    </button>
                                                 </div>
                                             </div>
                                             <br/>
@@ -137,41 +139,36 @@
                                     </div>
                                 </md-content>
                             </md-tab>
-                            <md-tab label="Feedbacks about customer">
+                            <md-tab label="{{'jobinfo.tab-feedbacks-about-customer' | translate}}">
                                 <md-content class="md-padding">
                                     <div class="tab-pane fade in active" id="menu1">
-
-                                        <p class="noFeedbacks" ng-if="noFeedbacks">There are no feedbacks about
-                                            customer</p>
+                                        <p class="noFeedbacks" ng-if="noFeedbacks">{{"jobinfo.no-feedbacks" | translate}}</p>
 
                                         <div ng-repeat="feedback in feedbacks">
                                             <br/>
 
                                             <div class="feedback"
                                                  style="background-image: url('{{feedback.developer.imgUrl}}')"></div>
-
                                             <p>
                                                 <a ng-href="/public/dev-name/{{developer.id}}"><em>{{feedback.developer.fname}}
                                                     {{feedback.developer.lname}}</em></a>
                                             </p>
 
                                             <p>{{feedback.comment}}</p>
-
                                             <ul class="list-inline ratings" title="Ratings">
                                                 <uib-rating ng-model="feedback.rate" max="5" readonly="true"
                                                             on-leave="overStar = null" titles="['1','2','3','4','5']"
                                                             aria-labelledby="default-rating"></uib-rating>
                                             </ul>
-
                                             <br/>
                                             <md-divider></md-divider>
                                         </div>
                                     </div>
                                 </md-content>
                             </md-tab>
-                            <md-tab label="Customer projects history">
+                            <md-tab label="{{'jobinfo.tab-customer-projects-history' | translate}}">
                                 <md-content class="md-padding">
-                                    <p class="emptyHistory" ng-if="emptyHistory">Customer didn't have any projects</p>
+                                    <p class="emptyHistory" ng-if="emptyHistory">{{"jobinfo.empty-history" | translate}}</p>
 
                                     <div ng-repeat="project in custProjects">
                                         <h4 class="tit">
@@ -192,7 +189,6 @@
                                         </div>
                                         <md-divider></md-divider>
                                     </div>
-
                                 </md-content>
                             </md-tab>
                         </md-tabs>
@@ -201,7 +197,6 @@
             </div>
         </div>
     </div>
-
     <!--/panel-body-->
     <!--/panel-->
 </div>
@@ -211,23 +206,44 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-    <span
-            aria-hidden="true">&times;</span>
+                    <span aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title">Follow on project</h4>
+                <h4 class="modal-title">{{"jobinfo.follow-on-project" | translate}}</h4>
             </div>
             <div class="modal-footer">
                 <div class="form-group">
                     <br/>
-                    <textarea type="text" class="form-control" ng-model="message" rows="5" placeholder="Message ..."
+                    <textarea type="text" style="resize: none" class="form-control" ng-model="message" rows="5"
+                              placeholder="{{'jobinfo.message' | translate}}"
                               required></textarea>
                     <br/>
                     <button type="button" ng-click="subscribe(message)"
+                            data-dismiss="modal"
                             class="btn btn-primary pull-right">
-                        Subscribe
-                    </button>
+                        {{"jobinfo.subscribe" | translate}}
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">{{"jobinfo.are-you-sure" | translate}}</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal"><span
+                        class="glyphicon glyphicon-share-alt"></span> {{"jobinfo.close" | translate}}
+                </button>
+                <button type="button" id="delete1" class="btn btn-danger" ng-click="complain()"
+                        data-dismiss="modal"><span
+                        class="glyphicon glyphicon-remove-sign"></span> {{"jobinfo.complain" | translate}}
+                </button>
             </div>
         </div>
     </div>

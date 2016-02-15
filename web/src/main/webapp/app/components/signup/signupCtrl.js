@@ -31,17 +31,17 @@ angular
 						$scope.role = role;
 						$scope.signup = signup;
 						localStorage.setItem("role", role);
-					}
+					};
 
 					$scope.getCurrentZone = function() {
 						var offset = new Date().getTimezoneOffset(), o = Math
 								.abs(offset);
 						return Math.floor(o / 60);
-					}
+					};
 
 					$scope.createUser = function() {
 						signupAPI.createUser($http, $scope.user,$scope.adminUUID,$scope.roleAdmin,createadminAPI);
-					}
+					};
 
 					$scope.resetInputs = function() {
 						$scope.user.first_name = "";
@@ -50,7 +50,7 @@ angular
 						$scope.user.password = "";
 						$scope.user.passwordconfirm = "";
 						$scope.user.zone = $scope.getCurrentZone();
-					}
+					};
 
 					signupAPI.initSocial($http, $scope);
 
@@ -243,4 +243,3 @@ angular
 						}
 					};
 				});
-;

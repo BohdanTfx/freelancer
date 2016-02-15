@@ -166,6 +166,13 @@ public class DeveloperService extends UserService<Developer> {
                 idOrder);
     }
 
+    public List<Worker> getAllWorkersByOrderId(Integer idOrder) {
+        return ((WorkerDao) workerDao).getAllWorkersByOrderId(idOrder);
+    }
+    public List<Worker> getAllWorkersByDevId(Integer idDev) {
+        return ((WorkerDao) workerDao).getAllWorkersByDevId(idDev);
+    }
+
     public Contact createContact(Contact contact) {
         return contactDao.save(contact);
     }
@@ -183,7 +190,7 @@ public class DeveloperService extends UserService<Developer> {
     }
 
     public void deleteTechnologyInDev(Integer devId, Integer technologyId){
-        // need write method for removing tech in dev
+        devMTMtechDao.removeContact(devId, technologyId);
     }
 
     public void addTechnologiesForDev(Integer devId, List<Integer> technologiesIds) {
@@ -260,6 +267,7 @@ public class DeveloperService extends UserService<Developer> {
         follower.setDevId(devId);
         follower.setOrderId(orderId);
         follower.setAuthor("dev");
+        follower.setIsDeleted(false);
         if (!message.isEmpty())
             follower.setMessage(message);
         return followerDao.save(follower);

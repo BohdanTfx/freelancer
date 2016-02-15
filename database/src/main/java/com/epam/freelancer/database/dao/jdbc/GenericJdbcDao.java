@@ -95,11 +95,29 @@ public abstract class GenericJdbcDao<T extends BaseEntity<ID>, ID> implements
 	@Override
 	public List<T> getAll() {
 		List<T> entities = new ArrayList<>();
-		String query = "SELECT * FROM " + table;
+		String query = "SELECT * FROM " + table + " WHERE is_deleted IS NOT TRUE";
 		try (Connection connection = connectionPool.getConnection();
 				PreparedStatement statement = connection
 						.prepareStatement(query);
 				ResultSet set = statement.executeQuery()) {
+			while (set.next()) {
+				T entity = transformer.getObject(set);
+				entities.add(entity);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return entities;
+	}
+
+	@Override
+	public List<T> getAllWithDeleted() {
+		List<T> entities = new ArrayList<>();
+		String query = "SELECT * FROM " + table;
+		try (Connection connection = connectionPool.getConnection();
+			 PreparedStatement statement = connection
+					 .prepareStatement(query);
+			 ResultSet set = statement.executeQuery()) {
 			while (set.next()) {
 				T entity = transformer.getObject(set);
 				entities.add(entity);
@@ -190,7 +208,7 @@ public abstract class GenericJdbcDao<T extends BaseEntity<ID>, ID> implements
 		builder.append(step);
 
 		return builder.toString();
-	}
+}
 
 	@Override
 	public Integer getObjectNumber() {

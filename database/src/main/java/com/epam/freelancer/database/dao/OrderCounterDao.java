@@ -11,5 +11,5 @@ public interface OrderCounterDao extends GenericDao<OrderCounter, Integer>  {
 
     OrderCounter getOrderCounterByDate(java.sql.Date date);
     Integer incrementCounter(Integer id);
-    public List<OrderCounter> getAllForLast30Days();
+    List<OrderCounter> getAllForLast30Days();
 }

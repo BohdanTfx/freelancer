@@ -232,6 +232,9 @@ h1, h2, h3, h4, h5 {
 .inner-elements-color-blue-light * {
 	color: #00A7F5 !important;
 }
+.inner-elements-color-gray * {
+	color: #728aa3 !important;
+}
 
 .pagination {
 	background: #f2f2f2;

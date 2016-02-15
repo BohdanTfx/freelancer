@@ -40,6 +40,10 @@ height:100vh;
     padding-top: 2em;
 }
 
+.content-full-screen-height{
+    min-height: 100vh;
+}
+
 .menu-header-offset-unlog{
     padding-top: 6em;
 }

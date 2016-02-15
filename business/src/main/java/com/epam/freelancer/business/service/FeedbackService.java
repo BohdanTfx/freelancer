@@ -5,6 +5,8 @@ import com.epam.freelancer.database.dao.FeedbackDao;
 import com.epam.freelancer.database.dao.jdbc.DAOManager;
 import com.epam.freelancer.database.model.Feedback;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +41,7 @@ public class FeedbackService extends GenericService<Feedback, Integer> {
         feedback.setRate(integer);
         value = data.get("author");
         feedback.setAuthor(value != null ? value[0] : null);
+        feedback.setDate(new Timestamp(new Date().getTime()));
 
         feedback = genericDao.save(feedback);
         

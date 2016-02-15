@@ -702,7 +702,7 @@ goog.require('ng.material.core');
           this.calendarCtrl.minDate, this.calendarCtrl.maxDate) && 
           (!angular.isFunction(this.calendarCtrl.dateFilter)
            || this.calendarCtrl.dateFilter(opt_date));
-  }
+  };
   
   /**
    * Builds a `tr` element for the calendar grid.

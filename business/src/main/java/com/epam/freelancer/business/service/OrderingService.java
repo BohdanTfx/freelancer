@@ -112,6 +112,10 @@ public class OrderingService extends GenericService<Ordering, Integer> {
         return ((OrderingDao) genericDao).getAvailableCustOrders(custId);
     }
 
+	public List<Ordering> getAllCustOrders(Integer custId) {
+		return ((OrderingDao) genericDao).getAllCustOrders(custId);
+	}
+
 	public Integer getFilteredObjectNumber(Map<String, Object> parameters) {
 		return ((OrderingDao) genericDao).getFilteredObjectNumber(parameters);
 	}
@@ -136,5 +140,9 @@ public class OrderingService extends GenericService<Ordering, Integer> {
 
 	public List<Follower> findOrderFollowers(Integer orderId) {
 		return ((FollowerDao) followerDao).getProjectFollowers(orderId);
+	}
+
+	public void deleteFollower(Follower follower) {
+		followerDao.delete(follower);
 	}
 }

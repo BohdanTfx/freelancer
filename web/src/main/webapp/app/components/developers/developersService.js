@@ -9,14 +9,39 @@ angular
 
 					this.loadTechnologies = function() {
 						return $http.post("/user/technologies");
-					}
+					};
 
 					this.loadPaymentLimits = function() {
 						return $http.get("/user/developers/payment/limits");
-					}
+					};
 
 					this.loadDevelopers = function(filter, last, itemListStart,
 							developersLoading, itesStep, paymentMin, paymentMax) {
+
+						var pagination = {};
+						pagination.start = itemListStart | 0;
+						pagination.last = last;
+						// pagination.step = 2;
+						pagination.step = self.getStep(itesStep);
+
+						var data = {};
+						data.content = self.getFilterContent(filter,
+								paymentMin, paymentMax);
+						if (isNotEmpty(pagination))
+							data.page = pagination;
+
+						developersLoading = true;
+						var config = {
+							headers : {
+								'Content-Type' : 'application/x-www-form-urlencoded;charset=utf-8;'
+							}
+						};
+						return $http.post("/user/developers/filter", data,
+								config);
+					};
+
+					this.getFilterContent = function(filter, paymentMin,
+							paymentMax) {
 						var content = {};
 						content.name = filter.firstName === undefined
 								|| filter.firstName.length == 0 ? undefined
@@ -48,27 +73,11 @@ angular
 						content.paymentMin = paymentMin;
 						content.paymentMax = paymentMax;
 
-						var pagination = {};
-						pagination.start = itemListStart | 0;
-						pagination.last = last;
-						// pagination.step = 2;
-						pagination.step = self.getStep(itesStep);
-
-						var data = {};
 						if (isNotEmpty(content))
-							data.content = content;
-						if (isNotEmpty(pagination))
-							data.page = pagination;
+							return content;
 
-						developersLoading = true;
-						var config = {
-							headers : {
-								'Content-Type' : 'application/x-www-form-urlencoded;charset=utf-8;'
-							}
-						};
-						return $http.post("/user/developers/filter", data,
-								config);
-					}
+						return undefined;
+					};
 
 					this.fillPagination = function(data, $scope) {
 						$scope.pages = data;
@@ -86,7 +95,7 @@ angular
 									$scope.showLast = true;
 							}
 						}
-					}
+					};
 
 					this.getStep = function(itesStep) {
 						var localStep = localStorage

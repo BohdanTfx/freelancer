@@ -16,7 +16,6 @@ public class TestService extends GenericService<Test, Integer> {
 	private GenericDao<Question, Integer> questionDao;
 	private GenericManyToManyDao<Test, Question, BaseEntity<Integer>, Integer> testMTMquestDao;
 	private GenericDao<Answer, Integer> answerDao;
-	private GenericDao<AdminCandidate, Integer> adminCandidateDao;
 
 	public TestService() {
 		super(DAOManager.getInstance().getDAO(TestDao.class.getSimpleName()));
@@ -100,6 +99,10 @@ public class TestService extends GenericService<Test, Integer> {
 		return ((TestDao) genericDao).getTestsByAdminId(id);
 	}
 
+	public Map<Test,Integer> getPopularTests() {
+		return ((TestDao) genericDao).getPopularTests();
+	}
+
 	public void setQuestionDao(GenericDao<Question, Integer> questionDao) {
 		this.questionDao = questionDao;
 	}
@@ -115,9 +118,7 @@ public class TestService extends GenericService<Test, Integer> {
 		answerDao.setConnectionPool(DAOManager.getInstance()
 				.getConnectionPool());
 	}
-	public void setAdminCandidateDao(GenericDao<AdminCandidate, Integer> adminCandidateDao) {
-		this.adminCandidateDao = adminCandidateDao;
-		answerDao.setConnectionPool(DAOManager.getInstance()
-				.getConnectionPool());
-	}
+
+
+
 }

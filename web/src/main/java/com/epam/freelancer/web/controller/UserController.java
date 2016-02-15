@@ -36,99 +36,97 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class UserController extends HttpServlet implements Responsable {
-	public static final Logger LOG = Logger.getLogger(UserController.class);
-	private static final long serialVersionUID = -2356506023594947745L;
-	private AuthenticationProvider authenticationProvider;
-	private FeedbackService feedbackService;
-	private OrderingService orderingService;
-	private AdminService adminService;
-	private CustomerService customerService;
-	private DeveloperService developerService;
-	private TechnologyService technologyService;
+    public static final Logger LOG = Logger.getLogger(UserController.class);
+    private static final long serialVersionUID = -2356506023594947745L;
+    private AuthenticationProvider authenticationProvider;
+    private FeedbackService feedbackService;
+    private OrderingService orderingService;
+    private AdminService adminService;
+    private CustomerService customerService;
+    private DeveloperService developerService;
+    private TechnologyService technologyService;
     private ComplaintService complaintService;
     private UserManager userManager;
-	private Linkedin linkedin;
-	private ObjectMapper mapper;
-	private Paginator paginator;
+    private Linkedin linkedin;
+    private ObjectMapper mapper;
+    private Paginator paginator;
 
-	public UserController() {
-		init();
-	}
+    public UserController() {
+        init();
+    }
 
-	@Override
-	public void init() {
-		LOG.info(getClass().getSimpleName() + " - " + " loaded");
-		linkedin = new Linkedin();
-		mapper = new ObjectMapper();
-		paginator = new Paginator();
-		try {
-			linkedin.initKeys("/social.properties");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		orderingService = (OrderingService) ApplicationContext.getInstance()
-				.getBean("orderingService");
-		technologyService = (TechnologyService) ApplicationContext
-				.getInstance().getBean("technologyService");
-		userManager = (UserManager) ApplicationContext.getInstance().getBean(
+    @Override
+    public void init() {
+        LOG.info(getClass().getSimpleName() + " - " + " loaded");
+        linkedin = new Linkedin();
+        mapper = new ObjectMapper();
+        paginator = new Paginator();
+        try {
+            linkedin.initKeys("/social.properties");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        orderingService = (OrderingService) ApplicationContext.getInstance()
+                .getBean("orderingService");
+        technologyService = (TechnologyService) ApplicationContext
+                .getInstance().getBean("technologyService");
+        userManager = (UserManager) ApplicationContext.getInstance().getBean(
                 "userManager");
-        adminService= (AdminService) ApplicationContext.getInstance()
+        adminService = (AdminService) ApplicationContext.getInstance()
                 .getBean("adminService");
-		customerService = (CustomerService) ApplicationContext.getInstance()
-				.getBean("customerService");
-		developerService = (DeveloperService) ApplicationContext.getInstance()
-				.getBean("developerService");
-		authenticationProvider = AuthenticationProvider
-				.createAuthenticationProvider();
-		feedbackService = (FeedbackService) ApplicationContext
-				.getInstance().getBean("feedbackService");
+        customerService = (CustomerService) ApplicationContext.getInstance()
+                .getBean("customerService");
+        developerService = (DeveloperService) ApplicationContext.getInstance()
+                .getBean("developerService");
+        authenticationProvider = AuthenticationProvider
+                .createAuthenticationProvider();
+        feedbackService = (FeedbackService) ApplicationContext
+                .getInstance().getBean("feedbackService");
         complaintService = (ComplaintService) ApplicationContext.
                 getInstance().getBean("complaintService");
     }
 
-	@Override
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException
-	{
-		LOG.info(getClass().getSimpleName() + " - " + "doGet");
-		try {
-			switch (FrontController.getPath(request)) {
-			case "user/email":
-				sendResponse(response, userManager.isEmailAvailable(request
-						.getParameter("email")), mapper);
-				return;
-			case "user/social":
-				configSocials(request, response);
-				return;
-			case "user/signup/linkedin":
-				sendResponse(response, getLinkedInProfile(request, response),
-                        mapper);
-				return;
-			case "user/signin/linkedin":
-				signIn(request, response, SignInType.LINKEDIN);
-				return;
-			case "user/developers/payment/limits":
-				getPaymentLimits(response);
-				return;
-			default:
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			LOG.fatal(getClass().getSimpleName() + " - " + "doGet");
-		}
-	}
+    @Override
+    protected void doGet(HttpServletRequest request,
+                         HttpServletResponse response) throws ServletException, IOException {
+        LOG.info(getClass().getSimpleName() + " - " + "doGet");
+        try {
+            switch (FrontController.getPath(request)) {
+                case "user/email":
+                    sendResponse(response, userManager.isEmailAvailable(request
+                            .getParameter("email")), mapper);
+                    return;
+                case "user/social":
+                    configSocials(request, response);
+                    return;
+                case "user/signup/linkedin":
+                    sendResponse(response, getLinkedInProfile(request, response),
+                            mapper);
+                    return;
+                case "user/signin/linkedin":
+                    signIn(request, response, SignInType.LINKEDIN);
+                    return;
+                case "user/developers/payment/limits":
+                    getPaymentLimits(response);
+                    return;
+                default:
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            LOG.fatal(getClass().getSimpleName() + " - " + "doGet");
+        }
+    }
 
-	private void getPaymentLimits(HttpServletResponse response) {
-		Map<String, Double> limits = new HashMap<>();
-		limits.put("min", developerService.findPaymentLimit("min"));
-		limits.put("max", developerService.findPaymentLimit("max"));
+    private void getPaymentLimits(HttpServletResponse response) {
+        Map<String, Double> limits = new HashMap<>();
+        limits.put("min", developerService.findPaymentLimit("min"));
+        limits.put("max", developerService.findPaymentLimit("max"));
 
-		sendResponse(response, limits, mapper);
-	}
+        sendResponse(response, limits, mapper);
+    }
 
     private LinkedinProfile getLinkedInProfile(HttpServletRequest request,
-                                               HttpServletResponse response)
-    {
+                                               HttpServletResponse response) {
         String oauthVerifier = request.getParameter("verifier");
         try {
             linkedin.loadData(oauthVerifier);
@@ -139,14 +137,13 @@ public class UserController extends HttpServlet implements Responsable {
         return null;
     }
 
-	private void configSocials(HttpServletRequest request,
-			HttpServletResponse response)
-	{
-		String callbackUrl = request.getParameter("callbackUrlLinkedIn");
-		Map<String, Object> result = new HashMap<>();
-		result.put("linkedinUrl", linkedin.getAuthentificationUrl(callbackUrl));
-		sendResponse(response, result, mapper);
-	}
+    private void configSocials(HttpServletRequest request,
+                               HttpServletResponse response) {
+        String callbackUrl = request.getParameter("callbackUrlLinkedIn");
+        Map<String, Object> result = new HashMap<>();
+        result.put("linkedinUrl", linkedin.getAuthentificationUrl(callbackUrl));
+        sendResponse(response, result, mapper);
+    }
 
     @Override
     protected void doPost(HttpServletRequest request,
@@ -199,15 +196,15 @@ public class UserController extends HttpServlet implements Responsable {
                     sendResponse(response, orderingService.findPaymentLimits(),
                             mapper);
                     break;
-			    case "user/technologies":
+                case "user/technologies":
                     sendResponse(response, technologyService.findAll(), mapper);
                     break;
                 case "user/orders/isCompAlrEx":
                     isComplainAlreadyExist(request, response);
                     break;
-			    case "user/developers/filter":
-				    filterDevelopers(request, response);
-				    return;
+                case "user/developers/filter":
+                    filterDevelopers(request, response);
+                    return;
                 case "user/order":
                     getOrderById(request, response);
                     break;
@@ -283,18 +280,25 @@ public class UserController extends HttpServlet implements Responsable {
             String applicationPath = request.getServletContext().getRealPath("");
             String uploadFilePath = null;
             if ("developer".equals(ue.getRole())) {
-                uploadFilePath = applicationPath + File.separator + "uploads" + File.separator + "developer" + File.separator + ue.getId();
+                uploadFilePath = applicationPath + "uploads" + File.separator + "developer" + File.separator + ue.getId();
                 saveImage(uploadFilePath, encodeImage, response);
                 Developer developer = (Developer) ue;
                 developer.setImgUrl("uploads/developer/" + ue.getId() + "/");
                 developerService.updateDeveloper(developer);
             }
             if ("customer".equals(ue.getRole())) {
-                uploadFilePath = applicationPath + File.separator + "uploads" + File.separator + "customer" + File.separator + ue.getId();
+                uploadFilePath = applicationPath + "uploads" + File.separator + "customer" + File.separator + ue.getId();
                 saveImage(uploadFilePath, encodeImage, response);
                 Customer customer = (Customer) ue;
                 customer.setImgUrl("uploads/customer/" + ue.getId() + "/");
                 customerService.modify(customer);
+            }
+            if ("admin".equals(ue.getRole())) {
+                uploadFilePath = applicationPath + "uploads" + File.separator + "admin" + File.separator + ue.getId();
+                saveImage(uploadFilePath, encodeImage, response);
+                Admin admin = (Admin) ue;
+                admin.setImgUrl("uploads/admin/" + ue.getId() + "/");
+                adminService.modify(admin);
             }
 
 
@@ -442,35 +446,34 @@ public class UserController extends HttpServlet implements Responsable {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
 
-	private void filterOrders(HttpServletRequest request,
-			HttpServletResponse response)
-	{
-		try {
-			JsonPaginator result = mapper.readValue(request.getReader()
-					.readLine(), JsonPaginator.class);
-			List<Ordering> orderings = orderingService.filterElements(result
-					.getContent(), result.getPage().getStart()
-					* result.getPage().getStep(), result.getPage().getStep());
+    private void filterOrders(HttpServletRequest request,
+                              HttpServletResponse response) {
+        try {
+            JsonPaginator result = mapper.readValue(request.getReader()
+                    .readLine(), JsonPaginator.class);
+            List<Ordering> orderings = orderingService.filterElements(result
+                    .getContent(), result.getPage().getStart()
+                    * result.getPage().getStep(), result.getPage().getStep());
 
             addIsComplaintInOrderings(orderings, request);
 
-			for (Ordering ordering : orderings) {
-				ordering.setTechnologies(orderingService
-						.findOrderingTechnologies(ordering.getId()));
-			}
+            for (Ordering ordering : orderings) {
+                ordering.setTechnologies(orderingService
+                        .findOrderingTechnologies(ordering.getId()));
+            }
 
-			paginator.next(result.getPage(), response, orderingService
-					.getFilteredObjectNumber(result.getContent()), orderings);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+            paginator.next(result.getPage(), response, orderingService
+                    .getFilteredObjectNumber(result.getContent()), orderings);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void addIsComplaintInOrderings(List<Ordering> orderings, HttpServletRequest request) {
         HttpSession session = request.getSession();
         if (session != null) {
             UserEntity ue = (UserEntity) session.getAttribute("user");
-            if(ue != null) {
+            if (ue != null) {
                 String role = ue.getRole();
                 if ("developer".equals(role)) {
                     List<Complaint> complaints = complaintService.getByDevId(ue.getId());
@@ -487,33 +490,32 @@ public class UserController extends HttpServlet implements Responsable {
         }
     }
 
-	private void filterDevelopers(HttpServletRequest request,
-			HttpServletResponse response)
-	{
-		try {
-			JsonPaginator result = mapper.readValue(request.getReader()
-					.readLine(), JsonPaginator.class);
-			List<Developer> developers = developerService.filterElements(result
-					.getContent(), result.getPage().getStart()
-					* result.getPage().getStep(), result.getPage().getStep());
+    private void filterDevelopers(HttpServletRequest request,
+                                  HttpServletResponse response) {
+        try {
+            JsonPaginator result = mapper.readValue(request.getReader()
+                    .readLine(), JsonPaginator.class);
+            List<Developer> developers = developerService.filterElements(result
+                    .getContent(), result.getPage().getStart()
+                    * result.getPage().getStep(), result.getPage().getStep());
 
-			for (Developer developer : developers) {
-				developer.setTechnologies(developerService
-						.getTechnologiesByDevId(developer.getId()));
-				developer.setEmail(null);
-				developer.setPassword(null);
-				developer.setUuid(null);
-				developer.setSalt(null);
-				developer.setRegUrl(null);
-			}
+            for (Developer developer : developers) {
+                developer.setTechnologies(developerService
+                        .getTechnologiesByDevId(developer.getId()));
+                developer.setEmail(null);
+                developer.setPassword(null);
+                developer.setUuid(null);
+                developer.setSalt(null);
+                developer.setRegUrl(null);
+            }
 
-			paginator.next(result.getPage(), response, developerService
-					.getFilteredObjectNumber(result.getContent()), developers);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+            paginator.next(result.getPage(), response, developerService
+                    .getFilteredObjectNumber(result.getContent()), developers);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-	}
+    }
 
     public void logout(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
@@ -618,8 +620,6 @@ public class UserController extends HttpServlet implements Responsable {
             response.sendError(500);
             return;
         }
-        FeedbackService feedbackService = (FeedbackService) ApplicationContext
-                .getInstance().getBean("feedbackService");
         Map<String, String[]> map = new HashMap<>();
         map.put("dev_id", new String[]{dev_id});
         map.put("cust_id", new String[]{cust_id});
@@ -798,27 +798,26 @@ public class UserController extends HttpServlet implements Responsable {
         }
     }
 
-	private void create(HttpServletRequest request, HttpServletResponse response)
-			throws IOException, ServletException
-	{
-		String requestData = request.getReader().readLine();
-		Map<String, String> data = mapper.readValue(requestData,
-				new TypeReference<Map<String, String>>() {
-				});
-		String role = data.get("role");
-		if (role == null || role.isEmpty()) {
-			response.sendError(HttpServletResponse.SC_MULTIPLE_CHOICES);
-			return;
-		}
+    private void create(HttpServletRequest request, HttpServletResponse response)
+            throws IOException, ServletException {
+        String requestData = request.getReader().readLine();
+        Map<String, String> data = mapper.readValue(requestData,
+                new TypeReference<Map<String, String>>() {
+                });
+        String role = data.get("role");
+        if (role == null || role.isEmpty()) {
+            response.sendError(HttpServletResponse.SC_MULTIPLE_CHOICES);
+            return;
+        }
 
-		if (!userManager.isEmailAvailable(data.get("email"))) {
-			response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
-			return;
-		}
+        if (!userManager.isEmailAvailable(data.get("email"))) {
+            response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
+            return;
+        }
 
-		try {
-			userManager
-					.createUser(
+        try {
+            userManager
+                    .createUser(
                             data.entrySet()
                                     .stream()
                                     .collect(
@@ -826,18 +825,17 @@ public class UserController extends HttpServlet implements Responsable {
                                                     e -> new String[]{e
                                                             .getValue()})),
                             role);
-		} catch (Exception e) {
-			e.printStackTrace();
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-		}
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        }
 
-		response.setStatus(200);
-	}
+        response.setStatus(200);
+    }
 
     private void signIn(HttpServletRequest request,
                         HttpServletResponse response, SignInType type)
-            throws ServletException, IOException
-    {
+            throws ServletException, IOException {
         boolean remember = "true".equals(request.getParameter("remember"));
         String email = null;
         switch (type) {
@@ -870,8 +868,7 @@ public class UserController extends HttpServlet implements Responsable {
             case MANUAL:
                 if (password == null
                         || !userManager.validCredentials(email, password,
-                        userEntity))
-                {
+                        userEntity)) {
                     response.sendError(HttpServletResponse.SC_BAD_REQUEST,
                             "Invalid credentials");
                     return;
@@ -904,8 +901,7 @@ public class UserController extends HttpServlet implements Responsable {
     }
 
     private void getOrderById(HttpServletRequest request,
-                              HttpServletResponse response) throws IOException
-    {
+                              HttpServletResponse response) throws IOException {
         String param = request.getParameter("orderId");
         if (param != null) {
             try {
@@ -1018,7 +1014,7 @@ public class UserController extends HttpServlet implements Responsable {
             return;
         }
         Follower follower = developerService.subscribeOnProject(ue.getId(), orderId, message);
-        follower.setDeveloper((Developer)ue);
+        follower.setDeveloper((Developer) ue);
         sendResponse(response, follower, mapper);
 
     }
@@ -1039,7 +1035,7 @@ public class UserController extends HttpServlet implements Responsable {
         String paramId = request.getParameter("id");
         String role = request.getParameter("role");
 
-        if(paramId==null || "".equals(paramId)){
+        if (paramId == null || "".equals(paramId)) {
             response.sendError(HttpServletResponse.SC_CONFLICT);
             return;
         }
@@ -1047,7 +1043,7 @@ public class UserController extends HttpServlet implements Responsable {
 
         try {
             UserEntity userEntity = null;
-            switch (role){
+            switch (role) {
                 case "admin":
                     userEntity = adminService.findById(id);
                     break;
@@ -1077,7 +1073,7 @@ public class UserController extends HttpServlet implements Responsable {
         String paramId = request.getParameter("id");
         String role = request.getParameter("role");
 
-        if(paramId==null || "".equals(paramId) || !paramId.matches("[0-9]")){
+        if (paramId == null || "".equals(paramId) || !paramId.matches("[0-9]*")) {
             response.sendError(HttpServletResponse.SC_CONFLICT);
             return;
         }
@@ -1085,7 +1081,7 @@ public class UserController extends HttpServlet implements Responsable {
 
         try {
             Contact contact = null;
-            switch (role){
+            switch (role) {
                 case "dev":
                     contact = developerService.getContactByDevId(id);
                     break;
@@ -1108,8 +1104,7 @@ public class UserController extends HttpServlet implements Responsable {
     }
 
     private void getFeedbacksByIdForCust(HttpServletRequest request,
-                                        HttpServletResponse response) throws IOException
-    {
+                                         HttpServletResponse response) throws IOException {
         String param = request.getParameter("id");
         if (param != null) {
             try {
@@ -1187,25 +1182,25 @@ public class UserController extends HttpServlet implements Responsable {
         }
     }
 
-    private void confirmEmail (HttpServletRequest request, HttpServletResponse response) throws IOException {
+    private void confirmEmail(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String email = request.getParameter("email");
         UserEntity userEntity = userManager.findUserByEmail(email);
 
-        if(userEntity != null){
-            StringBuilder confirmPhoneCode =  new StringBuilder();
+        if (userEntity != null) {
+            StringBuilder confirmPhoneCode = new StringBuilder();
             SecureRandom random = new SecureRandom();
-            for(int i = 0; i < 4; i++){
+            for (int i = 0; i < 4; i++) {
                 confirmPhoneCode.append(String.valueOf(random.nextInt(9)));
             }
             userEntity.setConfirmCode(confirmPhoneCode.toString());
             try {
                 String phoneNumber = null;
-                if(userEntity instanceof Developer){
+                if (userEntity instanceof Developer) {
                     phoneNumber = developerService.getContactByDevId(userEntity.getId()).getPhone();
                     Developer developer = (Developer) userEntity;
                     developerService.updateDeveloper(developer);
                 }
-                if(userEntity instanceof Customer){
+                if (userEntity instanceof Customer) {
                     phoneNumber = customerService.getContactByCustomerId(userEntity.getId()).getPhone();
                     Customer customer = (Customer) userEntity;
                     customerService.modify(customer);
@@ -1213,7 +1208,7 @@ public class UserController extends HttpServlet implements Responsable {
                 SmsSender smsSender = new SmsSender();
                 smsSender.sendSms(phoneNumber, "Confirm code: " + confirmPhoneCode.toString(),
                         "e-freelance");
-            } catch(NullPointerException e){
+            } catch (NullPointerException e) {
                 LOG.warn("The phone number is empty");
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST,
                         "Invalid email");
@@ -1232,10 +1227,10 @@ public class UserController extends HttpServlet implements Responsable {
         String confirmPhoneCode = request.getParameter("phoneCode");
         UserEntity userEntity = userManager.findUserByEmail(email);
 
-        if(userEntity != null){
+        if (userEntity != null) {
             String realPhoneCode = userEntity.getConfirmCode();
-            try{
-                if(realPhoneCode.equals(confirmPhoneCode)){
+            try {
+                if (realPhoneCode.equals(confirmPhoneCode)) {
                     response.setContentType("application/json");
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().write(new Gson().toJson("good"));
@@ -1245,7 +1240,7 @@ public class UserController extends HttpServlet implements Responsable {
                     response.flushBuffer();
                     return;
                 }
-            } catch(NullPointerException e){
+            } catch (NullPointerException e) {
                 LOG.warn("Some problem with Phone Code");
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST,
                         "Invalid Phone Code");
@@ -1266,14 +1261,14 @@ public class UserController extends HttpServlet implements Responsable {
         String password = request.getParameter("password");
         UserEntity userEntity = userManager.findUserByEmail(email);
 
-        if(userEntity != null){
+        if (userEntity != null) {
             userEntity.setPassword(password);
-            if(userEntity instanceof Developer){
+            if (userEntity instanceof Developer) {
                 Developer developer = (Developer) userEntity;
                 developerService.encodePassword(developer);
                 developerService.updateDeveloper(developer);
             }
-            if(userEntity instanceof Customer){
+            if (userEntity instanceof Customer) {
                 Customer customer = (Customer) userEntity;
                 customerService.encodePassword(customer);
                 customerService.modify(customer);

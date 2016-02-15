@@ -3,29 +3,111 @@
         <md-content>
             <md-tabs md-dynamic-height md-border-bottom>
 
+                <div ng-if="role === 'developer'">
+                    <!--Start Tab Proposed projects-->
+                    <md-tab label="{{'myworks.tab-accepted' | translate}}">
+                        <md-content class="md-padding" style="min-height: 450px;">
+
+                            <div ng-switch="notAcceptedWorks.length">
+                                <div ng-switch-when="0">
+                                    <h5 class="help-block">{{'myworks.no-projects' | translate}}</h5>
+                                </div>
+                                <div ng-switch-default>
+                                    <div ng-repeat="project in notAcceptedWorks">
+                                        <div class="panel panel-default">
+
+
+                                            <div class="row project-block panel-body">
+                                                <a ng-href="/#/orders/{{project.id}}">
+                                                    <div class="col-xs-8">
+                                                        <span class="project-block-title"><strong>{{project.title}}</strong></span><br>
+
+                                                        <div class="project-block-descr">
+                                                            {{project.descr}}
+                                                        </div>
+                                                        {{'myworks.dialog-techn' | translate}}:
+                                                    <span ng-repeat="tech in project.technologies">
+                                                         <span class="label label-success lb">{{tech.name}}</span>
+                                                     </span>
+
+                                                    </div>
+
+                                                    <div class="col-xs-2 ">
+                                                        <div class="form-group">
+                                                            <label class="control-label">{{'myworks.date' |
+                                                                translate}}</label>
+
+                                                            <div class="col-xs-12">
+                                                                <div class="label label-warning form-control">
+                                                                    {{project.date | date:'MMM d, y'}}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label class="control-label">{{'myworks.dialog-payment' |  translate}}:
+                                                     <span ng-if="project.payType == 'fixed'">
+                                                          {{'myworks.type-fixed' | translate}}<br/>
+                                                     </span>
+                                                     <span ng-if="project.payType == 'hourly'">
+                                                          {{'myworks.type-hourly' | translate}}<br/>
+                                                     </span></label>
+
+                                                            <div class="col-xs-12">
+                                                                <div class="label label-info form-control">
+                                                                    {{project.payment | number:2}} $
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+
+                                                <div class="col-xs-2 ">
+                                                    <md-button class=" md-raised md-primary full-width"
+                                                               ng-click="showAcceptConfirm($event,project)"
+                                                               style="margin-left: 0;">
+                                                        {{'myworks.accept-btn' | translate}}
+                                                    </md-button>
+
+                                                    <md-button class=" md-raised md-warn full-width"
+                                                               ng-click="showRejectConfirm($event,project)"
+                                                               style="margin-left: 0;">
+                                                        {{'myworks.reject-btn' | translate}}
+
+                                                    </md-button>
+                                                    <!--<button type="button" class="btn btn-success btn-lg ">Accept</button>-->
+                                                    <!--<button type="button" class="btn btn-danger btn-lg">Decline</button>-->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </md-content>
+                    </md-tab>
+                </div>
+
 
                 <!--Start Tab Subscribed projects-->
-                <md-tab label="Subscribed">
+                <md-tab label="{{firstTitle}}">
                     <md-content class="md-padding" style="min-height: 450px;">
-
-                        <div ng-switch="subscribedWorks.length">
+                        <div ng-switch="firstWorks.length">
                             <div ng-switch-when="0">
-                                <h5 class="help-block">No projects</h5>
+                                <h5 class="help-block">{{'myworks.no-projects' | translate}}</h5>
                             </div>
                             <div ng-switch-default>
-                                 <div ng-repeat="project in subscribedWorks | orderBy:sortField:reverse">
+                                <div ng-repeat="project in firstWorks">
                                     <div class="panel panel-default">
 
                                         <a ng-href="/#/orders/{{project.id}}">
-                                            <div class="row project-block panel-body" >
+                                            <div class="row project-block panel-body">
 
                                                 <div class="col-xs-10">
-                                                    <span class="project-block-title">{{project.title}}</span><br>
+                                                    <span class="project-block-title"><strong>{{project.title}}</strong></span><br>
 
                                                     <div class="project-block-descr">
                                                         {{project.descr}}
                                                     </div>
-                                                    Technologies:
+                                                    {{'myworks.dialog-techn' | translate}}:
                                                 <span ng-repeat="tech in project.technologies">
                                                      <span class="label label-success lb">{{tech.name}}</span>
                                                  </span>
@@ -34,16 +116,23 @@
 
                                                 <div class="col-xs-2 ">
                                                     <div class="form-group">
-                                                        <label class="control-label">Date</label>
-                                                        <div class="col-xs-12" >
+                                                        <label class="control-label">{{'myworks.date' |
+                                                            translate}}</label>
+
+                                                        <div class="col-xs-12">
                                                             <div class="label label-warning form-control">
-                                                                {{project.date |  date:'MMM d, y'}}
+                                                                {{project.date | date:'MMM d, y'}}
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label class="control-label">Payment:
-                                                            {{project.payType}}</label>
+                                                        <label class="control-label">{{'myworks.dialog-payment' |  translate}}:
+                                                     <span ng-if="project.payType == 'fixed'">
+                                                          {{'myworks.type-fixed' | translate}}<br/>
+                                                     </span>
+                                                     <span ng-if="project.payType == 'hourly'">
+                                                          {{'myworks.type-hourly' | translate}}<br/>
+                                                     </span></label>
 
                                                         <div class="col-xs-12">
                                                             <div class="label label-info form-control">
@@ -68,26 +157,26 @@
                 </md-tab>
 
                 <!--Start Tab Projects in process-->
-                <md-tab label="In progress">
+                <md-tab label="{{'myworks.tab-2' | translate}}">
                     <md-content class="md-padding" style="min-height: 450px;">
 
-                        <div ng-switch="processedWorks.length">
+                        <div ng-switch="secondWorks.length">
                             <div ng-switch-when="0">
-                                <h5 class="help-block">No projects</h5>
+                                <h5 class="help-block">{{'myworks.no-projects' | translate}}</h5>
                             </div>
                             <div ng-switch-default>
-                                 <div ng-repeat="project in processedWorks | orderBy:sortField:reverse">
+                                <div ng-repeat="project in secondWorks ">
                                     <div class="panel panel-default">
                                         <div class="row project-block panel-body"
                                              ng-click="showTabDialog($event,project)">
 
                                             <div class="col-xs-10">
-                                                <span class="project-block-title">{{project.title}}</span><br>
+                                                <span class="project-block-title"><strong>{{project.title}}</strong></span><br>
 
                                                 <div class="project-block-descr">
                                                     {{project.descr}}
                                                 </div>
-                                                Technologies:
+                                                {{'myworks.dialog-techn' | translate}}:
                                                 <span ng-repeat="tech in project.technologies">
                                                      <span class="label label-success lb">{{tech.name}}</span>
                                                  </span>
@@ -96,16 +185,22 @@
 
                                             <div class="col-xs-2 ">
                                                 <div class="form-group">
-                                                    <label class="control-label">Date</label>
-                                                    <div class="col-xs-12" >
+                                                    <label class="control-label">{{'myworks.date' | translate}}</label>
+
+                                                    <div class="col-xs-12">
                                                         <div class="label label-warning form-control">
                                                             {{project.date | date:'MMM d, y'}}
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="control-label">Payment:
-                                                        {{project.payType}}</label>
+                                                    <label class="control-label">{{'myworks.dialog-payment' |  translate}}:
+                                                     <span ng-if="project.payType == 'fixed'">
+                                                          {{'myworks.type-fixed' | translate}}<br/>
+                                                     </span>
+                                                     <span ng-if="project.payType == 'hourly'">
+                                                          {{'myworks.type-hourly' | translate}}<br/>
+                                                     </span></label>
 
                                                     <div class="col-xs-12">
                                                         <div class="label label-info form-control">
@@ -123,33 +218,33 @@
 
                             </div>
                         </div>
-
 
                     </md-content>
                 </md-tab>
                 <!--End Tab Projects in process-->
 
-                <!--Start Tab Finished projects-->
-                <md-tab label="Finished">
+
+                <!--Start Tab Projects in process-->
+                <md-tab label="{{'myworks.tab-3' | translate}}">
                     <md-content class="md-padding" style="min-height: 450px;">
 
-                        <div ng-switch="finishedWorks.length">
+                        <div ng-switch="thirdWorks.length">
                             <div ng-switch-when="0">
-                                <h5 class="help-block">No projects</h5>
+                                <h5 class="help-block">{{'myworks.no-projects' | translate}}</h5>
                             </div>
                             <div ng-switch-default>
-                                 <div ng-repeat="project in finishedWorks | orderBy:sortField:reverse">
+                                <div ng-repeat="project in thirdWorks ">
                                     <div class="panel panel-default">
                                         <div class="row project-block panel-body"
                                              ng-click="showTabDialog($event,project)">
 
                                             <div class="col-xs-10">
-                                                <span class="project-block-title">{{project.title}}</span><br>
+                                                <span class="project-block-title"><strong>{{project.title}}</strong></span><br>
 
                                                 <div class="project-block-descr">
                                                     {{project.descr}}
                                                 </div>
-                                                Technologies:
+                                                {{'myworks.dialog-techn' | translate}}:
                                                 <span ng-repeat="tech in project.technologies">
                                                      <span class="label label-success lb">{{tech.name}}</span>
                                                  </span>
@@ -158,16 +253,22 @@
 
                                             <div class="col-xs-2 ">
                                                 <div class="form-group">
-                                                    <label class="control-label">Date</label>
-                                                    <div class="col-xs-12" >
+                                                    <label class="control-label">{{'myworks.date' | translate}}</label>
+
+                                                    <div class="col-xs-12">
                                                         <div class="label label-warning form-control">
                                                             {{project.date | date:'MMM d, y'}}
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="control-label">Payment:
-                                                        {{project.payType}}</label>
+                                                    <label class="control-label">{{'myworks.dialog-payment' |  translate}}:
+                                                     <span ng-if="project.payType == 'fixed'">
+                                                          {{'myworks.type-fixed' | translate}}<br/>
+                                                     </span>
+                                                     <span ng-if="project.payType == 'hourly'">
+                                                          {{'myworks.type-hourly' | translate}}<br/>
+                                                     </span></label>
 
                                                     <div class="col-xs-12">
                                                         <div class="label label-info form-control">
@@ -186,14 +287,12 @@
                             </div>
                         </div>
 
-
                     </md-content>
                 </md-tab>
-                <!--End Tab Finished projects-->
+                <!--End Tab Projects in process-->
 
 
             </md-tabs>
         </md-content>
     </div>
 </div>
-

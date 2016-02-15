@@ -5,12 +5,11 @@
                 <div class="panel-body fl-left">
                     <img class="cust-not-found" src="/images/profile/no-profile-img-head.gif" alt=""/>
 
-                    <h2 class="cust-free-not-found">Customer not found</h2>
+                    <h2 class="cust-free-not-found">{{"custpub.notfound-customer" | translate}}</h2>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 
 <div class="container-top" ng-if="!freelancerNotFound">
@@ -36,11 +35,12 @@
                         <br/>
 
                         <p>
-                        <div ng-disabled="show" class="btn btn-block btn-primary" data-toggle="modal"
+
+                        <div ng-disabled="show || own || custOwn" class="btn btn-block btn-primary" data-toggle="modal"
                              data-target=".bs-example-modal-md1">
                                     <span
                                             class="glyphicon glyphicon-thumbs-up"></span>
-                            Follow me
+                        {{"custpub.follow-me" | translate}}
                         </div>
                         </p>
                         Rating:
@@ -57,15 +57,14 @@
                         <p>
                         <h5>{{skype}}</h5>
                         </p>
-                        <p>On site since:
+                        <p>{{"custpub.onsite-sinse" | translate}}
                             {{regDate |date:'longDate'}}
                         </p>
 
                         <div ng-disabled="wmDis" class="btn btn-block btn-danger" data-toggle="modal"
                              data-target=".bs-example-modal-md">
                             <span class="glyphicon glyphicon-envelope"></span>
-                            Write
-                            me
+                            {{"custpub.write-me" | translate}}
                             <img ng-if="dataLoading"
                                  src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
                         </div>
@@ -74,28 +73,26 @@
 
                 <md-content>
                     <md-tabs md-dynamic-height md-border-bottom>
-                        <md-tab label="Feedbacks">
+                        <md-tab label="{{'custpub.feedbacks' | translate}}">
                             <div class="tab-pane fade in active" id="menu1">
-                                <span style="color: firebrick">{{comerr}}</span>
-                                <span style="color: darkgreen">{{comsuc}}</span>
 
-                                <div ng-if="show" class="form-group cust-comm-div">
+                                <div ng-if="feedShow" class="form-group cust-comm-div">
                                     <br/>
-                                    <label>Rate him:
+                                    <label>{{"custpub.rate-him" | translate}}:
                                         <uib-rating ng-model="rate" max="max" readonly="false"
                                                     on-leave="overStar = null" titles="['one','two','three']"
                                                     aria-labelledby="default-rating"></uib-rating>
                                     </label>
                                     <br/>
-                            <textarea type="text" class="form-control" ng-model="feedback" rows="2"
-                                      placeholder="Comment ..."
-                                      required></textarea>
+                            <textarea type="text" class="form-control" rows="2"
+                                      placeholder="..."
+                                      required ng-model="$parent.$parent.feedback"></textarea>
                                     <br/>
                                     <button type="button" ng-click="comment(rate, feedback)"
                                             class="btn btn-primary pull-right comm-but">
                                 <span
                                         class="glyphicon glyphicon-comment"></span>
-                                        Send
+                                        {{"custpub.send" | translate}}
                                     </button>
                                 </div>
                                 <br/>
@@ -120,19 +117,21 @@
                                                     on-leave="overStar = null" titles="['one','two','three']"
                                                     aria-labelledby="default-rating"></uib-rating>
                                     </ul>
+                                    <p>{{feed.date |date:"MM/dd/yyyy h:mma"}}</p>
                                     <div ng-if="deleteFeedId == feed.developer.id"
                                          ng-click="deleteFeed(feed.developer.id, feed.id)"
                                          class="btn btn-xs btn-danger pull-right"><span
-                                            class="glyphicon glyphicon-trash"></span> Delete feedback
+                                            class="glyphicon glyphicon-trash"></span>
                                     </div>
                                     <br/>
                                     <md-divider></md-divider>
                                 </div>
                             </div>
                         </md-tab>
-                        <md-tab label="History">
+                        <md-tab label="{{'custpub.history' | translate}}">
                             <md-content class="md-padding">
-                                <p class="cust-emptyPort" ng-if="emptyPort">He has no project</p>
+                                <p class="cust-emptyPort" ng-if="emptyHist">{{"custpub.there-is-no-hist" |
+                                    translate}}</p>
 
                                 <div ng-repeat="order in orders">
                                     <h4>{{order.title}}</h4>
@@ -172,21 +171,21 @@
     <span
             aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title">Send mail to {{fname}} {{lname}}</h4>
+                <h4 class="modal-title">{{"custpub.send-mail-to" | translate}} {{fname}} {{lname}}</h4>
             </div>
             <div class="modal-footer">
                 <div class="form-group">
 
                 <br/>
 
-    <textarea type="text" class="form-control" ng-model="$parent.mes" rows="5" placeholder="Text ..."
+    <textarea type="text" class="form-control" ng-model="mes" rows="5" placeholder="..."
               required></textarea>
                     <br/>
                     <button type="button" ng-disabled="mesSemdDis" ng-click="send()" class="btn btn-success"
                             data-dismiss="modal">
         <span
                 class="glyphicon glyphicon-envelope"></span>
-                        Send
+                        {{"custpub.send" | translate}}
                     </button>
                 </div>
             </div>
@@ -203,7 +202,7 @@
     <span
             aria-hidden="true">&times;</span>
                 </button>
-                <h4 class="modal-title">Follow customer</h4>
+                <h4 class="modal-title">{{"custpub.follow-customer" | translate}}</h4>
             </div>
             <div class="modal-footer">
                 <div class="form-group">
@@ -211,7 +210,7 @@
                         <option ng-repeat="avord in avords" value="{{avord.id}}">{{avord.title}}</option>
                     </select>
                     <br/>
-                    <textarea type="text" class="form-control" ng-model="hiremes" rows="5" placeholder="Text ..."
+                    <textarea type="text" class="form-control" ng-model="hiremes" rows="5" placeholder="..."
                               required></textarea>
                     <br/>
 
@@ -219,7 +218,7 @@
                             data-dismiss="modal">
         <span
                 class="glyphicon glyphicon-thumbs-up"></span>
-                        Hire
+                        {{"custpub.follow" | translate}}
                     </button>
                 </div>
             </div>

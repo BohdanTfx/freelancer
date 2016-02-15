@@ -1,5 +1,5 @@
 angular.module('FreelancerApp')
-    .controller('jobinfoCtrl', function ($scope, orderAPI, $stateParams, $rootScope, $log, $http, Notification) {
+    .controller('jobinfoCtrl', function ($scope, orderAPI, $stateParams, $rootScope, $log, $http, Notification, $translate) {
 
         $scope.user = {};
         $scope.user.id = $rootScope.id;
@@ -7,7 +7,9 @@ angular.module('FreelancerApp')
 
         $scope.user.subscribed = false;
 
-        if ($scope.user.role == 'developer') {
+        if ($scope.user.role == 'customer') {
+            $scope.isCust = true;
+        } else if ($scope.user.role == 'developer') {
             $scope.isDev = true;
         } else {
             $scope.show = false;
@@ -22,21 +24,26 @@ angular.module('FreelancerApp')
                 getData();
             }
         }).error(function () {
-            alert("Order doesn't exist");
+            Notification
+                .error({
+                    title: $translate.instant('notification.error'),
+                    message: $translate.instant('jobinfo.order-doesnt-exist')
+                });
         });
 
         $scope.complain = function (orderId) {
             orderAPI.toComplain($stateParams.orderId).success(function () {
                 Notification
                     .success({
-                        title: 'Success!',
-                        message: 'Admin will review your complaint.'
-                    })
+                        title: $translate.instant('notification.success'),
+                        message: $translate.instant('jobinfo.complaining-success')
+                    });
+                $scope.disCompBut = true;
             }).error(function () {
                 Notification
                     .success({
-                        title: 'Error!',
-                        message: 'Error while complaining order.'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('jobinfo.complaining-error')
                     })
             });
         };
@@ -51,18 +58,25 @@ angular.module('FreelancerApp')
             orderAPI.getCustomerById($scope.order.customerId).success(function (data) {
                 $scope.customer = data;
                 if ($scope.customer.imgUrl == 'undefined' || $scope.customer.imgUrl == null) {
-                    $scope.customer.imgUrl = 'images/profile/no-profile-img-head.gif';
+                    $scope.customer.imgUrl = 'images/profile/no-image.png';
                 }
                 $scope.getCustomerContact();
+
+                if ($scope.isCust && $scope.user.id == $scope.customer.id) {
+                    $scope.isJobOwner = true;
+                }
             }).error(function (e) {
-                alert(404);
+                Notification
+                    .success({
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('jobinfo.customer-doesnt-exist')
+                    })
             });
 
             $scope.getCustomerContact = function () {
                 orderAPI.getCustomerContactById($scope.order.customerId).success(function (data) {
                     $scope.customer.contact = data;
-                }).error(function (e) {
-                    alert(404);
+                }).error(function () {
                 })
             };
 
@@ -73,12 +87,11 @@ angular.module('FreelancerApp')
                 } else {
                     for (var i = 0; i < $scope.feedbacks.length; i++) {
                         if (typeof $scope.feedbacks[i].developer.imgUrl == 'undefined' || $scope.feedbacks[i].developer.imgUrl == null)
-                            $scope.feedbacks[i].developer.imgUrl = 'images/profile/no-profile-img-head.gif';
+                            $scope.feedbacks[i].developer.imgUrl = 'images/profile/no-image.png';
                     }
                 }
                 $scope.calcCustRate();
             }).error(function () {
-                alert(404);
             });
 
             orderAPI.getCustomerHistory($scope.order.customerId).success(function (data) {
@@ -87,7 +100,6 @@ angular.module('FreelancerApp')
                     $scope.emptyHistory = true;
                 }
             }).error(function () {
-                alert(404);
             });
 
             orderAPI.getFollowers(orderId).success(function (data) {
@@ -97,21 +109,21 @@ angular.module('FreelancerApp')
                 } else {
                     for (var i in $scope.followers) {
                         $scope.setDevRating($scope.followers[i]);
+                        $scope.setIsWorkerInFollower(i);
                     }
                     for (var i = 0; i < $scope.followers.length; i++) {
                         if (typeof $scope.followers[i].developer.imgUrl == 'undefined' || $scope.followers[i].developer.imgUrl == null)
-                            $scope.followers[i].developer.imgUrl = 'images/profile/no-profile-img-head.gif';
+                            $scope.followers[i].developer.imgUrl = 'images/profile/no-image.png';
+                        else $scope.followers[i].developer.imgUrl += 'md.jpg';
                     }
                     $scope.isSubscriber();
                 }
             }).error(function () {
-                alert(404);
             });
 
             orderAPI.getOrderTechs(orderId).success(function (data) {
                 $scope.techs = data;
             }).error(function () {
-                alert(404);
             });
 
             $scope.calcCustRate = function () {
@@ -126,6 +138,14 @@ angular.module('FreelancerApp')
             };
 
         }
+
+        $scope.setIsWorkerInFollower = function (i) {
+            orderAPI.isWorker(JSON.stringify($scope.followers[i])).success(function (data) {
+                $scope.followers[i].worker = data;
+                console.log("data = " + data);
+                console.log("is worker = " + $scope.followers[i].worker);
+            });
+        };
 
         $scope.getNumber = function (count) {
 
@@ -166,11 +186,11 @@ angular.module('FreelancerApp')
             $http.post('/user/order/subscribe', data).success(function (data) {
                 Notification
                     .success({
-                        title: 'Success!',
-                        message: 'You successfully subscribed on this project'
+                        title: $translate.instant('notification.success'),
+                        message: $translate.instant('jobinfo.subscribed-success')
                     });
                 if (data.developer.imgUrl == 'undefined' || data.developer.imgUrl == null) {
-                    data.developer.imgUrl = 'images/profile/no-profile-img-head.gif';
+                    data.developer.imgUrl = 'images/profile/no-image.png';
                 }
                 $scope.followers.push(data);
                 $scope.user.subscribed = true;
@@ -180,8 +200,8 @@ angular.module('FreelancerApp')
             }).error(function () {
                 Notification
                     .error({
-                        title: 'Error!',
-                        message: 'Something went bad. Please try again.'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('notification.smth-wrong')
                     });
             });
 
@@ -202,8 +222,8 @@ angular.module('FreelancerApp')
             $http.post('/user/order/unsubscribe', data).success(function () {
                 Notification
                     .success({
-                        title: 'Success!',
-                        message: 'You successfully unsubscribed from this project'
+                        title: $translate.instant('notification.success'),
+                        message: $translate.instant('jobinfo.unsubscribed-success')
                     });
                 $scope.user.subscribed = false;
                 for (var i in $scope.followers) {
@@ -214,16 +234,30 @@ angular.module('FreelancerApp')
                         }
                     }
                 }
-
             }).error(function () {
                 Notification
                     .error({
-                        title: 'Error!',
-                        message: 'Something went bad. Please try again.'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('notification.smth-wrong')
                     });
             });
 
         };
 
+        $scope.acceptFollower = function (devId) {
+            orderAPI.acceptFollower(devId, $scope.order.id, $scope.order.title, JSON.stringify($scope.customer)).success(function () {
+                for (var i = 0; i < $scope.followers.length; i++) {
+                    if ($scope.followers[i].devId == devId) {
+                        $scope.followers[i].worker = true;
+                        break;
+                    }
+                }
+                Notification
+                    .success({
+                        title: $translate.instant('notification.success'),
+                        message: $translate.instant('jobinfo.follower-accept-success')
+                    });
+            })
+        }
 
     });

@@ -8,5 +8,5 @@ import java.util.List;
  * Created by ������ on 17.01.2016.
  */
 public interface AnswerDao extends GenericDao<Answer, Integer> {
-	public List<Answer> getAnswersByQuestionId(Integer id);
+	List<Answer> getAnswersByQuestionId(Integer id);
 }

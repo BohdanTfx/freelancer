@@ -27,6 +27,7 @@ public class Question implements BaseEntity<Integer> {
     private Integer version;
 
     private List<Answer> answers;
+    private Technology technology;
 
     public List<Answer> getAnswers() {
         return answers;
@@ -34,6 +35,14 @@ public class Question implements BaseEntity<Integer> {
 
     public void setAnswers(List<Answer> answers) {
         this.answers = answers;
+    }
+
+    public Technology getTechnology() {
+        return technology;
+    }
+
+    public void setTechnology(Technology technology) {
+        this.technology = technology;
     }
 
     public String getName() {

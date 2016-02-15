@@ -1,50 +1,46 @@
 angular.module('FreelancerApp')
-    .controller('statisticsCtrl', function($scope, statisticsAPI ,$mdDialog){
+    .controller('statisticsCtrl', function($scope, statisticsAPI ,$mdDialog,Notification){
         $scope.admin = {};
+        $scope.element = {};
         $scope.admin.email = "";
 
-
-        $scope.sendAdminLinkToEmail = function(ev,email) {
-            statisticsAPI.sendLinkToEmail(email);
-
-            $mdDialog.show(
-                $mdDialog.alert()
-                    .parent(angular.element(document.querySelector('#popupContainer')))
-                    .clickOutsideToClose(true)
-                    .title("Attention")
-                    .textContent('The message was sent')
-                    .ok('Got it!')
-                    .targetEvent(ev)
-            );
-        };
+        statisticsAPI.getStatisticPopularTests().success(function(data){
+            if(data.tests.length>4) {
+                $scope.showTestStat(data.tests, data.amounts);
+            }else{
+                Notification
+                    .info({
+                        title: 'Info!',
+                        message: 'Not enought data for Test Statistic'
+                    });
+            }
 
 
-        //PieChart
-        ///////////////////////////////////////////////////////////////////////////
+        });
+
         statisticsAPI.getStatisticsDevCust().success(function(data){
                 $scope.custAmount = data.custAmount;
                 $scope.devAmount = data.devAmount;
-
-            //alert(data.custAmount+'    '+data.devAmount);
-
-            $scope.showDevCustStat();
-
-
+                $scope.showDevCustStat();
             }).error(function(){
-            alert(404);
+            Notification
+                .error({
+                    title: 'Error!',
+                    message: 'Something went bad. Please, try again.'
+                });
         });
 
 
         $scope.showDevCustStat =  function(){
-            var chart1 = {};
-            chart1.type = "PieChart";
-            chart1.data = [
+            var chartDevCust = {};
+            chartDevCust.type = "PieChart";
+            chartDevCust.data = [
                 ['Component', 'cost'],
                 ['Customers',  $scope.custAmount],
                 ['Developers',  $scope.devAmount]
             ];
 
-            chart1.options = {
+            chartDevCust.options = {
                 displayExactValues: true,
                 width: 400,
                 height: 200,
@@ -52,32 +48,29 @@ angular.module('FreelancerApp')
                 chartArea: {left:10,top:10,bottom:0,height:"100%"}
             };
 
-            $scope.chart = chart1;
+            $scope.chartDevCust = chartDevCust;
        };
-        ///////////////////////////////////////////////////////////////////////////
-
-
-        //LineChart
-        ///////////////////////////////////////////////////////////////////////////
-
 
         statisticsAPI.getStatisticsCreationOrders().success(function(data){
 
-            console.log(data);
             $scope.orderValues = data.orderValues;
             $scope.listDays = data.listDays;
             $scope.listMonth = data.listMonth;
 
 
 
-            $scope.showOrdersStat($scope.orderValues, $scope.listDays,$scope.listMonth);
+            $scope.showOrdersCreationStat($scope.orderValues, $scope.listDays,$scope.listMonth);
 
         }).error(function(){
-            alert(404);
+            Notification
+                .error({
+                    title: 'Error!',
+                    message: 'Something went bad. Please, try again.'
+                });
         });
 
 
-        $scope.showOrdersStat = function(orderValues, listDays,listMonth) {
+        $scope.showOrdersCreationStat = function(orderValues, listDays,listMonth) {
              $scope.chartObject = {
                 "type": "LineChart",
                 "displayed": false,
@@ -153,8 +146,86 @@ angular.module('FreelancerApp')
                 "view": {"columns": [0, 1]}
             }
 
-        }
+        };
         ///////////////////////////////////////////////////////////////////////////
+
+
+        $scope.showTestStat = function(testList,amountList) {
+            $scope.chartTests = {};
+
+            $scope.chartTests.type = "ColumnChart";
+
+            $scope.test1 = [{v: testList[0].technology.name},{v: amountList[0]},];
+            $scope.test2 = [{v: testList[1].technology.name},{v: amountList[1]},];
+            $scope.test3 = [{v: testList[2].technology.name},{v: amountList[2]},];
+            $scope.test4 = [{v: testList[3].technology.name},{v: amountList[3]},];
+            $scope.test5 = [{v: testList[4].technology.name},{v: amountList[4]},];
+
+            $scope.chartTests.data = {
+                "cols": [
+                    {id: "t", label: "Topping", type: "string"},
+                    {id: "s", label: "Passed", type: "number"}
+                ], "rows": [
+                    {c: $scope.test1},
+                    {c: $scope.test2},
+                    {c: $scope.test3},
+                    {c: $scope.test4},
+                    {c: $scope.test5},
+                ]
+            };
+
+            $scope.chartTests.options = {
+                'title': 'Most popular tests'
+            };
+        }
+
+
+        statisticsAPI.getStatisticOrders().success(function(data){
+
+            $scope.finishedCount = data.finishedCount;
+            $scope.inProgressCount = data.inProgressCount;
+            $scope.availableCount = data.availableCount;
+
+
+            $scope.showOrdersStat($scope.availableCount,$scope.inProgressCount,$scope.finishedCount);
+
+
+        }).error(function(){
+            Notification
+                .error({
+                    title: 'Error!',
+                    message: 'Something went bad. Please, try again.'
+                });
+        });
+
+
+        $scope.showOrdersStat = function(availableCount,inProgressCount,finishedCount){
+            var chartOrders = {};
+            chartOrders.type = "PieChart";
+            chartOrders.data = [
+                ['Component', 'cost'],
+                ['Available',  availableCount],
+                ['In progress',  inProgressCount],
+                ['Finished',  finishedCount]
+            ];
+
+            chartOrders.options = {
+                displayExactValues: true,
+                width: 400,
+                height: 200,
+                is3D: true,
+                chartArea: {left:10,top:10,bottom:0,height:"100%"},
+                slices: {
+                    0: { color: 'purple' },
+                    1: { color: 'green' },
+                    2: { color: 'brown' }
+                }
+            };
+
+            $scope.chartOrders = chartOrders;
+
+        }
+
 
 
     });

@@ -4,6 +4,8 @@ package com.epam.freelancer.database.dao.jdbc;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.epam.freelancer.database.dao.WorkerDao;
 import com.epam.freelancer.database.model.Worker;
@@ -19,11 +21,30 @@ public class WorkerJdbcDao extends GenericJdbcDao<Worker, Integer> implements Wo
     @Override
     public Worker getWorkerByDevIdAndOrderId(Integer idDev, Integer idOrder) {
         String query = "SELECT * FROM " + table + " WHERE dev_id = ? AND order_id = ?";
-        return getContactByQuery(query, idDev,idOrder);
+        if(getWorkerByQuery(query, idDev, idOrder).size()>0)
+             return getWorkerByQuery(query, idDev, idOrder).get(0);
+        else return null;
     }
 
-    private Worker getContactByQuery(String query, Integer firstId,Integer secondId) {
-        Worker worker = null;
+    @Override
+    public List<Worker> getAllWorkersByOrderId(Integer idOrder) {
+        String query = "SELECT * FROM " + table + " WHERE order_id = ?";
+        return getWorkerByQuery(query, idOrder, null);
+    }
+
+    @Override
+    public List<Worker> getAllWorkersByDevId(Integer idDev) {
+        String query = "SELECT * FROM " + table + " WHERE dev_id = ?";
+        return getWorkerByQuery(query, idDev, null);
+    }
+
+
+
+
+
+    private List<Worker> getWorkerByQuery(String query, Integer firstId,Integer secondId) {
+         List<Worker> list = new ArrayList<>();
+
         try (Connection connection = connectionPool.getConnection();
              PreparedStatement statement = connection
                      .prepareStatement(query)) {
@@ -35,14 +56,15 @@ public class WorkerJdbcDao extends GenericJdbcDao<Worker, Integer> implements Wo
                 statement.setInt(1, firstId);
             }
             try (ResultSet set = statement.executeQuery()) {
-                if (set.next()) {
-                    worker = transformer.getObject(set);
+                while (set.next()) {
+                    Worker worker = transformer.getObject(set);
+                    list.add(worker);
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return worker;
+        return list;
     }
 
 
