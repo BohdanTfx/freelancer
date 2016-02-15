@@ -164,6 +164,7 @@ angular.module('FreelancerApp')
                             else
                                 $scope.feeds[i].customer.imgUrl += 'md.jpg';
                         }
+                        console.log(data);
                     }
                     else {
                         $scope.emptyComm = true;

@@ -117,6 +117,7 @@
                                                     on-leave="overStar = null" titles="['one','two','three']"
                                                     aria-labelledby="default-rating"></uib-rating>
                                     </ul>
+                                    <p>{{feed.date |date:"MM/dd/yyyy h:mma"}}</p>
                                     <div ng-if="deleteFeedId == feed.developer.id"
                                          ng-click="deleteFeed(feed.developer.id, feed.id)"
                                          class="btn btn-xs btn-danger pull-right"><span

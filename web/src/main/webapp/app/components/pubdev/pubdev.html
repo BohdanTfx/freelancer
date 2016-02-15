@@ -112,13 +112,13 @@
                                             {{feed.customer.fname}} {{feed.customer.lname}}
                                         </a>
                                     </p>
-
                                     <p>{{feed.comment}}</p>
                                     <ul class="list-inline ratings" title="Ratings">
                                         <uib-rating ng-model="feed.rate" max="5" readonly="true"
                                                     on-leave="overStar = null" titles="['one','two','three']"
                                                     aria-labelledby="default-rating"></uib-rating>
                                     </ul>
+                                    <p>{{feed.date |date:"MM/dd/yyyy h:mma"}}</p>
                                     <div ng-if="deleteFeedId == feed.customer.id && show"
                                          ng-click="deleteFeed(feed.customer.id, feed.id)"
                                          class="btn btn-xs btn-danger pull-right"><span
