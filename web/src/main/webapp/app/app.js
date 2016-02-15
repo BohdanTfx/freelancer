@@ -152,9 +152,6 @@
                                 if (path.indexOf('/public') > -1) {
 									window.location = "/";
                                 }
-								if (path.indexOf('/forgot') > -1) {
-									window.location = "/";
-								}
                             }
                         };
 						$rootScope.$on('$locationChangeStart', function(event,

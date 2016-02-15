@@ -45,7 +45,7 @@ angular
 														response.lname,
 														response.role);
 													if (response.role == 'admin') {
-														$location.path('/personal');
+														$location.path('/admin/statistics');
 														return;
 													}
 													if (response.isFirst) {
