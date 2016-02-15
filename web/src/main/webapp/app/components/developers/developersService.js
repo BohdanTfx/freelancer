@@ -9,11 +9,11 @@ angular
 
 					this.loadTechnologies = function() {
 						return $http.post("/user/technologies");
-					}
+					};
 
 					this.loadPaymentLimits = function() {
 						return $http.get("/user/developers/payment/limits");
-					}
+					};
 
 					this.loadDevelopers = function(filter, last, itemListStart,
 							developersLoading, itesStep, paymentMin, paymentMax) {
@@ -38,7 +38,7 @@ angular
 						};
 						return $http.post("/user/developers/filter", data,
 								config);
-					}
+					};
 
 					this.getFilterContent = function(filter, paymentMin,
 							paymentMax) {
@@ -77,7 +77,7 @@ angular
 							return content;
 
 						return undefined;
-					}
+					};
 
 					this.fillPagination = function(data, $scope) {
 						$scope.pages = data;
@@ -95,7 +95,7 @@ angular
 									$scope.showLast = true;
 							}
 						}
-					}
+					};
 
 					this.getStep = function(itesStep) {
 						var localStep = localStorage

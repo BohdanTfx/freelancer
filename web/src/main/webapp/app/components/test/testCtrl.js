@@ -37,7 +37,7 @@ angular.module('FreelancerApp')
             }, 1000, 0, true);
 
             $scope.vm = self;
-        }
+        };
 
 
         testAPI.getTestById($stateParams.testId).success(function (data) {

@@ -8,7 +8,7 @@ import java.util.List;
  * Created by ������ on 17.01.2016.
  */
 public interface DeveloperQADao extends GenericDao<DeveloperQA, Integer> {
-	public List<DeveloperQA> getDevQAByDevId(Integer id);
+	List<DeveloperQA> getDevQAByDevId(Integer id);
 
-	public DeveloperQA getByDevIdAndTestId(Integer devId, Integer testId);
+	DeveloperQA getByDevIdAndTestId(Integer devId, Integer testId);
 }
