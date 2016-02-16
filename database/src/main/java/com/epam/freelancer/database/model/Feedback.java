@@ -4,6 +4,8 @@ import com.epam.freelancer.database.transformer.annotation.Column;
 import com.epam.freelancer.database.transformer.annotation.Id;
 import com.epam.freelancer.database.transformer.annotation.Table;
 
+import java.sql.Timestamp;
+
 /**
  * Created by ������ on 16.01.2016.
  */
@@ -25,6 +27,8 @@ public class Feedback implements BaseEntity<Integer> {
     private Boolean isDeleted;
     @Column
     private Integer version;
+    @Column(name = "date")
+    private Timestamp date;
     private Customer customer;
     private Developer developer;
 
@@ -45,6 +49,14 @@ public class Feedback implements BaseEntity<Integer> {
 
     public void setDeveloper(Developer developer) {
         this.developer = developer;
+    }
+
+    public Timestamp getDate() {
+        return date;
+    }
+
+    public void setDate(Timestamp date) {
+        this.date = date;
     }
 
     @Override
@@ -153,7 +165,9 @@ public class Feedback implements BaseEntity<Integer> {
                 ", author='" + author + '\'' +
                 ", isDeleted=" + isDeleted +
                 ", version=" + version +
+                ", date=" + date +
                 ", customer=" + customer +
+                ", developer=" + developer +
                 '}';
     }
 }

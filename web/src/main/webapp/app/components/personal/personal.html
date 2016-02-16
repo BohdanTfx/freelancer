@@ -140,7 +140,7 @@
                                                 </span>
                                             </div>
                                             <!-- phone-->
-                                            <div ng-show="role != 'admin' && (contact.phone != undefined || hide == true)"
+                                            <div ng-if="role != 'admin' && (contact.phone != undefined || hide == true)"
                                                  class="row">
                                                 <strong class="col-sm-4 col-xs-12 item-label">
                                                     {{"personal.phone" | translate}}:
@@ -195,7 +195,7 @@
 
                                             </div>
                                             <!-- time zone-->
-                                            <div class="row">
+                                            <div ng-if="role != 'admin'" class="row">
                                                 <strong class="col-sm-4 col-xs-12 item-label">
                                                     {{"personal.time-zone" | translate}}:
                                                 </strong>

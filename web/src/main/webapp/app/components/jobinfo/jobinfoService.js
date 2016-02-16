@@ -61,10 +61,10 @@ angular.module('FreelancerApp')
             return $http.post(urlSubscribe + 'message=' + message + '&orderId=' + orderId);
         };
 
-        dataFactory.acceptFollower = function (devId, jobId, jobName, customer) {
+        dataFactory.acceptFollower = function (devId, jobId, jobName, customer, acceptDate) {
             return $http.post('/cust/dev/accept?' + 'devId=' + devId +
                 '&jobId=' + jobId + '&jobName=' + jobName +
-                '&customer=' + customer);
+                '&customer=' + customer) + '&acceptDate=' + acceptDate;
         };
 
         dataFactory.isWorker = function (follower) {

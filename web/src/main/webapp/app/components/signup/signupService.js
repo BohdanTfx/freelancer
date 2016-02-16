@@ -16,7 +16,7 @@ angular
 							ngModel.$setValidity('emailAvailable', data);
 						}).error(function(data, status, headers, config) {
 						});
-					}
+					};
 
 					this.initSocial = function($http, $scope) {
 						var linkedinVerifier = getUrlVars();
@@ -72,7 +72,7 @@ angular
 														message : 'An error occurred while registering. Please try again.'
 													});
 										});
-					}
+					};
 
 					this.createUser = function($http, user,adminUUID,roleAdmin,adminAPI) {
 						if(adminUUID!=undefined || roleAdmin==true){
@@ -86,7 +86,7 @@ angular
 							headers : {
 								'Content-Type' : 'application/x-www-form-urlencoded;charset=utf-8;'
 							}
-						}
+						};
 						$http
 								.post("/user/create", user, config)
 								.success(
@@ -101,7 +101,7 @@ angular
 														message : 'An error occurred while registering. Please try again.'
 													});
 										});
-					}
+					};
 
 					this.triggerEmailValidation = function($http, $scope) {
 						var email = $scope.user.email;

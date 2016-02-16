@@ -236,7 +236,7 @@ gulp.task('index', function () {
     javascript:['./bower_components/*/*min.js', './bower_components/*/release/*min.js', './app/**/*.js'],
     less: ['./app/**/*.less'],
     css: ['./bower_components/*/*min.css', './app/styles/*.css']
-  }
+  };
 
   return gulp.src('./index.html')
       .pipe(inject(

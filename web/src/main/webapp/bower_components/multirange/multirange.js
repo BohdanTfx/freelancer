@@ -138,7 +138,7 @@ angular.module('vds.multirange', ['vds.multirange.lite', 'vds.utils'])
                   height: hairHeight * (1 - i / levels),
                   left: (j*100)+'%'
                 }
-              }
+              };
               if(typeof u.labeller == 'function') {
                 hairline.label = u.labeller(j);
               } else if(typeof u.labeller != 'undefined') {

@@ -11,7 +11,6 @@
         </div>
     </div>
 </div>
-</div>
 
 <div class="container-top" ng-if="!freelancerNotFound">
     <div class="row">
@@ -36,7 +35,8 @@
                         <br/>
 
                         <p>
-                        <div ng-disabled="show" class="btn btn-block btn-primary" data-toggle="modal"
+
+                        <div ng-disabled="show || own || custOwn" class="btn btn-block btn-primary" data-toggle="modal"
                              data-target=".bs-example-modal-md1">
                                     <span
                                             class="glyphicon glyphicon-thumbs-up"></span>
@@ -117,11 +117,11 @@
                                                     on-leave="overStar = null" titles="['one','two','three']"
                                                     aria-labelledby="default-rating"></uib-rating>
                                     </ul>
+                                    <p>{{feed.date |date:"MM/dd/yyyy h:mma"}}</p>
                                     <div ng-if="deleteFeedId == feed.developer.id"
                                          ng-click="deleteFeed(feed.developer.id, feed.id)"
                                          class="btn btn-xs btn-danger pull-right"><span
-                                            class="glyphicon glyphicon-trash"></span> {{"custpub.delete-feedback" |
-                                        translate}}
+                                            class="glyphicon glyphicon-trash"></span>
                                     </div>
                                     <br/>
                                     <md-divider></md-divider>

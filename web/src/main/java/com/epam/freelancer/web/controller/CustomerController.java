@@ -19,9 +19,10 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.security.SecureRandom;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 public class CustomerController extends HttpServlet implements Responsable {
@@ -467,15 +468,23 @@ public class CustomerController extends HttpServlet implements Responsable {
             return;
         }
         Integer jobId = Integer.parseInt(paramJobId);
-        addInWorker(dev, jobId);
+        String paramAcceptDate = request.getParameter("acceptDate");
+        java.sql.Date acceptDate;
+        if (paramAcceptDate != null) {
+            acceptDate = new java.sql.Date(Long.parseLong(paramAcceptDate));
+        } else {
+            acceptDate = new java.sql.Date(System.currentTimeMillis());
+        }
+        addInWorker(dev, jobId, acceptDate);
         sendDevAcceptSms(jobName, customer, dev);
     }
 
-    private void addInWorker(Developer dev, Integer orderId) {
+    private void addInWorker(Developer dev, Integer orderId, java.sql.Date acceptDate) {
         Worker worker = new Worker();
         worker.setDevId(dev.getId());
         worker.setNewHourly(dev.getHourly());
         worker.setOrderId(orderId);
+        worker.setAcceptDate(acceptDate);
         developerService.createWorker(worker);
     }
 
