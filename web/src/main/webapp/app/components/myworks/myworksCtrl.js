@@ -14,7 +14,6 @@ angular.module('FreelancerApp')
                 $scope.thirdWorks = data.finishedWorks;
                 $scope.notAcceptedWorks = data.notAcceptedWorks;
 
-
             }).error(function () {
                 Notification
                     .error({

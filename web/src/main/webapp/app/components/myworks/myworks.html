@@ -17,51 +17,60 @@
                                         <div class="panel panel-default">
 
 
-                                            <div class="row project-block panel-body">
+                                            <div class="project-block panel-body">
                                                 <a ng-href="/#/orders/{{project.id}}">
-                                                    <div class="col-xs-8">
+                                                    <div class="col-xs-12 col-sm-8">
                                                         <span class="project-block-title"><strong>{{project.title}}</strong></span><br>
 
                                                         <div class="project-block-descr">
                                                             {{project.descr}}
                                                         </div>
                                                         {{'myworks.dialog-techn' | translate}}:
-                                                    <span ng-repeat="tech in project.technologies">
-                                                         <span class="label label-success lb">{{tech.name}}</span>
-                                                     </span>
-
+                                                        <span ng-repeat="tech in project.technologies">
+                                                             <span class="label label-success lb">{{tech.name}}</span>
+                                                         </span>
+                                                        <div class="visible-xs"><hr/></div>
                                                     </div>
 
-                                                    <div class="col-xs-2 ">
-                                                        <div class="form-group">
-                                                            <label class="control-label">{{'myworks.date' |
-                                                                translate}}</label>
 
-                                                            <div class="col-xs-12">
-                                                                <div class="label label-warning form-control">
-                                                                    {{project.date | date:'MMM d, y'}}
+
+                                                    <div class="col-sm-2 col-xs-12 ">
+                                                        <div class="">
+                                                            <div class="col-xs-5 col-sm-12">
+                                                                <div class="form-group">
+                                                                    <label class="control-label">{{'myworks.date' |
+                                                                        translate}}</label>
+
+                                                                    <div class="">
+                                                                        <div class="label label-warning form-control">
+                                                                            {{project.date | date:'MMM d, y'}}
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="form-group">
-                                                            <label class="control-label">{{'myworks.dialog-payment' |  translate}}:
-                                                     <span ng-if="project.payType == 'fixed'">
-                                                          {{'myworks.type-fixed' | translate}}<br/>
-                                                     </span>
-                                                     <span ng-if="project.payType == 'hourly'">
-                                                          {{'myworks.type-hourly' | translate}}<br/>
-                                                     </span></label>
+                                                            <div class="col-xs-5 col-sm-12">
+                                                                <div class="form-group">
+                                                                            <label class="control-label">{{'myworks.dialog-payment' |
+                                                                                translate}}:
+                                                                     <span ng-if="project.payType == 'fixed'" class="hidden-xs">
+                                                                          {{'myworks.type-fixed' | translate}}<br/>
+                                                                     </span>
+                                                                     <span ng-if="project.payType == 'hourly'" class="hidden-xs">
+                                                                          {{'myworks.type-hourly' | translate}}<br/>
+                                                                     </span></label>
 
-                                                            <div class="col-xs-12">
-                                                                <div class="label label-info form-control">
-                                                                    {{project.payment | number:2}} $
+                                                                    <span class="">
+                                                                        <div class="label label-info form-control">
+                                                                            {{project.payment | number:2}} $
+                                                                        </div>
+                                                                    </span>
                                                                 </div>
-                                                            </div>
+                                                             </div>
                                                         </div>
                                                     </div>
                                                 </a>
 
-                                                <div class="col-xs-2 ">
+                                                <div class="col-sm-2 ">
                                                     <md-button class=" md-raised md-primary full-width"
                                                                ng-click="showAcceptConfirm($event,project)"
                                                                style="margin-left: 0;">
@@ -101,7 +110,7 @@
                                         <a ng-href="/#/orders/{{project.id}}">
                                             <div class="row project-block panel-body">
 
-                                                <div class="col-xs-10">
+                                                <div class="col-xs-7 col-sm-10">
                                                     <span class="project-block-title"><strong>{{project.title}}</strong></span><br>
 
                                                     <div class="project-block-descr">
@@ -114,7 +123,7 @@
 
                                                 </div>
 
-                                                <div class="col-xs-2 ">
+                                                <div class="col-xs-5 col-sm-2">
                                                     <div class="form-group">
                                                         <label class="control-label">{{'myworks.date' |
                                                             translate}}</label>
@@ -126,7 +135,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label class="control-label">{{'myworks.dialog-payment' |  translate}}:
+                                                        <label class="control-label">{{'myworks.dialog-payment' |
+                                                            translate}}:
                                                      <span ng-if="project.payType == 'fixed'">
                                                           {{'myworks.type-fixed' | translate}}<br/>
                                                      </span>
@@ -170,7 +180,7 @@
                                         <div class="row project-block panel-body"
                                              ng-click="showTabDialog($event,project)">
 
-                                            <div class="col-xs-10">
+                                            <div class="col-xs-7 col-sm-10">
                                                 <span class="project-block-title"><strong>{{project.title}}</strong></span><br>
 
                                                 <div class="project-block-descr">
@@ -183,7 +193,7 @@
 
                                             </div>
 
-                                            <div class="col-xs-2 ">
+                                            <div class="col-xs-5 col-sm-2 ">
                                                 <div class="form-group">
                                                     <label class="control-label">{{'myworks.date' | translate}}</label>
 
@@ -194,7 +204,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="control-label">{{'myworks.dialog-payment' |  translate}}:
+                                                    <label class="control-label">{{'myworks.dialog-payment' |
+                                                        translate}}:
                                                      <span ng-if="project.payType == 'fixed'">
                                                           {{'myworks.type-fixed' | translate}}<br/>
                                                      </span>
@@ -238,7 +249,7 @@
                                         <div class="row project-block panel-body"
                                              ng-click="showTabDialog($event,project)">
 
-                                            <div class="col-xs-10">
+                                            <div class="col-xs-7 col-sm-10">
                                                 <span class="project-block-title"><strong>{{project.title}}</strong></span><br>
 
                                                 <div class="project-block-descr">
@@ -251,7 +262,7 @@
 
                                             </div>
 
-                                            <div class="col-xs-2 ">
+                                            <div class="col-xs-5  col-sm-2 ">
                                                 <div class="form-group">
                                                     <label class="control-label">{{'myworks.date' | translate}}</label>
 
@@ -262,7 +273,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="control-label">{{'myworks.dialog-payment' |  translate}}:
+                                                    <label class="control-label">{{'myworks.dialog-payment' |
+                                                        translate}}:
                                                      <span ng-if="project.payType == 'fixed'">
                                                           {{'myworks.type-fixed' | translate}}<br/>
                                                      </span>
