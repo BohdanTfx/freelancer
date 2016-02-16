@@ -120,28 +120,30 @@ angular
 
 					jobsAPI
 							.loadLimits()
-							.success(function(data, status, headers, config) {
-								$scope.filter.payment = data;
-								$scope.filter.payment.hourly.options = {
-									floor : $scope.filter.payment.hourly.first,
-									ceil : $scope.filter.payment.hourly.second,
-									disabled : true,
-									translate : function(value) {
-										return '$' + value;
-									}
-								};
-								$scope.filter.payment.fixed.options = {
-									floor : $scope.filter.payment.fixed.first,
-									ceil : $scope.filter.payment.fixed.second,
-									disabled : true,
-									translate : function(value) {
-										return '$' + value;
-									}
-								};
+							.success(
+									function(data, status, headers, config) {
+										$scope.filter.payment = data;
+										$scope.filter.payment.hourly.options = {
+											floor : $scope.filter.payment.hourly.first,
+											ceil : $scope.filter.payment.hourly.second,
+											disabled : true,
+											translate : function(value) {
+												return '$' + value;
+											}
+										};
+										
+										$scope.filter.payment.fixed.options = {
+											floor : $scope.filter.payment.fixed.first,
+											ceil : $scope.filter.payment.fixed.second,
+											disabled : true,
+											translate : function(value) {
+												return '$' + value;
+											}
+										};
 
-								resourceLoadingCounter++;
-								checkAndRestoreFilterData();
-							})
+										resourceLoadingCounter++;
+										checkAndRestoreFilterData();
+									})
 							.error(
 									function(data, status, headers, config) {
 										Notification
@@ -237,6 +239,22 @@ angular
 							if (data !== undefined) {
 								$scope.filter.title = data.title;
 								$scope.filter.payment = data.payment;
+								try {
+									$scope.filter.payment.hourly.options.translate = function(
+											value) {
+										return '$' + value;
+									}
+								} catch (e) {
+									$log.debug(e);
+								}
+								try {
+									$scope.filter.payment.fixed.options.translate = function(
+											value) {
+										return '$' + value;
+									}
+								} catch (e) {
+									$log.debug(e);
+								}
 
 								var savedTechs = data.selectedTechs;
 								for (var i = 0; i < $scope.tech.length; i++) {
