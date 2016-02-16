@@ -19,6 +19,18 @@ angular.module('FreelancerApp')
             return $http.get('/dev/workersByIdOrder?order_id='+order_id);
         };
 
+        dataFactory.acceptOrdering = function(order){
+            return $http.post("/dev/acceptOrdering?order_id="+order);
+        };
+
+        dataFactory.rejectOrdering = function(order_id){
+            return $http.post("/dev/rejectOrdering?order_id="+order_id);
+        };
+
+        dataFactory.finishOrdering = function(order_id){
+            return $http.post("/cust/finishOrdering?order_id="+order_id);
+        };
+
         dataFactory.getCustWorkersByIdOrder = function (order_id){
             return $http.get('/cust/workersByIdOrder?order_id='+order_id);
         };
@@ -27,13 +39,7 @@ angular.module('FreelancerApp')
             return $http.post("/cust/allWorks");
         };
 
-        //
-        //dataFactory.getFollowers = function (orderId) {
-        //    return $http.post("/user/order/followers?orderId=" + orderId);
-        //};
-
-
 
 
         return dataFactory;
-    })
+    });

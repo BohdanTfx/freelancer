@@ -48,7 +48,7 @@ angular.module('FreelancerApp')
 
         var urlCustHistory = '/user/customer/history?custId=';
         dataFactory.getCustomerHistory = function (custId) {
-            return $http.post(urlCustHistory+ custId);
+            return $http.post(urlCustHistory + custId);
         };
 
         var urlDevRate = '/user/getRate?id=';
@@ -60,5 +60,17 @@ angular.module('FreelancerApp')
         dataFactory.subscribe = function (message, orderId) {
             return $http.post(urlSubscribe + 'message=' + message + '&orderId=' + orderId);
         };
+
+        dataFactory.acceptFollower = function (devId, jobId, jobName, customer, acceptDate) {
+            return $http.post('/cust/dev/accept?' + 'devId=' + devId +
+                '&jobId=' + jobId + '&jobName=' + jobName +
+                '&customer=' + customer) + '&acceptDate=' + acceptDate;
+        };
+
+        dataFactory.isWorker = function (follower) {
+            return $http.get('/cust/dev/isWorker?follower=' + follower);
+        };
+
+
         return dataFactory;
     });

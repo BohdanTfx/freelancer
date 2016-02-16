@@ -41,3 +41,26 @@
     margin-top: 10px;
     padding: 6px 12px;
 }
+
+.tests-creating .tests-title a:hover {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.tests-creating .questions-title a:hover {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.tests-creating .questions-title a {
+    color: black;
+}
+
+.tests-creating .questionItem {
+    padding: 5px 20px;
+}
+
+.tests-creating .questionItem div {
+    line-height: 24px;
+    padding: 5px 15px;
+}

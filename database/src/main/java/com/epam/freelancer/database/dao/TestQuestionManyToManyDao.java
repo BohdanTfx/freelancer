@@ -9,5 +9,5 @@ import java.util.List;
 public interface TestQuestionManyToManyDao extends
         GenericManyToManyDao<Test, Question, Worker, Integer>
 {
-    public List<Question> getQuestionsByTestId(Integer id);
+    List<Question> getQuestionsByTestId(Integer id);
 }

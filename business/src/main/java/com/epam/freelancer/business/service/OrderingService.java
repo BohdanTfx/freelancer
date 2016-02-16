@@ -141,4 +141,8 @@ public class OrderingService extends GenericService<Ordering, Integer> {
 	public List<Follower> findOrderFollowers(Integer orderId) {
 		return ((FollowerDao) followerDao).getProjectFollowers(orderId);
 	}
+
+	public void deleteFollower(Follower follower) {
+		followerDao.delete(follower);
+	}
 }

@@ -1,17 +1,13 @@
 package com.epam.freelancer.business.service;
 
-import com.epam.freelancer.business.util.ValidationParametersBuilder;
-import com.epam.freelancer.database.dao.OrderCounterDao;
-import com.epam.freelancer.database.dao.jdbc.DAOManager;
-import com.epam.freelancer.database.dao.jdbc.OrderCounterJdbcDao;
-import com.epam.freelancer.database.model.OrderCounter;
-
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.epam.freelancer.business.util.ValidationParametersBuilder;
+import com.epam.freelancer.database.dao.OrderCounterDao;
+import com.epam.freelancer.database.dao.jdbc.DAOManager;
+import com.epam.freelancer.database.model.OrderCounter;
 
 /**
  * Created by Rynik on 07.02.2016.

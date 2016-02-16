@@ -5,8 +5,6 @@ import com.epam.freelancer.database.transformer.annotation.Id;
 import com.epam.freelancer.database.transformer.annotation.Table;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
-import java.sql.Timestamp;
-
 /**
  * Created by Rynik on 05.02.2016.
  */
@@ -42,33 +40,33 @@ public class AdminCandidate implements BaseEntity<Integer> {
         return id;
     }
 
-    public String getEmail() {
-        return email;
+    @Override
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public String getKey() {
-        return key;
+    public String getEmail() {
+        return email;
     }
 
 //    public Timestamp getExpire() {
 //        return expire;
 //    }
 
-    public Boolean getDeleted() {
-        return isDeleted;
-    }
-
-    @Override
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public void setEmail(String email) {
         this.email = email;
     }
 
+    public String getKey() {
+        return key;
+    }
+
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public Boolean getDeleted() {
+        return isDeleted;
     }
 
 //    public void setExpire(Timestamp expire) {
@@ -90,9 +88,8 @@ public class AdminCandidate implements BaseEntity<Integer> {
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (isDeleted != null ? !isDeleted.equals(that.isDeleted) : that.isDeleted != null) return false;
         if (key != null ? !key.equals(that.key) : that.key != null) return false;
-        if (version != null ? !version.equals(that.version) : that.version != null) return false;
+        return !(version != null ? !version.equals(that.version) : that.version != null);
 
-        return true;
     }
 
     @Override

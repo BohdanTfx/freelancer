@@ -1,3 +1,40 @@
+.personal-page .edit-buttons {
+    margin: 25px 2.5% 0 2.5%;
+    width: 95%;
+}
+
+.personal-page .item-label {
+    margin: 0px;
+    line-height: 26px;
+    height: 30px;
+    vertical-align: baseline;
+    padding: 2px 2px 1px;
+}
+
+.personal-page .profile-tab md-input-container {
+    margin: 0;
+}
+
+.personal-page .email-tab md-input-container {
+    margin: 0;
+}
+
+.personal-page .md-select-value {
+    padding: 0px;
+}
+
+.personal-page .black-text{
+    color: black !important;
+}
+
+.personal-page .row {
+    margin: 0;
+}
+
+.personal-page .row md-select {
+    margin-bottom: 25px;
+}
+
 .editClass{
     border: none !important;
     background: none !important;
@@ -110,14 +147,13 @@
 
 .ih-item.circle {
     position: relative;
-    width: 220px;
-    height: 220px;
+    max-width: 220px;
+    width: auto;
+    height: auto;
     border-radius: 50%;
 }
 .ih-item.circle .img {
     position: relative;
-    width: 220px;
-    height: 220px;
     border-radius: 50%;
 }
 

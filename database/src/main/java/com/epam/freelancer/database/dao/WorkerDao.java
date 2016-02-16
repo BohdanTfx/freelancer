@@ -9,10 +9,10 @@ import java.util.List;
  */
 public interface WorkerDao extends GenericDao<Worker, Integer> {
 
-    public Worker getWorkerByDevIdAndOrderId (Integer idDev, Integer idOrder);
+    Worker getWorkerByDevIdAndOrderId(Integer idDev, Integer idOrder);
 
-    public List<Worker> getAllWorkersByOrderId(Integer idOrder);
+    List<Worker> getAllWorkersByOrderId(Integer idOrder);
 
-    public List<Worker> getAllWorkersByDevId(Integer idDev);
+    List<Worker> getAllWorkersByDevId(Integer idDev);
 
 }

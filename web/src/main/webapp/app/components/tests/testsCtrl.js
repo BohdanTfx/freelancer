@@ -1,5 +1,5 @@
 angular.module('FreelancerApp')
-    .controller('testsCtrl', function ($scope, testsAPI, $log, $interval) {
+    .controller('testsCtrl', function ($scope, testsAPI, $log, $interval, Notification, $translate) {
 
         $scope.smt = {};
         $scope.smt.passedTest = false;
@@ -16,7 +16,11 @@ angular.module('FreelancerApp')
 
             $scope.testsDivision();
         }).error(function () {
-            alert(404);
+            Notification
+                .error({
+                    title: $translate.instant('notification.error'),
+                    message: $translate.instant('notification.smth-wrong')
+                });
         });
 
         $scope.sortField = undefined;
@@ -66,7 +70,7 @@ angular.module('FreelancerApp')
             }
             $scope.passedTestList = passedTests;
             $scope.newTestsList = newTests;
-        }
+        };
 
         $scope.testListCtrl = function () {
             if ($scope.smt.passedTest == $scope.smt.allowedTest) {

@@ -1,19 +1,13 @@
 package com.epam.freelancer.web.util;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
-
-import org.codehaus.jackson.map.ObjectMapper;
-
 import com.epam.freelancer.database.model.ObjectHolder;
 import com.epam.freelancer.web.json.model.Page;
+import org.codehaus.jackson.map.ObjectMapper;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
 
 public class Paginator {
 	private ObjectMapper objectMapper;
@@ -83,9 +77,7 @@ public class Paginator {
 
 	private boolean isLast(Map<String, Integer> page) {
 		Integer last = page.get("last");
-		if (last == null || last == 0)
-			return false;
-		return true;
+		return !(last == null || last == 0);
 	}
 
 	private ObjectHolder<Integer, List<ObjectHolder<String, Integer>>> fillPaginationElement(
