@@ -1813,7 +1813,7 @@ ul, li {
 	.main-menu .navbar-header .navbar-toggle {
 		display: inline-block;
 		z-index: 7;
-		border: 1px solid #11c3f0;
+		/*border: 1px solid #11c3f0;*/
 		float: none;
 		margin: 0px;
 	}
@@ -1952,11 +1952,11 @@ ul, li {
 	.main-menu .navbar-header .navbar-toggle {
 		display: inline-block;
 		z-index: 7;
-		border: 1px solid #11c3f0;
+		/*border: 1px solid #11c3f0;*/
 		float: none;
 		margin: 0px;
 		border-radius: 3px 3px 0 0;
-		border-bottom: 1px solid #273039;
+		/*border-bottom: 1px solid #273039;*/
 	}
 	.main-menu .navbar-header .navbar-toggle .icon-bar {
 		background: #11c3f0;
@@ -1967,7 +1967,7 @@ ul, li {
 		width: 100% !important;
 	}
 	.main-menu .navbar-collapse {
-		border: 1px solid #11c3f0;
+		/*border: 1px solid #11c3f0;*/
 	}
 	.main-menu .navbar-collapse>.navigation>li {
 		margin: 0px !important;
