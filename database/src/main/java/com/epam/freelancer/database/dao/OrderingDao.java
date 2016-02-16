@@ -1,9 +1,8 @@
 package com.epam.freelancer.database.dao;
 
-import com.epam.freelancer.database.model.Ordering;
-
 import java.util.List;
-import java.util.Map;
+
+import com.epam.freelancer.database.model.Ordering;
 
 /**
  * Created by ������ on 17.01.2016.
@@ -11,8 +10,6 @@ import java.util.Map;
 public interface OrderingDao extends GenericDao<Ordering, Integer> {
 
     Double getPayment(String paymentType, String limit);
-
-	Integer getFilteredObjectNumber(Map<String, Object> parameters);
 
     List<Ordering> getCustomerPublicHistory(Integer custId);
 

@@ -28,18 +28,25 @@ angular.module('FreelancerApp').controller(
 						});
 			}
 
-			$scope.roles = [ $translate.instant('role.developer.become'),
-					$translate.instant('role.customer.become') ];
+			$scope.roles = [ {
+				title : $translate.instant('role.developer.become'),
+				value : 'developer'
+			}, {
+				title : $translate.instant('role.customer.become'),
+				value : 'customer'
+			} ];
 
 			$rootScope.$on('$translateChangeSuccess', function() {
-				$scope.roles[0] = $translate.instant('role.developer.become');
-				$scope.roles[1] = $translate.instant('role.customer.become');
+				$scope.roles[0].title = $translate
+						.instant('role.developer.become');
+				$scope.roles[1].title = $translate
+						.instant('role.customer.become');
 				$scope.user.role = $scope.roles[localStorage
-						.getItem("openTaskSignUpRole")];
+						.getItem("openTaskSignUpRole")].value;
 			});
 
 			$scope.chooseRole = function(signup, role) {
-				$scope.role = $scope.roles[role];
+				$scope.role = $scope.roles[role].value;
 				$scope.signup = signup;
 				localStorage.setItem("openTaskSignUpRole", role);
 			}

@@ -20,6 +20,8 @@ public interface GenericDao<T, ID> {
 	List<T> filterAll(Map<String, Object> parameters, Integer start,
 			Integer step);
 	
+	Integer getFilteredObjectNumber(Map<String, Object> parameters);
+	
 	Integer getObjectNumber();
 
 	void setConnectionPool(ConnectionPool connectionPool);

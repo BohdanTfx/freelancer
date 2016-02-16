@@ -46,14 +46,19 @@ angular
 									.success(
 											function(data, status, headers,
 													config) {
-												$scope.user.email = data.emailAddress;
-												$scope.user.first_name = data.firstName;
-												$scope.user.last_name = data.lastName;
-												$scope.user.img_url = data.pictureUrl;
-												$scope.signup = true;
-												$scope.role = localStorage
-														.getItem("role");
+												if (data != "") {
+													$scope.user.email = data.emailAddress;
+													$scope.user.first_name = data.firstName;
+													$scope.user.last_name = data.lastName;
+													$scope.user.img_url = data.pictureUrl;
+													$scope.signup = true;
+												} else {
+													location
+															.replace('/#/signup');
+												}
 
+												$scope.role = $scope.roles[localStorage
+														.getItem("openTaskSignUpRole")].value;
 											})
 									.error(
 											function(data, status, headers,
@@ -65,6 +70,7 @@ angular
 															message : $translate
 																	.instant('signup.social.linkedin.error')
 														});
+												location.replace('/#/signup');
 											});
 							return;
 						}

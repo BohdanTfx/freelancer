@@ -184,12 +184,32 @@ public abstract class GenericJdbcDao<T extends BaseEntity<ID>, ID> implements
 			hasFilter = true;
 		}
 
-		builder.append(" LIMIT ");
-		builder.append(start);
-		builder.append(",");
-		builder.append(step);
+		if (start != null && step != null) {
+			builder.append(" LIMIT ");
+			builder.append(start);
+			builder.append(",");
+			builder.append(step);
+		}
 
 		return builder.toString();
+	}
+
+	@Override
+	public Integer getFilteredObjectNumber(Map<String, Object> parameters) {
+		String query = "SELECT DISTINCT count(*) FROM " + table;
+		if (parameters != null && !parameters.isEmpty())
+			query = fillFilterQuery(parameters, query, null, null);
+
+		try (Connection connection = connectionPool.getConnection();
+				PreparedStatement statement = connection
+						.prepareStatement(query);
+				ResultSet set = statement.executeQuery()) {
+			if (set.next())
+				return set.getInt(1);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 	@Override
