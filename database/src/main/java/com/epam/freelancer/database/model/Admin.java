@@ -10,40 +10,27 @@ import java.util.Locale;
 /**
  * Created by ������ on 15.01.2016.
  */
-@Table(name = "admin")
+@Table(name = "admin", getValuesByField = false)
 public class Admin implements UserEntity {
-	@Id
 	private Integer id;
-	@Column
 	private String email;
-	@Column
 	private String password;
-	@Column(name = "name")
 	private String fname;
-	@Column(name = "last_name")
 	private String lname;
-	@Column
 	private String lang;
 	private Locale locale;
-	@Column
 	private String uuid;
-	@Column(name = "reg_url")
 	private String regUrl;
-	@Column(name = "reg_date")
 	private Timestamp regDate;
-	@Column(name = "is_deleted")
 	private Boolean isDeleted;
-	@Column
 	private Integer version;
-	@Column
 	private String salt;
-	@Column(name="img_url")
 	private String imgUrl;
     private String role;
 	private String confirmCode;
-	@Column(name = "send_email")
 	private String sendEmail;
 
+	@Column(name = "send_email")
 	public String getSendEmail() { return sendEmail; }
 
 	public void setSendEmail(String sendEmail) { this.sendEmail = sendEmail; }
@@ -61,6 +48,7 @@ public class Admin implements UserEntity {
     }
 
     @Override
+	@Column
 	public String getSalt() {
 		return salt;
 	}
@@ -75,9 +63,11 @@ public class Admin implements UserEntity {
 	}
 
 	public void setLocale(Locale locale) {
-		this.locale = locale;
+		if (this.locale == null)
+			this.locale = locale;
 	}
 
+	@Column
 	public String getLang() {
 		return locale != null ? locale.toLanguageTag() : null;
 	}
@@ -87,6 +77,7 @@ public class Admin implements UserEntity {
 			this.lang = null;
 			return;
 		}
+		this.lang = lang;
 		String[] langCode = lang.split("-");
 		if (langCode.length == 2)
 			this.locale = new Locale(langCode[0], langCode[1]);
@@ -95,6 +86,7 @@ public class Admin implements UserEntity {
 	}
 
 	@Override
+	@Column
 	public String getEmail() {
 		return email;
 	}
@@ -105,6 +97,7 @@ public class Admin implements UserEntity {
 	}
 
 	@Override
+	@Column
 	public String getPassword() {
 		return password;
 	}
@@ -115,6 +108,7 @@ public class Admin implements UserEntity {
 	}
 
 	@Override
+	@Column
 	public String getUuid() {
 		return uuid;
 	}
@@ -125,6 +119,7 @@ public class Admin implements UserEntity {
 	}
 
 	@Override
+	@Column(name = "name")
 	public String getFname() {
 		return fname;
 	}
@@ -135,6 +130,7 @@ public class Admin implements UserEntity {
 	}
 
 	@Override
+	@Column(name = "last_name")
 	public String getLname() {
 		return lname;
 	}
@@ -145,6 +141,7 @@ public class Admin implements UserEntity {
 	}
 
 	@Override
+	@Id
 	public Integer getId() {
 		return id;
 	}
@@ -155,6 +152,7 @@ public class Admin implements UserEntity {
 	}
 
 	@Override
+	@Column(name = "is_deleted")
 	public Boolean getDeleted() {
 		return isDeleted;
 	}
@@ -165,6 +163,7 @@ public class Admin implements UserEntity {
 	}
 
 	@Override
+	@Column
 	public Integer getVersion() {
 		return version;
 	}
@@ -208,6 +207,7 @@ public class Admin implements UserEntity {
 				+ ", version=" + version + '}';
 	}
 
+	@Column(name = "reg_url")
 	public String getRegUrl() {
 		return regUrl;
 	}
@@ -216,6 +216,7 @@ public class Admin implements UserEntity {
 		this.regUrl = regUrl;
 	}
 
+	@Column(name = "reg_date")
 	public Timestamp getRegDate() {
 		return regDate;
 	}
@@ -230,6 +231,7 @@ public class Admin implements UserEntity {
 	}
 
 	@Override
+	@Column(name="img_url")
 	public String getImgUrl() {
 		return imgUrl;
 	}

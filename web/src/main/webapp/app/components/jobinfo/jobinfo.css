@@ -18,6 +18,16 @@
     list-style: outside none none;
 }
 
+.job-info .job-title {
+    font-family: normal;
+    font-weight: bold;
+}
+
+.job-info .user-name {
+    font-family: normal;
+    font-weight: bold;
+}
+
 .job-info p > a {
     cursor: hand;
 }
@@ -27,7 +37,7 @@
 }
 
 .job-info .btn-warn {
-    background-color:#FF5722;
+    background-color: #FF5722;
     border: #FFF;
 }
 
@@ -35,19 +45,19 @@
     text-align: center;
 }
 
-.job-info .right-side h2{
+.job-info .right-side h3 {
     margin-top: 0;
 }
 
-.job-info .right-side .btn{
+.job-info .right-side .btn {
     margin-bottom: 15px;
 }
 
-        .job-info .details {
+.job-info .details {
     clear: both;
 }
 
-.job-info .user{
+.job-info .user {
     display: inline-block;
     width: 120px;
     height: 120px;
@@ -79,6 +89,23 @@
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
-    margin: auto 15px auto 15px;
+    margin: 0 15px 0 15px;
     float: left;
+
+}
+
+.job-info .deal-icon {
+    position: absolute;
+    display: inline-block;
+    width: 32px;
+    height: 24px;
+    background-repeat : no-repeat;
+    background-position: center center;
+    background-size: cover;
+    margin: 0 15px 0 15px;
+}
+
+.job-info .btn-accept {
+    padding: 2.5px 10px;
+    margin: 5px 15px 10px 15px;
 }

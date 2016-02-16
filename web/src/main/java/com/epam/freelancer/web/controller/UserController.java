@@ -661,8 +661,6 @@ public class UserController extends HttpServlet implements Responsable {
 			response.sendError(500);
 			return;
 		}
-		FeedbackService feedbackService = (FeedbackService) ApplicationContext
-				.getInstance().getBean("feedbackService");
 		Map<String, String[]> map = new HashMap<>();
 		map.put("dev_id", new String[] { dev_id });
 		map.put("cust_id", new String[] { cust_id });
@@ -1140,8 +1138,7 @@ public class UserController extends HttpServlet implements Responsable {
 		String paramId = request.getParameter("id");
 		String role = request.getParameter("role");
 
-		if (paramId == null || "".equals(paramId) || !paramId.matches("[0-9]"))
-		{
+        if (paramId == null || "".equals(paramId) || !paramId.matches("[0-9]*")) {
 			response.sendError(HttpServletResponse.SC_CONFLICT);
 			return;
 		}

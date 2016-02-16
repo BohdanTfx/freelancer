@@ -7,7 +7,7 @@
     height: 40vh;
 }
 
-.home-page .home-content{
+.home-page .home-carousel-block{
     padding-left: 0;
 }
 
@@ -18,6 +18,10 @@
 
 .home-page .tips-list li{
     list-style-type: circle;
+}
+
+.home-page{
+    margin-bottom: 20px;
 }
 
 

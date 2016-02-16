@@ -1,22 +1,15 @@
 package com.epam.freelancer.web.social;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
+import com.epam.freelancer.web.social.model.LinkedinProfile;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.scribe.builder.ServiceBuilder;
 import org.scribe.builder.api.LinkedInApi;
-import org.scribe.model.OAuthRequest;
-import org.scribe.model.Response;
-import org.scribe.model.Token;
-import org.scribe.model.Verb;
-import org.scribe.model.Verifier;
+import org.scribe.model.*;
 import org.scribe.oauth.OAuthService;
 
-import com.epam.freelancer.web.social.model.LinkedinProfile;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 
 public class Linkedin {
 	private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/people/~"
@@ -47,8 +40,8 @@ public class Linkedin {
 		return service.getAuthorizationUrl(requestToken);
 	}
 
-	public void loadData(String value) throws JsonParseException,
-			JsonMappingException, IOException
+	public void loadData(String value) throws
+			IOException
 	{
 		Verifier verifier = new Verifier(value);
 		Token accessToken = service.getAccessToken(requestToken, verifier);

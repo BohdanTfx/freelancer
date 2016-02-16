@@ -14,52 +14,33 @@ import java.util.Locale;
  * Created by Max on 15.01.2016.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Table(name = "developer")
+@Table(name = "developer", getValuesByField = false)
 public class Developer implements UserEntity {
-   	@Id
-	private Integer id;
-	@Column
-	private String email;
-	@Column
-	private String password;
-	@Column(name = "name")
-	private String fname;
-	@Column(name = "last_name")
-	private String lname;
-	@Column
-	private Double hourly;
-	@Column
-	private Integer zone;
-	private Locale locale;
-	@Column
-	private String lang;
-	@Column
-	private String uuid;
-	@Column(name = "reg_url")
-	private String regUrl;
-	@Column(name = "reg_date")
-	private Timestamp regDate;
-	@Column(name = "is_deleted")
-	private Boolean isDeleted;
-	@Column
-	private Integer version;
-	@Column
-	private String salt;
-	@Column(name = "img_url")
-	private String imgUrl;
-	@Column(name = "overview")
-	private String overview;
-	@Column(name = "position")
-	private String position;
-	private String role;
-    @Column (name = "confirm_code")
-	private String confirmCode;
-	@Column(name = "send_email")
-	private String sendEmail;
-    @Column(name = "is_first")
+    private Integer id;
+    private String email;
+    private String password;
+    private String fname;
+    private String lname;
+    private Double hourly;
+    private Integer zone;
+    private Locale locale;
+    private String lang;
+    private String uuid;
+    private String regUrl;
+    private Timestamp regDate;
+    private Boolean isDeleted;
+    private Integer version;
+    private String salt;
+    private String imgUrl;
+    private String overview;
+    private String position;
+    private String role;
+    private String confirmCode;
+    private String sendEmail;
     private Boolean isFirst;
     private List<Technology> technologies = new ArrayList<>();
 
+    @Column(name = "is_first")
     public Boolean getIsFirst() {
         return isFirst;
     }
@@ -68,16 +49,25 @@ public class Developer implements UserEntity {
         this.isFirst = isFirst;
     }
 
+    @Column(name = "send_email")
     public String getSendEmail() {
         return sendEmail;
     }
 
-	public void setSendEmail(String sendEmail) { this.sendEmail = sendEmail; }
+    public void setSendEmail(String sendEmail) {
+        this.sendEmail = sendEmail;
+    }
 
-	public String getConfirmCode() { return confirmCode; }
+    @Column(name = "confirm_code")
+    public String getConfirmCode() {
+        return confirmCode;
+    }
 
-	public void setConfirmCode(String confirmCode) { this.confirmCode = confirmCode; }
+    public void setConfirmCode(String confirmCode) {
+        this.confirmCode = confirmCode;
+    }
 
+    @Column(name = "overview")
     public String getOverview() {
         return overview;
     }
@@ -86,6 +76,7 @@ public class Developer implements UserEntity {
         this.overview = overview;
     }
 
+    @Column(name = "position")
     public String getPosition() {
         return position;
     }
@@ -103,6 +94,7 @@ public class Developer implements UserEntity {
     }
 
     @Override
+    @Column
     public String getSalt() {
         return salt;
     }
@@ -112,6 +104,7 @@ public class Developer implements UserEntity {
         this.salt = salt;
     }
 
+    @Column
     public Integer getVersion() {
         return version;
     }
@@ -120,6 +113,7 @@ public class Developer implements UserEntity {
         this.version = version;
     }
 
+    @Column
     public Double getHourly() {
         return hourly;
     }
@@ -128,6 +122,7 @@ public class Developer implements UserEntity {
         this.hourly = hourly;
     }
 
+    @Column
     public Integer getZone() {
         return zone;
     }
@@ -136,6 +131,7 @@ public class Developer implements UserEntity {
         this.zone = zone;
     }
 
+    @Column(name = "reg_url")
     public String getRegUrl() {
         return regUrl;
     }
@@ -144,6 +140,7 @@ public class Developer implements UserEntity {
         this.regUrl = regUrl;
     }
 
+    @Column(name = "reg_date")
     public Timestamp getRegDate() {
         return regDate;
     }
@@ -153,6 +150,7 @@ public class Developer implements UserEntity {
     }
 
     @Override
+    @Column(name = "img_url")
     public String getImgUrl() {
         return imgUrl;
     }
@@ -167,9 +165,11 @@ public class Developer implements UserEntity {
     }
 
     public void setLocale(Locale locale) {
-        this.locale = locale;
+        if (this.locale == null)
+            this.locale = locale;
     }
 
+    @Column
     public String getLang() {
         return locale != null ? locale.toLanguageTag() : null;
     }
@@ -188,6 +188,7 @@ public class Developer implements UserEntity {
     }
 
     @Override
+    @Column
     public String getEmail() {
         return email;
     }
@@ -198,6 +199,7 @@ public class Developer implements UserEntity {
     }
 
     @Override
+    @Column
     public String getPassword() {
         return password;
     }
@@ -208,6 +210,7 @@ public class Developer implements UserEntity {
     }
 
     @Override
+    @Column
     public String getUuid() {
         return uuid;
     }
@@ -218,6 +221,7 @@ public class Developer implements UserEntity {
     }
 
     @Override
+    @Column(name = "name")
     public String getFname() {
         return fname;
     }
@@ -228,6 +232,7 @@ public class Developer implements UserEntity {
     }
 
     @Override
+    @Column(name = "last_name")
     public String getLname() {
         return lname;
     }
@@ -238,6 +243,7 @@ public class Developer implements UserEntity {
     }
 
     @Override
+    @Id
     public Integer getId() {
         return id;
     }
@@ -248,6 +254,7 @@ public class Developer implements UserEntity {
     }
 
     @Override
+    @Column(name = "is_deleted")
     public Boolean getDeleted() {
         return isDeleted;
     }
@@ -277,13 +284,14 @@ public class Developer implements UserEntity {
         result = 31 * result + (isDeleted != null ? isDeleted.hashCode() : 0);
         return result;
     }
-	public List<Technology> getTechnologies() {
-		return technologies;
-	}
 
-	public void setTechnologies(List<Technology> technologies) {
-		this.technologies = technologies;
-	}
+    public List<Technology> getTechnologies() {
+        return technologies;
+    }
+
+    public void setTechnologies(List<Technology> technologies) {
+        this.technologies = technologies;
+    }
 
     @Override
     public String toString() {

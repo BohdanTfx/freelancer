@@ -10,21 +10,19 @@ angular.module('FreelancerApp')
         };
 
         dataFactory.getStatisticsCreationOrders = function () {
+            return $http.get("/admin/statistics/ordersCreation");
+        };
+
+        dataFactory.getStatisticPopularTests = function () {
+            return $http.get("/admin/statistics/tests");
+        };
+
+        dataFactory.getStatisticOrders = function () {
             return $http.get("/admin/statistics/orders");
         };
 
 
-        dataFactory.sendLinkToEmail = function (email) {
-            return $http.post('/admin/create/new/admin?email=' + email);
-        };
 
-        dataFactory.checkAvailableUUID = function (uuid) {
-            return $http.post('/admin/check/uuid?uuid=' + uuid);
-        };
-
-        dataFactory.removeUUID = function (uuid) {
-            return $http.post('/admin/remove/uuid?uuid=' + uuid);
-        };
 
 
 

@@ -21,7 +21,9 @@ public class WorkerJdbcDao extends GenericJdbcDao<Worker, Integer> implements Wo
     @Override
     public Worker getWorkerByDevIdAndOrderId(Integer idDev, Integer idOrder) {
         String query = "SELECT * FROM " + table + " WHERE dev_id = ? AND order_id = ?";
-        return getWorkerByQuery(query, idDev, idOrder).get(0);
+        if(getWorkerByQuery(query, idDev, idOrder).size()>0)
+             return getWorkerByQuery(query, idDev, idOrder).get(0);
+        else return null;
     }
 
     @Override

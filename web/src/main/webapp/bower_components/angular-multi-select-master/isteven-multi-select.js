@@ -31,7 +31,7 @@
  * --------------------------------------------------------------------------------
  */
 
-'use strict'
+'use strict';
 
 angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect' , [ '$sce', '$timeout', '$templateCache', function ( $sce, $timeout, $templateCache ) {
     return {
@@ -98,21 +98,21 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                 selectedItems       = [],
                 formElements        = [],
                 vMinSearchLength    = 0,
-                clickedItem         = null                
+                clickedItem = null;
 
             // v3.0.0
             // clear button clicked
             $scope.clearClicked = function( e ) {                
                 $scope.inputLabel.labelFilter = '';
                 $scope.updateFilter();
-                $scope.select( 'clear', e );                
-            }
+                $scope.select( 'clear', e );
+            };
 
             // A little hack so that AngularJS ng-repeat can loop using start and end index like a normal loop
             // http://stackoverflow.com/questions/16824853/way-to-ng-repeat-defined-number-of-times-instead-of-repeating-over-array
             $scope.numberToArray = function( num ) {
-                return new Array( num );   
-            }
+                return new Array( num );
+            };
 
             // Call this function when user type on the filter field
             $scope.searchChanged = function() {                                                
@@ -120,7 +120,7 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                     return false;
                 }                
                 $scope.updateFilter();
-            }
+            };
 
             $scope.updateFilter = function()
             {      
@@ -264,19 +264,19 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                 for ( var i = 0; i < selectButtons.length ; i++ )   { formElements.push( selectButtons[ i ] );  }
                 for ( var i = 0; i < inputField.length ; i++ )      { formElements.push( inputField[ i ] );     }
                 for ( var i = 0; i < clearButton.length ; i++ )     { formElements.push( clearButton[ i ] );    }
-                for ( var i = 0; i < checkboxes.length ; i++ )      { formElements.push( checkboxes[ i ] );     }                                
-            }            
+                for ( var i = 0; i < checkboxes.length ; i++ )      { formElements.push( checkboxes[ i ] );     }
+            };
 
             // check if an item has attrs.groupProperty (be it true or false)
             $scope.isGroupMarker = function( item , type ) {
                 if ( typeof item[ attrs.groupProperty ] !== 'undefined' && item[ attrs.groupProperty ] === type ) return true; 
                 return false;
-            }
+            };
 
             $scope.removeGroupEndMarker = function( item ) {
                 if ( typeof item[ attrs.groupProperty ] !== 'undefined' && item[ attrs.groupProperty ] === false ) return false; 
                 return true;
-            }                       
+            };
 
             // call this function when an item is clicked
             $scope.syncItems = function( item, e, ng_repeat_index ) {                                      
@@ -464,7 +464,7 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                     // on single selection mode, we then hide the checkbox layer
                     $scope.toggleCheckboxes( e );       
                 }
-            }     
+            };
 
             // update $scope.outputModel
             $scope.refreshOutputModel = function() {            
@@ -509,7 +509,7 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                         }
                     });         
                 }
-            }
+            };
 
             // refresh button label
             $scope.refreshButton = function() {
@@ -553,8 +553,8 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                         $scope.varButtonLabel += '(' + $scope.outputModel.length + ')';                        
                     }
                 }
-                $scope.varButtonLabel = $sce.trustAsHtml( $scope.varButtonLabel + '<span class="caret"></span>' );                
-            }
+                $scope.varButtonLabel = $sce.trustAsHtml( $scope.varButtonLabel + '<span class="caret"></span>' );
+            };
 
             // Check if a checkbox is disabled or enabled. It will check the granular control (disableProperty) and global control (isDisabled)
             // Take note that the granular control has higher priority.
@@ -571,8 +571,8 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                         return false;
                     }
                 }
-                
-            }
+
+            };
 
             // A simple function to parse the item label settings. Used on the buttons and checkbox labels.
             $scope.writeLabel = function( item, type ) {
@@ -591,7 +591,7 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                     return label;
                 }
                 return $sce.trustAsHtml( label );
-            }                                
+            };
 
             // UI operations to show/hide checkboxes based on click event..
             $scope.toggleCheckboxes = function( e ) {                                    
@@ -682,8 +682,8 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
 
                     // open callback
                     $scope.onOpen();
-                }                            
-            }
+                }
+            };
             
             // handle clicks outside the button / multi select layer
             $scope.externalClickListener = function( e ) {                   
@@ -707,7 +707,7 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
 
                 // set focus on button again
                 element.children().children()[ 0 ].focus();
-            }
+            };
    
             // select All / select None / reset buttons
             $scope.select = function( type, e ) {
@@ -759,8 +759,8 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                         $scope.tabIndex = helperItems.length - 1;
                         break;
                     default:                        
-                }                                                                                 
-            }            
+                }
+            };
 
             // just to create a random variable name                
             function genRandomString( length ) {                
@@ -784,7 +784,7 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                         spacing-=2;
                     }                 
                 });
-            }
+            };
 
             // prepare original index
             $scope.prepareIndex = function() {
@@ -793,7 +793,7 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                     value[ $scope.indexProperty ] = ctr;
                     ctr++;
                 });
-            }
+            };
 
             // navigate using up and down arrow
             $scope.keyboardListener = function( e ) { 
@@ -870,17 +870,17 @@ angular.module( 'isteven-multi-select', ['ng'] ).directive( 'istevenMultiSelect'
                 }                
 
                 isNavigationKey = false;
-            }
+            };
 
             // set (add) CSS style on selected row
             $scope.setFocusStyle = function( tabIndex ) {                                
-                angular.element( formElements[ tabIndex ] ).parent().parent().parent().addClass( 'multiSelectFocus' );                        
-            }
+                angular.element( formElements[ tabIndex ] ).parent().parent().parent().addClass( 'multiSelectFocus' );
+            };
 
             // remove CSS style on selected row
             $scope.removeFocusStyle = function( tabIndex ) {                
                 angular.element( formElements[ tabIndex ] ).parent().parent().parent().removeClass( 'multiSelectFocus' );
-            }
+            };
 
             /*********************
              *********************             

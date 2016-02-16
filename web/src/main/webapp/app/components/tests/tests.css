@@ -70,8 +70,8 @@ md-tabs .md-tab .md-ripple-container {
     padding: 5px 15px;
 }
 
-.testItem .btn {
-    width: 95px;
+.tests-tabs .testItem .btn {
+    width: 100%;
     padding: 5px 10px;
     line-height: 16px;
     float: right;

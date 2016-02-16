@@ -2,7 +2,7 @@
     <div class="tests-tabs" ng-cloak="">
         <md-content>
             <md-tabs md-dynamic-height md-border-bottom>
-                <md-tab label="Tests results">
+                <md-tab label="{{'tests.tab-tests-results' | translate}}">
                     <div class="history-tab">
                         <md-content class="md-padding">
 
@@ -14,7 +14,7 @@
                                             <div class="panel-title col-md-12">
                                                 <div class="col-md-4 col-sm-5 col-xs-9">
                                                     <a ng-click="sort('name')">
-                                                        <i class="fa fa-tasks"></i> Test name
+                                                        <i class="fa fa-tasks"></i> {{"tests.test-name" | translate}}
                                                         <i class="glyphicon"
                                                            ng-class="{'glyphicon-arrow-up' : isSortUp('name'),
                                                                           'glyphicon-arrow-down' : isSortDown('name')}">
@@ -24,7 +24,7 @@
                                                 </div>
                                                 <div class="col-md-3 col-sm-5 hidden-xs">
                                                     <a ng-click="sort('technology')">
-                                                        <i class="fa fa-tv"></i> Technology
+                                                        <i class="fa fa-tv"></i> {{"tests.technology" | translate}}
                                                         <i class="glyphicon"
                                                            ng-class="{'glyphicon-arrow-up' : isSortUp('technology'),
                                                                           'glyphicon-arrow-down' : isSortDown('technology')}">
@@ -32,11 +32,11 @@
                                                     </a>
                                                 </div>
                                                 <div class="col-md-3 hidden-sm hidden-xs">
-                                                    <i class="fa fa-calendar-o"></i> Expire date
+                                                    <i class="fa fa-calendar-o"></i> {{"tests.expire-date" | translate}}
                                                 </div>
                                                 <div class="col-md-2 col-sm-2 col-xs-3 text-center">
                                                     <a ng-click="sort('rate')">
-                                                        <i class="fa fa-bar-chart"></i> Your Rate
+                                                        <i class="fa fa-bar-chart"></i> <span class="hidden-sm">{{"tests.your-rate" | translate}}</span>
                                                         <i class="glyphicon"
                                                            ng-class="{'glyphicon-arrow-up' : isSortUp('rate'),
                                                                           'glyphicon-arrow-down' : isSortDown('rate')}">
@@ -52,7 +52,7 @@
 
                             <!--start body-->
                             <div ng-if="devQAs.length == 0">
-                                <h5>You didn't pass any tests</h5>
+                                <h5>{{"tests.no-passed-tests" | translate}}</h5>
                             </div>
                             <div ng-if="devQAs.length != 0">
                                 <div class="history-body" ng-repeat="devQA in devQAs | orderBy:sortField:reverse">
@@ -138,16 +138,16 @@
                         </md-content>
                     </div>
                 </md-tab>
-                <md-tab label="All tests">
+                <md-tab label="{{'tests.tab-all-tests' | translate}}">
                     <md-content class="md-padding">
                         <div class="row filter" ng-hide="noTest">
                             <div class="form-group col-md-6 col-xs-12">
-                                <label for="test_name">Search by test name:</label>
+                                <label for="test_name">{{"tests.search-by-test-name" | translate}}:</label>
                                 <input type="text" ng-model="search.name" class="form-control" id="test_name"
                                        placeholder="&#xF002;" style="font-family:Arial, FontAwesome">
                             </div>
                             <div class="form-group col-md-6 col-xs-12">
-                                <label for="tech_name">Search by technology:</label>
+                                <label for="tech_name">{{"tests.search-by-technology" | translate}}:</label>
                                 <input type="text" ng-model="search.technology.name" class="form-control"
                                        id="tech_name"
                                        placeholder="&#xF002;" style="font-family:Arial, FontAwesome">
@@ -155,11 +155,11 @@
                             <div class="form-group col-md-6 col-xs-12 tests-checkbox-pass">
                                 <md-checkbox ng-model="smt.passedTest" ng-change="testListCtrl()"
                                              class="md-warn" flex>
-                                    Passed
+                                    {{"tests.passed" | translate}}
                                 </md-checkbox>
                                 <md-checkbox ng-model="smt.allowedTest" ng-change="testListCtrl()"
                                              class="md-warn" flex>
-                                    Allowed
+                                    {{"tests.allowed" | translate}}
                                 </md-checkbox>
                             </div>
                         </div>
@@ -172,7 +172,7 @@
                                             <div class="panel-title col-md-12">
                                                 <div class="col-md-4 col-sm-5 col-xs-5">
                                                     <a ng-click="sort('name')">
-                                                        <i class="fa fa-tasks"></i> Test name
+                                                        <i class="fa fa-tasks"></i> {{"tests.test-name" | translate}}
                                                         <i class="glyphicon"
                                                            ng-class="{'glyphicon-arrow-up' : isSortUp('name'),
                                                                           'glyphicon-arrow-down' : isSortDown('name')}">
@@ -181,7 +181,7 @@
                                                 </div>
                                                 <div class="col-md-3 col-sm-5 col-xs-4">
                                                     <a ng-click="sort('technology')">
-                                                        <i class="fa fa-tv"></i> Technology
+                                                        <i class="fa fa-tv"></i> {{"tests.technology" | translate}}
                                                         <i class="glyphicon"
                                                            ng-class="{'glyphicon-arrow-up' : isSortUp('technology'),
                                                                           'glyphicon-arrow-down' : isSortDown('technology')}">
@@ -189,7 +189,7 @@
                                                     </a></div>
                                                 <div class="col-md-3 hidden-sm hidden-xs text-center">
                                                     <a ng-click="sort('passScore')">
-                                                        <i class="fa fa-bar-chart"></i> Min Pass Score
+                                                        <i class="fa fa-bar-chart"></i> {{"tests.min-pass-score" | translate}}
                                                         <i class="glyphicon"
                                                            ng-class="{'glyphicon-arrow-up' : isSortUp('passScore'),
                                                                           'glyphicon-arrow-down' : isSortDown('passScore')}">
@@ -206,12 +206,12 @@
                             <!--start body-->
 
                             <div ng-show="noTest">
-                                <h5>We don't have any tests for you now. Check it later</h5>
+                                <h5>{{"tests.no-tests" | translate}}</h5>
                             </div>
 
                             <div ng-hide="noTest">
                                 <div ng-if="tests.length == 0">
-                                    <h5>No results</h5>
+                                    <h5>{{"tests.no-results" | translate}}</h5>
                                 </div>
 
                                 <div class="tests-body" ng-repeat="test in tests | orderBy:sortField:reverse | filter:search">
@@ -227,18 +227,18 @@
                                                 <div class="col-md-3 hidden-sm hidden-xs text-center">
                                                     {{test.passScore}} %
                                                 </div>
-                                                <div class="col-md-2 col-sm-2 col-xs-3">
+                                                <div class="col-md-2 col-sm-2 col-xs-12">
                                                     <a ng-hide="test.status == 'passed'"
                                                        class="btn btn-primary btn-pass-test vertical-align-center"
                                                        href="/#/tests/{{test.id}}">
-                                                        <span ng-show="test.status == 'new'">Pass test</span>
-                                                        <span ng-show="test.status == 'expired'">Repass test</span>
+                                                        <span ng-show="test.status == 'new'">{{"tests.pass-test" | translate}}</span>
+                                                        <span ng-show="test.status == 'expired'">{{"tests.repass-test" | translate}}</span>
                                                     </a>
                                                     <a ng-show="test.status == 'passed'" ng-disabled="true"
                                                        class="btn btn-primary btn-pass-test vertical-align-center">
-                                                        <span>Repass test</span>
+                                                        <span>{{"tests.repass-test" | translate}}</span>
                                                         <md-tooltip md-visible="true" md-direction="top">
-                                                            Repass unblock in {{test.repass | date:"d 'day(s)' h
+                                                            {{"tests.repass-unblock" | translate}} {{test.repass | date:"d 'day(s)' h
                                                             'hour(s)' mm 'min(s)'"}}
                                                         </md-tooltip>
                                                     </a>

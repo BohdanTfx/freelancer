@@ -29,7 +29,7 @@ angular
 																.instant('signup.email.check.error')
 													});
 										});
-					}
+					};
 
 					this.initSocial = function($http, $scope) {
 						var linkedinVerifier = getUrlVars();
@@ -91,7 +91,7 @@ angular
 												.instant('signup.social.error')
 									});
 								});
-					}
+					};
 
 					this.createUser = function($http, user, adminUUID,
 							roleAdmin, adminAPI) {
@@ -105,7 +105,7 @@ angular
 							headers : {
 								'Content-Type' : 'application/x-www-form-urlencoded;charset=utf-8;'
 							}
-						}
+						};
 						$http
 								.post("/user/create", user, config)
 								.success(
@@ -122,7 +122,7 @@ angular
 																.instant('signup.user.create.error')
 													});
 										});
-					}
+					};
 
 					this.triggerEmailValidation = function($http, $scope) {
 						var email = $scope.user.email;

@@ -190,7 +190,7 @@ public class DeveloperService extends UserService<Developer> {
     }
 
     public void deleteTechnologyInDev(Integer devId, Integer technologyId){
-        // need write method for removing tech in dev
+        devMTMtechDao.removeContact(devId, technologyId);
     }
 
     public void addTechnologiesForDev(Integer devId, List<Integer> technologiesIds) {
@@ -267,6 +267,7 @@ public class DeveloperService extends UserService<Developer> {
         follower.setDevId(devId);
         follower.setOrderId(orderId);
         follower.setAuthor("dev");
+        follower.setIsDeleted(false);
         if (!message.isEmpty())
             follower.setMessage(message);
         return followerDao.save(follower);

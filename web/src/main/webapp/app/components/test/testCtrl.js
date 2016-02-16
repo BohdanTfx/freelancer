@@ -1,5 +1,5 @@
 angular.module('FreelancerApp')
-    .controller('testCtrl', function ($scope, testAPI, $stateParams, $log, $interval) {
+    .controller('testCtrl', function ($scope, testAPI, $stateParams, $log, $interval, Notification, $translate) {
 
         $scope.testFinished = false;
         $scope.hideCssClass = '';
@@ -37,7 +37,7 @@ angular.module('FreelancerApp')
             }, 1000, 0, true);
 
             $scope.vm = self;
-        }
+        };
 
 
         testAPI.getTestById($stateParams.testId).success(function (data) {
@@ -45,7 +45,11 @@ angular.module('FreelancerApp')
             $scope.test = data;
             $scope.intervalCtrl();
         }).error(function () {
-            alert(404);
+            Notification
+                .error({
+                    title: $translate.instant('notification.error'),
+                    message: $translate.instant('notification.smth-wrong')
+                });
         });
 
 
@@ -93,7 +97,11 @@ angular.module('FreelancerApp')
                 $scope.testFinished = true;
                 $scope.hideCssClass = '.ng-hide';
             }).error(function () {
-                alert("Server is busy");
+                Notification
+                    .error({
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('notification.smth-wrong')
+                    });
             });
         }
     });

@@ -1,5 +1,5 @@
 angular.module('FreelancerApp')
-    .controller('createtestCtrl', function ($scope, createtestAPI, Notification, $log) {
+    .controller('createtestCtrl', function ($scope, createtestAPI, Notification, $log, $translate) {
         $scope.availableQuestions = [];
 
         $scope.chosenQuestions = [];
@@ -11,7 +11,7 @@ angular.module('FreelancerApp')
                 $scope.itemListStart = page;
                 $scope.getQuestionsByTechId($scope.chosenTechID);
             }
-        }
+        };
 
         $scope.fillPagination = function (data) {
             $scope.pages = data;
@@ -29,11 +29,12 @@ angular.module('FreelancerApp')
                         $scope.showLast = true;
                 }
             }
-        }
+        };
 
         $scope.getQuestionsByTechId = function (id) {
             if (id != $scope.chosenTechID) {
                 $scope.chosenQuestions = [];
+                $scope.itemListStart = 0;
             }
             $scope.chosenTechID = id;
             createtestAPI.getQuestionsByTechId($scope.itemListStart, id).success(function (data) {
@@ -54,29 +55,39 @@ angular.module('FreelancerApp')
             }).error(function () {
                 Notification
                     .error({
-                        title: 'Error!',
-                        message: 'Something went bad. Please try again.'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('notification.smth-wrong')
                     });
             });
-        }
+        };
 
         createtestAPI.getAllTests().success(function (data) {
             $scope.tests = data;
         }).error(function () {
             Notification
                 .error({
+                    title: $translate.instant('notification.error'),
+                    message: $translate.instant('notification.smth-wrong')
+                });
+        });
+
+        /*createtestAPI.getAllQuestions().success(function (data) {
+            $scope.allQuestions = data;
+        }).error(function () {
+            Notification
+                .error({
                     title: 'Error!',
                     message: 'Something went bad. Please try again.'
                 });
-        });
+        });*/
 
         createtestAPI.getAllTechnologies().success(function (data) {
             $scope.technologies = data;
         }).error(function () {
             Notification
                 .error({
-                    title: 'Error!',
-                    message: 'Something went bad. Please try again.'
+                    title: $translate.instant('notification.error'),
+                    message: $translate.instant('notification.smth-wrong')
                 });
         });
 
@@ -84,8 +95,8 @@ angular.module('FreelancerApp')
             if ($scope.chosenQuestions.length < 3) {
                 Notification
                     .error({
-                        title: 'Error!',
-                        message: 'Min count of questions is 3. Please add questions in test.'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('createtest.err-questions')
                     });
             } else {
                 var testJSON = JSON.stringify($scope.test);
@@ -100,18 +111,18 @@ angular.module('FreelancerApp')
                     $scope.testReset();
                     Notification
                         .success({
-                            title: 'Success!',
-                            message: 'Test was successfully created.'
+                            title: $translate.instant('notification.success'),
+                            message: $translate.instant('createtest.test-create-success')
                         });
                 }).error(function () {
                     Notification
                         .error({
-                            title: 'Error!',
-                            message: 'Something went bad. Please try again.'
+                            title: $translate.instant('notification.error'),
+                            message: $translate.instant('notification.smth-wrong')
                         });
                 });
             }
-        }
+        };
 
         $scope.moveRight = function (id) {
             for (var i = 0; i < $scope.availableQuestions.length; i++) {
@@ -121,7 +132,7 @@ angular.module('FreelancerApp')
                     $scope.availableQuestions.size--;
                 }
             }
-        }
+        };
 
         $scope.moveLeft = function (id) {
             for (var i = 0; i < $scope.chosenQuestions.length; i++) {
@@ -136,8 +147,7 @@ angular.module('FreelancerApp')
                     $scope.chosenQuestions.splice(i, 1);
                 }
             }
-        }
-
+        };
 
         $scope.testReset = function () {
             $scope.test = {};
@@ -145,7 +155,7 @@ angular.module('FreelancerApp')
             $scope.chosenQuestions = [];
             $scope.availableQuestions = [];
             $scope.showLast = false;
-        }
+        };
 
         var question = {};
         var answer = {name: '', correct: false};
@@ -154,30 +164,30 @@ angular.module('FreelancerApp')
 
         $scope.addAnswerForm = function () {
             $scope.answers.push(Object.assign({}, answer));
-        }
+        };
 
         $scope.deleteAnswerForm = function (id) {
             $scope.answers.splice(id, 1);
-        }
+        };
 
         $scope.createQuestion = function () {
             if ($scope.answers.length < 2) {
                 Notification
                     .error({
-                        title: 'Error!',
-                        message: 'Min count of answers is 2. Please add answers in question.'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('createtest.err-answers')
                     });
                 return;
             } else {
                 var correctAnswers = 0;
                 for (var i = 0; i < $scope.answers.length; i++) {
-                    if($scope.answers[i].correct) correctAnswers++;
+                    if ($scope.answers[i].correct) correctAnswers++;
                 }
-                if(correctAnswers<1){
+                if (correctAnswers < 1) {
                     Notification
                         .error({
-                            title: 'Error!',
-                            message: 'Set one or more correct answers.'
+                            title: $translate.instant('notification.error'),
+                            message: $translate.instant('createtest.err-correct-answers')
                         });
                     return;
                 }
@@ -191,21 +201,142 @@ angular.module('FreelancerApp')
                 $scope.getQuestionsByTechId($scope.chosenTechID);
                 Notification
                     .success({
-                        title: 'Success!',
-                        message: 'Question was successfully created.'
+                        title: $translate.instant('notification.success'),
+                        message: $translate.instant('createtest.question-create-success')
                     });
             }).error(function () {
                 Notification
                     .error({
-                        title: 'Error!',
-                        message: 'Something went bad. Please try again.'
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('notification.smth-wrong')
                     });
             });
-        }
+        };
 
         $scope.questionReset = function () {
             $scope.answers = [];
             $scope.answers.push(Object.assign({}, answer));
             $scope.question = {};
+        };
+
+        $scope.setDelTest = function (test) {
+            $scope.delTest = test;
+        };
+
+        $scope.deleteTest = function () {
+            if ($scope.delTest == 'undefined') {
+                Notification
+                    .error({
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('notification.smth-wrong')
+                    });
+                return;
+            }
+            var testJSON = JSON.stringify($scope.delTest);
+            createtestAPI.deleteTest(testJSON).success(function () {
+                for (var i = 0; i < $scope.tests.length; i++) {
+                    if ($scope.tests[i].id == $scope.delTest.id) {
+                        $scope.tests.splice(i, 1);
+                        break;
+                    }
+                }
+                Notification
+                    .success({
+                        title: $translate.instant('notification.success'),
+                        message: $translate.instant('createtest.test-delete-success')
+                    });
+            });
+        };
+
+
+        $scope.setDelQuestion = function (question) {
+            $scope.delQuestion = question;
+        };
+
+        $scope.deleteQuestion = function () {
+            if ($scope.delQuestion == 'undefined') {
+                Notification
+                    .error({
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('notification.smth-wrong')
+                    });
+                return;
+            }
+            var questionJSON = JSON.stringify($scope.delQuestion);
+            createtestAPI.deleteQuestion(questionJSON).success(function () {
+                for (var i = 0; i < $scope.tests.length; i++) {
+                    if ($scope.allQuestions[i].id == $scope.delQuestion.id) {
+                        $scope.allQuestions.splice(i, 1);
+                        break;
+                    }
+                }
+                Notification
+                    .success({
+                        title: $translate.instant('notification.success'),
+                        message: $translate.instant('createtest.question-delete-success')
+                    });
+            });
+        };
+
+        $scope.sortField = undefined;
+        $scope.reverse = false;
+
+        $scope.sort = function (fieldName) {
+            if ($scope.sortField === fieldName) {
+                $scope.reverse = !$scope.reverse;
+            } else {
+                $scope.sortField = fieldName;
+                $scope.reverse = false;
+            }
+        };
+
+        $scope.isSortUp = function (fieldName) {
+            return $scope.sortField === fieldName && !$scope.reverse;
+        };
+        $scope.isSortDown = function (fieldName) {
+            return $scope.sortField === fieldName && $scope.reverse;
+        };
+
+
+        // Question tab: pagination
+        $scope.openQuestionPage = function (page) {
+            if (page == 'last')
+                $scope.questionItemListStart = 'last';
+            else {
+                $scope.questionItemListStart = page;
+                $scope.getQuestionsByTechIdForQuestTab($scope.questTabTechId);
+            }
+        };
+
+        $scope.fillQuestionTabPagination = function (data) {
+            $scope.questionPages = data;
+
+            for (var page = 0; page < data.length; page++) {
+                var item = data[page];
+                if (item.first == 'current') {
+                    if (item.second > 3)
+                        $scope.questTabShowFirst = true;
+                    else
+                        $scope.questTabShowFirst = false;
+                    if (item.second + 4 >= $scope.maxPage)
+                        $scope.questTabShowLast = false;
+                    else
+                        $scope.questTabShowLast = true;
+                }
+            }
+        };
+
+        $scope.getQuestionsByTechIdForQuestTab = function (id) {
+            $scope.techIsChosen = true;
+            createtestAPI.getQuestionsByTechId($scope.questionItemListStart, id).success(function (data) {
+                $scope.allQuestions = data.items;
+                $scope.fillQuestionTabPagination(data.pages);
+            }).error(function () {
+                Notification
+                    .error({
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('notification.smth-wrong')
+                    });
+            });
         }
     });

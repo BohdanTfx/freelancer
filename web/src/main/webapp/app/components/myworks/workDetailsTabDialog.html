@@ -11,13 +11,13 @@
         </div>
         <md-dialog-content>
             <md-tabs md-dynamic-height md-border-bottom>
-                <md-tab label="Details">
+                <md-tab label="{{'myworks.dialog-tab-details' | translate}}">
                     <md-content class="md-padding">
 
 
                         <div class="row">
                             <div class="col-sm-7">
-                                <h4>Description</h4>
+                                <h4>{{'myworks.dialog-descr' | translate}}</h4>
 
                                 <div class="panel panel-default">
                                     <div class="panel-body" ;>
@@ -25,57 +25,65 @@
                                     </div>
                                 </div>
                                 <div>
-                                    Technologies:
+                                    {{'myworks.dialog-techn' | translate}}:
                                                 <span ng-repeat="tech in project.technologies">
                                                      <span class="label label-success lb">{{tech.name}}</span>
                                                  </span>
                                 </div>
                             </div>
                             <div class="col-sm-5">
-                                <h4>Information</h4>
-                                <span><strong>Registration:</strong> {{project.date | date:'MMM d, y'}}</span><br/>
-                                <span><strong>Start date:</strong> {{project.startedDate | date:'MMM d, y'}}</span><br/>
-                                <span><strong>End date:</strong> {{project.endedDate | date:'MMM d, y'}}</span><br/>
-                                <span><strong>Time zone:</strong> {{project.zone}}</span><br/>
+                                <h4>{{'myworks.dialog-info' | translate}}</h4>
+                                <span><strong>{{'myworks.dialog-registr' | translate}}:</strong> {{project.date | date:'MMM d, y'}}</span><br/>
+                                <span><strong>{{'myworks.dialog-start' | translate}}:</strong> {{project.startedDate | date:'MMM d, y'}}</span><br/>
+                                <span><strong>{{'myworks.dialog-end' | translate}}:</strong> {{project.endedDate | date:'MMM d, y'}}</span><br/>
+                                <span><strong>{{'myworks.dialog-zone' | translate}}:</strong> {{project.zone}}</span><br/>
 
                                 <span>
-                                <strong>Privacy:</strong>
+                                <strong>{{'myworks.dialog-privacy' | translate}}:</strong>
                                 <span ng-switch="project.priv">
                                     <span ng-switch-when="">
-                                        public
+                                        {{'myworks.dialog-public' | translate}}
                                     </span>
                                     <span ng-switch-default>
-                                        private
+                                       {{'myworks.dialog-private' | translate}}
                                     </span>
                                 </span>
                                 </span><br/>
-                                <span><strong>Payment type:</strong> {{project.payType}}</span><br/>
-
+                                <span><strong>{{'myworks.dialog-type' | translate}}:</strong> </span>
+                                <span ng-if="project.payType == 'fixed'">
+                                  {{'myworks.type-fixed' | translate}}<br/>
+                                </span>
+                                 <span ng-if="project.payType !== 'fixed'">
+                                  {{'myworks.type-hourly' | translate}}<br/>
+                                </span>
                                 <span ng-if="workerInfo !== 'undefined' ">
-                                    <span> <strong>Payment</strong> {{workerInfo.newHourly | number:1}} $ p/h</span><br>
-                                    <span><strong>Worked time:</strong> {{workerInfo.sumHours}} h</span><br/>
+                                    <span> <strong>{{'myworks.dialog-payment' | translate}}</strong> {{workerInfo.newHourly | number:1}} $ {{'myworks.dialog-hour' | translate}}</span><br>
+                                    <!--<span><strong>Worked time:</strong> {{workerInfo.sumHours}} h</span><br/>-->
                                 </span>
                                 <span ng-if="workerInfo == 'undefined' ">
-                                    <span> <strong>Payment </strong> {{project.payment | number:1}} $ p/h</span>
+                                    <span> <strong>{{'myworks.dialog-payment' | translate}} </strong> {{project.payment | number:1}} $ {{'myworks.dialog-hour' | translate}}</span>
                                 </span>
 
                             </div>
                         </div>
                     </md-content>
                 </md-tab>
-                <md-tab label="Members">
+                <md-tab label="{{'myworks.dialog-tab-members' | translate}}">
                     <md-content class="md-padding">
 
                         <div style="min-width:500px;">
                             <div class="panel panel-success panel-unit">
-                                <div class="panel-heading">Customer</div>
+                                <div class="panel-heading"> {{'myworks.dialog-customer' | translate}}</div>
                                 <div class="panel-body">
 
                                     <a ng-href="/#/public/customer/custname/{{customer.id}}">
-                                        <div>
-                                            <img class="unit-cust-image"
-                                                 src="{{customer.imgUrl==null? '/images/profile/no-profile-img.jpg' : customer.imgUrl}}"
+                                        <div class="cust-image-block" style="height: 64px;width: 64px;">
+                                            <img class="user-image"
+                                            class="unit-cust-image"
+                                            src="{{customer.imgUrl==null? '/images/profile/no-image.png' : customer.imgUrl}}"
                                                  alt=""/>
+                                         </div>
+                                        <div class="cust-name-block">
                                             {{customer.fname}}
                                             {{customer.lname}}
                                         </div>
@@ -87,28 +95,27 @@
                             <hr/>
 
                             <div class="panel panel-info panel-unit">
-                                <div class="panel-heading">Developers</div>
+                                <div class="panel-heading">{{'myworks.dialog-developers' | translate}}</div>
                                 <div class="panel-body">
                                     <div ng-repeat="devWorker in workers">
-
-
                                         <a href="/#/public/developer/devname/{{devWorker.id}}">
                                             <div class="members-unit-dev">
                                                 <div class="unit-foto">
-                                                    <img style="width: 100%"
-                                                         src="{{devWorker.imgUrl==null? '/images/profile/no-profile-img.jpg' : devWorker.imgUrl}}"
+                                                    <img class="user-image"
+                                                         src="{{devWorker.imgUrl==null? '/images/profile/no-image.png' : devWorker.imgUrl}}"
                                                          alt=""/>
                                                 </div>
-                                                <div class="unit-name-dev">
-                                                    {{devWorker.fname}}
-                                                    <br> {{devWorker.lname}}
-                                                </div>
+
+                                                    <div class="unit-name-dev">
+                                                        {{devWorker.fname}}
+                                                        <br> {{devWorker.lname}}
+                                                    </div>
+
                                             </div>
                                         </a>
                                     </div>
                                 </div>
                             </div>
-
                         </div>
                     </md-content>
                 </md-tab>
@@ -117,8 +124,16 @@
         </md-dialog-content>
 
         <md-dialog-actions>
+
+            <div ng-if=" role='customer'&& project.started == true && project.ended == false">
+                <md-button class="md-warn" ng-click="finishOrdering(project.id)" md-autofocus>
+                    {{'myworks.dialog-finish-project' | translate}}
+                </md-button>
+            </div>
+
+
             <md-button ng-click="cancel()" md-autofocus>
-                Got it
+                {{'myworks.dialog-back' | translate}}
             </md-button>
         </md-dialog-actions>
     </div>

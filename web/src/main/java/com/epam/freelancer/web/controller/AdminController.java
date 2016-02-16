@@ -4,18 +4,15 @@ import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.manager.UserManager;
 import com.epam.freelancer.business.service.*;
 import com.epam.freelancer.business.util.SendMessageToEmail;
+import com.epam.freelancer.business.util.SmsSender;
 import com.epam.freelancer.database.model.Admin;
 import com.epam.freelancer.database.model.*;
 import com.epam.freelancer.web.json.model.JsonPaginator;
-import com.epam.freelancer.web.json.model.Quest;
 import com.epam.freelancer.web.util.Paginator;
 import com.epam.freelancer.database.model.AdminCandidate;
-import com.epam.freelancer.database.model.Contact;
-import com.google.gson.Gson;
 import com.epam.freelancer.database.model.OrderCounter;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
@@ -25,6 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.security.SecureRandom;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.Executors;
@@ -50,6 +49,7 @@ public class AdminController extends HttpServlet implements Responsable {
     private TechnologyService technologyService;
     private Paginator paginator;
     private OrderCounterService orderCounterService;
+    private OrderingService orderingService;
 
     public AdminController() {
         mapper = new ObjectMapper();
@@ -58,12 +58,13 @@ public class AdminController extends HttpServlet implements Responsable {
         developerService = (DeveloperService) ApplicationContext.getInstance().getBean("developerService");
         customerService = (CustomerService) ApplicationContext.getInstance().getBean("customerService");
         adminService = (AdminService) ApplicationContext.getInstance().getBean("adminService");
-        orderCounterService = (OrderCounterService)ApplicationContext.getInstance().getBean("orderCounterService");
+        orderCounterService = (OrderCounterService) ApplicationContext.getInstance().getBean("orderCounterService");
         questionService = (QuestionService) ApplicationContext.getInstance().getBean("questionService");
         testService = (TestService) ApplicationContext.getInstance().getBean("testService");
         answerService = (AnswerService) ApplicationContext.getInstance().getBean("answerService");
         technologyService = (TechnologyService) ApplicationContext.getInstance().getBean("technologyService");
         paginator = new Paginator();
+        orderingService = (OrderingService) ApplicationContext.getInstance().getBean("orderingService");
     }
 
     @Override
@@ -78,11 +79,20 @@ public class AdminController extends HttpServlet implements Responsable {
                 case "admin/getPersonalData":
                     fillAdminPage(request, response);
                     break;
-                case "admin/statistics/orders":
+                case "admin/statistics/ordersCreation":
                     sendCreationOrdersAmount(request, response);
+                    break;
+                case "admin/statistics/orders":
+                    sendOrderStatistic(request, response);
+                    break;
+                case "admin/statistics/tests":
+                    sendCreationPopularTests(request, response);
                     break;
                 case "admin/tests":
                     getTests(request, response);
+                    break;
+                case "admin/questions":
+                    getQuestions(request, response);
                     break;
                 case "admin/technologies":
                     getTechnologies(request, response);
@@ -122,6 +132,24 @@ public class AdminController extends HttpServlet implements Responsable {
                 case "admin/tech/questions":
                     getQuestionsByTechnologyId(request, response);
                     break;
+                case "admin/test/delete":
+                    deleteTest(request, response);
+                    break;
+                case "admin/question/delete":
+                    deleteQuestion(request, response);
+                    break;
+                case "admin/sendPersonalData":
+                    updatePersonalData(request, response);
+                    break;
+                case "admin/changePassword":
+                    changeAdminPassword(request, response);
+                    break;
+                case "admin/confirmChangePasswordAndEmail":
+                    confirmChangePasswordAndEmail(request, response);
+                    break;
+                case "admin/changeEmail":
+                    changeEmail(request, response);
+                    break;
                 default:
 
             }
@@ -157,8 +185,8 @@ public class AdminController extends HttpServlet implements Responsable {
     private void startCountdownExpireTime(AdminCandidate candidate, int secDelay) {
         ScheduledExecutorService scheduledExecutorService =
                 Executors.newScheduledThreadPool(1);
-        scheduledExecutorService.schedule(() ->  adminCandidateService.remove(candidate)
-        , secDelay, TimeUnit.HOURS);
+        scheduledExecutorService.schedule(() -> adminCandidateService.remove(candidate)
+                , secDelay, TimeUnit.HOURS);
     }
 
     private String getAdminCreatingMessage() {
@@ -176,17 +204,18 @@ public class AdminController extends HttpServlet implements Responsable {
             sendResponse(response, false, mapper);
         }
     }
+
     private void checkAvailableEmail(HttpServletRequest request, HttpServletResponse response) {
         String email = request.getParameter("email");
         Map<String, Boolean> map = new HashMap<>();
 
         if (adminCandidateService.getAdminCandidateByEmail(email) != null) {
-           map.put("candidateEmailExists",true);
+            map.put("candidateEmailExists", true);
         }
-        if(!customerService.emailAvailable(email)||!developerService.emailAvailable(email)){
-            map.put("otherUserEmailExists",true);
+        if (!customerService.emailAvailable(email) || !developerService.emailAvailable(email)) {
+            map.put("otherUserEmailExists", true);
         }
-        sendResponse(response,map,mapper);
+        sendResponse(response, map, mapper);
     }
 
     private void removeUUID(HttpServletRequest request, HttpServletResponse response) {
@@ -194,11 +223,10 @@ public class AdminController extends HttpServlet implements Responsable {
         adminCandidateService.remove(adminCandidateService.getAdminCandidateByKey(uuid));
     }
 
-    private void sendDevAndCustAmount(HttpServletRequest request,HttpServletResponse response) throws IOException {
-        Map<String,Integer> map = new HashMap<>();
-        map.put("devAmount",developerService.getAllWorkers().size());
-        map.put("custAmount",customerService.findAll().size());
-
+    private void sendDevAndCustAmount(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Map<String, Integer> map = new HashMap<>();
+        map.put("devAmount", developerService.getAllWorkers().size());
+        map.put("custAmount", customerService.findAll().size());
         sendResponse(response, map, mapper);
     }
 
@@ -208,13 +236,12 @@ public class AdminController extends HttpServlet implements Responsable {
         Map<Integer, Technology> technologyMap = new HashMap<>();
         techs.forEach(technology -> technologyMap.put(technology.getId(),
                 technology));
-        Map<Integer, Test> testMap = new HashMap<>();
         for (int i = 0; i < tests.size(); i++) {
             tests.forEach(test -> {
                 test.setTechnology(technologyMap.get(test.getTechId()));
-                testMap.put(test.getId(), test);
             });
         }
+        sendResponse(response, tests, mapper);
     }
 
     private void getQuestionsByTechnologyId(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -266,14 +293,14 @@ public class AdminController extends HttpServlet implements Responsable {
         List<Answer> answers = mapper.readValue(paramAnswers, new TypeReference<List<Answer>>() {
         });
         int multiple = 0;
-        for(Answer answer:answers){
-            if(answer.getCorrect()) multiple++;
+        for (Answer answer : answers) {
+            if (answer.getCorrect()) multiple++;
         }
-        question.setMultiple(multiple>1);
+        question.setMultiple(multiple > 1);
         question = writeQuestionInDB(question, request);
-        if(question == null){
+        if (question == null) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-        }else{
+        } else {
             writeAnswersInDB(question.getId(), answers, request);
             response.getWriter().write(question.getId());
         }
@@ -301,51 +328,234 @@ public class AdminController extends HttpServlet implements Responsable {
         }
     }
 
-    private void sendCreationOrdersAmount(HttpServletRequest request,HttpServletResponse response) throws IOException {
+    private void deleteTest(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String paramTest = request.getParameter("test");
+        if (paramTest == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+        Test test = mapper.readValue(paramTest, new TypeReference<Test>() {
+        });
+        test.setDeleted(true);
+        testService.modify(test);
+    }
+
+    private void getQuestions(HttpServletRequest request, HttpServletResponse response) {
+        List<Question> questions = questionService.findAll();
+        List<Technology> techs = technologyService.findAll();
+        Map<Integer, Technology> technologyMap = new HashMap<>();
+        techs.forEach(technology -> technologyMap.put(technology.getId(),
+                technology));
+        for (int i = 0; i < questions.size(); i++) {
+            questions.forEach(test -> {
+                test.setTechnology(technologyMap.get(test.getTechId()));
+            });
+        }
+        sendResponse(response, questions, mapper);
+    }
+
+
+    private void deleteQuestion(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String paramQuestion = request.getParameter("question");
+        if (paramQuestion == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+        Question question = mapper.readValue(paramQuestion, new TypeReference<Question>() {
+        });
+        question.setDeleted(true);
+        questionService.modify(question);
+    }
+
+
+    private void sendCreationOrdersAmount(HttpServletRequest request, HttpServletResponse response) throws IOException {
         List<OrderCounter> list = orderCounterService.getAllForLast30Days();
-        Map<LocalDate,Integer> map = new TreeMap<>();
-        Map<String,Object> resultMap = new HashMap<>();
+        Map<LocalDate, Integer> map = new TreeMap<>();
+        Map<String, Object> resultMap = new HashMap<>();
         List<Integer> listDays = new ArrayList<>();
         List<String> listMonth = new ArrayList<>();
 
         Calendar cal = Calendar.getInstance();
         for (int i = 0; i < 30; i++) {
             cal.add(Calendar.DATE, -1);
-            map.put(new java.sql.Date(cal.getTimeInMillis()).toLocalDate(),0);
+            map.put(new java.sql.Date(cal.getTimeInMillis()).toLocalDate(), 0);
         }
-
-
-        for (OrderCounter o:list){
-            if(map.containsKey(o.getDate().toLocalDate())){
-                map.put(o.getDate().toLocalDate(),o.getCount());
+        for (OrderCounter o : list) {
+            if (map.containsKey(o.getDate().toLocalDate())) {
+                map.put(o.getDate().toLocalDate(), o.getCount());
             }
         }
-
-
-        for (LocalDate date:map.keySet()) {
+        for (LocalDate date : map.keySet()) {
             listDays.add(date.getDayOfMonth());
             listMonth.add(date.getMonth().toString());
         }
+        resultMap.put("orderValues", map.values());
+        resultMap.put("listDays", listDays);
+        resultMap.put("listMonth", listMonth);
 
-        resultMap.put("orderValues",map.values());
-        resultMap.put("listDays",listDays);
-        resultMap.put("listMonth",listMonth);
+        sendResponse(response, resultMap, mapper);
+    }
 
-        sendResponse(response,resultMap,mapper);
+    private void fillAdminPage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession();
+        Admin admin = (Admin) session.getAttribute("user");
+        admin.setPassword(null);
+        admin.setSalt(null);
+        admin.setUuid(null);
+        admin.setRegUrl(null);
+        sendResponse(response, admin, mapper);
+    }
 
+    private void sendCreationPopularTests(HttpServletRequest request, HttpServletResponse response) {
+        Map<Test, Integer> testMap = testService.getPopularTests();
+        Map<String, Object> resultMap = new HashMap<>();
+        Set<Test> tests = testMap.keySet();
+        tests.forEach(test -> {
+            test.setTechnology(technologyService.findById(test.getTechId()));
+        });
+        resultMap.put("tests", tests);
+        resultMap.put("amounts", testMap.values());
 
+        sendResponse(response, resultMap, mapper);
 
     }
 
+    private void updatePersonalData(HttpServletRequest request,
+                                    HttpServletResponse response) throws IOException {
+        String paramAdmin = request.getParameter("admin");
 
+        SimpleDateFormat format = new SimpleDateFormat("MMM dd, yyyy hh:mm:ss a");
+        mapper.setDateFormat(format);
+        mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true);
+        if (paramAdmin == null || "".equals(paramAdmin)) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+        Admin admin = mapper.readValue(paramAdmin, new TypeReference<Admin>() {
+        });
+        Admin dbAdmin = adminService.findById(((UserEntity) request.getSession().getAttribute("user")).getId());
+        admin.setPassword(dbAdmin.getPassword());
+        admin.setSalt(dbAdmin.getSalt());
+        admin.setUuid(dbAdmin.getUuid());
+        admin.setRegUrl(dbAdmin.getRegUrl());
+        adminService.modify(admin);
+        admin.setPassword(null);
+        admin.setSalt(null);
+        admin.setUuid(null);
+        admin.setRegUrl(null);
+        admin.setRole("admin");
+        request.getSession().setAttribute("user", admin);
+    }
 
-
-    private void fillAdminPage(HttpServletRequest request,HttpServletResponse response) throws IOException {
+    private void changeAdminPassword(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String password = request.getParameter("password");
         HttpSession session = request.getSession();
         Admin admin = (Admin) session.getAttribute("user");
-        String adminJson = new Gson().toJson(admin);
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(adminJson);
+        if (userManager.validCredentials(admin.getEmail(), password, adminService.findById(admin.getId()))) {
+            generateEmailCode(admin);
+        } else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid credentials");
+        }
+    }
+
+    private void confirmChangePasswordAndEmail(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String password = request.getParameter("password");
+        String email = request.getParameter("email");
+        String confirmCode = request.getParameter("confirmCode");
+        HttpSession session = request.getSession();
+        Admin admin = (Admin) session.getAttribute("user");
+        if (password != null) {
+            if (checkConfirmCode(admin, confirmCode, response)) {
+                admin.setPassword(password);
+                adminService.encodePassword(admin);
+                adminService.modify(admin);
+            }
+        }
+        if (email != null) {
+            if (checkConfirmCode(admin, confirmCode, response)) {
+                admin = adminService.findById(admin.getId());
+                admin.setSendEmail(email);
+                adminService.modify(admin);
+                admin.setPassword(null);
+                admin.setSalt(null);
+                admin.setUuid(null);
+                admin.setRegUrl(null);
+                admin.setRole("admin");
+                session.setAttribute("user", admin);
+            }
+        }
+    }
+
+    private void changeEmail(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String email = request.getParameter("email");
+        HttpSession session = request.getSession();
+        Admin admin = (Admin) session.getAttribute("user");
+        if (admin != null) {
+            if (userManager.isEmailAvailable(email) || admin.getEmail().equals(email)) {
+                generateEmailCode(admin);
+            } else {
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid email");
+                return;
+            }
+        } else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid user");
+            return;
+        }
+    }
+
+    private String generateEmailCode(Admin admin) {
+        StringBuilder confirmCode = new StringBuilder();
+        SecureRandom random = new SecureRandom();
+        for (int i = 0; i < 4; i++) {
+            confirmCode.append(String.valueOf(random.nextInt(9)));
+        }
+        admin.setConfirmCode(confirmCode.toString());
+        try {
+            String email = admin.getEmail();
+            String from = "maksym.rudevych.kn.2013@lpnu.ua";
+            String pass = "12.04.1996";
+            String[] to = new String[]{email};
+            SendMessageToEmail.sendFromGMail(from, pass, to, "Confirm Code", confirmCode.toString());
+        } catch (NullPointerException e) {
+            LOG.warn("The phone number is empty");
+        } catch (IOException e) {
+            LOG.warn("Email sending crashed");
+        }
+        return confirmCode.toString();
+    }
+
+    private Boolean checkConfirmCode(Admin admin, String confirmCode, HttpServletResponse response) throws IOException {
+        if (!admin.getConfirmCode().equals(confirmCode)) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+                    "Invalid code");
+            response.flushBuffer();
+            return false;
+        }
+        return true;
+    }
+
+     private void sendOrderStatistic(HttpServletRequest request,HttpServletResponse response){
+        List<Ordering> allOrders = orderingService.findAll();
+        Integer finishedCount = 0;
+        Integer inProgressCount = 0;
+        Integer availableCount = 0;
+       for (Ordering ordering: allOrders){
+          if(ordering.getStarted() && ordering.getEnded()){
+             finishedCount++;
+          }else{
+            if(ordering.getStarted()){
+                inProgressCount++;
+            }else{
+                availableCount++;
+            }
+          }
+       }
+
+       Map<String,Integer> map = new HashMap<>();
+       map.put("finishedCount",finishedCount);
+       map.put("inProgressCount",inProgressCount);
+       map.put("availableCount",availableCount);
+
+       sendResponse(response,map,mapper);
     }
 }

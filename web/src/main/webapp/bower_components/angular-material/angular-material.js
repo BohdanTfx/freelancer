@@ -3686,9 +3686,10 @@ function InterimElementProvider() {
           dimBackground: true
         }
       }
-    };
+    }
   }
-  MdButtonInkRipple.$inject = ["$mdInkRipple"];;
+
+  MdButtonInkRipple.$inject = ["$mdInkRipple"];
 })();
 
 })();
@@ -3725,9 +3726,10 @@ function InterimElementProvider() {
         dimBackground: false,
         fitRipple: true
       }, options));
-    };
+    }
   }
-  MdCheckboxInkRipple.$inject = ["$mdInkRipple"];;
+
+  MdCheckboxInkRipple.$inject = ["$mdInkRipple"];
 })();
 
 })();
@@ -3765,9 +3767,10 @@ function InterimElementProvider() {
         outline: false,
         rippleSize: 'full'
       }, options));
-    };
+    }
   }
-  MdListInkRipple.$inject = ["$mdInkRipple"];;
+
+  MdListInkRipple.$inject = ["$mdInkRipple"];
 })();
 
 })();
@@ -4276,9 +4279,10 @@ function attrNoDirective () {
         outline: false,
         rippleSize: 'full'
       }, options));
-    };
+    }
   }
-  MdTabInkRipple.$inject = ["$mdInkRipple"];;
+
+  MdTabInkRipple.$inject = ["$mdInkRipple"];
 })();
 
 })();
@@ -5558,9 +5562,7 @@ function AnimateDomUtils($mdUtil, $q, $timeout, $mdConstant, $animateCss) {
     }
 
   };
-};
-
-
+}
 })();
 (function(){
 "use strict";
@@ -5855,7 +5857,7 @@ if (angular.version.minor >= 4) {
 
       function computeTimings(element) {
         var node = getDomNode(element);
-        var cs = $window.getComputedStyle(node)
+        var cs = $window.getComputedStyle(node);
         var tdr = parseMaxTime(cs[prop('transitionDuration')]);
         var adr = parseMaxTime(cs[prop('animationDuration')]);
         var tdy = parseMaxTime(cs[prop('transitionDelay')]);
@@ -7577,7 +7579,7 @@ function iosScrollFix(node) {
           this.calendarCtrl.minDate, this.calendarCtrl.maxDate) && 
           (!angular.isFunction(this.calendarCtrl.dateFilter)
            || this.calendarCtrl.dateFilter(opt_date));
-  }
+  };
   
   /**
    * Builds a `tr` element for the calendar grid.
@@ -14665,7 +14667,7 @@ function SelectProvider($$interimElementProvider) {
             }
             newOption = optionsArray[index];
             if (newOption.hasAttribute('disabled')) newOption = undefined;
-          } while (!newOption && index < optionsArray.length - 1 && index > 0)
+          } while (!newOption && index < optionsArray.length - 1 && index > 0);
           newOption && newOption.focus();
           opts.focusedNode = newOption;
         }
@@ -22270,7 +22272,7 @@ function MenuProvider($$interimElementProvider) {
               }
               break;
             }
-          } while (target = target.parentNode)
+          } while (target = target.parentNode);
 
           function close() {
             scope.$apply(function() {
@@ -24284,4 +24286,5 @@ angular.module("material.core").constant("$MD_THEME_CSS", "md-autocomplete.md-TH
 })();
 
 
-})(window, window.angular);;window.ngMaterial={version:{full: "1.0.3"}};
+})(window, window.angular);
+window.ngMaterial = {version: {full: "1.0.3"}};

@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('FreelancerApp')
-    .factory('personalAPI', ['$http','config', function ($http, config) {
+    .factory('personalAPI', ['$http', 'config', function ($http, config) {
         var dataFactory = {};
 
-        dataFactory.getDevPersonal = function() {
+        dataFactory.getDevPersonal = function () {
             return $http.get('/dev/getPersonalData');
         };
 
@@ -22,7 +22,7 @@ angular.module('FreelancerApp')
             });
         };
 
-        dataFactory.sendDevImage = function(image) {
+        dataFactory.sendDevImage = function (image) {
             var data = $.param({
                 image: image
             });
@@ -33,19 +33,7 @@ angular.module('FreelancerApp')
                 data: data
             })
         };
-        dataFactory.sendCustImage = function(image) {
-            var data = $.param({
-                image: image
-            });
-            return $http({
-                method: 'POST',
-                url: '/user/uploadImage',
-                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-                data: data
-            })
-        };
-
-        dataFactory.sendAdminImage = function(image) {
+        dataFactory.sendCustImage = function (image) {
             var data = $.param({
                 image: image
             });
@@ -57,66 +45,81 @@ angular.module('FreelancerApp')
             })
         };
 
+        dataFactory.sendAdminImage = function (image) {
+            var data = $.param({
+                image: image
+            });
+            return $http({
+                method: 'POST',
+                url: '/user/uploadImage',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                data: data
+            })
+        };
 
-        dataFactory.changeDevPassword = function (password, newPassword) {
-            var data = 'password=' + password + '&newPassword=' + newPassword;
+
+        dataFactory.changeDevPassword = function (password) {
+            var data = 'password=' + password;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
             return $http.post('/dev/changePassword', data);
         };
 
 
-        dataFactory.changeCustPassword = function (password, newPassword) {
-            var data = 'password=' + password + '&newPassword=' + newPassword;
+        dataFactory.changeCustPassword = function (password) {
+            var data = 'password=' + password;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
             return $http.post('/cust/changePassword', data);
         };
 
-        dataFactory.changeAdminPassword = function (password, newPassword) {
-            var data = 'password=' + password + '&newPassword=' + newPassword;
+        dataFactory.changeAdminPassword = function (password) {
+            var data = 'password=' + password ;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
             return $http.post('/admin/changePassword', data);
         };
 
 
-        dataFactory.confirmCodeAndChangeDevPassword = function (confirmPassword, confirmCode) {
-            var data = 'password=' + confirmPassword + '&confirmCode=' + confirmCode;
+        dataFactory.confirmCodeAndChangeDevPasswordOrEmail = function (password, email, confirmCode) {
+            var data = password==null ?'email=' + email + '&confirmCode=' + confirmCode :
+                    'password=' + password + '&confirmCode=' + confirmCode ;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
             return $http.post('/dev/confirmChangePasswordAndEmail', data);
         };
 
-        dataFactory.confirmCodeAndChangeCustPassword = function (confirmPassword, confirmCode) {
-            var data = 'password=' + confirmPassword + '&confirmCode=' + confirmCode;
+        dataFactory.confirmCodeAndChangeCustPasswordOrEmail = function (password, email, confirmCode) {
+            var data = password==null ?'email=' + email + '&confirmCode=' + confirmCode :
+            'password=' + password + '&confirmCode=' + confirmCode ;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
             return $http.post('/cust/confirmChangePasswordAndEmail', data);
         };
 
-        dataFactory.confirmCodeAndChangeAdminPassword = function (confirmPassword, confirmCode) {
-            var data = 'password=' + confirmPassword + '&confirmCode=' + confirmCode;
+        dataFactory.confirmCodeAndChangeAdminPasswordOrEmail = function (password, email, confirmCode) {
+            var data = password==null ?'email=' + email + '&confirmCode=' + confirmCode :
+            'password=' + password + '&confirmCode=' + confirmCode ;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
             return $http.post('/admin/confirmChangePasswordAndEmail', data);
         };
 
-        dataFactory.changeDevSendingEmail = function(newEmail) {
+        dataFactory.changeDevSendingEmail = function (newEmail) {
             var data = 'email=' + newEmail;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
             return $http.post('/dev/changeEmail', data);
         };
 
-        dataFactory.changeCustSendingEmail = function(newEmail) {
+        dataFactory.changeCustSendingEmail = function (newEmail) {
             var data = 'email=' + newEmail;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
             return $http.post('/cust/changeEmail', data);
         };
 
-        dataFactory.changeAdminSendingEmail = function(newEmail) {
+        dataFactory.changeAdminSendingEmail = function (newEmail) {
             var data = 'email=' + newEmail;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
@@ -152,7 +155,7 @@ angular.module('FreelancerApp')
             });
         };
 
-        dataFactory.getAdminPersonal = function(){
+        dataFactory.getAdminPersonal = function () {
             return $http.get('/admin/getPersonalData');
         };
         dataFactory.sendAdminData = function (admin) {
