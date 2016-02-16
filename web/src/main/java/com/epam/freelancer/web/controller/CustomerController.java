@@ -470,9 +470,9 @@ public class CustomerController extends HttpServlet implements Responsable {
         Integer jobId = Integer.parseInt(paramJobId);
         String paramAcceptDate = request.getParameter("acceptDate");
         java.sql.Date acceptDate;
-        if (paramAcceptDate!= null) {
+        if (paramAcceptDate != null) {
             acceptDate = new java.sql.Date(Long.parseLong(paramAcceptDate));
-        }else{
+        } else {
             acceptDate = new java.sql.Date(System.currentTimeMillis());
         }
         addInWorker(dev, jobId, acceptDate);
