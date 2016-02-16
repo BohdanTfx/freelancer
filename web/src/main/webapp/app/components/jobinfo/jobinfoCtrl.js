@@ -245,7 +245,11 @@ angular.module('FreelancerApp')
         };
 
         $scope.acceptFollower = function (devId) {
-            orderAPI.acceptFollower(devId, $scope.order.id, $scope.order.title, JSON.stringify($scope.customer)).success(function () {
+            var today = new Date();
+            var acceptDate = new Date(new Date(today).setMonth(today.getDay()+5));
+            acceptDate = new Date(acceptDate).getTime();
+
+            orderAPI.acceptFollower(devId, $scope.order.id, $scope.order.title, JSON.stringify($scope.customer), acceptDate).success(function () {
                 for (var i = 0; i < $scope.followers.length; i++) {
                     if ($scope.followers[i].devId == devId) {
                         $scope.followers[i].worker = true;

@@ -15,6 +15,7 @@
   "index.menu-create-order":"Створити замовлення",
   "index.menu-statistics":"Статистика",
   "index.menu-create-test":"Створити тест",
+  "index.menu-test-controlling":"Керування тестами",
   "index.menu-personal":"Мій профіль",
   "index.menu-tests":"Тести",
   "index.menu-public-page":"Публічна сторінка",
@@ -168,7 +169,7 @@
   "tests.no-tests":"Зараз в нас нема тестів для вас. Подивіться пізніше.",
   "tests.no-results":"Нема результатів",
   "tests.pass-test":"Здати тест",
-  "tests.repass-test":"Перездати тест",
+  "tests.repass-test":"Перездати",
   "tests.repass-unblock":"Перездача стане можливою через ",
 
   "test.results":"Результати",

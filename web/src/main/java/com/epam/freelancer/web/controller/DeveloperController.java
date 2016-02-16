@@ -178,13 +178,10 @@ public class DeveloperController extends HttpServlet implements Responsable {
             developerQA.setTest(devQATest);
         }
 
-        String devQAsJson = new Gson().toJson(devQAs);
-        String testsJson = new Gson().toJson(tests);
-        String resultJson = "{\"devQAs\":" + devQAsJson + ",\"tests\":"
-                + testsJson + "}";
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(resultJson);
+        Map<String, List> resultMap = new HashMap<>();
+        resultMap.put("devQAs", devQAs);
+        resultMap.put("tests", tests);
+        sendResponse(response, resultMap, mapper);
     }
 
     private void sendTestById(HttpServletRequest request,
@@ -194,10 +191,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
                 .getInstance().getBean("testService");
         Test test = testService.findById(testId);
         test.setQuestions(testService.findQuestionsByTestId(testId));
-        String testJson = new Gson().toJson(test);
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(testJson);
+        sendResponse(response,test,mapper);
     }
 
     private void sendCustomerById(HttpServletRequest request,
@@ -304,19 +298,14 @@ public class DeveloperController extends HttpServlet implements Responsable {
         return map;
     }
 
-    private void sendResultResponse(HttpServletResponse response, double rate,
-                                    int errors, int success) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        sb.append("{\"rate\":");
-        sb.append(rate);
-        sb.append(",\"errors\":");
-        sb.append(errors);
-        sb.append(",\"success\":");
-        sb.append(success);
-        sb.append('}');
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(sb.toString());
+    private void sendResultResponse(HttpServletResponse response, Double rate,
+                                    Integer errors, Integer success) throws IOException {
+        Map<String, Number> resultMap = new HashMap<>();
+        resultMap.put("rate", rate);
+        resultMap.put("errors", errors);
+        resultMap.put("success", success);
+        sendResponse(response, resultMap, mapper);
+
     }
 
     private void fillPersonalPage(HttpServletRequest request,

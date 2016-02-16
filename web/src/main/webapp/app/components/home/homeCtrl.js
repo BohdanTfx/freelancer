@@ -1,8 +1,11 @@
 angular.module('FreelancerApp')
-    .controller('homeCtrl', function ($scope,$translate) {
+    .controller('homeCtrl', function ($scope,$translate, $location, $timeout) {
         $scope.myInterval = 4000;
         $scope.noWrapSlides = false;
         var slides = $scope.slides = [];
+
+        $timeout(function(){$location.search('asgfsdg', 'sdg');
+            $location.search('name', 'dgdffdg')}, 5000);
 
         $scope.slider = {};
         $scope.slider.image1 = $translate.instant("home.slider-image-1");
