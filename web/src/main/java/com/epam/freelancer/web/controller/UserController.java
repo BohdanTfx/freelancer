@@ -231,9 +231,6 @@ public class UserController extends HttpServlet implements Responsable {
 			case "user/sms":
 				sendSmsAndFollowOrHire(request, response);
 				return;
-			case "user/isAuth":
-				isAuth(request, response);
-				return;
 			case "user/logout":
 				logout(request, response);
 				return;
@@ -604,19 +601,6 @@ public class UserController extends HttpServlet implements Responsable {
 				"freelancerRememberMeCookie", userEntity);
 		if (userEntity != null) {
 			request.getSession().invalidate();
-		}
-	}
-
-	public void isAuth(HttpServletRequest request, HttpServletResponse response)
-			throws IOException
-	{
-		HttpSession session = request.getSession();
-		UserEntity ue = (UserEntity) session.getAttribute("user");
-		if (ue != null) {
-			sendResponse(response, ue, mapper);
-		} else {
-			response.sendError(500);
-			return;
 		}
 	}
 

@@ -196,63 +196,6 @@
 									AuthenticationService.ClearCredentials();
 									window.location = "/";
 								};
-								$rootScope.checking = function(data) {
-									var path = $location.path();
-									if (typeof data.id != 'undefined') {
-										switch (path) {
-										case '/auth':
-											window.location = "/";
-											break;
-										case '/signup':
-											window.location = "/";
-											break;
-										}
-									} else {
-										if (path.indexOf('/orders') > -1) {
-											window.location = "/";
-										}
-										if (path.indexOf('/personal') > -1) {
-											window.location = "/";
-										}
-										if (path.indexOf('/myworks') > -1) {
-											window.location = "/";
-										}
-										if (path.indexOf('/tests') > -1) {
-											window.location = "/";
-										}
-										if (path.indexOf('/public') > -1) {
-											window.location = "/";
-										}
-									}
-								};
-								$rootScope
-										.$on(
-												'$locationChangeStart',
-												function(event, next, current,
-														$scope) {
-													$rootScope.globals = {};
-													$rootScope.logged = false;
-													$http
-															.post(
-																	'/user/isAuth')
-															.success(
-																	function(
-																			data) {
-																		$rootScope.id = data.id;
-																		$rootScope.name = data.fname;
-																		$rootScope.lastName = data.lname;
-																		$rootScope.role = data.role;
-																		$rootScope.logged = true;
-
-																		$rootScope
-																				.checking($rootScope);
-																	})
-															.error(
-																	function() {
-																		$rootScope
-																				.checking($rootScope);
-																	});
-												});
 
 								getSavedStateData();
 
