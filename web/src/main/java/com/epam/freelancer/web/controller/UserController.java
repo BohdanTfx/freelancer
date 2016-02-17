@@ -1,31 +1,5 @@
 package com.epam.freelancer.web.controller;
 
-import com.epam.freelancer.business.context.ApplicationContext;
-import com.epam.freelancer.business.manager.UserManager;
-import com.epam.freelancer.business.resize.ImageResize;
-import com.epam.freelancer.business.service.*;
-import com.epam.freelancer.business.util.SendMessageToEmail;
-import com.epam.freelancer.business.util.SmsSender;
-import com.epam.freelancer.database.model.*;
-import com.epam.freelancer.security.provider.AuthenticationProvider;
-import com.epam.freelancer.web.json.model.JsonPaginator;
-import com.epam.freelancer.web.social.Linkedin;
-import com.epam.freelancer.web.social.model.LinkedinProfile;
-import com.epam.freelancer.web.util.Paginator;
-import com.epam.freelancer.web.util.SignInType;
-import com.google.gson.Gson;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
-import org.scribe.exceptions.OAuthException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -34,6 +8,52 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
+import org.scribe.exceptions.OAuthException;
+
+import com.epam.freelancer.business.context.ApplicationContext;
+import com.epam.freelancer.business.manager.UserManager;
+import com.epam.freelancer.business.resize.ImageResize;
+import com.epam.freelancer.business.service.AdminService;
+import com.epam.freelancer.business.service.ComplaintService;
+import com.epam.freelancer.business.service.CustomerService;
+import com.epam.freelancer.business.service.DeveloperQAService;
+import com.epam.freelancer.business.service.DeveloperService;
+import com.epam.freelancer.business.service.FeedbackService;
+import com.epam.freelancer.business.service.OrderingService;
+import com.epam.freelancer.business.service.TechnologyService;
+import com.epam.freelancer.business.service.TestService;
+import com.epam.freelancer.business.util.SendMessageToEmail;
+import com.epam.freelancer.business.util.SmsSender;
+import com.epam.freelancer.database.model.Admin;
+import com.epam.freelancer.database.model.Complaint;
+import com.epam.freelancer.database.model.Contact;
+import com.epam.freelancer.database.model.Customer;
+import com.epam.freelancer.database.model.Developer;
+import com.epam.freelancer.database.model.DeveloperQA;
+import com.epam.freelancer.database.model.Feedback;
+import com.epam.freelancer.database.model.Follower;
+import com.epam.freelancer.database.model.Ordering;
+import com.epam.freelancer.database.model.Technology;
+import com.epam.freelancer.database.model.UserEntity;
+import com.epam.freelancer.security.provider.AuthenticationProvider;
+import com.epam.freelancer.web.json.model.JsonPaginator;
+import com.epam.freelancer.web.social.Linkedin;
+import com.epam.freelancer.web.social.model.LinkedinProfile;
+import com.epam.freelancer.web.util.Paginator;
+import com.epam.freelancer.web.util.SignInType;
+import com.google.gson.Gson;
 
 public class UserController extends HttpServlet implements Responsable {
 	public static final Logger LOG = Logger.getLogger(UserController.class);
@@ -85,7 +105,7 @@ public class UserController extends HttpServlet implements Responsable {
 		complaintService = (ComplaintService) ApplicationContext.getInstance()
 				.getBean("complaintService");
 	}
-
+	
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException
@@ -108,6 +128,9 @@ public class UserController extends HttpServlet implements Responsable {
 				signIn(request, response, SignInType.LINKEDIN);
 				return;
 			case "user/developers/payment/limits":
+				getPaymentLimits(response);
+				return;
+			case "user/authentication/auto":
 				getPaymentLimits(response);
 				return;
 			default:

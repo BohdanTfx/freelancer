@@ -17,31 +17,29 @@ public class UserManager {
 	private CustomerService customerService;
 	private AdminService adminService;
 
-	public void modifyUser(UserEntity userEntity) {
+	public UserEntity modifyUser(UserEntity userEntity) {
 		if (userEntity instanceof Developer) {
-			developerService.modify((Developer) userEntity);
+			return developerService.modify((Developer) userEntity);
 		}
 		if (userEntity instanceof Customer) {
-			customerService.modify((Customer) userEntity);
+			return customerService.modify((Customer) userEntity);
 		}
 		if (userEntity instanceof Admin) {
-			adminService.modify((Admin) userEntity);
+			return adminService.modify((Admin) userEntity);
 		}
+		return null;
 	}
 
-	public void createUser(Map<String, String[]> userData, String type) {
+	public UserEntity createUser(Map<String, String[]> userData, String type) {
 		switch (type) {
 		case "developer":
-			developerService.create(userData);
-			break;
+			return developerService.create(userData);
 		case "customer":
-			customerService.create(userData);
-			break;
+			return customerService.create(userData);
 		case "admin":
-			adminService.create(userData);
-			break;
+			return adminService.create(userData);
 		default:
-			break;
+			return null;
 		}
 	}
 
