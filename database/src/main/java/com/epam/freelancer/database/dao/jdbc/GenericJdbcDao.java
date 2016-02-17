@@ -36,6 +36,7 @@ public abstract class GenericJdbcDao<T extends BaseEntity<ID>, ID> implements
 						transformer.getSaveStatement(),
 						Statement.RETURN_GENERATED_KEYS)) {
 			transformer.fillSave(statement, entity);
+
 			statement.executeUpdate();
 			try (ResultSet set = statement.getGeneratedKeys()) {
 				if (set.next())

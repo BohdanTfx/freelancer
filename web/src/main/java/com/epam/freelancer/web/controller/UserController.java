@@ -265,6 +265,9 @@ public class UserController extends HttpServlet implements Responsable {
 			case "user/uploadImage":
 				uploadImage(request, response);
 				break;
+				case "user/confirm/email":
+					confirmEmailAfterRegistration(request, response);
+					break;
 			default:
 			}
 		} catch (Exception e) {
@@ -885,15 +888,13 @@ public class UserController extends HttpServlet implements Responsable {
 
 
 	private void sendConfirmationToEmail(HttpServletRequest request, HttpServletResponse response,UserEntity entity) throws IOException{
-		System.out.println("ENTITY: "+entity);
-//		String arrEmail[] = {entity.getEmail()};
-//
-//		String confirmLink = request.getLocalAddr() + ":" + request.getLocalPort() + "/#/auth?confirmCode=" + entity.getRegUrl();
-//		SendMessageToEmail.sendFromGMail("onlineshopjava@gmail.com", "ForTestOnly", arrEmail, "Freelancer -  Admin Registration ", getConfirmationEmailMessage() + confirmLink);
+		String arrEmail[] = {entity.getEmail()};
+		String confirmLink = "localhost:" + request.getLocalPort() + "/#/auth?confirmCode=" + entity.getRegUrl()+"&uuid="+entity.getUuid();
+		SendMessageToEmail.sendFromGMail("onlineshopjava@gmail.com", "ForTestOnly", arrEmail, "OpenTask -  E-mail Confirmation ", getConfirmationEmailMessage() + confirmLink);
 	}
 
 	private String getConfirmationEmailMessage(){
-		return "This is Confirmation Email Message";
+		return "This is Confirmation Email Message ";
 	}
 
 	private void signIn(HttpServletRequest request,
@@ -1378,6 +1379,29 @@ public class UserController extends HttpServlet implements Responsable {
 					"Invalid email");
 			response.flushBuffer();
 			return;
+		}
+	}
+
+
+	private void confirmEmailAfterRegistration(HttpServletRequest request,HttpServletResponse response) throws IOException{
+		String confirmCode = request.getParameter("confirmCode");
+		String uuid = request.getParameter("uuid");
+
+		if(uuid==null || confirmCode == null || uuid.equals("") || confirmCode.equals("")){
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+		}
+
+		UserEntity entity = userManager.findUserByUUID(uuid);
+		if(entity == null){
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+		}else{
+			if(entity.getRegUrl() != null && entity.getRegUrl().equals(confirmCode)){
+				entity.setRegUrl(null);
+				userManager.modifyUser(entity);
+				sendResponse(response,true,mapper);
+			}else{
+				sendResponse(response,false,mapper);
+			}
 		}
 	}
 

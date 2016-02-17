@@ -8,12 +8,28 @@ angular
 						'$location',
 						'$cookieStore',
 						'AuthenticationService',
+						"Notification",
 						function($scope, $rootScope, $location, $cookieStore,
-								 AuthenticationService) {
+								 AuthenticationService,Notification) {
 							$scope.user = {};
 							$scope.social = {};
 							$scope.social.linkedin = {};
 							$scope.social.linkedin.available = false;
+
+
+							$scope.confirmCode = $location.search().confirmCode;
+							$scope.uuid = $location.search().uuid;
+							if($scope.confirmCode!= undefined && $scope.uuid!= undefined){
+								AuthenticationService.confirmEmail($scope.confirmCode, $scope.uuid).success(function(data){
+										if(data==true){
+											Notification.success({
+												title:"Success",
+												message:"Your email was successfully confirmed"
+											});
+										}
+								});
+
+							}
 
 							$scope.doClose = function() {
 								$scope.showError = false;

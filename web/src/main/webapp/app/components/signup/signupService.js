@@ -100,7 +100,6 @@ angular
 							adminAPI.removeUUID(adminUUID);
 						}
 
-						console.log(user);
 						var config = {
 							headers : {
 								'Content-Type' : 'application/x-www-form-urlencoded;charset=utf-8;'
@@ -110,7 +109,14 @@ angular
 								.post("/user/create", user, config)
 								.success(
 										function(data, status, headers, config) {
+
+											Notification
+												.success({
+													title : "Success",
+													message : "You successfully registered. Please check your e-mail to confirm your registration."
+												});
 											location.replace("/#/auth");
+
 										})
 								.error(
 										function(data, status, headers, config) {

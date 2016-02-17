@@ -57,6 +57,10 @@ angular
 								$location.path('/');
 							};
 
+							service.confirmEmail = function(confirmCode,uuid){
+								return $http.post("/user/confirm/email?confirmCode="+confirmCode+"&uuid="+uuid);
+							}
+
 							service.initSocial = function($scope) {
 								var linkedinVerifier = getUrlVars();
 								if (linkedinVerifier !== undefined
