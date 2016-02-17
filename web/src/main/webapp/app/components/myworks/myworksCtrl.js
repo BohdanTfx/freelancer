@@ -13,6 +13,11 @@ angular.module('FreelancerApp')
                 $scope.secondWorks = data.processedWorks;
                 $scope.thirdWorks = data.finishedWorks;
                 $scope.notAcceptedWorks = data.notAcceptedWorks;
+                $scope.expireDays = data.expireDays;
+
+                for(var i in $scope.notAcceptedWorks){
+                    $scope.notAcceptedWorks[i].expireDays = $scope.expireDays[i];
+                }
 
             }).error(function () {
                 Notification

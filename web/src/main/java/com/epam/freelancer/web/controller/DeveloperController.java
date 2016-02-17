@@ -19,8 +19,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -136,6 +138,8 @@ public class DeveloperController extends HttpServlet implements Responsable {
         List<Ordering> finishedWorks = new ArrayList<>();
         List<Ordering> worksInProgress = new ArrayList<>();
         List<Ordering> notAcceptedWorks = new ArrayList<>();
+        List<Long> expireDays = new ArrayList<>();
+        List<Worker> workersToDelete = new ArrayList<>();
 
         allWorks.forEach(worker -> {
             Ordering order = orderingService.findById(worker.getOrderId());
@@ -147,9 +151,21 @@ public class DeveloperController extends HttpServlet implements Responsable {
                     worksInProgress.add(order);
                 }
             } else {
-                notAcceptedWorks.add(order);
+                LocalDate differExpireDate = LocalDate.ofEpochDay(
+                    worker.getAcceptDate().toLocalDate().plusDays(5).toEpochDay() - LocalDate.now().toEpochDay());
+                if(differExpireDate.toEpochDay()>=0){
+                    notAcceptedWorks.add(order);
+                    expireDays.add(differExpireDate.toEpochDay());
+                }else{
+                    workersToDelete.add(worker);
+                }
             }
         });
+
+        //Delete workers with date expired
+        for(int i=0;i<workersToDelete.size();i++){
+            developerService.deleteWorker(workersToDelete.get(i));
+        }
 
         subscribedWorks.forEach(order ->{
             order.setTechnologies(technologyService.findTechnolodyByOrderingId(order.getId()));
@@ -162,6 +178,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
         resultMap.put("subscribedWorks", subscribedWorks);
         resultMap.put("processedWorks", worksInProgress);
         resultMap.put("notAcceptedWorks", notAcceptedWorks);
+        resultMap.put("expireDays", expireDays);
         sendResponse(response, resultMap, mapper);
     }
 
