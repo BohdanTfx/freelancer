@@ -139,6 +139,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
 
         allWorks.forEach(worker -> {
             Ordering order = orderingService.findById(worker.getOrderId());
+            order.setTechnologies(technologyService.findTechnolodyByOrderingId(order.getId()));
             if (worker.getAccepted()!=null && worker.getAccepted()) {
                 if (order.getStarted() && order.getEnded()) {
                     finishedWorks.add(order);
@@ -149,6 +150,11 @@ public class DeveloperController extends HttpServlet implements Responsable {
                 notAcceptedWorks.add(order);
             }
         });
+
+        subscribedWorks.forEach(order ->{
+            order.setTechnologies(technologyService.findTechnolodyByOrderingId(order.getId()));
+        });
+
 
 
         Map<String, List> resultMap = new HashMap<>();

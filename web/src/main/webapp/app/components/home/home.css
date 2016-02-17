@@ -7,9 +7,7 @@
     height: 40vh;
 }
 
-.home-page .home-carousel-block{
-    padding-left: 0;
-}
+
 
 
 .home-page .tips-list{
@@ -22,6 +20,21 @@
 
 .home-page{
     margin-bottom: 20px;
+}
+
+@media (max-width: 767px) {
+    .home-page  h1{
+       font-size: 20pt;
+    }
+    .home-page  h2{
+        font-size: 16pt;
+    }
+}
+
+@media (min-width: 767px) {
+    .home-page  .home-container{
+        padding-left: 0;
+    }
 }
 
 
