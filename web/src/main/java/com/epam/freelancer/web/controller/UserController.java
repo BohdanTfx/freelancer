@@ -874,12 +874,26 @@ public class UserController extends HttpServlet implements Responsable {
                                                     e -> new String[]{e
                                                             .getValue()})),
 							role);
+			sendConfirmationToEmail(request,response,userManager.findUserByEmail(data.get("email")));
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 		}
 
 		response.setStatus(200);
+	}
+
+
+	private void sendConfirmationToEmail(HttpServletRequest request, HttpServletResponse response,UserEntity entity) throws IOException{
+		System.out.println("ENTITY: "+entity);
+//		String arrEmail[] = {entity.getEmail()};
+//
+//		String confirmLink = request.getLocalAddr() + ":" + request.getLocalPort() + "/#/auth?confirmCode=" + entity.getRegUrl();
+//		SendMessageToEmail.sendFromGMail("onlineshopjava@gmail.com", "ForTestOnly", arrEmail, "Freelancer -  Admin Registration ", getConfirmationEmailMessage() + confirmLink);
+	}
+
+	private String getConfirmationEmailMessage(){
+		return "This is Confirmation Email Message";
 	}
 
 	private void signIn(HttpServletRequest request,
@@ -913,6 +927,12 @@ public class UserController extends HttpServlet implements Responsable {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST,
 					"Invalid credentials");
 			return;
+		}else{
+			if(userEntity.getRegUrl()!=null){
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST,
+						"Invalid credentials");
+				return;
+			}
 		}
 
 		String password = request.getParameter("password");
