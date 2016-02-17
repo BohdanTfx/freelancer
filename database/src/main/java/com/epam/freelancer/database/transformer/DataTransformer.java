@@ -69,6 +69,10 @@ public class DataTransformer<T> {
 			if (annotation != null) {
 				ColumnItem columnValue = new ColumnItem();
 				Method name = annotation.getClass().getDeclaredMethod("name");
+				Method incremenetId = annotation.getClass().getDeclaredMethod(
+						"autoIncrement");
+				columnValue.setAutoIncrementedId((Boolean) incremenetId
+						.invoke(annotation));
 				String itemName = (String) name.invoke(annotation);
 				if ("".equals(itemName))
 					itemName = getNameFromGetter(method.getName());
