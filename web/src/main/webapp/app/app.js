@@ -168,14 +168,14 @@
 			.config(function($translateProvider) {
 				$translateProvider.useStaticFilesLoader({
 					prefix : 'app/locales/locale-',// path to translations
-													// files
+					// files
 					suffix : '.json'// suffix, currently- extension of the
 				// translations
 				});
 				$translateProvider.preferredLanguage('en_US');// is applied on
 				// first load
 				$translateProvider.useLocalStorage();// saves selected
-														// language
+				// language
 				// to localStorage
 			})
 			.config(
@@ -191,7 +191,7 @@
 							'$http',
 							'AuthenticationService',
 							function($rootScope, $location, $cookieStore,
-									$http, AuthenticationService) {
+									$http, AuthenticationService, Notification) {
 								$rootScope.logout = function() {
 									AuthenticationService.ClearCredentials();
 									window.location = "/";
@@ -255,6 +255,28 @@
 												});
 
 								getSavedStateData();
+
+								AuthenticationService
+										.autoAuthenticate()
+										.success(
+												function(data, status, headers,
+														config) {
+													if (data !== false
+															&& data !== null
+															&& (typeof data === 'object')) {
+														AuthenticationService
+																.proceedSuccessAuthentication(data);
+													}
+												})
+										.error(
+												function(data, status, headers,
+														config) {
+													Notification
+															.error({
+																title : 'Error!',
+																message : 'An error occurred while authenticating. Please try again.'
+															});
+												});
 							} ]);
 
 })();

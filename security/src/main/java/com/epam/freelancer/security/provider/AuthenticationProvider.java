@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.epam.freelancer.business.context.ApplicationContext;
+import com.epam.freelancer.business.manager.UserManager;
 import com.epam.freelancer.business.service.UserService;
 import com.epam.freelancer.business.util.CookieManager;
 import com.epam.freelancer.database.model.Admin;
@@ -36,18 +37,17 @@ public class AuthenticationProvider {
 				.getBean("cookieManager");
 	}
 
-	public void checkAutoAuthentication(String cookieName,
-			UserService<? extends UserEntity> service,
-			HttpServletRequest request, HttpServletResponse response)
-			throws IOException, ServletException
+	public UserEntity isAutoAuthenticationEnable(String cookieName,
+			UserManager userManager, HttpServletRequest request) throws IOException, ServletException
 	{
 		String uuid = cookieManager.getCookieValue(request, cookieName);
 
 		if (uuid != null) {
-			UserEntity user = service.findByUUID(uuid);
-			if (user != null)
-				request.getSession().setAttribute(sessinUserName, user);
+			UserEntity user = userManager.findUserByUUID(uuid);
+			if (user != null) 
+				return user;
 		}
+		return null;
 	}
 
 	public boolean provideAccess(String cookieName, String type, String url,

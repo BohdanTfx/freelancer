@@ -137,6 +137,28 @@ angular
 												});
 							};
 
+							service.autoAuthenticate = function() {
+								return $http.get("/user/authentication/auto");
+							};
+
+							service.proceedSuccessAuthentication = function(
+									response) {
+								service.SetCredentials(response.fname,
+										response.lname, response.role);
+								if (response.role == 'admin') {
+									$location.path('/admin/statistics');
+									return;
+								}
+								if (response.isFirst) {
+									$location.path('/personal')
+								} else {
+									if (response.role == 'developer')
+										$location.path('/orders');
+									if (response.role == 'customer')
+										$location.path('/developers');
+								}
+							}
+
 							return service;
 						} ])
 

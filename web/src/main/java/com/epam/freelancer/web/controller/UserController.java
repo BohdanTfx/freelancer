@@ -93,7 +93,7 @@ public class UserController extends HttpServlet implements Responsable {
 		userManager = (UserManager) ApplicationContext.getInstance().getBean(
 				"userManager");
 		adminService = (AdminService) ApplicationContext.getInstance().getBean(
-                "adminService");
+				"adminService");
 		customerService = (CustomerService) ApplicationContext.getInstance()
 				.getBean("customerService");
 		developerService = (DeveloperService) ApplicationContext.getInstance()
@@ -105,7 +105,7 @@ public class UserController extends HttpServlet implements Responsable {
 		complaintService = (ComplaintService) ApplicationContext.getInstance()
 				.getBean("complaintService");
 	}
-	
+
 	@Override
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException
@@ -131,15 +131,34 @@ public class UserController extends HttpServlet implements Responsable {
 				getPaymentLimits(response);
 				return;
 			case "user/authentication/auto":
-				getPaymentLimits(response);
+				autoAuthenticateUser(request, response);
 				return;
 			default:
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOG.fatal(getClass().getSimpleName() + " - " + "doGet");
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 		}
+	}
+
+	private void autoAuthenticateUser(HttpServletRequest request,
+			HttpServletResponse response) throws IOException, ServletException
+	{
+		UserEntity userEntity = (UserEntity) request.getSession().getAttribute(
+				"user");
+		if (userEntity == null)
+			userEntity = authenticationProvider.isAutoAuthenticationEnable(
+					"freelancerRememberMeCookie", userManager, request);
+
+		if (userEntity == null) {
+			sendResponse(response, false, mapper);
+			return;
+		}
+
+		request.getSession().setAttribute("user", userEntity);
+		userEntity.setRole(getRole(userEntity));
+		sendResponse(response, userEntity, mapper);
 	}
 
 	private void getPaymentLimits(HttpServletResponse response) {
@@ -581,8 +600,6 @@ public class UserController extends HttpServlet implements Responsable {
 		LOG.info(getClass().getSimpleName() + " - " + "logout");
 		UserEntity userEntity = (UserEntity) request.getSession().getAttribute(
 				"user");
-		AuthenticationProvider authenticationProvider = (AuthenticationProvider) ApplicationContext
-				.getInstance().getBean("authenticationProvider");
 		authenticationProvider.invalidateUserCookie(response,
 				"freelancerRememberMeCookie", userEntity);
 		if (userEntity != null) {
@@ -829,11 +846,7 @@ public class UserController extends HttpServlet implements Responsable {
 					ordering.setTechnologies(orderingService
 							.findOrderingTechnologies(ordering.getId()));
 				}
-				if (orderings != null) {
-					sendResponse(response, orderings, mapper);
-				} else {
-					response.sendError(500);
-				}
+				sendResponse(response, orderings, mapper);
 			} catch (Exception e) {
 				response.sendError(500);
 			}
@@ -893,9 +906,9 @@ public class UserController extends HttpServlet implements Responsable {
 							data.entrySet()
 									.stream()
 									.collect(
-                                            Collectors.toMap(Map.Entry::getKey,
-                                                    e -> new String[]{e
-                                                            .getValue()})),
+											Collectors.toMap(Map.Entry::getKey,
+													e -> new String[] { e
+															.getValue() })),
 							role);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -960,6 +973,7 @@ public class UserController extends HttpServlet implements Responsable {
 			else
 				authenticationProvider.invalidateUserCookie(response,
 						"freelancerRememberMeCookie", userEntity);
+			userManager.modifyUser(userEntity);
 
 			sendResponse(response, userEntity, mapper);
 		}
@@ -1060,11 +1074,7 @@ public class UserController extends HttpServlet implements Responsable {
 					ordering.setTechnologies(orderingService
 							.findOrderingTechnologies(ordering.getId()));
 				}
-				if (orders != null) {
-					sendResponse(response, orders, mapper);
-				} else {
-					response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-				}
+				sendResponse(response, orders, mapper);
 			} catch (Exception e) {
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			}
@@ -1161,7 +1171,8 @@ public class UserController extends HttpServlet implements Responsable {
 		String paramId = request.getParameter("id");
 		String role = request.getParameter("role");
 
-        if (paramId == null || "".equals(paramId) || !paramId.matches("[0-9]*")) {
+		if (paramId == null || "".equals(paramId) || !paramId.matches("[0-9]*"))
+		{
 			response.sendError(HttpServletResponse.SC_CONFLICT);
 			return;
 		}
