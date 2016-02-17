@@ -50,6 +50,8 @@
   "auth.remember-me":"Remember me",
   "auth.forgot-password":"Forgot password?",
   "auth.signin-button":"Sign In",
+  "auth.notification-success-title":"Success",
+  "auth.notification-success-body":"Your email was successfully confirmed",
 
   "myworks.no-projects":"No projects",
   "myworks.tab-accepted":"Accepted",
@@ -278,7 +280,7 @@
 	
 	"list.empty":"List is empty",
 	
-	"orders.search-title":"Search title,
+	"orders.search-title":"Search title",
 	"orders.order-type":"Order pay type",
 	"orders.payment.hourly":"Hourly",
 	"orders.payment.fixed":"Fixed",
@@ -320,6 +322,11 @@
 	"signup.social.linkedin.error":"An error occurred while registering via Linkedin. Please try again.",
 	"signup.social.error":"An error occurred while accessing social networks. Please try again.",
 	"signup.user.create.error":"An error occurred while registering. Please try again.",
+	"signup.notification-success-title":"Success",
+	"signup.notification-success-body":"You successfully registered. Please check your e-mail to confirm your registration",
+
+
+
   "home.log-in-button": "log in",
   "home.slider-image-1": "Find & Hire Talented Freelancers",
   "home.slider-image-2": "Work at office, home or wherever you want",

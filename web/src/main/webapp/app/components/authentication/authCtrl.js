@@ -9,8 +9,9 @@ angular
 						'$cookieStore',
 						'AuthenticationService',
 						"Notification",
+						'$translate',
 						function($scope, $rootScope, $location, $cookieStore,
-								 AuthenticationService,Notification) {
+								 AuthenticationService,Notification,$translate) {
 							$scope.user = {};
 							$scope.social = {};
 							$scope.social.linkedin = {};
@@ -23,8 +24,8 @@ angular
 								AuthenticationService.confirmEmail($scope.confirmCode, $scope.uuid).success(function(data){
 										if(data==true){
 											Notification.success({
-												title:"Success",
-												message:"Your email was successfully confirmed"
+												title:$translate.instant("auth.notification-success-title"),
+												message:$translate.instant("auth.notification-success-body")
 											});
 										}
 								});

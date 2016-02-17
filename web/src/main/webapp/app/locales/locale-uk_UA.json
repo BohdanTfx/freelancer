@@ -50,6 +50,8 @@
   "auth.remember-me":"Запам'ятати мене",
   "auth.forgot-password":"Забув пароль?",
   "auth.signin-button":"Увійти",
+  "auth.notification-success-title":"Успішно",
+  "auth.notification-success-body":"Вашу електронну пошту успішно підтверджено",
 
   "myworks.no-projects":"Немає проектів",
   "myworks.tab-accepted":"Прийняті",
@@ -354,6 +356,8 @@
 	"signup.social.linkedin.error":"Під час з'єднання із сервером LinkedIn сталася помилка! Будь ласка, спробуйте ще раз.",
 	"signup.social.error":"Під час з'єднання із соціальними мережами сталася помилка! Будь ласка, спробуйте ще раз.",
 	"signup.user.create.error":"Під час створення користувача сталася помилка! Будь ласка, спробуйте ще раз.",
+    "signup.notification-success-title":"Успішно",
+    "signup.notification-success-body":"Ви успішно зареєструвалися. Будь ласка перевірте свою пошту для підтвердження реєстрації",
   "pubdev.freelancer-not-found": "Фрілансера не знайдено",
   "pubdev.hire-me": "Найняти мене",
   "pubdev.technologies": "Технології",

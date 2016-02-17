@@ -112,8 +112,10 @@ angular
 
 											Notification
 												.success({
-													title : "Success",
-													message : "You successfully registered. Please check your e-mail to confirm your registration."
+													title : $translate
+														.instant('signup.notification-success-title'),
+													message : $translate
+														.instant('signup.notification-success-body')
 												});
 											location.replace("/#/auth");
 
