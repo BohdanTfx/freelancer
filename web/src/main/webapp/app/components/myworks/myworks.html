@@ -125,26 +125,26 @@
 
                                                 <div class="col-xs-5 col-sm-2">
                                                     <div class="form-group">
-                                                        <label class="control-label">{{'myworks.date' |
-                                                            translate}}</label>
-
                                                         <div class="col-xs-12">
+                                                            <label class="control-label">{{'myworks.date' |
+                                                                translate}}</label>
                                                             <div class="label label-warning form-control">
                                                                 {{project.date | date:'MMM d, y'}}
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label class="control-label">{{'myworks.dialog-payment' |
-                                                            translate}}:
+
+
+                                                        <div class="col-xs-12">
+                                                            <label class="control-label">{{'myworks.dialog-payment' |
+                                                                translate}}:
                                                      <span ng-if="project.payType == 'fixed'">
                                                           {{'myworks.type-fixed' | translate}}<br/>
                                                      </span>
                                                      <span ng-if="project.payType == 'hourly'">
                                                           {{'myworks.type-hourly' | translate}}<br/>
                                                      </span></label>
-
-                                                        <div class="col-xs-12">
                                                             <div class="label label-info form-control">
                                                                 {{project.payment | number:2}} $
                                                             </div>
@@ -195,17 +195,20 @@
 
                                             <div class="col-xs-5 col-sm-2 ">
                                                 <div class="form-group">
-                                                    <label class="control-label">{{'myworks.date' | translate}}</label>
+
 
                                                     <div class="col-xs-12">
+                                                        <label class="control-label">{{'myworks.date' | translate}}</label>
                                                         <div class="label label-warning form-control">
                                                             {{project.date | date:'MMM d, y'}}
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="control-label">{{'myworks.dialog-payment' |
-                                                        translate}}:
+
+                                                    <div class="col-xs-12">
+                                                        <label class="control-label">{{'myworks.dialog-payment' |
+                                                            translate}}:
                                                      <span ng-if="project.payType == 'fixed'">
                                                           {{'myworks.type-fixed' | translate}}<br/>
                                                      </span>
@@ -213,7 +216,6 @@
                                                           {{'myworks.type-hourly' | translate}}<br/>
                                                      </span></label>
 
-                                                    <div class="col-xs-12">
                                                         <div class="label label-info form-control">
                                                             {{project.payment | number:2}} $
                                                         </div>
@@ -264,25 +266,27 @@
 
                                             <div class="col-xs-5  col-sm-2 ">
                                                 <div class="form-group">
-                                                    <label class="control-label">{{'myworks.date' | translate}}</label>
+
 
                                                     <div class="col-xs-12">
+                                                        <label class="control-label">{{'myworks.date' | translate}}</label>
                                                         <div class="label label-warning form-control">
                                                             {{project.date | date:'MMM d, y'}}
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="control-label">{{'myworks.dialog-payment' |
-                                                        translate}}:
+
+
+                                                    <div class="col-xs-12">
+                                                        <label class="control-label">{{'myworks.dialog-payment' |
+                                                            translate}}:
                                                      <span ng-if="project.payType == 'fixed'">
                                                           {{'myworks.type-fixed' | translate}}<br/>
                                                      </span>
                                                      <span ng-if="project.payType == 'hourly'">
                                                           {{'myworks.type-hourly' | translate}}<br/>
                                                      </span></label>
-
-                                                    <div class="col-xs-12">
                                                         <div class="label label-info form-control">
                                                             {{project.payment | number:2}} $
                                                         </div>

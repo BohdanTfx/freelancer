@@ -49,7 +49,7 @@
   "auth.required":"Це поле обов'язкове",
   "auth.remember-me":"Запам'ятати мене",
   "auth.forgot-password":"Забув пароль?",
-  "auth.signin-button":"Авторизуватись",
+  "auth.signin-button":"Увійти",
 
   "myworks.no-projects":"Немає проектів",
   "myworks.tab-accepted":"Прийняті",
