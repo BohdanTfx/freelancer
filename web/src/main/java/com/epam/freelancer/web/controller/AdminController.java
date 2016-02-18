@@ -50,6 +50,8 @@ public class AdminController extends HttpServlet implements Responsable {
     private Paginator paginator;
     private OrderCounterService orderCounterService;
     private OrderingService orderingService;
+    private ComplaintService complaintService;
+
 
     public AdminController() {
         mapper = new ObjectMapper();
@@ -65,6 +67,8 @@ public class AdminController extends HttpServlet implements Responsable {
         technologyService = (TechnologyService) ApplicationContext.getInstance().getBean("technologyService");
         paginator = new Paginator();
         orderingService = (OrderingService) ApplicationContext.getInstance().getBean("orderingService");
+        complaintService = (ComplaintService) ApplicationContext.
+                getInstance().getBean("complaintService");
     }
 
     @Override
@@ -149,6 +153,18 @@ public class AdminController extends HttpServlet implements Responsable {
                     break;
                 case "admin/changeEmail":
                     changeEmail(request, response);
+                    break;
+                case "admin/orders/complained":
+                    getComplainedOrders(request, response);
+                    break;
+                case "admin/order/ban":
+                    banOrder(request, response);
+                    break;
+                case "admin/order/unban":
+                    unbanOrder(request, response);
+                    break;
+                case "admin/orders/bans":
+                    getBanOrders(request, response);
                     break;
                 default:
 
@@ -557,5 +573,37 @@ public class AdminController extends HttpServlet implements Responsable {
        map.put("availableCount",availableCount);
 
        sendResponse(response,map,mapper);
+    }
+
+    private void getComplainedOrders(HttpServletRequest request,HttpServletResponse response){
+        sendResponse(response, orderingService.getComplainedOrders(),mapper);
+    }
+
+    private void getBanOrders(HttpServletRequest request,HttpServletResponse response){
+        sendResponse(response, orderingService.getBanOrders(),mapper);
+    }
+
+    private void banOrder(HttpServletRequest request,HttpServletResponse response) throws IOException {
+        String paramId = request.getParameter("orderId");
+        if(paramId == null || "".equals(paramId) || !paramId.matches("[0-9]*")){
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+        Integer id = Integer.parseInt(paramId);
+        Ordering order = orderingService.findById(id);
+        order.setBan(true);
+        orderingService.modify(order);
+    }
+
+    private void unbanOrder(HttpServletRequest request,HttpServletResponse response) throws IOException {
+        String paramId = request.getParameter("orderId");
+        if(paramId == null || "".equals(paramId) || !paramId.matches("[0-9]*")){
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+        Integer id = Integer.parseInt(paramId);
+        Ordering order = orderingService.findById(id);
+        order.setBan(false);
+        orderingService.modify(order);
     }
 }

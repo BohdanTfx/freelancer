@@ -441,6 +441,17 @@
   "personal.success-password-changing":"Password has been successfully changed",
   "personal.email-in-using":"Email is in use. Set free email and try again.",
 
+  "banservice.ban-success":"Order was successfully added to ban-list",
+  "banservice.unban-success":"Order was successfully deleted from ban-list",
+  "banservice.date":"Create date",
+  "banservice.complains":"Complain",
+  "banservice.complained-orders-tab-label":"Complained orders",
+  "banservice.banned-orders-tab-label":"Banned orders",
+  "banservice.ban":"Ban",
+  "banservice.unban":"Unban",
+  "banservice.no-complains":"No complained orders",
+  "banservice.no-bans":"No banned orders",
+
   "notification.error": "Error",
   "notification.success": "Success",
   "notification.smth-wrong": "Something went bad. Please, try again."

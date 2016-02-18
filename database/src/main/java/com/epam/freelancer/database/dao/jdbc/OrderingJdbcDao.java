@@ -25,13 +25,13 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 		if (limit == null
 				|| limit.isEmpty()
 				|| (!limit.equalsIgnoreCase("max") && !limit
-						.equalsIgnoreCase("min")))
+				.equalsIgnoreCase("min")))
 			throw new RuntimeException("Incorrect type");
 		String query = "SELECT " + limit + "(payment) FROM " + table
 				+ " Where pay_type Like ?";
 		try (Connection connection = connectionPool.getConnection();
-				PreparedStatement statement = connection
-						.prepareStatement(query)) {
+			 PreparedStatement statement = connection
+					 .prepareStatement(query)) {
 			statement.setString(1, paymentType);
 			try (ResultSet set = statement.executeQuery()) {
 				if (set.next())
@@ -47,9 +47,8 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 	public List<Ordering> getAvailableCustOrders(Integer custId) {
 		List<Ordering> orderings = new ArrayList<>();
 		try (Connection connection = connectionPool.getConnection();
-				PreparedStatement statement = connection
-						.prepareStatement("SELECT * FROM ordering WHERE started = 0 AND ended = 0 AND customer_id = ? ;"))
-		{
+			 PreparedStatement statement = connection
+					 .prepareStatement("SELECT * FROM ordering WHERE started = 0 AND ended = 0 AND customer_id = ? ;")) {
 			statement.setObject(1, custId);
 			ResultSet set = statement.executeQuery();
 			while (set.next()) {
@@ -71,8 +70,8 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 	public List<Ordering> getAllCustOrders(Integer custId) {
 		List<Ordering> orderings = new ArrayList<>();
 		try (Connection connection = connectionPool.getConnection();
-				PreparedStatement statement = connection
-						.prepareStatement("SELECT * FROM ordering WHERE customer_id = ? ;"))
+			 PreparedStatement statement = connection
+					 .prepareStatement("SELECT * FROM ordering WHERE customer_id = ? ;"))
 		{
 			statement.setObject(1, custId);
 			ResultSet set = statement.executeQuery();
@@ -131,9 +130,9 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 		}
 
 		try (Connection connection = connectionPool.getConnection();
-				PreparedStatement statement = connection
-						.prepareStatement(query);
-				ResultSet set = statement.executeQuery()) {
+			 PreparedStatement statement = connection
+					 .prepareStatement(query);
+			 ResultSet set = statement.executeQuery()) {
 			if (set.next())
 				return set.getInt(1);
 		} catch (Exception e) {
@@ -148,8 +147,8 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 				+ " WHERE customer_id = ? AND ended = 1 AND private = 0";
 		List<Ordering> orders = new ArrayList<>();
 		try (Connection connection = connectionPool.getConnection();
-				PreparedStatement statement = connection
-						.prepareStatement(query)) {
+			 PreparedStatement statement = connection
+					 .prepareStatement(query)) {
 			statement.setInt(1, custId);
 			try (ResultSet set = statement.executeQuery()) {
 				while (set.next()) {
@@ -165,7 +164,7 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 
 	@Override
 	public List<Ordering> filterAll(Map<String, Object> parameters,
-			Integer start, Integer step)
+									Integer start, Integer step)
 	{
 		List<Ordering> entities = new ArrayList<>();
 		String query = null;
@@ -177,9 +176,9 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 		}
 
 		try (Connection connection = connectionPool.getConnection();
-				PreparedStatement statement = connection
-						.prepareStatement(query);
-				ResultSet set = statement.executeQuery()) {
+			 PreparedStatement statement = connection
+					 .prepareStatement(query);
+			 ResultSet set = statement.executeQuery()) {
 			while (set.next()) {
 				Ordering entity = transformer.getObject(set);
 				entities.add(entity);
@@ -191,7 +190,7 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 	}
 
 	private String createFilterQuery(Map<String, Object> parameters,
-			Integer start, Integer step)
+									 Integer start, Integer step)
 	{
 		StringBuilder builder = new StringBuilder("SELECT DISTINCT ");
 		boolean lastNull = true;
@@ -298,5 +297,41 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 		}
 
 		return builder.toString();
+	}
+
+	@Override
+	public List<Ordering> getComplainedOrders() {
+		List<Ordering> orders = new ArrayList<>();
+		String query = "SELECT * FROM ordering WHERE (complains > 0) AND (ban IS NOT TRUE) AND (is_deleted IS NOT TRUE) ORDER BY complains DESC";
+		try (Connection connection = connectionPool.getConnection();
+			 PreparedStatement statement = connection
+					 .prepareStatement(query);
+			 ResultSet set = statement.executeQuery()) {
+			while (set.next()) {
+				Ordering order = transformer.getObject(set);
+				orders.add(order);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return orders;
+	}
+
+	@Override
+	public List<Ordering> getBanOrders() {
+		List<Ordering> orders = new ArrayList<>();
+		String query = "SELECT * FROM ordering WHERE ban IS TRUE ORDER BY complains DESC";
+		try (Connection connection = connectionPool.getConnection();
+			 PreparedStatement statement = connection
+					 .prepareStatement(query);
+			 ResultSet set = statement.executeQuery()) {
+			while (set.next()) {
+				Ordering order = transformer.getObject(set);
+				orders.add(order);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return orders;
 	}
 }

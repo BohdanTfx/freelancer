@@ -96,7 +96,10 @@ public final class ApplicationContext {
 		userManager.setAdminService((AdminService) getBean("adminService"));
 		addBean("userManager", userManager);
 		addBean("cookieManager", new CookieManager());
-        addBean("complaintService", new ComplaintService());
+        ComplaintService complaintService = new ComplaintService();
+		complaintService.setOrderingDao(daoManager.getDAO(OrderingDao.class
+				.getSimpleName()));
+		addBean("complaintService", complaintService);
     }
 
 	private void initDAO() {

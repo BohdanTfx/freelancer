@@ -43,10 +43,31 @@ public class Ordering implements BaseEntity<Integer> {
 	private Integer version;
 	@Column
 	private Integer zone;
+	@Column
+	private Boolean ban;
     private Boolean isComplaint;
-    private List<Technology> technologies = new ArrayList<>();
+	@Column
+    private Integer complains;
 
-    public String getTitle() {
+	private List<Technology> technologies = new ArrayList<>();
+
+	public Boolean getBan() {
+		return ban;
+	}
+
+	public void setBan(Boolean ban) {
+		this.ban = ban;
+	}
+
+	public Integer getComplains() {
+		return complains;
+	}
+
+	public void setComplains(Integer complains) {
+		this.complains = complains;
+	}
+
+	public String getTitle() {
         return title;
     }
 

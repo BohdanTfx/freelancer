@@ -1,9 +1,13 @@
 package com.epam.freelancer.business.service;
 
 import com.epam.freelancer.database.dao.ComplaintDao;
+import com.epam.freelancer.database.dao.GenericDao;
+import com.epam.freelancer.database.dao.OrderingDao;
 import com.epam.freelancer.database.dao.jdbc.DAOManager;
 import com.epam.freelancer.database.model.Complaint;
+import com.epam.freelancer.database.model.Ordering;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +15,7 @@ import java.util.Map;
  * Created by spock on 04.02.16.
  */
 public class ComplaintService extends GenericService<Complaint, Integer> {
-
+    private GenericDao<Ordering, Integer> orderingDao;
 
     public ComplaintService() {
         super(DAOManager.getInstance().getDAO(ComplaintDao.class.getSimpleName()));
@@ -47,5 +51,9 @@ public class ComplaintService extends GenericService<Complaint, Integer> {
 
     public Complaint save(Complaint complaint) {
         return genericDao.save(complaint);
+    }
+
+    public void setOrderingDao(GenericDao<Ordering, Integer> orderingDao) {
+        this.orderingDao = orderingDao;
     }
 }
