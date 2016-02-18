@@ -5,10 +5,7 @@ angular.module('FreelancerApp')
     .controller('myworksCtrl', function ($scope, myworksAPI, $log, $mdDialog, $mdMedia, Notification, $rootScope,$translate) {
 
         if ($rootScope.role == 'developer') {
-
             myworksAPI.getAllDeveloperWorks().success(function (data) {
-                $scope.firstTitle = $translate.instant("myworks.tab-1-dev");
-
                 $scope.firstWorks = data.subscribedWorks;
                 $scope.secondWorks = data.processedWorks;
                 $scope.thirdWorks = data.finishedWorks;
@@ -28,7 +25,6 @@ angular.module('FreelancerApp')
             });
         } else {
             myworksAPI.getAllCustomerWorks().success(function (data) {
-                $scope.firstTitle =  $translate.instant("myworks.tab-1-cust");
                 $scope.firstWorks = data.availableWorks;
                 $scope.secondWorks = data.inProgressWorks;
                 $scope.thirdWorks = data.finishedWorks;
@@ -125,8 +121,6 @@ angular.module('FreelancerApp')
             $mdDialog.show(confirm).then(function() {
                 myworksAPI.acceptOrdering(project.id).success(function(){
                     myworksAPI.getAllDeveloperWorks().success(function (data) {
-                        $scope.firstTitle = $translate.instant("myworks.tab-1-dev");
-
                         $scope.firstWorks = data.subscribedWorks;
                         $scope.secondWorks = data.processedWorks;
                         $scope.thirdWorks = data.finishedWorks;
@@ -163,8 +157,6 @@ angular.module('FreelancerApp')
             $mdDialog.show(confirm).then(function() {
                 myworksAPI.rejectOrdering(project.id).success(function(){
                     myworksAPI.getAllDeveloperWorks().success(function (data) {
-                        $scope.firstTitle = 'Subscribed';
-
                         $scope.firstWorks = data.subscribedWorks;
                         $scope.secondWorks = data.processedWorks;
                         $scope.thirdWorks = data.finishedWorks;
@@ -223,8 +215,6 @@ function DialogController($scope, $mdDialog, project, customer, workers, workerI
 
             $scope.cancel();
              myworksAPI.getAllCustomerWorks().success(function (data) {
-                 $scope.firstTitle =  $translate.instant("myworks.tab-1-cust");
-
                 $scope.firstWorks = data.availableWorks;
                 $scope.secondWorks = data.inProgressWorks;
                 $scope.thirdWorks = data.finishedWorks;

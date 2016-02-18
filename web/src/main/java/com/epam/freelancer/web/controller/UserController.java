@@ -917,7 +917,7 @@ public class UserController extends HttpServlet implements Responsable {
 
 	private void sendConfirmationToEmail(HttpServletRequest request, HttpServletResponse response,UserEntity entity) throws IOException{
 		String arrEmail[] = {entity.getEmail()};
-		String confirmLink = "http://localhost:" + request.getLocalPort() + "/#/auth?confirmCode=" + entity.getRegUrl()+"&uuid="+entity.getUuid();
+		String confirmLink = "http://"+request.getLocalAddr()+":" + request.getLocalPort() + "/#/auth?confirmCode=" + entity.getRegUrl()+"&uuid="+entity.getUuid();
 		SendMessageToEmail.sendHtmlFromGMail("onlineshopjava@gmail.com", "ForTestOnly", arrEmail, "OpenTask -  E-mail Confirmation ",
 		 getConfirmationEmailMessage(confirmLink,entity.getFname()));
 	}
@@ -957,8 +957,8 @@ public class UserController extends HttpServlet implements Responsable {
 			return;
 		}else{
 			if(userEntity.getRegUrl()!=null){
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-						"Invalid credentials");
+				response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE,
+						"Not confirmed email");
 				return;
 			}
 		}
