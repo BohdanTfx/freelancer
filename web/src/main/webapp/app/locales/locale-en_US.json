@@ -68,11 +68,11 @@
   "myworks.accept-confirm-title":"Are you sure?",
   "myworks.accept-confirm-textContent":"After accepting, you will begin to do this ordering. The ordering will appear in tab 'IN PROGRESS'",
   "myworks.accept-confirm-ok":"Accept ordering",
-  "myworks.accept-confirm-cancel":"Let me think",
+  "myworks.accept-confirm-cancel":"Cancel",
   "myworks.reject-confirm-title":"Are you sure?",
   "myworks.reject-confirm-textContent":"After rejecting, you will not see this order in tab 'ACCEPTED' any more.",
   "myworks.reject-confirm-ok":"Reject ordering",
-  "myworks.reject-confirm-cancel":"I want to think",
+  "myworks.reject-confirm-cancel":"Cancel",
   "myworks.not-finished-yet":"not finished yet",
   "myworks.dialog-tab-details":"Details",
   "myworks.dialog-tab-members":"Members",
@@ -98,6 +98,8 @@
   "myworks.reject-btn":"Reject",
   "myworks.type-fixed":"fixed",
   "myworks.type-hourly":"hourly",
+  "myworks.available-title":"Available yet",
+  "myworks.available-days":"days",
 
 
   "createtest.title":"Tests creating",

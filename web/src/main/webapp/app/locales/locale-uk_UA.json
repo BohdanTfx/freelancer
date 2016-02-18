@@ -66,13 +66,13 @@
   "myworks.msg-success-descr-rejected-order":"Ви успішно відхилили замовлення.",
   "myworks.msg-success-descr-finished-order":"Замовлення завершене.",
   "myworks.accept-confirm-title":"Ви впевнені?",
-  "myworks.accept-confirm-textContent":"Після прийняття, Ви почнете виконувати це завдання. Це замовлення буде доступне в вкладці 'В ПРОЦЕСІ'",
+  "myworks.accept-confirm-textContent":"Після прийняття, ви почнете виконувати це завдання. Це замовлення буде доступне у вкладці 'В ПРОЦЕСІ'",
   "myworks.accept-confirm-ok":"Прийняти замовлення",
-  "myworks.accept-confirm-cancel":"Дайте мені подумати",
+  "myworks.accept-confirm-cancel":"Вімінити",
   "myworks.reject-confirm-title":"Ви впевнені?",
   "myworks.reject-confirm-textContent":"Якщо ви відхилите, ви більше не побачите це замовлення в вкладці 'ПРИЙНЯТІ'.",
   "myworks.reject-confirm-ok":"Відхилити замовлення",
-  "myworks.reject-confirm-cancel":"Я хочу ще подумати",
+  "myworks.reject-confirm-cancel":"Відмінити",
   "myworks.not-finished-yet":"не завершений",
   "myworks.dialog-tab-details":"Деталі",
   "myworks.dialog-tab-members":"Учасники",
@@ -94,10 +94,13 @@
   "myworks.dialog-finish-project":"Завершити проект",
   "myworks.dialog-back":"Повернутись",
   "myworks.date":"Дата",
-  "myworks.accept-btn":"Прийняти",
+  "myworks.accept-btn":"Підтвердити",
   "myworks.reject-btn":"Відхилити",
   "myworks.type-fixed":"фіксована",
   "myworks.type-hourly":"погодинна",
+  "myworks.available-title":"Доступне ще",
+  "myworks.available-days":"дн.",
+
 
 
 
