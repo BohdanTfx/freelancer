@@ -290,3 +290,11 @@
 .dragover {
     border: 5px dashed blue;
 }
+.per-modal{
+    height: 2em;
+    color:white;
+    background-color: #273039;
+}
+.per-header{
+    padding: 0;
+}

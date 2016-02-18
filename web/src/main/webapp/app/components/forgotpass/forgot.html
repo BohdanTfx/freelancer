@@ -1,36 +1,39 @@
 <div class="login-form col-sm-6 col-sm-offset-3">
     <md-content layout-padding class="animated fadeInLeftBig">
-        <h3 class="box-none">Forgot password</h3>
+        <h3 class="box-none">{{"forgot.title" | translate}}</h3>
         <form name="forgotForm" ng-submit="checkEmail()"
               novalidate>
             <div class="col-xs-12">
                 <div class="separator">
                 </div>
             </div>
+            <!--Email-->
             <div ng-hide="confirmEmailFlag" style="padding-top: 50px;">
                 <md-input-container class="col-xs-12">
-                    <label>Email</label> <input ng-required="true"
+                    <label>{{"forgot.email" | translate}}</label> <input ng-required="true"
                                                 type="email"
                                                 name="email"
                                                 ng-model="email" />
                     <div ng-messages="forgotForm.email.$error"
                          ng-if="forgotForm.$submitted || forgotForm.email.$touched">
-                        <div ng-message="required">This is required.</div>
+                        <div ng-message="required">{{"forgot.this-is-required" | translate}}</div>
                     </div>
                 </md-input-container>
             </div>
+            <!--Change pass-->
             <div class="col-xs-12" ng-hide="confirmEmailFlag">
                 <md-button class="md-raised md-primary full-width margin-center"
                            type="submit">
-                    <strong>Change password</strong>
+                    <strong>{{"forgot.confirm-email" | translate}}</strong>
                 </md-button>
             </div>
         </form>
 
         <form name="passForm" ng-submit="passForm.$valid && passChange()" ng-submit="changePassword()" novalidate>
             <div ng-show="confirmEmailFlag" style="padding-top: 50px;">
+                <!--new pass-->
                 <md-input-container class="col-xs-12">
-                    <label>New password</label>
+                    <label>{{"forgot.new-password" | translate}}</label>
                     <input name="newPassword"
                            type="password"
                            ng-required="true"
@@ -41,15 +44,18 @@
                            ng-model="confirmPassword">
                     <div ng-messages="passForm.newPassword.$error"
                          ng-if="passForm.$submitted || passForm.newPassword.$touched">
-                        <div ng-message="minlength">The name has to be more than 8
-                            characters long.</div>
-                        <div ng-message="md-maxlength">The name has to be less than
-                            50 characters long.</div>
-                        <div ng-message="required">This is required.</div>
+                        <div ng-message="minlength">
+                            {{"forgot.the-pass-error-8" | translate}}
+                        </div>
+                        <div ng-message="md-maxlength">
+                            {{"forgot.the-pass-error" | translate}}
+                        </div>
+                        <div ng-message="required">{{"forgot.this-is-required" | translate}}</div>
                     </div>
                 </md-input-container>
+                <!--confirm pass-->
                 <md-input-container class="col-xs-12">
-                    <label>Confirm password</label>
+                    <label>{{"forgot.confirm-password" | translate}}</label>
                     <input name="confirmPassword"
                            type="password"
                            ng-required="true"
@@ -58,28 +64,29 @@
                            match="newPassword">
                     <div ng-messages="passForm.confirmPassword.$error"
                          ng-if="passForm.$submitted || passForm.confirmPassword.$touched">
-                        <div ng-message="required">This is required.</div>
-                        <div ng-message="md-maxlength">The name has to be less than
-                            50 characters long.</div>
-                        <div ng-message="match">Password must be matching.</div>
+                        <div ng-message="required">{{"forgot.this-is-required" | translate}}</div>
+                        <div ng-message="md-maxlength">{{"forgot.the-pass-error" | translate}}</div>
+                        <div ng-message="match">{{"forgot.pass-must-be-matching" | translate}}</div>
                     </div>
                 </md-input-container>
             </div>
 
             <div class="col-xs-12" ng-show="confirmEmailFlag">
+                <!--button change pass-->
                 <div class="col-xs-6">
                     <button ng-hide="passForm.confirmPassword.$invalid" type="submit" class="btn btn-info full-width" ng-click="changePassword()">
                         <span class="glyphicon glyphicon-ok" ></span>
-                        Change password
+                        {{"forgot.button-change-password" | translate}}
                     </button>
                     <button ng-show="passForm.confirmPassword.$invalid" ng-disabled="true" type="submit" class="btn btn-default btn-block full-width">
-                        <i class="fa fa-times"></i> Change password
+                        <i class="fa fa-times"></i> {{"forgot.button-change-password" | translate}}
                     </button>
                 </div>
+                <!--button reset-->
                 <div class="col-xs-6">
                     <button class="btn btn-warning full-width"
                             ng-click="resetPassword()">
-                        <span class="fa fa-times"></span> Reset
+                        <span class="fa fa-times"></span> {{"forgot.button-reset" | translate}}
                     </button>
                 </div>
             </div>

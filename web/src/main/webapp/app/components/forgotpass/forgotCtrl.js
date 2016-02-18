@@ -1,5 +1,5 @@
 angular.module('FreelancerApp')
-    .controller('forgotCtrl',['$scope','$http', '$rootScope', 'forgotAPI', '$log', '$mdDialog','Notification', '$location', function($scope, $http, $rootScope, forgotAPI, $log, $mdDialog, Notification, $location){
+    .controller('forgotCtrl',['$scope','$http', '$rootScope', 'forgotAPI', '$log', '$mdDialog','Notification', '$location', '$translate', function($scope, $http, $rootScope, forgotAPI, $log, $mdDialog, Notification, $location, $translate){
         $scope.email = '';
         $scope.newPassword = '';
         $scope.confirmPassword = '';
@@ -13,8 +13,8 @@ angular.module('FreelancerApp')
                 $scope.showConfirmDialog();
             }).error(function (response) {
                 Notification.error({
-                    title: 'Error!',
-                    message: 'Wrong email. Try again!'
+                    title: $translate.instant('notification.error'),
+                    message: $translate.instant('forgot.wrong-email')
                 });
             });
         };
@@ -29,8 +29,8 @@ angular.module('FreelancerApp')
                 $scope.cancel();
                 $scope.confirmEmailFlag = false;
                 Notification.error({
-                    title: 'Error!',
-                    message: 'Wrong confirm code. Try again!'
+                    title: $translate.instant('notification.error'),
+                    message: $translate.instant('forgot.wrong-confirm-code')
                 });
             });
         };
@@ -42,15 +42,15 @@ angular.module('FreelancerApp')
                 $scope.confirmEmailFlag = false;
                 $location.path('/auth');
                 Notification.success({
-                    title: 'Changes saved!',
-                    message: 'The password changed.'
+                    title: $translate.instant('notification.success'),
+                    message: $translate.instant('forgot.pass-changed')
                 });
                 $scope.cancel();
             }).error(function (response) {
                 $scope.confirmEmailFlag = false;
                 Notification.error({
-                    title: 'Error!',
-                    message: 'Some problem. Try again!'
+                    title: $translate.instant('notification.error'),
+                    message: $translate.instant('forgot.problem')
                 });
             });
         };

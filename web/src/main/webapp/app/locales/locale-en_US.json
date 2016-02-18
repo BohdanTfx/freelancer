@@ -298,6 +298,7 @@
   "pubdev.passed": "Passed",
   "pubdev.not-passed": "Not passed",
   "pubdev.there-is-not-test": "There is no test",
+
   "personal.upload": "Upload",
   "personal.name": "Name",
   "personal.surname": "Surname",
@@ -339,8 +340,35 @@
   "personal.success-email-changing":"Email has been successfully changed",
   "personal.success-password-changing":"Password has been successfully changed",
   "personal.email-in-using":"Email is in use. Set free email and try again.",
+  "personal.information":"Information",
+  "personal.enter-code":"Enter code from SMS or Email",
+  "personal.wrong-pass":"You enter wrong password",
+  "personal.confirm":"Confirm",
+  "personal.exit":"Exit",
+
 
   "notification.error": "Error",
   "notification.success": "Success",
-  "notification.smth-wrong": "Something went bad. Please, try again."
+  "notification.smth-wrong": "Something went bad. Please, try again.",
+
+  "forgot.title":"Forgot password",
+  "forgot.email":"Email",
+  "forgot.confirm-email":"Confirm",
+  "forgot.information":"Information",
+  "forgot.code":"Enter code from SMS or Email",
+  "forgot.confirm.code":"Confirm",
+  "forgot.exit":"Exit",
+  "forgot.new-password":"New password",
+  "forgot.confirm-password":"Confirm password",
+  "forgot.button-change-password":"Change password",
+  "forgot.button-reset":"Reset",
+  "forgot.this-is-required": "This is required",
+  "forgot.the-pass-error": "The password has to be less than 50 characters long",
+  "forgot.the-pass-error-8": "The password has to be more than 8 characters long",
+  "forgot.pass-must-be-matching": "Password must be matching",
+  "forgot.wrong-email":"Wrong email. Try again!",
+  "forgot.wrong-confirm-code":"Wrong confirm code. Try again!",
+  "forgot.problem":"Some problem. Try again!",
+  "forgot.pass-changed":"The password changed"
+
 }
