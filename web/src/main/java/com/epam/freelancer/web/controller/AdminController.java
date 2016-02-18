@@ -179,7 +179,7 @@ public class AdminController extends HttpServlet implements Responsable {
         }
 
         String accessLink = request.getLocalAddr() + ":" + request.getLocalPort() + "/#/signup?uuid=" + accessUUID;
-        SendMessageToEmail.sendFromGMail("onlineshopjava@gmail.com", "ForTestOnly", arrEmail, "Freelancer -  Admin Registration ", getAdminCreatingMessage() + accessLink);
+        SendMessageToEmail.sendFromGMail("onlineshopjava@gmail.com", "ForTestOnly", arrEmail, "OpenTask -  Admin Registration ", getAdminCreatingMessage() + accessLink);
     }
 
     private void startCountdownExpireTime(AdminCandidate candidate, int secDelay) {

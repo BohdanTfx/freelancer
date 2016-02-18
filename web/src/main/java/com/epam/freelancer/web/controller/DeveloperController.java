@@ -3,6 +3,7 @@ package com.epam.freelancer.web.controller;
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.manager.UserManager;
 import com.epam.freelancer.business.service.*;
+import com.epam.freelancer.business.util.SendMessageToEmail;
 import com.epam.freelancer.business.util.SmsSender;
 import com.epam.freelancer.database.model.*;
 import com.epam.freelancer.web.json.model.Quest;
@@ -496,24 +497,39 @@ public class DeveloperController extends HttpServlet implements Responsable {
         return true;
     }
 
-    private void acceptOrdering(HttpServletRequest request, HttpServletResponse response){
+    private void acceptOrdering(HttpServletRequest request, HttpServletResponse response) throws IOException{
         HttpSession session = request.getSession();
         Developer dev = (Developer) session.getAttribute("user");
         Integer orderId = Integer.parseInt(request.getParameter("order_id"));
 
+        //creating new worker
         Worker worker = developerService.getWorkerByDevIdAndOrderId(dev.getId(),orderId);
         worker.setAccepted(true);
         worker.setNewHourly(dev.getHourly());
         developerService.updateWorker(worker);
 
+        //set started to ordering
         Ordering ordering = orderingService.findById(orderId);
         ordering.setStarted(true);
         ordering.setStartedDate(new Timestamp(new java.util.Date().getTime()));
         orderingService.modify(ordering);
 
+        //get followers email and delete followers
+        List<String> followersEmailsList = new ArrayList<>();
         orderingService.findOrderFollowers(orderId).forEach(follower -> {
-           orderingService.deleteFollower(follower);
+            String email = developerService.findById(follower.getDevId()).getEmail();
+             if(!email.equals(dev.getEmail())){followersEmailsList.add(email);}
+            orderingService.deleteFollower(follower);
         });
+
+        //send email to followers
+        String arrayEmail[] = followersEmailsList.toArray(new String[followersEmailsList.size()]);
+        SendMessageToEmail.sendFromGMail("onlineshopjava@gmail.com", "ForTestOnly",
+                arrayEmail, "OpenTask - Notification about order", getAcceptedOrderMessageForFollowers(dev.getFname(),ordering.getTitle()));
+    }
+    private String getAcceptedOrderMessageForFollowers(String devName,String orderingName){
+        return "Hello " +devName+"\n\n"+
+                "Unfortunately you have not been chosen for ordering '"+orderingName+"'.";
     }
 
     private void rejectOrdering(HttpServletRequest request, HttpServletResponse response){
