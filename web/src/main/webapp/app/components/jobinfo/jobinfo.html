@@ -18,16 +18,16 @@
                     <div class="panel-body">
                         <div class="row">
                             <div ng-if="isDev" class="form-group devpub-comm-div">
-                                <div ng-hide="user.subscribed">
+                                <div ng-hide="user.subscribed" class=" col-sm-2 col-xs-12">
                                     <button type="button" data-toggle="modal"
                                             data-target=".bs-example-modal-md1"
-                                            class="btn btn-primary pull-left">
+                                            class="btn btn-primary pull-left full-width">
                                         {{"jobinfo.subscribe" | translate}}
                                     </button>
                                 </div>
-                                <div ng-show="user.subscribed">
+                                <div ng-show="user.subscribed" class=" col-sm-2 col-xs-12">
                                     <button type="button" ng-click="unsubscribe()"
-                                            class="btn btn-primary btn-warn pull-left">
+                                            class="btn btn-primary btn-warn pull-left full-width">
                                         {{"jobinfo.unsubscribe" | translate}}
                                     </button>
                                 </div>
@@ -44,9 +44,14 @@
 
                             <p>
                             <ul class="list-unstyled">
-                                <li><strong>{{"jobinfo.date" | translate}}:</strong> {{order.date | date:'MMM d, y'}}</li>
-                                <li><strong>{{"jobinfo.payment" | translate}}:</strong> {{order.payType}}, {{order.payment | number:2}} $</li>
-                                <li ng-show="order.zone"><strong>{{"jobinfo.time-zone" | translate}}:</strong> {{order.zone}}</li>
+                                <li><strong>{{"jobinfo.date" | translate}}:</strong> {{order.date | date:'MMM d, y'}}
+                                </li>
+                                <li><strong>{{"jobinfo.payment" | translate}}:</strong> {{order.payType}},
+                                    {{order.payment | number:2}} $
+                                </li>
+                                <li ng-show="order.zone"><strong>{{"jobinfo.time-zone" | translate}}:</strong>
+                                    {{order.zone}}
+                                </li>
                                 <li><strong>{{"jobinfo.technologies" | translate}}:</strong>
                                     <span ng-switch on="techs.length == 0">
                                         <span ng-switch-when="true">{{"jobinfo.none" | translate}}</span>
@@ -57,11 +62,12 @@
                                         </span>
                                     </span>
                                 </li>
-                            <li>
-                                <div class="btn btm-sm btn-danger" ng-disabled="disCompBut" data-toggle="modal"
-                                     data-target=".bs-example-modal-sm" style="padding: 3px">{{"jobinfo.complain" | translate}}
-                                </div>
-                            </li>
+                                <li>
+                                    <div class="btn btm-sm btn-danger" ng-disabled="disCompBut" data-toggle="modal"
+                                         data-target=".bs-example-modal-sm" style="padding: 3px">{{"jobinfo.complain" |
+                                        translate}}
+                                    </div>
+                                </li>
                             </ul>
                             </p>
                         </div>
@@ -96,21 +102,26 @@
                             <md-tab label="{{'jobinfo.tab-subscribers' | translate}}">
                                 <md-content class="md-padding">
                                     <div class="tab-pane fade in active">
-                                        <p class="noFollowers" ng-if="noFollowers">{{"jobinfo.no-followers" | translate}}</p>
+                                        <p class="noFollowers" ng-if="noFollowers">{{"jobinfo.no-followers" |
+                                            translate}}</p>
 
                                         <div ng-repeat="follower in followers">
                                             <div class="row">
-                                                <div class="col-sm-9">
+                                                <div class="col-sm-9 col-xs-12">
                                                     <br/>
+
                                                     <div class="follower"
                                                          style="background-image: url('{{follower.developer.imgUrl}}')"></div>
                                                     <p>
                                                         <a ng-href="/#/public/developer/{{follower.developer.fname}}-{{follower.developer.lname}}/{{follower.developer.id}}"><em>{{follower.developer.fname}}
                                                             {{follower.developer.lname}}</em></a>
+                                                        <span ng-show="follower.author == 'customer'" class="deal-icon"
+                                                              style="background-image: url('images/jobinfo/deal_icon.png')"></span>
                                                     </p>
+
                                                     <p>{{follower.message}}</p>
                                                 </div>
-                                                <div class="col-sm-3 text-center">
+                                                <div class="col-sm-3 col-xs-12 text-center">
                                                     <br/>
                                                     <span>{{"jobinfo.dev-rate" | translate}}</span>
                                                     <ul class="list-inline ratings" title="Ratings">
@@ -142,7 +153,8 @@
                             <md-tab label="{{'jobinfo.tab-feedbacks-about-customer' | translate}}">
                                 <md-content class="md-padding">
                                     <div class="tab-pane fade in active" id="menu1">
-                                        <p class="noFeedbacks" ng-if="noFeedbacks">{{"jobinfo.no-feedbacks" | translate}}</p>
+                                        <p class="noFeedbacks" ng-if="noFeedbacks">{{"jobinfo.no-feedbacks" |
+                                            translate}}</p>
 
                                         <div ng-repeat="feedback in feedbacks">
                                             <br/>
@@ -168,7 +180,8 @@
                             </md-tab>
                             <md-tab label="{{'jobinfo.tab-customer-projects-history' | translate}}">
                                 <md-content class="md-padding">
-                                    <p class="emptyHistory" ng-if="emptyHistory">{{"jobinfo.empty-history" | translate}}</p>
+                                    <p class="emptyHistory" ng-if="emptyHistory">{{"jobinfo.empty-history" |
+                                        translate}}</p>
 
                                     <div ng-repeat="project in custProjects">
                                         <h4 class="tit">

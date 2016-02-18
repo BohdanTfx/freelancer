@@ -1,5 +1,7 @@
 package com.epam.freelancer.business.service;
 
+import com.epam.freelancer.business.context.ApplicationContext;
+import com.epam.freelancer.business.manager.UserManager;
 import com.epam.freelancer.business.util.ValidationParametersBuilder;
 import com.epam.freelancer.business.util.ValidationParametersBuilder.Parameters;
 import com.epam.freelancer.database.dao.*;
@@ -30,8 +32,8 @@ public class DeveloperService extends UserService<Developer> {
 
     	@Override
 	public Developer create(Map<String, String[]> data) {
-		/*if (!isDataValid(prepareData(data)))
-			throw new RuntimeException("Validation exception");*/
+//		if (!isDataValid(prepareData(data)))
+//			throw new RuntimeException("Validation exception");
 
         Developer entity = new Developer();
         String[] value = data.get("first_name");
@@ -50,6 +52,7 @@ public class DeveloperService extends UserService<Developer> {
         entity.setRegDate(new Timestamp(new Date().getTime()));
         value = data.get("password");
         entity.setPassword(value != null ? value[0] : null);
+        entity.setUuid(UUID.randomUUID().toString());
 
         encodePassword(entity);
 

@@ -8,12 +8,33 @@ angular
 						'$location',
 						'$cookieStore',
 						'AuthenticationService',
+						"Notification",
+						'$translate',
 						function($scope, $rootScope, $location, $cookieStore,
-								 AuthenticationService) {
+								 AuthenticationService,Notification,$translate) {
 							$scope.user = {};
+							$scope.social = {};
+							$scope.social.linkedin = {};
+							$scope.social.linkedin.available = false;
+
+
+							$scope.confirmCode = $location.search().confirmCode;
+							$scope.uuid = $location.search().uuid;
+							if($scope.confirmCode!= undefined && $scope.uuid!= undefined){
+								AuthenticationService.confirmEmail($scope.confirmCode, $scope.uuid).success(function(data){
+										if(data==true){
+											Notification.success({
+												title:$translate.instant("auth.notification-success-title"),
+												message:$translate.instant("auth.notification-success-body")
+											});
+										}
+								});
+
+							}
+
 							$scope.doClose = function() {
-                                $scope.showError = false;
-                            };
+								$scope.showError = false;
+							};
 
 							hello.on('auth.login', function (auth) {
 								hello(auth.network).api('/me').then(function (r) {
@@ -40,32 +61,36 @@ angular
 										.success(
 												function(response) {
 													AuthenticationService
-														.SetCredentials(
-														response.fname,
-														response.lname,
-														response.role);
+															.SetCredentials(
+																	response.fname,
+																	response.lname,
+																	response.role);
 													if (response.role == 'admin') {
 														$location.path('/admin/statistics');
 														return;
 													}
 													if (response.isFirst) {
-														$location.path('/personal')
-													}
-													else {
+														$location
+																.path('/personal')
+													} else {
 														if (response.role == 'developer')
-															$location.path('/orders');
+															$location
+																	.path('/orders');
 														if (response.role == 'customer')
-															$location.path('/developers');
+															$location
+																	.path('/developers');
 													}
-
 												})
 										.error(
-												function(response) {
+												function(response,status) {
 													$scope.showError = true;
-													$scope.errorTitle = 'Error!';
-													$scope.errorDescription = 'Invalid credentials';
+													$scope.errorTitle = $translate.instant("auth.error-title");
+													$scope.errorDescription = $translate.instant("auth.invalid-cred");
 													$scope.user.email = "";
 													$scope.user.password = "";
+													if(status==406){
+														$scope.errorDescription = $translate.instant("auth.error-confirmed-email");
+													}
 												})
 							};
 

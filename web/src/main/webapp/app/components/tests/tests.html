@@ -36,7 +36,7 @@
                                                 </div>
                                                 <div class="col-md-2 col-sm-2 col-xs-3 text-center">
                                                     <a ng-click="sort('rate')">
-                                                        <i class="fa fa-bar-chart"></i> {{"tests.your-rate" | translate}}
+                                                        <i class="fa fa-bar-chart"></i> <span class="hidden-sm">{{"tests.your-rate" | translate}}</span>
                                                         <i class="glyphicon"
                                                            ng-class="{'glyphicon-arrow-up' : isSortUp('rate'),
                                                                           'glyphicon-arrow-down' : isSortDown('rate')}">
@@ -227,7 +227,7 @@
                                                 <div class="col-md-3 hidden-sm hidden-xs text-center">
                                                     {{test.passScore}} %
                                                 </div>
-                                                <div class="col-md-2 col-sm-2 col-xs-3">
+                                                <div class="col-md-2 col-sm-2 col-xs-12">
                                                     <a ng-hide="test.status == 'passed'"
                                                        class="btn btn-primary btn-pass-test vertical-align-center"
                                                        href="/#/tests/{{test.id}}">

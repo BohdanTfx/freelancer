@@ -71,7 +71,7 @@ md-tabs .md-tab .md-ripple-container {
 }
 
 .tests-tabs .testItem .btn {
-    width: 95px;
+    width: 100%;
     padding: 5px 10px;
     line-height: 16px;
     float: right;

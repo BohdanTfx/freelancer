@@ -8,6 +8,7 @@ angular.module('FreelancerApp')
         $scope.mes = '';
         $scope.own = false;
         $scope.custOwn = false;
+        $scope.accepted = false;
 
         if ($rootScope.id == $stateParams.custId) {
             $scope.own = true;
@@ -61,6 +62,13 @@ angular.module('FreelancerApp')
                 $scope.phone = data.phone;
             }).error(function () {
 
+            });
+
+        custpubAPI.getAllAcceptedOrderByDevIdAndCustId($scope.query, $rootScope.id).success(
+            function (data, status, headers, config) {
+                $scope.accepted = true;
+            }).error(function () {
+                $scope.accepted = false;
             });
 
         custpubAPI.getAvailableCustOrders($scope.query).success(function (data) {

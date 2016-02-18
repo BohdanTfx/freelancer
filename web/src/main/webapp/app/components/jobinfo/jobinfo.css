@@ -37,7 +37,7 @@
 }
 
 .job-info .btn-warn {
-    background-color:#FF5722;
+    background-color: #FF5722;
     border: #FFF;
 }
 
@@ -45,19 +45,19 @@
     text-align: center;
 }
 
-.job-info .right-side h3{
+.job-info .right-side h3 {
     margin-top: 0;
 }
 
-.job-info .right-side .btn{
+.job-info .right-side .btn {
     margin-bottom: 15px;
 }
 
-        .job-info .details {
+.job-info .details {
     clear: both;
 }
 
-.job-info .user{
+.job-info .user {
     display: inline-block;
     width: 120px;
     height: 120px;
@@ -89,8 +89,20 @@
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
-    margin: auto 15px auto 15px;
+    margin: 0 15px 0 15px;
     float: left;
+
+}
+
+.job-info .deal-icon {
+    position: absolute;
+    display: inline-block;
+    width: 32px;
+    height: 24px;
+    background-repeat : no-repeat;
+    background-position: center center;
+    background-size: cover;
+    margin: 0 15px 0 15px;
 }
 
 .job-info .btn-accept {

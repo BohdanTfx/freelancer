@@ -8,6 +8,8 @@ import com.epam.freelancer.database.transformer.annotation.Column;
 import com.epam.freelancer.database.transformer.annotation.Id;
 import com.epam.freelancer.database.transformer.annotation.Table;
 
+import java.sql.Date;
+
 @Table(name = "worker")
 public class Worker implements BaseEntity<Integer> {
 	@Id
@@ -24,10 +26,20 @@ public class Worker implements BaseEntity<Integer> {
 	private Boolean isDeleted;
 	@Column
 	private Boolean accepted;
+	@Column(name = "accept_date")
+	private Date acceptDate;
 	@Column
 	private Integer version;
 	private Ordering order;
 	private Developer developer;
+
+	public Date getAcceptDate() {
+		return acceptDate;
+	}
+
+	public void setAcceptDate(Date acceptDate) {
+		this.acceptDate = acceptDate;
+	}
 
 	public Integer getOrderId() {
 		return orderId;

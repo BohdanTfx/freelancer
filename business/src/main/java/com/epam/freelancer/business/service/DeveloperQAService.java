@@ -46,6 +46,8 @@ public class DeveloperQAService extends GenericService<DeveloperQA, Integer> {
         value = data.get("expireDate");
         if (value != null) {
             developerQA.setExpire(new Date(Long.parseLong(value[0])));
+        }else{
+            developerQA.setExpire(new Date(System.currentTimeMillis() + 1000*60*60*24*30));
         }
         developerQA.setIsExpire(false);
 

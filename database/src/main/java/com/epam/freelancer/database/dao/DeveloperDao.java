@@ -10,6 +10,4 @@ import com.epam.freelancer.database.model.Developer;
 public interface DeveloperDao extends UserDao<Developer> {
 
 	Double getPaymentLimit(String limitType);
-
-	Integer getFilteredObjectNumber(Map<String, Object> parameters);
 }

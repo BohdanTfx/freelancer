@@ -54,8 +54,12 @@ angular
 								});
 								$rootScope.globals = {};
 
-                                $location.path('/');
+								$location.path('/');
 							};
+
+							service.confirmEmail = function(confirmCode,uuid){
+								return $http.post("/user/confirm/email?confirmCode="+confirmCode+"&uuid="+uuid);
+							}
 
 							service.initSocial = function($scope) {
 								var linkedinVerifier = getUrlVars();
@@ -117,7 +121,8 @@ angular
 										.success(
 												function(data, status, headers,
 														config) {
-													$scope.linkedinUrl = data.linkedinUrl;
+													$scope.social.linkedin.url = data.linkedinUrl;
+													$scope.social.linkedin.available = true;
 												})
 										.error(
 												function(data, status, headers,
@@ -134,7 +139,7 @@ angular
 																});
 													}
 												});
-                            };
+							};
 
 							return service;
 						} ])

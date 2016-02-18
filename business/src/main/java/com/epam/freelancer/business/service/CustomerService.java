@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.epam.freelancer.business.context.ApplicationContext;
+import com.epam.freelancer.business.manager.UserManager;
 import com.epam.freelancer.business.util.ValidationParametersBuilder;
 import com.epam.freelancer.business.util.ValidationParametersBuilder.Parameters;
 import com.epam.freelancer.database.dao.ContactDao;
@@ -29,10 +31,10 @@ public class CustomerService extends UserService<Customer> {
 
 	public CustomerService() {
 		super(DAOManager.getInstance()
-                .getDAO(CustomerDao.class.getSimpleName()));
-        DAOManager daoManager = DAOManager.getInstance();
+				.getDAO(CustomerDao.class.getSimpleName()));
+		DAOManager daoManager = DAOManager.getInstance();
 		genericDao.setConnectionPool(daoManager.getConnectionPool());
-    }
+	}
 
 	@Override
 	public Customer create(Map<String, String[]> data) {
@@ -56,7 +58,7 @@ public class CustomerService extends UserService<Customer> {
 		entity.setRegDate(new Timestamp(new java.util.Date().getTime()));
 		value = data.get("password");
 		entity.setPassword(value != null ? value[0] : null);
-
+		entity.setUuid(UUID.randomUUID().toString());
 		encodePassword(entity);
 
 		return genericDao.save(entity);
@@ -70,9 +72,9 @@ public class CustomerService extends UserService<Customer> {
 				.maxLength(50).minLength(1),
 				data.get("first_name") == null ? null
 						: data.get("first_name")[0]);
-		map.put(ValidationParametersBuilder.createParameters(false).maxLength(
-				255).notEmptyString(false), data.get("img_url") == null ? null
-				: data.get("img_url")[0]);
+		map.put(ValidationParametersBuilder.createParameters(false)
+				.maxLength(255).notEmptyString(false),
+				data.get("img_url") == null ? null : data.get("img_url")[0]);
 		map.put(ValidationParametersBuilder.createParameters(false)
 				.maxLength(50).minLength(1),
 				data.get("last_name") == null ? null : data.get("last_name")[0]);
@@ -108,7 +110,9 @@ public class CustomerService extends UserService<Customer> {
 		return ((ContactDao) contactDao).getContactByCustId(id);
 	}
 
-	public Contact createContact(Contact contact) { return contactDao.save(contact); }
+	public Contact createContact(Contact contact) {
+		return contactDao.save(contact);
+	}
 
 	public Contact updateContact(Contact contact) {
 		return contactDao.update(contact);
@@ -133,8 +137,10 @@ public class CustomerService extends UserService<Customer> {
 	}
 
 	public Follower hireDeveloper(Map<String, String[]> data) {
-        /*if (!isDataValid(prepareFollowerData(data)))
-			throw new RuntimeException("Validation exception in follower");*/
+		/*
+		 * if (!isDataValid(prepareFollowerData(data))) throw new
+		 * RuntimeException("Validation exception in follower");
+		 */
 
 		Follower follower = new Follower();
 		String[] value = data.get("dev_id");

@@ -3,6 +3,7 @@ package com.epam.freelancer.web.controller;
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.manager.UserManager;
 import com.epam.freelancer.business.service.*;
+import com.epam.freelancer.business.util.SendMessageToEmail;
 import com.epam.freelancer.business.util.SmsSender;
 import com.epam.freelancer.database.model.*;
 import com.epam.freelancer.web.json.model.Quest;
@@ -19,8 +20,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.SecureRandom;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -136,9 +139,12 @@ public class DeveloperController extends HttpServlet implements Responsable {
         List<Ordering> finishedWorks = new ArrayList<>();
         List<Ordering> worksInProgress = new ArrayList<>();
         List<Ordering> notAcceptedWorks = new ArrayList<>();
+        List<Long> expireDays = new ArrayList<>();
+        List<Worker> workersToDelete = new ArrayList<>();
 
         allWorks.forEach(worker -> {
             Ordering order = orderingService.findById(worker.getOrderId());
+            order.setTechnologies(technologyService.findTechnolodyByOrderingId(order.getId()));
             if (worker.getAccepted()!=null && worker.getAccepted()) {
                 if (order.getStarted() && order.getEnded()) {
                     finishedWorks.add(order);
@@ -146,9 +152,26 @@ public class DeveloperController extends HttpServlet implements Responsable {
                     worksInProgress.add(order);
                 }
             } else {
-                notAcceptedWorks.add(order);
+                LocalDate differExpireDate = LocalDate.ofEpochDay(
+                    worker.getAcceptDate().toLocalDate().plusDays(5).toEpochDay() - LocalDate.now().toEpochDay());
+                if(differExpireDate.toEpochDay()>=0){
+                    notAcceptedWorks.add(order);
+                    expireDays.add(differExpireDate.toEpochDay());
+                }else{
+                    workersToDelete.add(worker);
+                }
             }
         });
+
+        //Delete workers with date expired
+        for(int i=0;i<workersToDelete.size();i++){
+            developerService.deleteWorker(workersToDelete.get(i));
+        }
+
+        subscribedWorks.forEach(order ->{
+            order.setTechnologies(technologyService.findTechnolodyByOrderingId(order.getId()));
+        });
+
 
 
         Map<String, List> resultMap = new HashMap<>();
@@ -156,6 +179,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
         resultMap.put("subscribedWorks", subscribedWorks);
         resultMap.put("processedWorks", worksInProgress);
         resultMap.put("notAcceptedWorks", notAcceptedWorks);
+        resultMap.put("expireDays", expireDays);
         sendResponse(response, resultMap, mapper);
     }
 
@@ -178,13 +202,10 @@ public class DeveloperController extends HttpServlet implements Responsable {
             developerQA.setTest(devQATest);
         }
 
-        String devQAsJson = new Gson().toJson(devQAs);
-        String testsJson = new Gson().toJson(tests);
-        String resultJson = "{\"devQAs\":" + devQAsJson + ",\"tests\":"
-                + testsJson + "}";
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(resultJson);
+        Map<String, List> resultMap = new HashMap<>();
+        resultMap.put("devQAs", devQAs);
+        resultMap.put("tests", tests);
+        sendResponse(response, resultMap, mapper);
     }
 
     private void sendTestById(HttpServletRequest request,
@@ -194,10 +215,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
                 .getInstance().getBean("testService");
         Test test = testService.findById(testId);
         test.setQuestions(testService.findQuestionsByTestId(testId));
-        String testJson = new Gson().toJson(test);
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(testJson);
+        sendResponse(response,test,mapper);
     }
 
     private void sendCustomerById(HttpServletRequest request,
@@ -304,19 +322,14 @@ public class DeveloperController extends HttpServlet implements Responsable {
         return map;
     }
 
-    private void sendResultResponse(HttpServletResponse response, double rate,
-                                    int errors, int success) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        sb.append("{\"rate\":");
-        sb.append(rate);
-        sb.append(",\"errors\":");
-        sb.append(errors);
-        sb.append(",\"success\":");
-        sb.append(success);
-        sb.append('}');
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(sb.toString());
+    private void sendResultResponse(HttpServletResponse response, Double rate,
+                                    Integer errors, Integer success) throws IOException {
+        Map<String, Number> resultMap = new HashMap<>();
+        resultMap.put("rate", rate);
+        resultMap.put("errors", errors);
+        resultMap.put("success", success);
+        sendResponse(response, resultMap, mapper);
+
     }
 
     private void fillPersonalPage(HttpServletRequest request,
@@ -484,24 +497,39 @@ public class DeveloperController extends HttpServlet implements Responsable {
         return true;
     }
 
-    private void acceptOrdering(HttpServletRequest request, HttpServletResponse response){
+    private void acceptOrdering(HttpServletRequest request, HttpServletResponse response) throws IOException{
         HttpSession session = request.getSession();
         Developer dev = (Developer) session.getAttribute("user");
         Integer orderId = Integer.parseInt(request.getParameter("order_id"));
 
+        //creating new worker
         Worker worker = developerService.getWorkerByDevIdAndOrderId(dev.getId(),orderId);
         worker.setAccepted(true);
         worker.setNewHourly(dev.getHourly());
         developerService.updateWorker(worker);
 
+        //set started to ordering
         Ordering ordering = orderingService.findById(orderId);
         ordering.setStarted(true);
         ordering.setStartedDate(new Timestamp(new java.util.Date().getTime()));
         orderingService.modify(ordering);
 
+        //get followers email and delete followers
+        List<String> followersEmailsList = new ArrayList<>();
         orderingService.findOrderFollowers(orderId).forEach(follower -> {
-           orderingService.deleteFollower(follower);
+            String email = developerService.findById(follower.getDevId()).getEmail();
+             if(!email.equals(dev.getEmail())){followersEmailsList.add(email);}
+            orderingService.deleteFollower(follower);
         });
+
+        //send email to followers
+        String arrayEmail[] = followersEmailsList.toArray(new String[followersEmailsList.size()]);
+        SendMessageToEmail.sendFromGMail("onlineshopjava@gmail.com", "ForTestOnly",
+                arrayEmail, "OpenTask - Notification about order", getAcceptedOrderMessageForFollowers(dev.getFname(),ordering.getTitle()));
+    }
+    private String getAcceptedOrderMessageForFollowers(String devName,String orderingName){
+        return "Hello " +devName+"\n\n"+
+                "Unfortunately you have not been chosen for ordering '"+orderingName+"'.";
     }
 
     private void rejectOrdering(HttpServletRequest request, HttpServletResponse response){

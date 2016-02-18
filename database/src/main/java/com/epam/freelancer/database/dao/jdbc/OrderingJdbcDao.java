@@ -67,13 +67,12 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 		return orderings;
 	}
 
-
 	@Override
 	public List<Ordering> getAllCustOrders(Integer custId) {
 		List<Ordering> orderings = new ArrayList<>();
 		try (Connection connection = connectionPool.getConnection();
-			 PreparedStatement statement = connection
-					 .prepareStatement("SELECT * FROM ordering WHERE customer_id = ? ;"))
+				PreparedStatement statement = connection
+						.prepareStatement("SELECT * FROM ordering WHERE customer_id = ? ;"))
 		{
 			statement.setObject(1, custId);
 			ResultSet set = statement.executeQuery();
@@ -89,8 +88,27 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 		return orderings;
 	}
 
+	@Override
+	public int getAllAcceptedOrderByDevIdAndCustId(Integer custId, Integer devId) {
+		String query = "SELECT * FROM ordering JOIN worker ON ordering.id = worker.order_id" +
+				" WHERE customer_id = ? AND dev_id = ? AND worker.accepted IS true";
+		int count = 0;
 
+		try (Connection connection = connectionPool.getConnection();
+			 PreparedStatement ps = connection
+					 .prepareStatement(query)) {
+			ps.setObject(1, custId);
+			ps.setObject(2, devId);
+			ResultSet rs = ps.executeQuery();
+			if (rs.isBeforeFirst()) {
+				count = 1;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
+		return count;
+	}
 
 	@Override
 	public Integer getFilteredObjectNumber(Map<String, Object> parameters) {
@@ -152,7 +170,8 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 		List<Ordering> entities = new ArrayList<>();
 		String query = null;
 		if (parameters == null || parameters.isEmpty())
-			query = "SELECT * FROM " + table + " ORDER BY date DESC Limit " + start + ", " + step;
+			query = "SELECT * FROM " + table + " ORDER BY date DESC Limit "
+					+ start + ", " + step;
 		else {
 			query = createFilterQuery(parameters, start, step);
 		}
@@ -219,10 +238,10 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 
 		boolean hourly = parameters.get("hourly") != null;
 		boolean fixed = parameters.get("fixed") != null;
-		Integer hMax = (Integer) parameters.get("hmax");
-		Integer hMin = (Integer) parameters.get("hmin");
-		Integer fMax = (Integer) parameters.get("fmax");
-		Integer fMin = (Integer) parameters.get("fmin");
+		Number hMax = (Number) parameters.get("hmax");
+		Number hMin = (Number) parameters.get("hmin");
+		Number fMax = (Number) parameters.get("fmax");
+		Number fMin = (Number) parameters.get("fmin");
 
 		if (fixed && hourly) {
 			builder.append(lastNull ? "" : " AND");

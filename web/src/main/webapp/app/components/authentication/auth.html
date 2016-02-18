@@ -4,15 +4,17 @@
 	<form name="loginForm" ng-submit="loginForm.$valid && login()"
 		novalidate>
 		<div class="col-xs-12 social-buttons">
-			<div class="col-xs-12 col-sm-6" style="padding-top: 3px;" onclick="hello('google').login()">
+			<div class="col-sm-6" style="padding-top: 3px;" onclick="hello('google').login()">
 				<a class="btn btn-block btn-social btn-google-plus"> <i
-					class="fa fa-google-plus"></i> {{"auth.signin-google-button" | translate}}
+					class="fa fa-google-plus"></i> {{"auth.signin-google-button" |
+					translate}}
 				</a>
 			</div>
-			<div class="col-xs-12 col-sm-6" style="padding-top: 3px;">
-				<a href="{{linkedinUrl}}"
-					class="btn btn-block btn-social btn-linkedin"> <i
-					class="fa fa-linkedin"></i> {{"auth.signin-linkedin-button" | translate}}
+			<div class="col-sm-6" style="padding-top: 3px;">
+				<a href="{{social.linkedin.url}}"
+					class="btn btn-block btn-social btn-linkedin {{social.linkedin.available ? '' : 'disabled'}}">
+					<i class="fa fa-linkedin"></i> {{"auth.signin-linkedin-button" |
+					translate}}
 				</a>
 			</div>
 		</div>
@@ -36,8 +38,8 @@
 
 		<md-input-container class="col-xs-12"
 			md-is-error="loginForm.email.$invalid && (loginForm.$submitted || loginForm.email.$dirty)">
-		<label>{{"auth.input-email" | translate}}</label> <input ng-required="true" name="email"
-			ng-model="user.email" />
+		<label>{{"auth.input-email" | translate}}</label> <input
+			ng-required="true" name="email" ng-model="user.email" />
 		<div ng-messages="loginForm.email.$error"
 			ng-if="loginForm.$submitted || loginForm.email.$touched">
 			<div ng-message="required">This is required.</div>
@@ -45,8 +47,9 @@
 		</md-input-container>
 		<md-input-container class="col-xs-12"
 			md-is-error="loginForm.password.$invalid && (loginForm.$submitted || loginForm.password.$dirty)">
-		<label>{{"auth.input-password" | translate}}</label> <input name="password" type="password"
-			ng-required="true" ng-model="user.password">
+		<label>{{"auth.input-password" | translate}}</label> <input
+			name="password" type="password" ng-required="true"
+			ng-model="user.password">
 		<div ng-messages="loginForm.password.$error"
 			ng-if="loginForm.$submitted || loginForm.password.$touched">
 			<div ng-message="required">This is required.</div>
@@ -54,7 +57,8 @@
 		</md-input-container>
 		<div class="col-xs-12">
 			<md-checkbox md-no-ink name="remember" id="remember"
-				ng-model="user.remember" class="md-primary"> {{"auth.remember-me" | translate}}</md-checkbox>
+				ng-model="user.remember" class="md-primary">
+			{{"auth.remember-me" | translate}}</md-checkbox>
 			<div class="pull-right">
 				<h5 class="inline-block box-none">
 					<a href="/#/forgot">{{"auth.forgot-password" | translate}}</a>
@@ -63,7 +67,8 @@
 		</div>
 		<div class="col-xs-12">
 			<md-button class="md-raised md-primary full-width margin-center"
-				type="submit"> <strong>{{"auth.signin-button" | translate}}</strong> </md-button>
+				type="submit"> <strong>{{"auth.signin-button" |
+				translate}}</strong> </md-button>
 		</div>
 	</form>
 	</md-content>
