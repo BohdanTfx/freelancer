@@ -1,5 +1,7 @@
 package com.epam.freelancer.business.service;
 
+import com.epam.freelancer.business.context.ApplicationContext;
+import com.epam.freelancer.business.manager.UserManager;
 import com.epam.freelancer.business.util.ValidationParametersBuilder;
 import com.epam.freelancer.business.util.ValidationParametersBuilder.Parameters;
 import com.epam.freelancer.database.dao.*;
@@ -47,10 +49,10 @@ public class DeveloperService extends UserService<Developer> {
         value = data.get("zone");
         entity.setZone(value != null ? Integer.parseInt(value[0]) : null);
         entity.setRegUrl(UUID.randomUUID().toString());
-        entity.setUuid(UUID.randomUUID().toString());
         entity.setRegDate(new Timestamp(new Date().getTime()));
         value = data.get("password");
         entity.setPassword(value != null ? value[0] : null);
+        entity.setUuid(UUID.randomUUID().toString());
 
         encodePassword(entity);
 

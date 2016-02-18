@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.epam.freelancer.business.context.ApplicationContext;
+import com.epam.freelancer.business.manager.UserManager;
 import com.epam.freelancer.business.util.ValidationParametersBuilder;
 import com.epam.freelancer.business.util.ValidationParametersBuilder.Parameters;
 import com.epam.freelancer.database.dao.ContactDao;
@@ -56,7 +58,7 @@ public class CustomerService extends UserService<Customer> {
 		entity.setRegDate(new Timestamp(new java.util.Date().getTime()));
 		value = data.get("password");
 		entity.setPassword(value != null ? value[0] : null);
-
+		entity.setUuid(UUID.randomUUID().toString());
 		encodePassword(entity);
 
 		return genericDao.save(entity);
