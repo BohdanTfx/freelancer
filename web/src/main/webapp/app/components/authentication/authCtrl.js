@@ -82,12 +82,15 @@ angular
 													}
 												})
 										.error(
-												function(response) {
+												function(response,status) {
 													$scope.showError = true;
-													$scope.errorTitle = 'Error!';
-													$scope.errorDescription = 'Invalid credentials';
+													$scope.errorTitle = $translate.instant("auth.error-title");
+													$scope.errorDescription = $translate.instant("auth.invalid-cred");
 													$scope.user.email = "";
 													$scope.user.password = "";
+													if(status==406){
+														$scope.errorDescription = $translate.instant("auth.error-confirmed-email");
+													}
 												})
 							};
 

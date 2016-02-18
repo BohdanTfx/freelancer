@@ -52,6 +52,9 @@
   "auth.signin-button":"Sign In",
   "auth.notification-success-title":"Success",
   "auth.notification-success-body":"Your email was successfully confirmed",
+  "auth.invalid-cred":"Invalid credentials",
+  "auth.error-title":"Error!",
+  "auth.error-confirmed-email":"Email is not confirmed",
 
   "myworks.no-projects":"No projects",
   "myworks.tab-accepted":"Accepted",
