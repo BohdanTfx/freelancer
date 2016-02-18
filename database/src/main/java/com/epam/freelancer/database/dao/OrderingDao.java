@@ -1,8 +1,8 @@
 package com.epam.freelancer.database.dao;
 
-import java.util.List;
-
 import com.epam.freelancer.database.model.Ordering;
+
+import java.util.List;
 
 /**
  * Created by ������ on 17.01.2016.
@@ -16,4 +16,6 @@ public interface OrderingDao extends GenericDao<Ordering, Integer> {
     List<Ordering> getAvailableCustOrders(Integer custId);
 
     List<Ordering> getAllCustOrders(Integer custId);
+
+    int getAllAcceptedOrderByDevIdAndCustId(Integer custId, Integer devId);
 }

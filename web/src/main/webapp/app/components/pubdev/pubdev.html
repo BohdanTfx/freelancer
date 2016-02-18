@@ -78,7 +78,7 @@
                     <md-tabs md-dynamic-height md-border-bottom>
                         <md-tab label="{{'custpub.feedbacks' | translate}}">
                             <div class="tab-pane fade in active" id="menu1">
-                                <div ng-if="show" class="form-group devpub-comm-div">
+                                <div ng-if="show && accepted" class="form-group devpub-comm-div">
                                     <br/>
                                     <label>{{"pubdev.rate-him" | translate}}:
                                         <uib-rating ng-model="rate" max="max" readonly="false"

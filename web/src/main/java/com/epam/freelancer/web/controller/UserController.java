@@ -268,11 +268,39 @@ public class UserController extends HttpServlet implements Responsable {
 				case "user/confirm/email":
 					confirmEmailAfterRegistration(request, response);
 					break;
+				case "user/getAllAcceptedOrderByDevIdAndCustId":
+					getAllAcceptedOrderByDevIdAndCustId(request, response);
+					break;
 			default:
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOG.fatal(getClass().getSimpleName() + " - " + "doPost");
+		}
+	}
+
+	private void getAllAcceptedOrderByDevIdAndCustId(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String custId = request.getParameter("custId");
+		String devId = request.getParameter("devId");
+
+		if (custId == null || devId == null) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+		}
+
+		if ("".equals(custId) || "".equals(devId)) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+		}
+
+		int count = 0;
+
+		try {
+			count = orderingService.getAllAcceptedOrderByDevIdAndCustId(Integer.parseInt(custId), Integer.parseInt(devId));
+		} catch (Exception e) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+		}
+
+		if (count == 0) {
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 		}
 	}
 

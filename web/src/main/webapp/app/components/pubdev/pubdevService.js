@@ -45,5 +45,9 @@ angular.module('FreelancerApp')
             return $http.post('/user/getTestByDevId?id=' + id);
         };
 
+        dataFactory.getAllAcceptedOrderByDevIdAndCustId = function (custId, devId) {
+            return $http.post('/user/getAllAcceptedOrderByDevIdAndCustId?custId=' + custId + '&devId=' + devId);
+        };
+
         return dataFactory;
     });
