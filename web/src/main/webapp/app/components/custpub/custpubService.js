@@ -33,5 +33,9 @@ angular.module('FreelancerApp')
             return $http.post('/user/getAvailableCustOrders?id=' + id + '&from=dev');
         };
 
+        dataFactory.getAllAcceptedOrderByDevIdAndCustId = function (custId, devId) {
+            return $http.post('/user/getAllAcceptedOrderByDevIdAndCustId?custId=' + custId + '&devId=' + devId);
+        };
+
         return dataFactory;
     });

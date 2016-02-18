@@ -76,7 +76,7 @@
                         <md-tab label="{{'custpub.feedbacks' | translate}}">
                             <div class="tab-pane fade in active" id="menu1">
 
-                                <div ng-if="feedShow" class="form-group cust-comm-div">
+                                <div ng-if="feedShow && accepted" class="form-group cust-comm-div">
                                     <br/>
                                     <label>{{"custpub.rate-him" | translate}}:
                                         <uib-rating ng-model="rate" max="max" readonly="false"

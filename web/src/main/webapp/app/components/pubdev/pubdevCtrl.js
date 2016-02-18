@@ -7,6 +7,7 @@ angular.module('FreelancerApp')
         $scope.feedback = '';
         $scope.mes = '';
         $scope.hiremes = '';
+        $scope.accepted = false;
 
         $scope.wmDis = false;
         if ($rootScope.id == $stateParams.devId) {
@@ -20,6 +21,13 @@ angular.module('FreelancerApp')
             $scope.hire = true;
             $scope.show = true;
         }
+
+        pubdevAPI.getAllAcceptedOrderByDevIdAndCustId($rootScope.id, $stateParams.devId).success(
+            function (data, status, headers, config) {
+                $scope.accepted = true;
+            }).error(function () {
+                $scope.accepted = false;
+            });
 
         $scope.deleteFeed = function (custId, feedId) {
             pubdevAPI.deleteFeed(custId, feedId).success(function () {

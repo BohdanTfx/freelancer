@@ -89,6 +89,28 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 	}
 
 	@Override
+	public int getAllAcceptedOrderByDevIdAndCustId(Integer custId, Integer devId) {
+		String query = "SELECT * FROM ordering JOIN worker ON ordering.id = worker.order_id" +
+				" WHERE customer_id = ? AND dev_id = ? AND worker.accepted IS true";
+		int count = 0;
+
+		try (Connection connection = connectionPool.getConnection();
+			 PreparedStatement ps = connection
+					 .prepareStatement(query)) {
+			ps.setObject(1, custId);
+			ps.setObject(2, devId);
+			ResultSet rs = ps.executeQuery();
+			if (rs.isBeforeFirst()) {
+				count = 1;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return count;
+	}
+
+	@Override
 	public Integer getFilteredObjectNumber(Map<String, Object> parameters) {
 		String query = null;
 		if (parameters == null || parameters.isEmpty()) {

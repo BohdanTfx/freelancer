@@ -66,13 +66,13 @@ public class OrderingService extends GenericService<Ordering, Integer> {
 				.minLength(10).maxLength(120), data.get("title") == null ? null
 				: data.get("title")[0]);
 		map.put(ValidationParametersBuilder.createParameters(false).pattern(
-				"(hourly)|(fixed)"),
+						"(hourly)|(fixed)"),
 				data.get("pay_type") == null ? null : data.get("pay_type")[0]);
 		map.put(ValidationParametersBuilder.createParameters(false).pattern(
-				"(true)|(false)"),
+						"(true)|(false)"),
 				data.get("private") == null ? null : data.get("private")[0]);
 		map.put(ValidationParametersBuilder.createParameters(false)
-				.minLength(50).maxLength(3000),
+						.minLength(50).maxLength(3000),
 				data.get("descr") == null ? null : data.get("descr")[0]);
 		map.put(ValidationParametersBuilder.createParameters(true)
 				.isInteger(true).min(1.00),
@@ -117,7 +117,7 @@ public class OrderingService extends GenericService<Ordering, Integer> {
 	}
 
 	public Integer getFilteredObjectNumber(Map<String, Object> parameters) {
-		return ((OrderingDao) genericDao).getFilteredObjectNumber(parameters);
+		return genericDao.getFilteredObjectNumber(parameters);
 	}
 
 	public void setOrderingTechnoloyManyToManyDao(
@@ -144,5 +144,9 @@ public class OrderingService extends GenericService<Ordering, Integer> {
 
 	public void deleteFollower(Follower follower) {
 		followerDao.delete(follower);
+	}
+
+	public int getAllAcceptedOrderByDevIdAndCustId(Integer custId, Integer devId) {
+		return ((OrderingDao) genericDao).getAllAcceptedOrderByDevIdAndCustId(custId, devId);
 	}
 }
