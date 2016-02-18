@@ -7,8 +7,7 @@
 			'ngAnimate', 'FreelancerApp.Filters', 'ngAria',
 			'ngMessages', 'isteven-multi-select', 'rzModule',
 			'ui.bootstrap', 'ui-notification', 'googlechart',
-			'pascalprecht.translate', 'tmh.dynamicLocale',
-			'ngTagsInput' ])
+			'pascalprecht.translate', 'tmh.dynamicLocale'])
 		.config(
 		function($stateProvider, $urlRouterProvider,
 				 $locationProvider, NotificationProvider) {
