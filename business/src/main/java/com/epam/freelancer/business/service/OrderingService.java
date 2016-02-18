@@ -145,4 +145,12 @@ public class OrderingService extends GenericService<Ordering, Integer> {
 	public void deleteFollower(Follower follower) {
 		followerDao.delete(follower);
 	}
+
+	public List<Ordering> getComplainedOrders() {
+		return ((OrderingDao)genericDao).getComplainedOrders();
+	}
+
+	public List<Ordering> getBanOrders() {
+		return ((OrderingDao)genericDao).getBanOrders();
+	}
 }

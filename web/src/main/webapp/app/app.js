@@ -92,6 +92,10 @@
 					url : '/forgot',
 					templateUrl : 'app/components/forgotpass/forgot.html',
 					controller : 'forgotCtrl'
+				}).state('banservice', {
+					url : '/admin/banservice',
+					templateUrl : 'app/components/ban/ban.html',
+					controller : 'banCtrl'
 				});
 
 				$locationProvider.html5Mode(false);

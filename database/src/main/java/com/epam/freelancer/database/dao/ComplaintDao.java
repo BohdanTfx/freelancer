@@ -3,6 +3,7 @@ package com.epam.freelancer.database.dao;
 import com.epam.freelancer.database.model.Complaint;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by spock on 04.02.16.

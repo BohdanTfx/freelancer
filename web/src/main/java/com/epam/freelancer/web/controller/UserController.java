@@ -412,6 +412,9 @@ public class UserController extends HttpServlet implements Responsable {
                         complaint.setOrderId(Integer.parseInt(param));
                         complaint.setDevId(ue.getId());
                         complaintService.save(complaint);
+                        Ordering order = orderingService.findById(Integer.parseInt(param));
+                        order.setComplains(order.getComplains()+1);
+                        orderingService.modify(order);
                     } catch (Exception e) {
                         response.sendError(HttpServletResponse.SC_BAD_REQUEST);
                     }
