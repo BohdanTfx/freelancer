@@ -28,7 +28,8 @@
                                             <div class="panel-title col-md-12">
                                                 <div class="col-md-4 col-sm-5 col-xs-5">
                                                     <a ng-click="sort('name')">
-                                                        <i class="fa fa-tasks"></i> {{"createtest.label-test-name" | translate}}
+                                                        <i class="fa fa-tasks"></i> {{"createtest.label-test-name" |
+                                                        translate}}
                                                         <i class="glyphicon"
                                                            ng-class="{'glyphicon-arrow-up' : isSortUp('name'),
                                                                           'glyphicon-arrow-down' : isSortDown('name')}">
@@ -37,7 +38,8 @@
                                                 </div>
                                                 <div class="col-md-3 col-sm-5 col-xs-4">
                                                     <a ng-click="sort('technology')">
-                                                        <i class="fa fa-tv"></i> {{"createtest.label-technology" | translate}}
+                                                        <i class="fa fa-tv"></i> {{"createtest.label-technology" |
+                                                        translate}}
                                                         <i class="glyphicon"
                                                            ng-class="{'glyphicon-arrow-up' : isSortUp('technology'),
                                                                           'glyphicon-arrow-down' : isSortDown('technology')}">
@@ -45,7 +47,8 @@
                                                     </a></div>
                                                 <div class="col-md-3 hidden-sm hidden-xs text-center">
                                                     <a ng-click="sort('passScore')">
-                                                        <i class="fa fa-bar-chart"></i> {{"createtest.label-min-score" | translate}}
+                                                        <i class="fa fa-bar-chart"></i> {{"createtest.label-min-score" |
+                                                        translate}}
                                                         <i class="glyphicon"
                                                            ng-class="{'glyphicon-arrow-up' : isSortUp('passScore'),
                                                                           'glyphicon-arrow-down' : isSortDown('passScore')}">
@@ -152,7 +155,8 @@
                                             <div class="panel-title col-md-12">
                                                 <div class="col-md-10 col-sm-10 col-xs-10">
                                                     <a ng-click="sort('name')">
-                                                        <i class="fa fa-tasks"></i> {{"createtest.label-que-name" | translate}}
+                                                        <i class="fa fa-tasks"></i> {{"createtest.label-que-name" |
+                                                        translate}}
                                                         <i class="glyphicon"
                                                            ng-class="{'glyphicon-arrow-up' : isSortUp('name'),
                                                                           'glyphicon-arrow-down' : isSortDown('name')}">
@@ -373,7 +377,7 @@
                           ng-submit="questForm.$valid && createQuestion()">
                         <div class="question-tab">
                             <md-content class="md-padding">
-                                <div class="row md-padding">
+                                <div class="row">
                                     <div class="col-md-9 col-xs-12">
                                         <md-input-container class="md-icon-float md-block">
                                             <label>{{"createtest.label-que-name" | translate}}</label>
@@ -481,6 +485,7 @@
                 </button>
                 <h4 class="modal-title">{{"createtest.question-delete-message" | translate}}</h4>
                 <br/>
+
                 <p>{{"createtest.question-delete-description" | translate}}</p>
             </div>
             <div class="modal-footer">
@@ -505,6 +510,7 @@
                 </button>
                 <h4 class="modal-title">{{"createtest.test-delete-message" | translate}}</h4>
                 <br/>
+
                 <p>{{"createtest.test-delete-description" | translate}}</p>
             </div>
             <div class="modal-footer">
