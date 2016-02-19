@@ -40,9 +40,10 @@ public class DeveloperAccessFilter implements Filter {
 		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 
 		if (authenticationProvider.provideAccess(cookieAutoAuthName, userName,
-				"login", developerService, httpServletRequest,
-				httpServletResponse))
+				developerService, httpServletRequest, httpServletResponse))
 			chain.doFilter(request, response);
+		else
+			httpServletResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
 	}
 
 	public void destroy() {

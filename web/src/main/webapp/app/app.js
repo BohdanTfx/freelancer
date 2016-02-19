@@ -193,71 +193,91 @@
 			'$cookieStore',
 			'$http',
 			'AuthenticationService',
+							'Notification',
+							'$state',
+							'$timeout',
+							'$interval',
 			function($rootScope, $location, $cookieStore,
-					 $http, AuthenticationService) {
+									$http, AuthenticationService, Notification,
+									$state, $timeout, $interval) {
+								$rootScope.globals = {};
+								$rootScope.logged = false;
+								$rootScope.firstNonAbstractStateCalled = false;
+
 				$rootScope.logout = function() {
 					AuthenticationService.ClearCredentials();
-					window.location = "/";
+									$state.go('home');
 				};
-				$rootScope.checking = function(data) {
-					var path = $location.path();
-					if (typeof data.id != 'undefined') {
-						switch (path) {
-							case '/auth':
-								window.location = "/";
-								break;
-							case '/signup':
-								window.location = "/";
-								break;
-						}
-					} else {
-						if (path.indexOf('/orders') > -1) {
-							window.location = "/";
-						}
-						if (path.indexOf('/personal') > -1) {
-							window.location = "/";
-						}
-						if (path.indexOf('/myworks') > -1) {
-							window.location = "/";
-						}
-						if (path.indexOf('/tests') > -1) {
-							window.location = "/";
-						}
-						if (path.indexOf('/public') > -1) {
-							window.location = "/";
-						}
-					}
-				};
-				$rootScope
-					.$on(
-					'$locationChangeStart',
-					function(event, next, current,
-							 $scope) {
-						$rootScope.globals = {};
-						$rootScope.logged = false;
-						$http
-							.post(
-							'/user/isAuth')
-							.success(
-							function(
-								data) {
-								$rootScope.id = data.id;
-								$rootScope.name = data.fname;
-								$rootScope.lastName = data.lname;
-								$rootScope.role = data.role;
-								$rootScope.logged = true;
 
-								$rootScope
-									.checking($rootScope);
+								getSavedStateData();
+
+								$rootScope.authenticationInterval = $interval(
+										function() {
+											if ($rootScope.firstNonAbstractStateCalled) {
+												$interval
+														.cancel($rootScope.authenticationInterval);
+
+												AuthenticationService
+														.autoAuthenticate()
+														.success(
+																function(data) {
+																	if (data !== false
+																			&& data !== null
+																			&& (typeof data === 'object')) {
+																		AuthenticationService
+																				.proceedSuccessAuthentication(data);
+																		return;
+						}
+																	if ($state.current['abstract'])
+																		checkAccess(
+																				$state.current.name,
+																				'home');
+						$rootScope.logged = false;
 							})
 							.error(
 							function() {
+																	Notification
+																			.error({
+																				title : 'Error!',
+																				message : 'An error occurred while authenticating. Please try again.'
+																			});
+																});
+											}
+										}, 100);
+
 								$rootScope
-									.checking($rootScope);
-							});
+										.$on(
+												'$stateChangeStart',
+												function(event, toState,
+														toParams, fromState,
+														fromParams) {
+													if (!fromState['abstract']
+															&& !checkAccess(
+																	toState.name,
+																	$state.current.name)) {
+														event.preventDefault();
+													}
+													$rootScope.firstNonAbstractStateCalled = true;
 					});
 
-				getSavedStateData();
+								function checkAccess(state, callback) {
+									var nextStatePermission = getPermissions()[state];
+									if ($rootScope.globals.currentUser === undefined) {
+										if (nextStatePermission === undefined
+												|| nextStatePermission["unknown"] == false) {
+											$state.go(callback);
+											return false;
+										}
+										return true;
+									}
+									var role = $rootScope.globals.currentUser.role;
+									if (nextStatePermission === undefined
+											|| nextStatePermission[role] == false) {
+										$state.go(callback);
+										return false;
+									}
+									return true;
+								}
 			} ]);
 
 })();
