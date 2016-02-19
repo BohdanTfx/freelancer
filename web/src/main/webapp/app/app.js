@@ -206,36 +206,31 @@
 
 								getSavedStateData();
 
-								$timeout(
-										function() {
-											AuthenticationService
-													.autoAuthenticate()
-													.success(
-															function(data) {
-																if (!$state.current['abstract']
-																		&& checkAccess(
-																				toState.name,
-																				$state.current.name))
-																	event
-																			.preventDefault();
-																if (data !== false
-																		&& data !== null
-																		&& (typeof data === 'object')) {
-																	AuthenticationService
-																			.proceedSuccessAuthentication(data);
-																	return;
-																}
-																$rootScope.logged = false;
-															})
-													.error(
-															function() {
-																Notification
-																		.error({
-																			title : 'Error!',
-																			message : 'An error occurred while authenticating. Please try again.'
-																		});
+								AuthenticationService
+										.autoAuthenticate()
+										.success(
+												function(data) {
+													if (!$state.current['abstract']
+															&& !checkAccess(
+																	$state.current.name,
+																	'home'))
+														if (data !== false
+																&& data !== null
+																&& (typeof data === 'object')) {
+															AuthenticationService
+																	.proceedSuccessAuthentication(data);
+															return;
+														}
+													$rootScope.logged = false;
+												})
+										.error(
+												function() {
+													Notification
+															.error({
+																title : 'Error!',
+																message : 'An error occurred while authenticating. Please try again.'
 															});
-										}, 100);
+												});
 
 								$rootScope.$on('$stateChangeStart', function(
 										event, toState, toParams, fromState,
