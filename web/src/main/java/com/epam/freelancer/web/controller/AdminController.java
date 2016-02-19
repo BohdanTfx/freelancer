@@ -555,17 +555,19 @@ public class AdminController extends HttpServlet implements Responsable {
         Integer finishedCount = 0;
         Integer inProgressCount = 0;
         Integer availableCount = 0;
-       for (Ordering ordering: allOrders){
-          if(ordering.getStarted() && ordering.getEnded()){
-             finishedCount++;
-          }else{
-            if(ordering.getStarted()){
-                inProgressCount++;
-            }else{
-                availableCount++;
+        if(allOrders != null) {
+            for (Ordering ordering : allOrders) {
+                if (ordering.getStarted() != null && ordering.getStarted() && ordering.getEnded() != null  && ordering.getEnded()) {
+                    finishedCount++;
+                } else {
+                    if (ordering.getStarted()) {
+                        inProgressCount++;
+                    } else {
+                        availableCount++;
+                    }
+                }
             }
-          }
-       }
+        }
 
        Map<String,Integer> map = new HashMap<>();
        map.put("finishedCount",finishedCount);
