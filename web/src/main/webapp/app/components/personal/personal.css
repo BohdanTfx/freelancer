@@ -148,8 +148,7 @@
 .ih-item.circle {
     position: relative;
     max-width: 220px;
-    width: auto;
-    height: auto;
+    max-height: 220px;
     border-radius: 50%;
 }
 .ih-item.circle .img {

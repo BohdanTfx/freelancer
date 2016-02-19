@@ -71,16 +71,6 @@ angular.module('FreelancerApp')
                 });
         });
 
-        /*createtestAPI.getAllQuestions().success(function (data) {
-            $scope.allQuestions = data;
-        }).error(function () {
-            Notification
-                .error({
-                    title: 'Error!',
-                    message: 'Something went bad. Please try again.'
-                });
-        });*/
-
         createtestAPI.getAllTechnologies().success(function (data) {
             $scope.technologies = data;
         }).error(function () {
@@ -197,8 +187,14 @@ angular.module('FreelancerApp')
 
             createtestAPI.createQuestion(questionJSON, answersJSON).success(function (data) {
                 $scope.question.id = data;
+                $scope.availableQuestions.push($scope.question);
                 $scope.questionReset();
-                $scope.getQuestionsByTechId($scope.chosenTechID);
+                for(var i = 0; i < $scope.chosenQuestions.length; i++){
+                    if($scope.chosenQuestions[i].id == $scope.delQuestion.id){
+                        $scope.chosenQuestions.splice(i, 1);
+                        break;
+                    }
+                }
                 Notification
                     .success({
                         title: $translate.instant('notification.success'),
@@ -264,10 +260,24 @@ angular.module('FreelancerApp')
             }
             var questionJSON = JSON.stringify($scope.delQuestion);
             createtestAPI.deleteQuestion(questionJSON).success(function () {
-                for (var i = 0; i < $scope.tests.length; i++) {
+                for (var i = 0; i < $scope.allQuestions.length; i++) {
                     if ($scope.allQuestions[i].id == $scope.delQuestion.id) {
                         $scope.allQuestions.splice(i, 1);
                         break;
+                    }
+                }
+                if($scope.delQuestion.techId == $scope.chosenTechID){
+                    for(var i = 0; i < $scope.availableQuestions.length; i++){
+                        if($scope.availableQuestions[i].id == $scope.delQuestion.id){
+                            $scope.availableQuestions.splice(i, 1);
+                            break;
+                        }
+                    }
+                    for(var i = 0; i < $scope.chosenQuestions.length; i++){
+                        if($scope.chosenQuestions[i].id == $scope.delQuestion.id){
+                            $scope.chosenQuestions.splice(i, 1);
+                            break;
+                        }
                     }
                 }
                 Notification

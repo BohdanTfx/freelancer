@@ -550,42 +550,42 @@ public class AdminController extends HttpServlet implements Responsable {
         return true;
     }
 
-     private void sendOrderStatistic(HttpServletRequest request,HttpServletResponse response){
+    private void sendOrderStatistic(HttpServletRequest request, HttpServletResponse response) {
         List<Ordering> allOrders = orderingService.findAll();
         Integer finishedCount = 0;
         Integer inProgressCount = 0;
         Integer availableCount = 0;
-       for (Ordering ordering: allOrders){
-          if(ordering.getStarted() && ordering.getEnded()){
-             finishedCount++;
-          }else{
-            if(ordering.getStarted()){
-                inProgressCount++;
-            }else{
-                availableCount++;
+        for (Ordering ordering : allOrders) {
+            if (ordering.getStarted() && ordering.getEnded()) {
+                finishedCount++;
+            } else {
+                if (ordering.getStarted()) {
+                    inProgressCount++;
+                } else {
+                    availableCount++;
+                }
             }
-          }
-       }
+        }
 
-       Map<String,Integer> map = new HashMap<>();
-       map.put("finishedCount",finishedCount);
-       map.put("inProgressCount",inProgressCount);
-       map.put("availableCount",availableCount);
+        Map<String, Integer> map = new HashMap<>();
+        map.put("finishedCount", finishedCount);
+        map.put("inProgressCount", inProgressCount);
+        map.put("availableCount", availableCount);
 
-       sendResponse(response,map,mapper);
+        sendResponse(response, map, mapper);
     }
 
-    private void getComplainedOrders(HttpServletRequest request,HttpServletResponse response){
-        sendResponse(response, orderingService.getComplainedOrders(),mapper);
+    private void getComplainedOrders(HttpServletRequest request, HttpServletResponse response) {
+        sendResponse(response, orderingService.getComplainedOrders(), mapper);
     }
 
-    private void getBanOrders(HttpServletRequest request,HttpServletResponse response){
-        sendResponse(response, orderingService.getBanOrders(),mapper);
+    private void getBanOrders(HttpServletRequest request, HttpServletResponse response) {
+        sendResponse(response, orderingService.getBanOrders(), mapper);
     }
 
-    private void banOrder(HttpServletRequest request,HttpServletResponse response) throws IOException {
+    private void banOrder(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String paramId = request.getParameter("orderId");
-        if(paramId == null || "".equals(paramId) || !paramId.matches("[0-9]*")){
+        if (paramId == null || "".equals(paramId) || !paramId.matches("[0-9]*")) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
@@ -593,11 +593,22 @@ public class AdminController extends HttpServlet implements Responsable {
         Ordering order = orderingService.findById(id);
         order.setBan(true);
         orderingService.modify(order);
+        sendEmail(order.getCustomerId(), order);
     }
 
-    private void unbanOrder(HttpServletRequest request,HttpServletResponse response) throws IOException {
+    private void sendEmail(Integer customerId, Ordering order) throws IOException {
+        Customer customer = customerService.findById(customerId);
+        String email = customer.getEmail();
+        String from = "maksym.rudevych.kn.2013@lpnu.ua";
+        String pass = "12.04.1996";
+        String[] to = new String[]{email};
+        SendMessageToEmail.sendFromGMail(from, pass, to, "Order ban",
+                order.getTitle() + " has many complains so we banned it.");
+    }
+
+    private void unbanOrder(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String paramId = request.getParameter("orderId");
-        if(paramId == null || "".equals(paramId) || !paramId.matches("[0-9]*")){
+        if (paramId == null || "".equals(paramId) || !paramId.matches("[0-9]*")) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
