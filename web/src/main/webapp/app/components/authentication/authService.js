@@ -11,50 +11,39 @@ angular
 						'$cookieStore',
 						'$timeout',
 						'Notification',
-						'$location',
+						'$state',
 						function(Base64, $http, $rootScope, $cookieStore,
-								$timeout, Notification, $location) {
+								$timeout, Notification, $state) {
 							var service = {};
 
 							service.Login = function(username, password,
-									remember, callback) {
+									remember) {
 
 								var data = 'email=' + username + '&password='
 										+ password + '&remember=' + remember;
 								$http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
-								return $http.post('/user/signin', data);
+								return $http.post('/unreg/signin', data);
 							};
 
-							service.SetCredentials = function(fname, lname,
-									role) {
-								// var authdata = Base64.encode(username + ':' +
-								// password);
-
+							service.SetCredentials = function(user) {
 								$rootScope.globals = {
 									currentUser : {
-										fname : fname,
-										lname : lname,
-										role : role
+										id : user.id,
+										fname : user.fname,
+										lname : user.lname,
+										role : user.role
 									}
 								};
-
-								// $http.defaults.headers.common['Authorization']
-								// = 'Basic ' + authdata; // jshint ignore:line
-								// $cookieStore.put('freelancerRememberMeCookieAng',
-								// $rootScope.globals);
 							};
 
 							service.ClearCredentials = function() {
 								$http({
-									url : '/user/logout',
+									url : '/unreg/logout',
 									method : "POST"
-								}).success(function() {
-								}).error(function() {
 								});
 								$rootScope.globals = {};
-
-								$location.path('/');
+								$rootScope.logged = false;
 							};
 
 							service.initSocial = function($scope) {
@@ -63,7 +52,7 @@ angular
 										&& linkedinVerifier.oauth_verifier !== undefined) {
 									$http
 											.get(
-													"/user/signin/linkedin",
+													"/unreg/signin/linkedin",
 													{
 														params : {
 															verifier : linkedinVerifier.oauth_verifier,
@@ -75,16 +64,18 @@ angular
 											.success(
 													function(response, status,
 															headers, config) {
-														Notification.success({
-															title : 'Success!',
-															message : 'Ok.'
-														});
+														Notification
+																.success({
+																	title : 'Welcome!',
+																	message : 'Welcome to our system <b>'
+																			+ response.fname
+																			+ ' '
+																			+ response.lname
+																			+ '</b>'
+																});
 
-														service.SetCredentials(
-																response.fname,
-																response.lname,
-																response.role);
-														$location.path('/');
+														service
+																.proceedSuccessAuthentication(response);
 													})
 											.error(
 													function(data, status,
@@ -108,10 +99,12 @@ angular
 
 								$http
 										.get(
-												"/user/social",
+												"/unreg/social",
 												{
 													params : {
-														callbackUrlLinkedIn : document.URL
+														callbackUrlLinkedIn : 'http://'
+																+ location.host
+																+ '/#/auth'
 													}
 												})
 										.success(
@@ -138,24 +131,24 @@ angular
 							};
 
 							service.autoAuthenticate = function() {
-								return $http.get("/user/authentication/auto");
+								return $http.get("/unreg/authentication/auto");
 							};
 
 							service.proceedSuccessAuthentication = function(
 									response) {
-								service.SetCredentials(response.fname,
-										response.lname, response.role);
+								service.SetCredentials(response);
+								$rootScope.logged = true;
 								if (response.role == 'admin') {
-									$location.path('/admin/statistics');
+									$state.go('statistics');
 									return;
 								}
 								if (response.isFirst) {
 									$location.path('/personal')
 								} else {
 									if (response.role == 'developer')
-										$location.path('/orders');
+										$state.go('orders');
 									if (response.role == 'customer')
-										$location.path('/developers');
+										$state.go('developers');
 								}
 							}
 

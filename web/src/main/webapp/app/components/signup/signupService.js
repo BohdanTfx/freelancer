@@ -9,7 +9,7 @@ angular
 
 					this.checkEmail = function($http, ngModel, email) {
 						$http
-								.get("/user/email", {
+								.get("/unreg/email", {
 									params : {
 										email : email
 									}
@@ -37,7 +37,7 @@ angular
 								&& linkedinVerifier.oauth_verifier !== undefined) {
 							$http
 									.get(
-											"/user/signup/linkedin",
+											"/unreg/signup/linkedin",
 											{
 												params : {
 													verifier : linkedinVerifier.oauth_verifier
@@ -75,7 +75,7 @@ angular
 							return;
 						}
 
-						$http.get("/user/social", {
+						$http.get("/unreg/social", {
 							params : {
 								callbackUrlLinkedIn : document.URL
 							}
@@ -107,7 +107,7 @@ angular
 							}
 						};
 						$http
-								.post("/user/create", user, config)
+								.post("/unreg/create", user, config)
 								.success(
 										function(data, status, headers, config) {
 											location.replace("/#/auth");

@@ -38,19 +38,20 @@ public class AuthenticationProvider {
 	}
 
 	public UserEntity isAutoAuthenticationEnable(String cookieName,
-			UserManager userManager, HttpServletRequest request) throws IOException, ServletException
+			UserManager userManager, HttpServletRequest request)
+			throws IOException, ServletException
 	{
 		String uuid = cookieManager.getCookieValue(request, cookieName);
 
 		if (uuid != null) {
 			UserEntity user = userManager.findUserByUUID(uuid);
-			if (user != null) 
+			if (user != null)
 				return user;
 		}
 		return null;
 	}
 
-	public boolean provideAccess(String cookieName, String type, String url,
+	public boolean provideAccess(String cookieName, String type,
 			UserService<? extends UserEntity> service,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException
@@ -60,8 +61,6 @@ public class AuthenticationProvider {
 		if (user != null) {
 			if (checkUserEntityType(user, type))
 				return true;
-			else
-				response.sendError(403);
 			return false;
 		} else {
 			String uuid = cookieManager.getCookieValue(request, cookieName);
@@ -75,8 +74,7 @@ public class AuthenticationProvider {
 				} else {
 					cookieManager.removeCookie(response, cookieName);
 				}
-			} else
-				response.sendRedirect(request.getContextPath() + "/" + url);
+			}
 		}
 
 		return false;

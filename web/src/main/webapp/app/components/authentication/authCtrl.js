@@ -14,7 +14,7 @@ angular
 							$scope.social = {};
 							$scope.social.linkedin = {};
 							$scope.social.linkedin.available = false;
-
+							
 							$scope.doClose = function() {
 								$scope.showError = false;
 							};

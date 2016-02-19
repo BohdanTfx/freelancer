@@ -190,11 +190,18 @@
 							'$cookieStore',
 							'$http',
 							'AuthenticationService',
+							'Notification',
+							'$state',
+							'$timeout',
 							function($rootScope, $location, $cookieStore,
-									$http, AuthenticationService, Notification) {
+									$http, AuthenticationService, Notification,
+									$state, $timeout) {
+								$rootScope.globals = {};
+								$rootScope.logged = false;
+
 								$rootScope.logout = function() {
 									AuthenticationService.ClearCredentials();
-									window.location = "/";
+									$state.go('home');
 								};
 
 								getSavedStateData();
@@ -209,7 +216,13 @@
 															&& (typeof data === 'object')) {
 														AuthenticationService
 																.proceedSuccessAuthentication(data);
+														if (!$state.current['abstract'])
+															checkAccess(
+																	$state.current.name,
+																	'home');
+														return;
 													}
+													$rootScope.logged = false;
 												})
 										.error(
 												function(data, status, headers,
@@ -220,6 +233,30 @@
 																message : 'An error occurred while authenticating. Please try again.'
 															});
 												});
+
+								$rootScope.$on('$stateChangeStart', function(
+										event, toState, toParams, fromState,
+										fromParams) {
+									if (!fromState['abstract'])
+										checkAccess(toState.name,
+												fromState.name);
+								});
+
+								function checkAccess(url, callback) {
+									var nextStatePermission = getPermissions()[url];
+									if ($rootScope.globals.currentUser === undefined) {
+										if (nextStatePermission === undefined
+												|| nextStatePermission["unknown"] == false)
+											$timeout(function() {
+												$state.go(callback);
+											}, 20);
+										return;
+									}
+									var role = $rootScope.globals.currentUser.role;
+									if (nextStatePermission === undefined
+											|| nextStatePermission[role] == false)
+										$state.go(callback);
+								}
 							} ]);
 
 })();

@@ -38,6 +38,14 @@ function isNotEmpty(obj) {
 	return false;
 }
 
+function handleForbidden(url, alertFn) {
+	if (url === undefined)
+		window.location = "/";
+	else
+		window.location = url;
+	alertFn();
+}
+
 function getUrlVars() {
 	var vars = [], hash;
 	var hashes = window.location.href.slice(
@@ -152,4 +160,117 @@ function getTimeZones() {
 		title : "+12 New zealand, Kamchatka, Kiribati",
 		ticked : false
 	} ];
+}
+
+function getPermissions() {
+	return {
+		orders : {
+			unknown : false,
+			administrator : true,
+			developer : true,
+			customer : true
+		},
+		developers : {
+			unknown : false,
+			administrator : true,
+			developer : true,
+			customer : true
+		},
+		createOrder : {
+			unknown : false,
+			administrator : false,
+			developer : true,
+			customer : false
+		},
+		order : {
+			unknown : false,
+			administrator : true,
+			developer : true,
+			customer : true
+		},
+		signup : {
+			unknown : true,
+			administrator : false,
+			developer : false,
+			customer : false
+		},
+		personal : {
+			unknown : false,
+			administrator : true,
+			developer : true,
+			customer : true
+		},
+		tests : {
+			unknown : false,
+			administrator : true,
+			developer : false,
+			customer : false
+		},
+		myworks : {
+			unknown : false,
+			administrator : false,
+			developer : true,
+			customer : false
+		},
+		test : {
+			unknown : false,
+			administrator : true,
+			developer : false,
+			customer : false
+		},
+		home : {
+			unknown : true,
+			administrator : true,
+			developer : true,
+			customer : true
+		},
+		auth : {
+			unknown : true,
+			administrator : false,
+			developer : false,
+			customer : false
+		},
+		pubdev : {
+			unknown : false,
+			administrator : true,
+			developer : true,
+			customer : true
+		},
+		custpub : {
+			unknown : false,
+			administrator : true,
+			developer : true,
+			customer : true
+		},
+		createtest : {
+			unknown : false,
+			administrator : true,
+			developer : false,
+			customer : false
+		},
+		statistics : {
+			unknown : false,
+			administrator : true,
+			developer : false,
+			customer : false
+		},
+		createAdmin : {
+			unknown : false,
+			administrator : true,
+			developer : false,
+			customer : false
+		},
+		signupadmin : {
+			unknown : true,
+			administrator : false,
+			developer : false,
+			customer : false
+		},
+		forgot : {
+			unknown : true,
+			administrator : false,
+			developer : false,
+			customer : false
+		}
+	};
 }
