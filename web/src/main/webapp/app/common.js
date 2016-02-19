@@ -179,8 +179,8 @@ function getPermissions() {
 		createOrder : {
 			unknown : false,
 			administrator : false,
-			developer : true,
-			customer : false
+			developer : false,
+			customer : true
 		},
 		order : {
 			unknown : false,
@@ -202,20 +202,20 @@ function getPermissions() {
 		},
 		tests : {
 			unknown : false,
-			administrator : true,
-			developer : false,
+			administrator : false,
+			developer : true,
 			customer : false
 		},
 		myworks : {
 			unknown : false,
 			administrator : false,
 			developer : true,
-			customer : false
+			customer : true
 		},
 		test : {
 			unknown : false,
-			administrator : true,
-			developer : false,
+			administrator : false,
+			developer : true,
 			customer : false
 		},
 		home : {

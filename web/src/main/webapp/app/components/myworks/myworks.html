@@ -99,8 +99,8 @@
                 <!--Start Tab Subscribed projects-->
                 <md-tab>
                     <md-tab-label>
-                       <span ng-if="role == 'developer'"> {{'myworks.tab-1-dev' | translate}}</span>
-                       <span ng-if="role == 'customer'">{{'myworks.tab-1-cust' | translate}}</span>
+                       <span ng-if="globals.currentUser.role == 'developer'"> {{'myworks.tab-1-dev' | translate}}</span>
+                       <span ng-if="globals.currentUser.role == 'customer'">{{'myworks.tab-1-cust' | translate}}</span>
                     </md-tab-label>
                     <md-tab-body>
                         <md-content class="md-padding" style="min-height: 450px;">
