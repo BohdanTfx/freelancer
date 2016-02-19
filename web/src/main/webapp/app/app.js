@@ -193,11 +193,13 @@
 							'Notification',
 							'$state',
 							'$timeout',
+							'$interval',
 							function($rootScope, $location, $cookieStore,
 									$http, AuthenticationService, Notification,
-									$state, $timeout) {
+									$state, $timeout, $interval) {
 								$rootScope.globals = {};
 								$rootScope.logged = false;
+								$rootScope.firstNonAbstractStateCalled = false;
 
 								$rootScope.logout = function() {
 									AuthenticationService.ClearCredentials();
@@ -206,44 +208,57 @@
 
 								getSavedStateData();
 
-								AuthenticationService
-										.autoAuthenticate()
-										.success(
-												function(data) {
-													if (!$state.current['abstract']
+								$rootScope.authenticationInterval = $interval(
+										function() {
+											if ($rootScope.firstNonAbstractStateCalled) {
+												$interval
+														.cancel($rootScope.authenticationInterval);
+
+												AuthenticationService
+														.autoAuthenticate()
+														.success(
+																function(data) {
+																	if (data !== false
+																			&& data !== null
+																			&& (typeof data === 'object')) {
+																		AuthenticationService
+																				.proceedSuccessAuthentication(data);
+																		return;
+																	}
+																	if ($state.current['abstract'])
+																		checkAccess(
+																				$state.current.name,
+																				'home');
+																	$rootScope.logged = false;
+																})
+														.error(
+																function() {
+																	Notification
+																			.error({
+																				title : 'Error!',
+																				message : 'An error occurred while authenticating. Please try again.'
+																			});
+																});
+											}
+										}, 100);
+
+								$rootScope
+										.$on(
+												'$stateChangeStart',
+												function(event, toState,
+														toParams, fromState,
+														fromParams) {
+													if (!fromState['abstract']
 															&& !checkAccess(
-																	$state.current.name,
-																	'home'))
-														if (data !== false
-																&& data !== null
-																&& (typeof data === 'object')) {
-															AuthenticationService
-																	.proceedSuccessAuthentication(data);
-															return;
-														}
-													$rootScope.logged = false;
-												})
-										.error(
-												function() {
-													Notification
-															.error({
-																title : 'Error!',
-																message : 'An error occurred while authenticating. Please try again.'
-															});
+																	toState.name,
+																	$state.current.name)) {
+														event.preventDefault();
+													}
+													$rootScope.firstNonAbstractStateCalled = true;
 												});
 
-								$rootScope.$on('$stateChangeStart', function(
-										event, toState, toParams, fromState,
-										fromParams) {
-									if (!fromState['abstract']
-											&& !checkAccess(toState.name,
-													$state.current.name))
-										event.preventDefault();
-
-								});
-
-								function checkAccess(url, callback) {
-									var nextStatePermission = getPermissions()[url];
+								function checkAccess(state, callback) {
+									var nextStatePermission = getPermissions()[state];
 									if ($rootScope.globals.currentUser === undefined) {
 										if (nextStatePermission === undefined
 												|| nextStatePermission["unknown"] == false) {
