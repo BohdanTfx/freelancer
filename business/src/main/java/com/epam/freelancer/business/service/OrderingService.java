@@ -46,13 +46,13 @@ public class OrderingService extends GenericService<Ordering, Integer> {
 		order.setPrivate(Boolean.parseBoolean(data.get("private")[0]));
 
 		order = genericDao.save(order);
-		
+
 		String[] technologies = data.get("technologies")[0].split(",");
 		List<Integer> techIds = new ArrayList<>();
 		for (String string : technologies)
 			techIds.add(Integer.parseInt(string));
-		
-		for (Integer id : techIds) 
+
+		for (Integer id : techIds)
 			orderingTechnoloyManyToManyDao.saveContact(order.getId(), id);
 
 		return order;
@@ -75,17 +75,17 @@ public class OrderingService extends GenericService<Ordering, Integer> {
 						.minLength(50).maxLength(3000),
 				data.get("descr") == null ? null : data.get("descr")[0]);
 		map.put(ValidationParametersBuilder.createParameters(true)
-				.isInteger(true).min(1.00),
+						.isInteger(true).min(1.00),
 				data.get("customer_id") == null ? null : data
 						.get("customer_id")[0]);
 		map.put(ValidationParametersBuilder.createParameters(true)
 				.isInteger(true).min(0.00), data.get("payment") == null ? null
 				: data.get("payment")[0]);
 		map.put(ValidationParametersBuilder.createParameters(true)
-				.isInteger(true).min(-12.0).max(13.0),
+						.isInteger(true).min(-12.0).max(13.0),
 				data.get("zone") == null ? null : data.get("zone")[0]);
 		map.put(ValidationParametersBuilder.createParameters(false).pattern(
-				"(^([0-9])[,0-9]*[0-9]$)|^[0-9]$"),
+						"(^([0-9])[,0-9]*[0-9]$)|^[0-9]$"),
 				data.get("technologies") == null ? null : data
 						.get("technologies")[0]);
 
@@ -98,7 +98,7 @@ public class OrderingService extends GenericService<Ordering, Integer> {
 
 		ObjectHolder<Double, Double> fixed = new ObjectHolder<Double, Double>(
 				orderingDao.getPayment("fixed", "min"), orderingDao.getPayment(
-						"fixed", "max"));
+				"fixed", "max"));
 		ObjectHolder<Double, Double> hourly = new ObjectHolder<Double, Double>(
 				orderingDao.getPayment("hourly", "min"),
 				orderingDao.getPayment("hourly", "max"));
@@ -108,9 +108,9 @@ public class OrderingService extends GenericService<Ordering, Integer> {
 		return map;
 	}
 
-    public List<Ordering> getAvailableCustOrders(Integer custId) {
-        return ((OrderingDao) genericDao).getAvailableCustOrders(custId);
-    }
+	public List<Ordering> getAvailableCustOrders(Integer custId) {
+		return ((OrderingDao) genericDao).getAvailableCustOrders(custId);
+	}
 
 	public List<Ordering> getAllCustOrders(Integer custId) {
 		return ((OrderingDao) genericDao).getAllCustOrders(custId);
@@ -148,5 +148,13 @@ public class OrderingService extends GenericService<Ordering, Integer> {
 
 	public int getAllAcceptedOrderByDevIdAndCustId(Integer custId, Integer devId) {
 		return ((OrderingDao) genericDao).getAllAcceptedOrderByDevIdAndCustId(custId, devId);
+	}
+
+	public List<Ordering> getComplainedOrders() {
+		return ((OrderingDao)genericDao).getComplainedOrders();
+	}
+
+	public List<Ordering> getBanOrders() {
+		return ((OrderingDao)genericDao).getBanOrders();
 	}
 }

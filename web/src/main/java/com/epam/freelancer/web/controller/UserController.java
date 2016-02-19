@@ -455,30 +455,31 @@ public class UserController extends HttpServlet implements Responsable {
 		}
 	}
 
-	private void complain(HttpServletRequest request,
-			HttpServletResponse response) throws IOException
-	{
-		HttpSession session = request.getSession();
-		if (session != null) {
-			UserEntity ue = (UserEntity) session.getAttribute("user");
-			if (ue != null) {
-				String param = request.getParameter("orderID");
-				if (param != null) {
-					try {
-						Complaint complaint = new Complaint();
-						complaint.setOrderId(Integer.parseInt(param));
-						complaint.setDevId(ue.getId());
-						complaintService.save(complaint);
-					} catch (Exception e) {
-						response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-					}
-				} else
-					response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-			} else
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-		} else
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-	}
+    private void complain(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession();
+        if (session != null) {
+            UserEntity ue = (UserEntity) session.getAttribute("user");
+            if (ue != null) {
+                String param = request.getParameter("orderID");
+                if (param != null) {
+                    try {
+                        Complaint complaint = new Complaint();
+                        complaint.setOrderId(Integer.parseInt(param));
+                        complaint.setDevId(ue.getId());
+                        complaintService.save(complaint);
+                        Ordering order = orderingService.findById(Integer.parseInt(param));
+                        order.setComplains(order.getComplains()+1);
+                        orderingService.modify(order);
+                    } catch (Exception e) {
+                        response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                    }
+                } else
+                    response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            } else
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        } else
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+    }
 
 	private void isComplainAlreadyExist(HttpServletRequest request,
 			HttpServletResponse response) throws IOException
