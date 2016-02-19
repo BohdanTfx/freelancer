@@ -44,9 +44,7 @@ import com.epam.freelancer.database.model.Follower;
 import com.epam.freelancer.database.model.Ordering;
 import com.epam.freelancer.database.model.Technology;
 import com.epam.freelancer.database.model.UserEntity;
-import com.epam.freelancer.security.provider.AuthenticationProvider;
 import com.epam.freelancer.web.json.model.JsonPaginator;
-import com.epam.freelancer.web.social.Linkedin;
 import com.epam.freelancer.web.util.Paginator;
 import com.google.gson.Gson;
 
@@ -802,128 +800,11 @@ public class UserController extends HttpServlet implements Responsable {
 		}
 	}
 
-	private void create(HttpServletRequest request, HttpServletResponse response)
-			throws IOException, ServletException
-	{
-		String requestData = request.getReader().readLine();
-		Map<String, String> data = mapper.readValue(requestData,
-				new TypeReference<Map<String, String>>() {
-				});
-		String role = data.get("role");
-		if (role == null || role.isEmpty()) {
-			response.sendError(HttpServletResponse.SC_MULTIPLE_CHOICES);
-			return;
-		}
-
-		if (!userManager.isEmailAvailable(data.get("email"))) {
-			response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
-			return;
-		}
-
-		try {
-			userManager
-					.createUser(
-							data.entrySet()
-									.stream()
-									.collect(
-                                            Collectors.toMap(Map.Entry::getKey,
-                                                    e -> new String[]{e
-                                                            .getValue()})),
-							role);
-			sendConfirmationToEmail(request, response, userManager.findUserByEmail(data.get("email")));
-		} catch (Exception e) {
-			e.printStackTrace();
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-		}
-
-		response.setStatus(200);
-	}
-
-
 	private void sendConfirmationToEmail(HttpServletRequest request, HttpServletResponse response,UserEntity entity) throws IOException{
 		String arrEmail[] = {entity.getEmail()};
 		String confirmLink = "http://"+request.getLocalAddr()+":" + request.getLocalPort() + "/#/auth?confirmCode=" + entity.getRegUrl()+"&uuid="+entity.getUuid();
 		SendMessageToEmail.sendHtmlFromGMail("onlineshopjava@gmail.com", "ForTestOnly", arrEmail, "OpenTask -  E-mail Confirmation ",
 		 getConfirmationEmailMessage(confirmLink,entity.getFname()));
-	}
-
-
-
-	private void signIn(HttpServletRequest request,
-			HttpServletResponse response, SignInType type)
-			throws ServletException, IOException
-	{
-		boolean remember = "true".equals(request.getParameter("remember"));
-		String email = null;
-		switch (type) {
-		case MANUAL:
-			email = request.getParameter("email");
-			break;
-		case LINKEDIN:
-			try {
-				email = getLinkedInProfile(request, response).getEmailAddress();
-			} catch (OAuthException e) {
-				e.printStackTrace();
-				response.sendError(HttpServletResponse.SC_CONFLICT);
-			}
-			break;
-		case GOOGLE:
-			break;
-		}
-		if (email == null || "".equals(email)) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-			return;
-		}
-
-		UserEntity userEntity = userManager.findUserByEmail(email);
-		if (userEntity == null) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-					"Invalid credentials");
-			return;
-		}else{
-			if(userEntity.getRegUrl()!=null){
-				response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE,
-						"Not confirmed email");
-				return;
-			}
-		}
-
-		String password = request.getParameter("password");
-		switch (type) {
-		case MANUAL:
-			if (password == null
-					|| !userManager.validCredentials(email, password,
-							userEntity))
-			{
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-						"Invalid credentials");
-				return;
-			}
-		case LINKEDIN:
-		case GOOGLE:
-			request.getSession().setAttribute("user", userEntity);
-			userEntity.setRole(getRole(userEntity));
-
-			if (remember)
-				authenticationProvider.loginAndRemember(response,
-						"freelancerRememberMeCookie", userEntity);
-			else
-				authenticationProvider.invalidateUserCookie(response,
-						"freelancerRememberMeCookie", userEntity);
-
-			sendResponse(response, userEntity, mapper);
-		}
-	}
-
-	private String getRole(UserEntity userEntity) {
-		String result = null;
-		if (userEntity instanceof Developer)
-			result = "developer";
-		if (userEntity instanceof Customer)
-			result = "customer";
-		if (userEntity instanceof Admin)
-			result = "admin";
-		return result;
 	}
 
 	private void getOrderById(HttpServletRequest request,
