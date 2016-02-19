@@ -443,6 +443,7 @@
   "personal.email-in-using":"Email is in use. Set free email and try again.",
   "personal.information":"Information",
   "personal.enter-code":"Enter code from SMS or Email",
+  "personal.enter-code-email":"Enter code from Email message",
   "personal.wrong-pass":"You enter wrong password",
   "personal.confirm":"Confirm",
   "personal.exit":"Exit",
