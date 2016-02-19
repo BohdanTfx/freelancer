@@ -143,7 +143,7 @@ angular
 									return;
 								}
 								if (response.isFirst) {
-									$location.path('/personal')
+									$state.go('personal');
 								} else {
 									if (response.role == 'developer')
 										$state.go('orders');

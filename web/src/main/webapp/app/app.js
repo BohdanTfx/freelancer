@@ -206,56 +206,64 @@
 
 								getSavedStateData();
 
-								AuthenticationService
-										.autoAuthenticate()
-										.success(
-												function(data, status, headers,
-														config) {
-													if (data !== false
-															&& data !== null
-															&& (typeof data === 'object')) {
-														AuthenticationService
-																.proceedSuccessAuthentication(data);
-														if (!$state.current['abstract'])
-															checkAccess(
-																	$state.current.name,
-																	'home');
-														return;
-													}
-													$rootScope.logged = false;
-												})
-										.error(
-												function(data, status, headers,
-														config) {
-													Notification
-															.error({
-																title : 'Error!',
-																message : 'An error occurred while authenticating. Please try again.'
+								$timeout(
+										function() {
+											AuthenticationService
+													.autoAuthenticate()
+													.success(
+															function(data) {
+																if (!$state.current['abstract']
+																		&& checkAccess(
+																				toState.name,
+																				$state.current.name))
+																	event
+																			.preventDefault();
+																if (data !== false
+																		&& data !== null
+																		&& (typeof data === 'object')) {
+																	AuthenticationService
+																			.proceedSuccessAuthentication(data);
+																	return;
+																}
+																$rootScope.logged = false;
+															})
+													.error(
+															function() {
+																Notification
+																		.error({
+																			title : 'Error!',
+																			message : 'An error occurred while authenticating. Please try again.'
+																		});
 															});
-												});
+										}, 100);
 
 								$rootScope.$on('$stateChangeStart', function(
 										event, toState, toParams, fromState,
 										fromParams) {
-									if (!fromState['abstract'])
-										checkAccess(toState.name,
-												fromState.name);
+									if (!fromState['abstract']
+											&& !checkAccess(toState.name,
+													$state.current.name))
+										event.preventDefault();
+
 								});
 
 								function checkAccess(url, callback) {
 									var nextStatePermission = getPermissions()[url];
 									if ($rootScope.globals.currentUser === undefined) {
 										if (nextStatePermission === undefined
-												|| nextStatePermission["unknown"] == false)
-											$timeout(function() {
-												$state.go(callback);
-											}, 20);
-										return;
+												|| nextStatePermission["unknown"] == false) {
+											$state.go(callback);
+											return false;
+										}
+										return true;
 									}
 									var role = $rootScope.globals.currentUser.role;
 									if (nextStatePermission === undefined
-											|| nextStatePermission[role] == false)
+											|| nextStatePermission[role] == false) {
 										$state.go(callback);
+										return false;
+									}
+									return true;
 								}
 							} ]);
 
