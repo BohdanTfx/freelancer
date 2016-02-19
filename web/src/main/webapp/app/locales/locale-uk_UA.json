@@ -21,6 +21,8 @@
   "index.menu-public-page":"Публічна сторінка",
   "index.menu-create-admin":"Запросити адміна",
   "index.menu-custworks":"Мої проекти",
+  "index.menu-ban-service":"Блокування замовлень",
+
 
   "admin.statistics":"Статистика",
   "admin.statistics-dev-cust":"Відношення фрілансерів і замовників",
@@ -67,7 +69,7 @@
   "myworks.msg-success-title":"Успіх!",
   "myworks.msg-success-descr-accepted-order":"Ви успішно підтвердили замовлення.",
   "myworks.msg-success-descr-rejected-order":"Ви успішно відхилили замовлення.",
-  "myworks.msg-success-descr-finished-order":"Замовлення завершене.",
+  "myworks.msg-success-descr-finished-order":"Замовлення завершено успішно.",
   "myworks.accept-confirm-title":"Ви впевнені?",
   "myworks.accept-confirm-textContent":"Після підтвердження, ви почнете виконувати це завдання. Це замовлення буде доступне у вкладці 'В ПРОЦЕСІ'",
   "myworks.accept-confirm-ok":"Підтвердити",

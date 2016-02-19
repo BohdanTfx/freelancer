@@ -20,6 +20,7 @@
   "index.menu-public-page":"My public page",
   "index.menu-create-admin":"Invite admin",
   "index.menu-custworks":"My Works",
+  "index.menu-ban-service":"Ban service",
 
   "admin.statistics":"Statistics",
   "admin.statistics-dev-cust":"Relation between Customer and Developer",
@@ -67,7 +68,7 @@
   "myworks.msg-success-title":"Success!",
   "myworks.msg-success-descr-accepted-order":"You successfully have accepted the ordering.",
   "myworks.msg-success-descr-rejected-order":"You successfully have rejected the ordering.",
-  "myworks.msg-success-descr-finished-order":"The ordering is finished.",
+  "myworks.msg-success-descr-finished-order":"The ordering finished successfully.",
   "myworks.accept-confirm-title":"Are you sure?",
   "myworks.accept-confirm-textContent":"After accepting, you will begin to do this ordering. The ordering will appear in tab 'IN PROGRESS'",
   "myworks.accept-confirm-ok":"Accept ordering",
