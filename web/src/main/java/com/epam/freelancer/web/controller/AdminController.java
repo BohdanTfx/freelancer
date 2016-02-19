@@ -101,8 +101,8 @@ public class AdminController extends HttpServlet implements Responsable {
                 case "admin/technologies":
                     getTechnologies(request, response);
                     break;
-                case "admin/users/amount":
-                    getUsersAmount(request, response);
+                case "admin/amount":
+                    getAdminAmount(request, response);
                     break;
                 default:
 
@@ -612,8 +612,7 @@ public class AdminController extends HttpServlet implements Responsable {
         orderingService.modify(order);
     }
 
-    private void getUsersAmount(HttpServletRequest request,HttpServletResponse response){
-       Integer amount = developerService.findAll().size()+customerService.findAll().size()+adminService.findAll().size();
-        sendResponse(response,amount,mapper);
+    private void getAdminAmount(HttpServletRequest request,HttpServletResponse response){
+        sendResponse(response,adminService.findAll().size(),mapper);
     }
 }

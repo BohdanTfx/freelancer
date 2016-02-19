@@ -25,8 +25,8 @@ angular.module('FreelancerApp')
             return $http.get("/admin/users/amount");
         };
 
-        dataFactory.getUserAmount = function () {
-            return $http.get("/admin/users/amount");
+        dataFactory.getAdminAmount = function () {
+            return $http.get("/admin/amount");
         };
 
         return dataFactory;

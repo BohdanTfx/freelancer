@@ -1,5 +1,5 @@
 angular.module('FreelancerApp')
-    .controller('statisticsCtrl', function($scope, statisticsAPI ,$mdDialog,Notification,createtestAPI){
+    .controller('statisticsCtrl', function($scope, statisticsAPI ,$mdDialog,Notification,createtestAPI,banAPI,$translate){
         $scope.admin = {};
         $scope.element = {};
         $scope.admin.email = "";
@@ -12,8 +12,8 @@ angular.module('FreelancerApp')
             }else{
                 Notification
                     .info({
-                        title: 'Info!',
-                        message: 'Not enought data for Test Statistic'
+                        title: $translate.instant("admin.statistics-info"),
+                        message: $translate.instant("admin.statistics-info-descr")
                     });
             }
 
@@ -27,19 +27,18 @@ angular.module('FreelancerApp')
             }).error(function(){
             Notification
                 .error({
-                    title: 'Error!',
-                    message: 'Something went bad. Please, try again.'
+                    title: $translate.instant("admin.statistics-error-title"),
+                    message: $translate.instant("admin.statistics-error-title-descr")
                 });
         });
 
-        statisticsAPI.getUserAmount().success(function(data){
-            $scope.userAmount = data;
-            $scope.adminAmount =  $scope.userAmount - $scope.custAmount - $scope.devAmount;
+        statisticsAPI.getAdminAmount().success(function(data){
+            $scope.adminAmount =  data;
         }).error(function(){
             Notification
                 .error({
-                    title: 'Error!',
-                    message: 'Something went bad. Please, try again.'
+                    title: $translate.instant("admin.statistics-error-title"),
+                    message: $translate.instant("admin.statistics-error-title-descr")
                 });
         });
 
@@ -49,14 +48,22 @@ angular.module('FreelancerApp')
             $scope.technologies = data;
         });
 
+        createtestAPI.getAllTests().success(function(data){
+            $scope.testAmount = data.length;
+        });
+
+         createtestAPI.getAllQuestions().success(function(data){
+            $scope.questAmount = data.length;
+        });
+
 
         $scope.showDevCustStat =  function(){
             var chartDevCust = {};
             chartDevCust.type = "PieChart";
             chartDevCust.data = [
                 ['Component', 'cost'],
-                ['Customers',  $scope.custAmount],
-                ['Developers',  $scope.devAmount]
+                [$translate.instant("admin.statistics-users-cust"),  $scope.custAmount],
+                [$translate.instant("admin.statistics-users-dev"),  $scope.devAmount]
             ];
 
             chartDevCust.options = {
@@ -83,8 +90,8 @@ angular.module('FreelancerApp')
         }).error(function(){
             Notification
                 .error({
-                    title: 'Error!',
-                    message: 'Something went bad. Please, try again.'
+                    title: $translate.instant("admin.statistics-error-title"),
+                    message: $translate.instant("admin.statistics-error-title-descr")
                 });
         });
 
@@ -98,12 +105,12 @@ angular.module('FreelancerApp')
                     "cols": [
                         {
                             "id": "day",
-                            "label": "Days",
+                            "label": $translate.instant("admin.statistics-days"),
                             "type": "number"
                         },
                         {
                             "id": "Order-id",
-                            "label": "orders",
+                            "label": $translate.instant("admin.statistics-orders"),
                             "type": "number"
                         },
 
@@ -144,12 +151,12 @@ angular.module('FreelancerApp')
                     ]
                 },
                 "options": {
-                    "title": "Orders per day",
+                    "title": $translate.instant("admin.statistics-orders-diagr-title"),
                     "isStacked": "true",
                     "fill": 20,
                     "displayExactValues": true,
                     "vAxis": {
-                        "title": "Orders unit",
+                        "title": $translate.instant("admin.statistics-orders-diagr-unit"),
                         "gridlines": {
                             "count": 10
                         }
@@ -183,7 +190,7 @@ angular.module('FreelancerApp')
             $scope.chartTests.data = {
                 "cols": [
                     {id: "t", label: "Topping", type: "string"},
-                    {id: "s", label: "Passed", type: "number"}
+                    {id: "s", label: $translate.instant("admin.statistics-tests-passed"), type: "number"}
                 ], "rows": [
                     {c: $scope.test1},
                     {c: $scope.test2},
@@ -194,9 +201,17 @@ angular.module('FreelancerApp')
             };
 
             $scope.chartTests.options = {
-                'title': 'Most popular tests'
+                'title': $translate.instant("admin.statistics-tests-diagr-title")
             };
         }
+
+        banAPI.getComplainedOrders().success(function(data){
+            $scope.complainedAmount = data.length;
+        });
+        banAPI.getBanOrders().success(function(data){
+            $scope.bannedAmount = data.length;
+        });
+
 
 
         statisticsAPI.getStatisticOrders().success(function(data){
@@ -204,6 +219,8 @@ angular.module('FreelancerApp')
             $scope.finishedCount = data.finishedCount;
             $scope.inProgressCount = data.inProgressCount;
             $scope.availableCount = data.availableCount;
+            $scope.ordersAmount = $scope.finishedCount+$scope.inProgressCount+$scope.availableCount;
+
 
 
             $scope.showOrdersStat($scope.availableCount,$scope.inProgressCount,$scope.finishedCount);
@@ -212,8 +229,8 @@ angular.module('FreelancerApp')
         }).error(function(){
             Notification
                 .error({
-                    title: 'Error!',
-                    message: 'Something went bad. Please, try again.'
+                    title: $translate.instant("admin.statistics-error-title"),
+                    message: $translate.instant("admin.statistics-error-title-descr")
                 });
         });
 
@@ -223,9 +240,9 @@ angular.module('FreelancerApp')
             chartOrders.type = "PieChart";
             chartOrders.data = [
                 ['Component', 'cost'],
-                ['Available',  availableCount],
-                ['In progress',  inProgressCount],
-                ['Finished',  finishedCount]
+                [$translate.instant("admin.statistics-tests-diagr-avail"),  availableCount],
+                [$translate.instant("admin.statistics-tests-diagr-inprogress"),  inProgressCount],
+                [$translate.instant("admin.statistics-tests-diagr-finish"),  finishedCount]
             ];
 
             chartOrders.options = {

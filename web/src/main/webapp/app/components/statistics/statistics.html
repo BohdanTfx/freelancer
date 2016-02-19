@@ -3,91 +3,63 @@
         <md-content>
             <md-tabs md-dynamic-height md-border-bottom>
 
-                    <!--Start Tab Proposed projects-->
-                    <md-tab label="General">
-                        <md-content class="md-padding" style="min-height: 450px;">
+                <!--Start Tab Proposed projects-->
+                <md-tab label="{{'admin.statistics-tab-1' | translate}}">
+                    <md-content class="md-padding" style="min-height: 450px;">
 
                         <div class="row">
                             <div class="col-sm-offset-1 col-sm-5" style="overflow: hidden;">
                                 <h4>{{"admin.statistics-dev-cust" | translate}}</h4>
+
                                 <div google-chart chart="chartDevCust"></div>
                             </div>
 
                             <div class="col-sm-6">
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <div class="col-sm-offset-4"><h4>Користувачі</h4></div>
+                                        <div><h4>{{"admin.statistics-users-title" | translate}}</h4></div>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        Всього користувачів: {{userAmount}} <br/> Адміністраторів:  {{adminAmount}}
-                                    </div>
-                                    <div class="col-sm-6">
-                                        Девелоперів: {{devAmount}}  <br/>  Кастомерів:  {{custAmount}}
-                                    </div>
-                                </div>
-
-                                <br/>
-                                <br/>
-
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <div class="col-sm-offset-4"><h4>Технології</h4></div>
+                                        {{"admin.statistics-users-all" | translate}}: {{devAmount + custAmount+ adminAmount}} <br/>
+                                        {{"admin.statistics-users-dev" | translate}}: {{devAmount}} <br/>
+                                        {{"admin.statistics-users-cust" | translate}}: {{custAmount}}<br/>
+                                        {{"admin.statistics-users-admin" | translate}}: {{adminAmount}}
                                     </div>
                                 </div>
-                                <div class="row">
-                                        <div class="col-sm-12">
-                                            <span><h5>Кількість технологій: {{techAmount}}</h5></span>
-                                        </div>
-                                        <div class="col-sm-12">
-                                            <button class="btn btn-default btn-xs" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                                Показати всі технології
-                                            </button>
 
-                                            <button class="btn btn-default btn-xs">
-                                                  Додати технологію
-                                            </button>
-                                        </div>
 
-                                        <div class="collapse" id="collapseExample">
-                                                <div class="col-sm-10 " style="height: 150px;overflow: auto" >
-                                                    <div ng-repeat="tech in technologies">
-                                                      <div class="row">
-                                                          <div class="col-sm-10" style="font-size: 12pt;margin-top: 10px;">
-                                                             <span>{{tech.name}}</span>
-                                                          </div>
-                                                          <div class="col-sm-2">
-                                                              <md-button class="md-icon-button md-accent" >
-                                                                  <i class="fa fa-trash" style="color:red;"></i>
-                                                              </md-button>
-                                                          </div>
-                                                      </div>
-                                                    </div>
-                                                </div>
-                                        </div>
-                                </div>
 
                             </div>
                         </div>
 
-                        </md-content>
-                    </md-tab>
+                    </md-content>
+                </md-tab>
 
 
                 <!--Start Tab Subscribed projects-->
-                <md-tab label="Orders">
+                <md-tab label="{{'admin.statistics-tab-2' | translate}}">
                     <md-content class="md-padding" style="min-height: 450px;">
 
                         <div class="row">
                             <div class="col-sm-8">
-                                <h4>{{"admin.statistics-orders" | translate}}</h4>
+                                <h4>{{"admin.statistics-orders-main-title" | translate}}</h4>
                                 <div google-chart chart="chartObject"></div>
                             </div>
 
                             <div class="col-sm-4" style="overflow: hidden">
-                                <h4>Ordering relation</h4>
+                                <h4>{{"admin.statistics-orders-title" | translate}}</h4>
+
                                 <div google-chart chart="chartOrders"></div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="padding-top: 50px;">
+                            <div class="col-sm-12">
+                                {{"admin.statistics-orders-all" | translate}}: {{ordersAmount}} <br/>
+                                {{"admin.statistics-orders-comlained" | translate}}: {{complainedAmount}} <br/>
+                                {{"admin.statistics-orders-banned" | translate}}: {{bannedAmount}}
                             </div>
                         </div>
 
@@ -96,15 +68,21 @@
                 </md-tab>
 
                 <!--Start Tab Projects in process-->
-                <md-tab label="Tests">
+                <md-tab label="{{'admin.statistics-tab-3' | translate}}">
                     <md-content class="md-padding" style="min-height: 450px;">
                         <div google-chart chart="chartTests"></div>
+
+                        <div class="row" style="padding-top: 50px;">
+                            <div class="col-sm-12">
+                                {{"admin.statistics-tests-all" | translate}}: {{testAmount}} <br/>
+                                {{"admin.statistics-tests-quest" | translate}}: {{questAmount}} <br/>
+                            </div>
+                        </div>
 
 
                     </md-content>
                 </md-tab>
                 <!--End Tab Projects in process-->
-
 
 
             </md-tabs>
@@ -113,62 +91,37 @@
 </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!--<div class="statistics-page">-->
-    <!--<div class="container" style="background-color: #ffffff;min-height: 450px;">-->
+<!--<div class="container" style="background-color: #ffffff;min-height: 450px;">-->
 
-        <!--<h3>{{"admin.statistics" | translate}}</h3>-->
-
-
-        <!--<div class="row" style="padding: 20px;">-->
-            <!--<div class="col-sm-5">-->
-                <!--<h4>{{"admin.statistics-dev-cust" | translate}}</h4>-->
-
-                <!--<div google-chart chart="chart"></div>-->
-            <!--</div>-->
-            <!--<div class="col-sm-7">-->
-                <!--<h4>{{"admin.statistics-orders" | translate}}</h4>-->
-
-                <!--<div google-chart chart="chartObject"></div>-->
-            <!--</div>-->
-        <!--</div>-->
+<!--<h3>{{"admin.statistics" | translate}}</h3>-->
 
 
-        <!--div class="row" style="padding: 20px;">-->
-        <!--<div class="col-sm-8">-->
-            <!--<h4>{{"admin.statistics-dev-cust" | translate}}</h4>-->
+<!--<div class="row" style="padding: 20px;">-->
+<!--<div class="col-sm-5">-->
+<!--<h4>{{"admin.statistics-dev-cust" | translate}}</h4>-->
 
-            <!--<div google-chart chart="chartTests" style="height:600px; width:100%;"></div>-->
-        <!--</div>-->
-        <!--<div class="col-sm-2">-->
+<!--<div google-chart chart="chart"></div>-->
+<!--</div>-->
+<!--<div class="col-sm-7">-->
+<!--<h4>{{"admin.statistics-orders" | translate}}</h4>-->
 
-        <!--</div>-->
-    <!--</div>-->
-    <!--</div>-->
+<!--<div google-chart chart="chartObject"></div>-->
+<!--</div>-->
+<!--</div>-->
 
+
+<!--div class="row" style="padding: 20px;">-->
+<!--<div class="col-sm-8">-->
+<!--<h4>{{"admin.statistics-dev-cust" | translate}}</h4>-->
+
+<!--<div google-chart chart="chartTests" style="height:600px; width:100%;"></div>-->
+<!--</div>-->
+<!--<div class="col-sm-2">-->
+
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
 
 
 <!--</div>-->
