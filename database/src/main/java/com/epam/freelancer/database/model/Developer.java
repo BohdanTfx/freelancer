@@ -177,8 +177,8 @@ public class Developer implements UserEntity {
     public void setLang(String lang) {
         if (lang == null) {
             this.lang = null;
-            return;
-        }
+        return;
+    }
         this.lang = lang;
         String[] langCode = lang.split("-");
         if (langCode.length == 2)

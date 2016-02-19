@@ -441,7 +441,7 @@
 
   "banservice.ban-success":"Замовлення успішно забанене",
   "banservice.unban-success":"Замовлення успішно розбанене",
-  "banservice.date":"Дата створення",
+  "banservice.date":"Дата",
   "banservice.complains":"Кількість скарг",
   "banservice.complained-orders-tab-label":"Оскаржені замовлення",
   "banservice.banned-orders-tab-label":"Забанені замовлення",

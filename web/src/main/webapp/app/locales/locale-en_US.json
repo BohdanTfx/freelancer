@@ -443,7 +443,7 @@
 
   "banservice.ban-success":"Order was successfully added to ban-list",
   "banservice.unban-success":"Order was successfully deleted from ban-list",
-  "banservice.date":"Create date",
+  "banservice.date":"Date",
   "banservice.complains":"Complain",
   "banservice.complained-orders-tab-label":"Complained orders",
   "banservice.banned-orders-tab-label":"Banned orders",
