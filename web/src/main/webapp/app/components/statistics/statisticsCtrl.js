@@ -1,8 +1,10 @@
 angular.module('FreelancerApp')
-    .controller('statisticsCtrl', function($scope, statisticsAPI ,$mdDialog,Notification){
+    .controller('statisticsCtrl', function($scope, statisticsAPI ,$mdDialog,Notification,createtestAPI){
         $scope.admin = {};
         $scope.element = {};
         $scope.admin.email = "";
+
+
 
         statisticsAPI.getStatisticPopularTests().success(function(data){
             if(data.tests.length>4) {
@@ -30,6 +32,23 @@ angular.module('FreelancerApp')
                 });
         });
 
+        statisticsAPI.getUserAmount().success(function(data){
+            $scope.userAmount = data;
+            $scope.adminAmount =  $scope.userAmount - $scope.custAmount - $scope.devAmount;
+        }).error(function(){
+            Notification
+                .error({
+                    title: 'Error!',
+                    message: 'Something went bad. Please, try again.'
+                });
+        });
+
+
+        createtestAPI.getAllTechnologies().success(function(data){
+            $scope.techAmount = data.length;
+            $scope.technologies = data;
+        });
+
 
         $scope.showDevCustStat =  function(){
             var chartDevCust = {};
@@ -42,8 +61,8 @@ angular.module('FreelancerApp')
 
             chartDevCust.options = {
                 displayExactValues: true,
-                width: 400,
-                height: 200,
+                width: 500,
+                height: 300,
                 is3D: true,
                 chartArea: {left:10,top:10,bottom:0,height:"100%"}
             };

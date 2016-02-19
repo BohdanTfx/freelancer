@@ -21,10 +21,13 @@ angular.module('FreelancerApp')
             return $http.get("/admin/statistics/orders");
         };
 
+        dataFactory.getUserAmount = function () {
+            return $http.get("/admin/users/amount");
+        };
 
-
-
-
+        dataFactory.getUserAmount = function () {
+            return $http.get("/admin/users/amount");
+        };
 
         return dataFactory;
     });

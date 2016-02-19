@@ -101,6 +101,9 @@ public class AdminController extends HttpServlet implements Responsable {
                 case "admin/technologies":
                     getTechnologies(request, response);
                     break;
+                case "admin/users/amount":
+                    getUsersAmount(request, response);
+                    break;
                 default:
 
             }
@@ -241,7 +244,7 @@ public class AdminController extends HttpServlet implements Responsable {
 
     private void sendDevAndCustAmount(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Map<String, Integer> map = new HashMap<>();
-        map.put("devAmount", developerService.getAllWorkers().size());
+        map.put("devAmount", developerService.findAll().size());
         map.put("custAmount", customerService.findAll().size());
         sendResponse(response, map, mapper);
     }
@@ -607,5 +610,10 @@ public class AdminController extends HttpServlet implements Responsable {
         Ordering order = orderingService.findById(id);
         order.setBan(false);
         orderingService.modify(order);
+    }
+
+    private void getUsersAmount(HttpServletRequest request,HttpServletResponse response){
+       Integer amount = developerService.findAll().size()+customerService.findAll().size()+adminService.findAll().size();
+        sendResponse(response,amount,mapper);
     }
 }

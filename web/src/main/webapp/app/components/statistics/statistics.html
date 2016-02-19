@@ -8,13 +8,65 @@
                         <md-content class="md-padding" style="min-height: 450px;">
 
                         <div class="row">
-                            <div class="col-sm-offset-1 col-sm-5">
+                            <div class="col-sm-offset-1 col-sm-5" style="overflow: hidden;">
                                 <h4>{{"admin.statistics-dev-cust" | translate}}</h4>
                                 <div google-chart chart="chartDevCust"></div>
                             </div>
 
                             <div class="col-sm-6">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="col-sm-offset-4"><h4>Користувачі</h4></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        Всього користувачів: {{userAmount}} <br/> Адміністраторів:  {{adminAmount}}
+                                    </div>
+                                    <div class="col-sm-6">
+                                        Девелоперів: {{devAmount}}  <br/>  Кастомерів:  {{custAmount}}
+                                    </div>
+                                </div>
 
+                                <br/>
+                                <br/>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="col-sm-offset-4"><h4>Технології</h4></div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                        <div class="col-sm-12">
+                                            <span><h5>Кількість технологій: {{techAmount}}</h5></span>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <button class="btn btn-default btn-xs" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                                Показати всі технології
+                                            </button>
+
+                                            <button class="btn btn-default btn-xs">
+                                                  Додати технологію
+                                            </button>
+                                        </div>
+
+                                        <div class="collapse" id="collapseExample">
+                                                <div class="col-sm-10 " style="height: 150px;overflow: auto" >
+                                                    <div ng-repeat="tech in technologies">
+                                                      <div class="row">
+                                                          <div class="col-sm-10" style="font-size: 12pt;margin-top: 10px;">
+                                                             <span>{{tech.name}}</span>
+                                                          </div>
+                                                          <div class="col-sm-2">
+                                                              <md-button class="md-icon-button md-accent" >
+                                                                  <i class="fa fa-trash" style="color:red;"></i>
+                                                              </md-button>
+                                                          </div>
+                                                      </div>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                </div>
 
                             </div>
                         </div>
@@ -47,6 +99,8 @@
                 <md-tab label="Tests">
                     <md-content class="md-padding" style="min-height: 450px;">
                         <div google-chart chart="chartTests"></div>
+
+
                     </md-content>
                 </md-tab>
                 <!--End Tab Projects in process-->
