@@ -3,3 +3,20 @@
     margin: 0 auto;
     padding: 15px;
 }
+
+
+@media (max-width: 970px) {
+    .create-admin .create-panel-body{
+        width: 40%;
+        margin: 0 auto;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 750px) {
+    .create-admin .create-panel-body{
+        width: 100%;
+        margin: 0 auto;
+        padding: 15px;
+    }
+}
