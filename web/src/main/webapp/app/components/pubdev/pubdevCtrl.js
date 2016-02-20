@@ -1,16 +1,16 @@
 angular.module('FreelancerApp')
     .controller('pubdevCtrl', function ($scope, pubdevAPI, $log, $http, $location, $filter, $stateParams, $rootScope, Notification, $translate) {
 
-        $scope.userrole = $rootScope.role;
+        $scope.userrole = $rootScope.globals.currentUser.role;
         $scope.hireord = '';
-        $scope.deleteFeedId = $rootScope.id;
+        $scope.deleteFeedId = $rootScope.globals.currentUser.id;
         $scope.feedback = '';
         $scope.mes = '';
         $scope.hiremes = '';
         $scope.accepted = false;
 
         $scope.wmDis = false;
-        if ($rootScope.id == $stateParams.devId) {
+        if ($rootScope.globals.currentUser.id == $stateParams.devId) {
             $scope.wmDis = true;
         }
 
@@ -22,7 +22,7 @@ angular.module('FreelancerApp')
             $scope.show = true;
         }
 
-        pubdevAPI.getAllAcceptedOrderByDevIdAndCustId($rootScope.id, $stateParams.devId).success(
+        pubdevAPI.getAllAcceptedOrderByDevIdAndCustId($rootScope.globals.currentUser.id, $stateParams.devId).success(
             function (data, status, headers, config) {
                 $scope.accepted = true;
             }).error(function () {
@@ -188,7 +188,7 @@ angular.module('FreelancerApp')
 
         $scope.sendSms = function () {
             var data = 'phone=' + $scope.phone + '&order_id=' + $scope.hireord +
-                '&dev_id=' + $scope.query + "&message=" + $scope.hiremes + '&cust_id=' + $rootScope.id + '&author=customer';
+                '&dev_id=' + $scope.query + "&message=" + $scope.hiremes + '&cust_id=' + $rootScope.globals.currentUser.id + '&author=customer';
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
             $http.post('/user/sms', data).success(function () {
@@ -231,7 +231,7 @@ angular.module('FreelancerApp')
                 $scope.dataLoading = false;
                 return;
             }
-            var data = 'message=' + $scope.mes + '&email=' + $scope.email + '&subject=Customer sent you message: ' + $rootScope.name + ' ' + $rootScope.lastName;
+            var data = 'message=' + $scope.mes + '&email=' + $scope.email + '&subject=Customer sent you message: ' + $rootScope.globals.currentUser.fname + ' ' + $rootScope.globals.currentUser.lname;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
             $scope.mes = '';
             $http.post('/user/send', data).success(function () {

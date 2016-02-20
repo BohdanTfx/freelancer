@@ -2,7 +2,7 @@ angular.module('FreelancerApp')
     .controller('custpubCtrl', function ($scope, custpubAPI, $log, $http, $location, $filter, $stateParams, $rootScope, Notification, $translate) {
 
         $scope.query = $stateParams.custId;
-        $scope.deleteFeedId = $rootScope.id;
+        $scope.deleteFeedId = $rootScope.globals.currentUser.id;
         $scope.feedback = '';
         $scope.hiremes = '';
         $scope.mes = '';
@@ -10,15 +10,15 @@ angular.module('FreelancerApp')
         $scope.custOwn = false;
         $scope.accepted = false;
 
-        if ($rootScope.id == $stateParams.custId) {
+        if ($rootScope.globals.currentUser.id == $stateParams.custId) {
             $scope.own = true;
         }
 
-        if ($rootScope.role == 'customer') {
+        if ($rootScope.globals.currentUser.role == 'customer') {
             $scope.custOwn = true;
         }
 
-        if ($rootScope.role == 'customer') {
+        if ($rootScope.globals.currentUser.role == 'customer') {
             $scope.show = true;
             $scope.feedShow = false;
         } else {
@@ -27,7 +27,7 @@ angular.module('FreelancerApp')
         }
 
         $scope.wmDis = false;
-        if ($rootScope.id == $stateParams.custId) {
+        if ($rootScope.globals.currentUser.id == $stateParams.custId) {
             $scope.wmDis = true;
         }
 
@@ -64,7 +64,7 @@ angular.module('FreelancerApp')
 
             });
 
-        custpubAPI.getAllAcceptedOrderByDevIdAndCustId($scope.query, $rootScope.id).success(
+        custpubAPI.getAllAcceptedOrderByDevIdAndCustId($scope.query, $rootScope.globals.currentUser.id).success(
             function (data, status, headers, config) {
                 $scope.accepted = true;
             }).error(function () {
@@ -141,7 +141,7 @@ angular.module('FreelancerApp')
                 return;
             }
             var data = 'phone=' + $scope.phone + '&order_id=' + $scope.hireord +
-                '&dev_id=' + $rootScope.id + "&message=" + $scope.hiremes + '&cust_id=' + $scope.query + '&author=dev';
+                '&dev_id=' + $rootScope.globals.currentUser.id + "&message=" + $scope.hiremes + '&cust_id=' + $scope.query + '&author=dev';
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
             $http.post('/user/sms', data).success(function () {
@@ -215,14 +215,14 @@ angular.module('FreelancerApp')
                 $scope.dataLoading = false;
                 return;
             }
-            var data = 'message=' + $scope.mes + '&email=' + $scope.email + '&subject=Customer sent you message: ' + $rootScope.name + ' ' + $rootScope.lastName;
+            var data = 'message=' + $scope.mes + '&email=' + $scope.email + '&subject=Customer sent you message: ' + $rootScope.globals.currentUser.fname + ' ' + $rootScope.globals.currentUser.lname;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
 
             $http.post('/user/send', data).success(function () {
                 Notification
                     .success({
                         title: $translate.instant('notification.success'),
-                        message: $translate.instant('custpub.your-email-was-succ-sent-to') + $rootScope.name
+                        message: $translate.instant('custpub.your-email-was-succ-sent-to') + $rootScope.globals.currentUser.fname
                     });
                 $scope.dataLoading = false;
                 $scope.mes = '';
@@ -230,7 +230,7 @@ angular.module('FreelancerApp')
                 Notification
                     .error({
                         title: $translate.instant('notification.error'),
-                        message: $translate.instant('custpub.an-error-occured-while-sending-to') + $rootScope.name + $translate.instant('custpub.try-again')
+                        message: $translate.instant('custpub.an-error-occured-while-sending-to') + $rootScope.globals.currentUser.fname + $translate.instant('custpub.try-again')
                     });
                 $scope.dataLoading = false;
                 $scope.mes = '';
