@@ -139,8 +139,6 @@ angular
 
 								hello.on('auth.login', function (auth) {
 									hello(auth.network).api('/me').then(function (r) {
-										console.log(r);
-										console.log(r.email);
 										$http.post('/unreg/signin/google?email=' + r.email).success(function (response) {
 											Notification
 												.success({
