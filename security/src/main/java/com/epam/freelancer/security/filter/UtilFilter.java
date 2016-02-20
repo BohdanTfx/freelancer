@@ -43,7 +43,7 @@ public class UtilFilter implements Filter {
 				|| path.startsWith
 				("/front/") || path.startsWith("/app/")
 				|| path.startsWith
-				("/bower_components/") || path.startsWith("/uploads/"))
+				("/bower_components/") || path.startsWith("/uploads/") || path.startsWith("/index.html"))
 			chain.doFilter(request, response);
 		else
 			request.getRequestDispatcher

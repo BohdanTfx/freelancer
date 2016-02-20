@@ -124,15 +124,18 @@
 				ng-if="ordersLoading == false">
 				<div class="panel-heading">
 					<div class="panel-title">
-						<a class="panel-title developer-link"
-							href="/#/orders/{{order.id}}"><i class="fa fa-link"></i>
-							{{order.title}}</a>
+						<div class="row" style="margin: 0">
+							<a class="panel-title developer-link"
+								href="/#/orders/{{order.id}}"><i class="fa fa-link"></i>
+								{{order.title}}</a>
 
-						<div class="btn btm-sm btn-danger pull-right"
-							ng-disabled="order.isComplaint" data-toggle="modal"
-							data-target=".bs-example-modal-sm"
-							ng-click="setOrderID(order.id)" style="padding: 3px">
-							{{"orders.complain" | translate}}</div>
+							<div class="btn btm-sm btn-danger pull-right"
+								ng-disabled="order.isComplaint || isComp" data-toggle="modal"
+								data-target=".bs-example-modal-sm"
+								ng-click="setOrderID(order.id)" style="padding: 3px"><i class="fa fa-exclamation-triangle"></i>
+								<span class="hidden-xs">
+								{{"orders.complain" | translate}}</span></div>
+						</div>
 					</div>
 				</div>
 				<div class="panel-body">
