@@ -59,6 +59,10 @@ public abstract class GenericService<T extends BaseEntity<ID>, ID> implements
 		return genericDao.filterAll(parameters, start, step);
 	}
 
+	public Integer getFilteredObjectNumber(Map<String, Object> parameters) {
+		return genericDao.getFilteredObjectNumber(parameters);
+	}
+
 	@Override
 	public boolean isDataValid(Map<Parameters, String> data) {
 		if (data == null || data.size() == 0)
