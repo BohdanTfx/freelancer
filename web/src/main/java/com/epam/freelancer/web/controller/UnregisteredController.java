@@ -1,22 +1,5 @@
 package com.epam.freelancer.web.controller;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.stream.Collectors;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
-import org.scribe.exceptions.OAuthException;
-
 import com.epam.freelancer.business.context.ApplicationContext;
 import com.epam.freelancer.business.manager.UserManager;
 import com.epam.freelancer.database.model.Admin;
@@ -27,6 +10,21 @@ import com.epam.freelancer.security.provider.AuthenticationProvider;
 import com.epam.freelancer.web.social.Linkedin;
 import com.epam.freelancer.web.social.model.LinkedinProfile;
 import com.epam.freelancer.web.util.SignInType;
+import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
+import org.scribe.exceptions.OAuthException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class UnregisteredController extends HttpServlet implements Responsable {
 	private final static Logger LOG = Logger
@@ -164,6 +162,9 @@ public class UnregisteredController extends HttpServlet implements Responsable {
 			case "unreg/signin":
 				signIn(request, response, SignInType.MANUAL);
 				return;
+				case "unreg/signin/google":
+					signInGoogle(request, response);
+					return;
 			case "unreg/create":
 				create(request, response);
 				return;
@@ -227,6 +228,10 @@ public class UnregisteredController extends HttpServlet implements Responsable {
 		response.setStatus(200);
 	}
 
+	private void signInGoogle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		signIn(request, response, SignInType.GOOGLE);
+	}
+
 	private void signIn(HttpServletRequest request,
 			HttpServletResponse response, SignInType type)
 			throws ServletException, IOException
@@ -246,6 +251,7 @@ public class UnregisteredController extends HttpServlet implements Responsable {
 			}
 			break;
 		case GOOGLE:
+			email = request.getParameter("email");
 			break;
 		}
 		if (email == null || "".equals(email)) {

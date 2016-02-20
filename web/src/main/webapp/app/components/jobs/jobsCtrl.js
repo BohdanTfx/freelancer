@@ -14,6 +14,7 @@ angular
 					$scope.filter.tooltip.title = $translate
 							.instant('filter.open');
 					$scope.filter.tooltip.locked = true;
+					$scope.isComp = false;
 
 					$scope.filterToggle = function() {
 						if (filterOpen) {
@@ -31,16 +32,29 @@ angular
 							$scope.filter.tooltip.locked = false;
 							filterOpen = true;
 						}
-					}
+					};
 
 					$scope.setOrderID = function(orderID) {
 						$scope.compOrderID = orderID;
 					};
 
 					$scope.complain = function() {
-						jobsAPI.toComplain($http, $scope, $scope.compOrderID,
-								Notification);
+						jobsAPI.toComplain($scope.compOrderID).success(function () {
+							$scope.isComp = true;
+							Notification
+								.success({
+									title : 'Success!',
+									message : 'Succesfully complained. Thank you.'
+								});
+						}).error(function () {
+							Notification
+								.error({
+									title : 'Error!',
+									message : 'Error while complaining order. Please try again.'
+								});
+						});
 					};
+					
 
 					$scope.itemsPerPage = [ {
 						number : 5,

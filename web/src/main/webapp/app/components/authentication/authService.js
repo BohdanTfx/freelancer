@@ -48,7 +48,7 @@ angular
 
 							service.confirmEmail = function(confirmCode,uuid){
 								return $http.post("/user/confirm/email?confirmCode="+confirmCode+"&uuid="+uuid);
-							}
+							};
 
 							service.initSocial = function($scope) {
 								var linkedinVerifier = getUrlVars();
@@ -134,6 +134,45 @@ angular
 												});
 							};
 
+							service.signinGoogle = function (auth) {
+								hello(auth).login();
+
+								hello.on('auth.login', function (auth) {
+									hello(auth.network).api('/me').then(function (r) {
+										console.log(r);
+										console.log(r.email);
+										$http.post('/unreg/signin/google?email=' + r.email).success(function (response) {
+											Notification
+												.success({
+													title: 'Welcome!',
+													message: 'Welcome to our system <b>'
+													+ response.fname
+													+ ' '
+													+ response.lname
+													+ '</b>'
+												});
+											service.proceedSuccessAuthentication(response);
+										}).error(function (data, status,
+														   headers, config) {
+											if (status == 400) {
+												Notification
+													.error({
+														title: 'Error!',
+														message: 'An error occurred while signing in. Please try again.'
+													});
+											}
+										});
+									});
+								});
+
+								hello.init({
+									google: '344510194886-fcto0du17jj39h2oil732hu2cmuq7p67.apps.googleusercontent.com'
+								}, {
+									redirect_uri: 'http://localhost:8081/index.html',
+									scope: 'email'
+								});
+							};
+
 							service.autoAuthenticate = function() {
 								return $http.get("/unreg/authentication/auto");
 							};
@@ -154,7 +193,7 @@ angular
 									if (response.role == 'customer')
 										$state.go('developers');
 								}
-							}
+							};
 
 							return service;
 						} ])

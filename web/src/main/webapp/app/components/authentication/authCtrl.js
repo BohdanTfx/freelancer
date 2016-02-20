@@ -10,8 +10,9 @@ angular
 						'AuthenticationService',
 						"Notification",
 						'$translate',
+					'$http',
 						function($scope, $rootScope, $location, $cookieStore,
-								 AuthenticationService,Notification,$translate) {
+								 AuthenticationService, Notification, $translate, $http) {
 							$scope.user = {};
 							$scope.social = {};
 							$scope.social.linkedin = {};
@@ -36,33 +37,31 @@ angular
 								$scope.showError = false;
 							};
 
-							hello.on('auth.login', function(auth) {
-								hello(auth.network).api('/me').then(
-										function(r) {
-											// Inject it into the container
-											/*
-											 * var label =
-											 * document.getElementById('profile_' +
-											 * auth.network); if (!label) {
-											 * label =
-											 * document.createElement('div');
-											 * label.id = 'profile_' +
-											 * auth.network;
-											 * document.getElementById('profile').appendChild(label); }
-											 * label.innerHTML = '<img src="' +
-											 * r.thumbnail + '" /> Hey ' +
-											 * r.name;
-											 */
-										});
+							/*hello.on('auth.login', function (auth) {
+								hello(auth.network).api('/me').then(function (r) {
+							 alert('hello');
+									console.log(r);
+							 console.log(r.email);
+							 $http.post('/unreg/signin/google?email=' + r.email).success(function (response) {
+							 console.log(response);
+							 AuthenticationService.proceedSuccessAuthentication(response);
+							 }).error(function () {
+							 console.log('error');
+							 });
+								});
 							});
 
-							hello
-									.init(
-											{
-												google : '519393406522-9ehstqc1vuddj5fhkof2dnkmv58118o4.apps.googleusercontent.com'
-											}, {
-												redirect_uri : document.URL
-											});
+							hello.init({
+							 google: '344510194886-fcto0du17jj39h2oil732hu2cmuq7p67.apps.googleusercontent.com'
+							}, {
+								redirect_uri: 'http://localhost:8081/index.html',
+								scope: 'email'
+							 });*/
+
+							$scope.signinGoogle = function (auth, $scope) {
+								AuthenticationService.signinGoogle(auth);
+
+							};
 
 							$scope.login = function() {
 								AuthenticationService

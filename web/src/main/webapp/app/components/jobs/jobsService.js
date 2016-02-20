@@ -79,30 +79,12 @@ angular
 							return content;
 
 						return undefined;
-					}
+					};
 
-					this.toComplain = function($http, $scope, orderID,
-							Notification) {
-						$http
-								.post(
-										"/user/orders/complain?orderID="
-												+ orderID)
-								.success(
-										function() {
-											Notification
-													.success({
-														title : 'Success!',
-														message : 'Succesfully complained. Thank you.'
-													});
-										})
-								.error(
-										function() {
-											Notification
-													.error({
-														title : 'Error!',
-														message : 'Error while complaining order. Please try again.'
-													});
-										});
+					this.toComplain = function(orderID) {
+						return $http
+								.post("/user/orders/complain?orderID=" + orderID)
+
 					};
 
 					this.fillPagination = function(data, $scope) {

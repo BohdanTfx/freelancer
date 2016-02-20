@@ -28,6 +28,10 @@ angular.module('FreelancerApp').controller(
 						});
 			}
 
+			$scope.signupGoogle = function (auth) {
+				signupAPI.signupGoogle(auth, $http, $scope);
+			};
+
 			$scope.roles = [ {
 				title : $translate.instant('role.developer.become'),
 				value : 'developer'
