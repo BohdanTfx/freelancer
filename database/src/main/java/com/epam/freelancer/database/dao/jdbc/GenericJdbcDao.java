@@ -201,6 +201,13 @@ public abstract class GenericJdbcDao<T extends BaseEntity<ID>, ID> implements
 					builder.append("%' ");
 				}
 			}
+			
+			if (entry.getValue() instanceof Number) {
+				builder.append(key);
+				builder.append(" = ");
+				builder.append(entry.getValue());
+				builder.append(" ");
+			}
 
 			hasFilter = true;
 		}

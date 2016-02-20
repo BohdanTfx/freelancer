@@ -67,10 +67,10 @@ public class TestJdbcDao extends GenericJdbcDao<Test, Integer> implements
 	@Override
 	public Map<Test, Integer> getPopularTests() {
 		Map<Test, Integer> map = new HashMap<>();
-		String query = " SELECT dq.test_id as id,t.tech_id,t.name,t.admin_id,t.pass_score,t.sec_per_quest,t.version,t.is_deleted,COUNT(t.id) AS amount"
-				+ " FROM developer_qa dq JOIN test t ON dq.test_id = t.id  AND "
-				+ GenericDao.NOT_DELETED
-				+ "  GROUP BY t.tech_id "
+		String query = " SELECT dq.test_id as id,t.tech_id,t.name,t.admin_id,"
+				+ "t.pass_score,t.sec_per_quest,t.version,t.is_deleted,COUNT(t.id) AS amount"
+				+ " FROM developer_qa dq JOIN test t ON dq.test_id = t.id  AND t."
+				+ GenericDao.NOT_DELETED + "  GROUP BY t.tech_id "
 				+ " ORDER BY COUNT(t.id) DESC LIMIT 5";
 		try (Connection connection = connectionPool.getConnection();
 				PreparedStatement statement = connection

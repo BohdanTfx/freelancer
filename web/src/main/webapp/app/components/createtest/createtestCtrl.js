@@ -370,11 +370,9 @@ angular
 					// Question tab: pagination
 					$scope.openQuestionPage = function(page) {
 						if (page == 'last')
-							$scope.questionItemListStartLast = 'last';
-						else {
-							$scope.questionItemListStartLast = undefined;
+							$scope.questionItemListStart = $scope.maxPage - 1;
+						else
 							$scope.questionItemListStart = page;
-						}
 
 						$scope
 								.getQuestionsByTechIdForQuestTab($scope.questTabTechId);
@@ -402,11 +400,11 @@ angular
 						$scope.techIsChosen = true;
 						createtestAPI
 								.getQuestionsByTechId(
-										$scope.questionItemListStart, id,
-										$scope.questionItemListStartLast)
+										$scope.questionItemListStart, id)
 								.success(
 										function(data) {
 											$scope.allQuestions = data.items;
+											$scope.maxPage = data.maxPage;
 											$scope
 													.fillQuestionTabPagination(data.pages);
 										})
