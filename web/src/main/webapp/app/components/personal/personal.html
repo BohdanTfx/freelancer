@@ -6,10 +6,8 @@
                 <div class="col-sm-3 col-xs-12">
                     <ANY ng-switch="editClass">
                         <ANY ng-switch-when="editClass">
-                            <div class="ih-item circle img">
-                                <img class="center-block img-thumbnail img-responsive"
-                                     style="border-radius: 50%;" src="{{img}}">
-                            </div>
+                            <div class="img"
+                                 style="background-image: url('{{img}}')"></div>
                         </ANY>
                         <ANY ng-switch-when="">
                             <div class="ih-item">

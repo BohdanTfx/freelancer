@@ -149,24 +149,17 @@
     position: relative;
     border-radius: 50%;
 }
-.ih-item.circle .img {
-    position: relative;
-    border-radius: 50%;
-}
 
-.ih-item.circle .img img {
+.personal-page .img {
+    display: inline-block;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
-}
-.ih-item.circle .info {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    text-align: center;
-    border-radius: 50%;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    margin: 15px 15px 0 15px;
+
 }
 
 .ih-item.circle.effect19.colored .info {
