@@ -31,6 +31,29 @@ angular
 										});
 					};
 
+					this.signupGoogle = function (auth, $http, $scope) {
+						hello(auth).login();
+
+						hello.on('auth.login', function (auth) {
+							hello(auth.network).api('/me').then(function (r) {
+								$scope.user.email = r.email;
+								$scope.user.first_name = r.first_name;
+								$scope.user.last_name = r.last_name;
+								$scope.user.img_url = r.thumbnail;
+								$scope.signup = true;
+								$scope.role = $scope.roles[localStorage
+									.getItem("openTaskSignUpRole")].value;
+							});
+						});
+
+						hello.init({
+							google: '344510194886-fcto0du17jj39h2oil732hu2cmuq7p67.apps.googleusercontent.com'
+						}, {
+							redirect_uri: 'http://localhost:8081/index.html',
+							scope: 'email'
+						});
+					};
+
 					this.initSocial = function($http, $scope) {
 						var linkedinVerifier = getUrlVars();
 						if (linkedinVerifier !== undefined
