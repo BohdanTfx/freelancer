@@ -86,6 +86,7 @@ angular.module('FreelancerApp')
                 $scope.email = data.email;
                 $scope.fname = data.fname;
                 $scope.lname = data.lname;
+                $scope.zone = data.zone;
                 if (typeof data.hourly != 'undefined' && data.hourly != null) {
                     $scope.hourly = '$ ' + data.hourly + '/ ' + $translate.instant('pubdev.hr');
                 }
