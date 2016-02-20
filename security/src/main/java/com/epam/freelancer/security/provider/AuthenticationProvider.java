@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.epam.freelancer.business.context.ApplicationContext;
+import com.epam.freelancer.business.manager.UserManager;
 import com.epam.freelancer.business.service.UserService;
 import com.epam.freelancer.business.util.CookieManager;
 import com.epam.freelancer.database.model.Admin;
@@ -36,21 +37,21 @@ public class AuthenticationProvider {
 				.getBean("cookieManager");
 	}
 
-	public void checkAutoAuthentication(String cookieName,
-			UserService<? extends UserEntity> service,
-			HttpServletRequest request, HttpServletResponse response)
+	public UserEntity isAutoAuthenticationEnable(String cookieName,
+			UserManager userManager, HttpServletRequest request)
 			throws IOException, ServletException
 	{
 		String uuid = cookieManager.getCookieValue(request, cookieName);
 
 		if (uuid != null) {
-			UserEntity user = service.findByUUID(uuid);
+			UserEntity user = userManager.findUserByUUID(uuid);
 			if (user != null)
-				request.getSession().setAttribute(sessinUserName, user);
+				return user;
 		}
+		return null;
 	}
 
-	public boolean provideAccess(String cookieName, String type, String url,
+	public boolean provideAccess(String cookieName, String type,
 			UserService<? extends UserEntity> service,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException
@@ -60,8 +61,6 @@ public class AuthenticationProvider {
 		if (user != null) {
 			if (checkUserEntityType(user, type))
 				return true;
-			else
-				response.sendError(403);
 			return false;
 		} else {
 			String uuid = cookieManager.getCookieValue(request, cookieName);
@@ -75,8 +74,7 @@ public class AuthenticationProvider {
 				} else {
 					cookieManager.removeCookie(response, cookieName);
 				}
-			} else
-				response.sendRedirect(request.getContextPath() + "/" + url);
+			}
 		}
 
 		return false;

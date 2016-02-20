@@ -1,31 +1,5 @@
 package com.epam.freelancer.web.controller;
 
-import com.epam.freelancer.business.context.ApplicationContext;
-import com.epam.freelancer.business.manager.UserManager;
-import com.epam.freelancer.business.resize.ImageResize;
-import com.epam.freelancer.business.service.*;
-import com.epam.freelancer.business.util.SendMessageToEmail;
-import com.epam.freelancer.business.util.SmsSender;
-import com.epam.freelancer.database.model.*;
-import com.epam.freelancer.security.provider.AuthenticationProvider;
-import com.epam.freelancer.web.json.model.JsonPaginator;
-import com.epam.freelancer.web.social.Linkedin;
-import com.epam.freelancer.web.social.model.LinkedinProfile;
-import com.epam.freelancer.web.util.Paginator;
-import com.epam.freelancer.web.util.SignInType;
-import com.google.gson.Gson;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
-import org.scribe.exceptions.OAuthException;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -33,12 +7,50 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
+import org.codehaus.jackson.map.ObjectMapper;
+
+import com.epam.freelancer.business.context.ApplicationContext;
+import com.epam.freelancer.business.manager.UserManager;
+import com.epam.freelancer.business.resize.ImageResize;
+import com.epam.freelancer.business.service.AdminService;
+import com.epam.freelancer.business.service.ComplaintService;
+import com.epam.freelancer.business.service.CustomerService;
+import com.epam.freelancer.business.service.DeveloperQAService;
+import com.epam.freelancer.business.service.DeveloperService;
+import com.epam.freelancer.business.service.FeedbackService;
+import com.epam.freelancer.business.service.OrderingService;
+import com.epam.freelancer.business.service.TechnologyService;
+import com.epam.freelancer.business.service.TestService;
+import com.epam.freelancer.business.util.SendMessageToEmail;
+import com.epam.freelancer.business.util.SmsSender;
+import com.epam.freelancer.database.model.Admin;
+import com.epam.freelancer.database.model.Complaint;
+import com.epam.freelancer.database.model.Contact;
+import com.epam.freelancer.database.model.Customer;
+import com.epam.freelancer.database.model.Developer;
+import com.epam.freelancer.database.model.DeveloperQA;
+import com.epam.freelancer.database.model.Feedback;
+import com.epam.freelancer.database.model.Follower;
+import com.epam.freelancer.database.model.Ordering;
+import com.epam.freelancer.database.model.Technology;
+import com.epam.freelancer.database.model.UserEntity;
+import com.epam.freelancer.web.json.model.JsonPaginator;
+import com.epam.freelancer.web.util.Paginator;
+import com.google.gson.Gson;
 
 public class UserController extends HttpServlet implements Responsable {
 	public static final Logger LOG = Logger.getLogger(UserController.class);
 	private static final long serialVersionUID = -2356506023594947745L;
-	private AuthenticationProvider authenticationProvider;
 	private FeedbackService feedbackService;
 	private OrderingService orderingService;
 	private AdminService adminService;
@@ -47,7 +59,6 @@ public class UserController extends HttpServlet implements Responsable {
 	private TechnologyService technologyService;
 	private ComplaintService complaintService;
 	private UserManager userManager;
-	private Linkedin linkedin;
 	private ObjectMapper mapper;
 	private Paginator paginator;
 
@@ -58,14 +69,8 @@ public class UserController extends HttpServlet implements Responsable {
 	@Override
 	public void init() {
 		LOG.info(getClass().getSimpleName() + " - " + " loaded");
-		linkedin = new Linkedin();
 		mapper = new ObjectMapper();
 		paginator = new Paginator();
-		try {
-			linkedin.initKeys("/social.properties");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		orderingService = (OrderingService) ApplicationContext.getInstance()
 				.getBean("orderingService");
 		technologyService = (TechnologyService) ApplicationContext
@@ -78,8 +83,6 @@ public class UserController extends HttpServlet implements Responsable {
 				.getBean("customerService");
 		developerService = (DeveloperService) ApplicationContext.getInstance()
 				.getBean("developerService");
-		authenticationProvider = AuthenticationProvider
-				.createAuthenticationProvider();
 		feedbackService = (FeedbackService) ApplicationContext.getInstance()
 				.getBean("feedbackService");
 		complaintService = (ComplaintService) ApplicationContext.getInstance()
@@ -93,20 +96,6 @@ public class UserController extends HttpServlet implements Responsable {
 		LOG.info(getClass().getSimpleName() + " - " + "doGet");
 		try {
 			switch (FrontController.getPath(request)) {
-			case "user/email":
-				sendResponse(response, userManager.isEmailAvailable(request
-						.getParameter("email")), mapper);
-				return;
-			case "user/social":
-				configSocials(request, response);
-				return;
-			case "user/signup/linkedin":
-				sendResponse(response, getLinkedInProfile(request, response),
-						mapper);
-				return;
-			case "user/signin/linkedin":
-				signIn(request, response, SignInType.LINKEDIN);
-				return;
 			case "user/developers/payment/limits":
 				getPaymentLimits(response);
 				return;
@@ -127,41 +116,12 @@ public class UserController extends HttpServlet implements Responsable {
 		sendResponse(response, limits, mapper);
 	}
 
-	private LinkedinProfile getLinkedInProfile(HttpServletRequest request,
-			HttpServletResponse response) throws IOException
-	{
-		String oauthVerifier = request.getParameter("verifier");
-		try {
-			linkedin.loadData(oauthVerifier);
-			return linkedin.getProfile();
-		} catch (IOException e) {
-			e.printStackTrace();
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-		}
-		return null;
-	}
-
-	private void configSocials(HttpServletRequest request,
-			HttpServletResponse response)
-	{
-		String callbackUrl = request.getParameter("callbackUrlLinkedIn");
-		Map<String, Object> result = new HashMap<>();
-		result.put("linkedinUrl", linkedin.getAuthentificationUrl(callbackUrl));
-		sendResponse(response, result, mapper);
-	}
-
 	@Override
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException
 	{
 		try {
 			switch (FrontController.getPath(request)) {
-			case "user/signin":
-				signIn(request, response, SignInType.MANUAL);
-				return;
-			case "user/create":
-				create(request, response);
-				return;
 			case "user/getById":
 				getById(request, response);
 				return;
@@ -188,12 +148,6 @@ public class UserController extends HttpServlet implements Responsable {
 				return;
 			case "user/sms":
 				sendSmsAndFollowOrHire(request, response);
-				return;
-			case "user/isAuth":
-				isAuth(request, response);
-				return;
-			case "user/logout":
-				logout(request, response);
 				return;
 			case "user/orders/filter":
 				filterOrders(request, response);
@@ -584,34 +538,6 @@ public class UserController extends HttpServlet implements Responsable {
 
 	}
 
-	public void logout(HttpServletRequest request, HttpServletResponse response)
-			throws IOException
-	{
-		LOG.info(getClass().getSimpleName() + " - " + "logout");
-		UserEntity userEntity = (UserEntity) request.getSession().getAttribute(
-				"user");
-		AuthenticationProvider authenticationProvider = (AuthenticationProvider) ApplicationContext
-				.getInstance().getBean("authenticationProvider");
-		authenticationProvider.invalidateUserCookie(response,
-				"freelancerRememberMeCookie", userEntity);
-		if (userEntity != null) {
-			request.getSession().invalidate();
-		}
-	}
-
-	public void isAuth(HttpServletRequest request, HttpServletResponse response)
-			throws IOException
-	{
-		HttpSession session = request.getSession();
-		UserEntity ue = (UserEntity) session.getAttribute("user");
-		if (ue != null) {
-			sendResponse(response, ue, mapper);
-		} else {
-			response.sendError(500);
-			return;
-		}
-	}
-
 	public void sendSmsAndFollowOrHire(HttpServletRequest request,
 			HttpServletResponse response) throws IOException
 	{
@@ -838,11 +764,7 @@ public class UserController extends HttpServlet implements Responsable {
 					ordering.setTechnologies(orderingService
 							.findOrderingTechnologies(ordering.getId()));
 				}
-				if (orderings != null) {
 					sendResponse(response, orderings, mapper);
-				} else {
-					response.sendError(500);
-				}
 			} catch (Exception e) {
 				response.sendError(500);
 			}
@@ -878,128 +800,11 @@ public class UserController extends HttpServlet implements Responsable {
 		}
 	}
 
-	private void create(HttpServletRequest request, HttpServletResponse response)
-			throws IOException, ServletException
-	{
-		String requestData = request.getReader().readLine();
-		Map<String, String> data = mapper.readValue(requestData,
-				new TypeReference<Map<String, String>>() {
-				});
-		String role = data.get("role");
-		if (role == null || role.isEmpty()) {
-			response.sendError(HttpServletResponse.SC_MULTIPLE_CHOICES);
-			return;
-		}
-
-		if (!userManager.isEmailAvailable(data.get("email"))) {
-			response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
-			return;
-		}
-
-		try {
-			userManager
-					.createUser(
-							data.entrySet()
-									.stream()
-									.collect(
-                                            Collectors.toMap(Map.Entry::getKey,
-                                                    e -> new String[]{e
-                                                            .getValue()})),
-							role);
-			sendConfirmationToEmail(request, response, userManager.findUserByEmail(data.get("email")));
-		} catch (Exception e) {
-			e.printStackTrace();
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-		}
-
-		response.setStatus(200);
-	}
-
-
 	private void sendConfirmationToEmail(HttpServletRequest request, HttpServletResponse response,UserEntity entity) throws IOException{
 		String arrEmail[] = {entity.getEmail()};
 		String confirmLink = "http://"+request.getLocalAddr()+":" + request.getLocalPort() + "/#/auth?confirmCode=" + entity.getRegUrl()+"&uuid="+entity.getUuid();
 		SendMessageToEmail.sendHtmlFromGMail("onlineshopjava@gmail.com", "ForTestOnly", arrEmail, "OpenTask -  E-mail Confirmation ",
 		 getConfirmationEmailMessage(confirmLink,entity.getFname()));
-	}
-
-
-
-	private void signIn(HttpServletRequest request,
-			HttpServletResponse response, SignInType type)
-			throws ServletException, IOException
-	{
-		boolean remember = "true".equals(request.getParameter("remember"));
-		String email = null;
-		switch (type) {
-		case MANUAL:
-			email = request.getParameter("email");
-			break;
-		case LINKEDIN:
-			try {
-				email = getLinkedInProfile(request, response).getEmailAddress();
-			} catch (OAuthException e) {
-				e.printStackTrace();
-				response.sendError(HttpServletResponse.SC_CONFLICT);
-			}
-			break;
-		case GOOGLE:
-			break;
-		}
-		if (email == null || "".equals(email)) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-			return;
-		}
-
-		UserEntity userEntity = userManager.findUserByEmail(email);
-		if (userEntity == null) {
-			response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-					"Invalid credentials");
-			return;
-		}else{
-			if(userEntity.getRegUrl()!=null){
-				response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE,
-						"Not confirmed email");
-				return;
-			}
-		}
-
-		String password = request.getParameter("password");
-		switch (type) {
-		case MANUAL:
-			if (password == null
-					|| !userManager.validCredentials(email, password,
-							userEntity))
-			{
-				response.sendError(HttpServletResponse.SC_BAD_REQUEST,
-						"Invalid credentials");
-				return;
-			}
-		case LINKEDIN:
-		case GOOGLE:
-			request.getSession().setAttribute("user", userEntity);
-			userEntity.setRole(getRole(userEntity));
-
-			if (remember)
-				authenticationProvider.loginAndRemember(response,
-						"freelancerRememberMeCookie", userEntity);
-			else
-				authenticationProvider.invalidateUserCookie(response,
-						"freelancerRememberMeCookie", userEntity);
-
-			sendResponse(response, userEntity, mapper);
-		}
-	}
-
-	private String getRole(UserEntity userEntity) {
-		String result = null;
-		if (userEntity instanceof Developer)
-			result = "developer";
-		if (userEntity instanceof Customer)
-			result = "customer";
-		if (userEntity instanceof Admin)
-			result = "admin";
-		return result;
 	}
 
 	private void getOrderById(HttpServletRequest request,
@@ -1086,11 +891,7 @@ public class UserController extends HttpServlet implements Responsable {
 					ordering.setTechnologies(orderingService
 							.findOrderingTechnologies(ordering.getId()));
 				}
-				if (orders != null) {
 					sendResponse(response, orders, mapper);
-				} else {
-					response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-				}
 			} catch (Exception e) {
 				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			}
@@ -1187,7 +988,8 @@ public class UserController extends HttpServlet implements Responsable {
 		String paramId = request.getParameter("id");
 		String role = request.getParameter("role");
 
-        if (paramId == null || "".equals(paramId) || !paramId.matches("[0-9]*")) {
+		if (paramId == null || "".equals(paramId) || !paramId.matches("[0-9]*"))
+		{
 			response.sendError(HttpServletResponse.SC_CONFLICT);
 			return;
 		}

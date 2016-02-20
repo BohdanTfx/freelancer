@@ -131,8 +131,8 @@
                         </ul>
                         <ul class="navigation " ng-switch on="logged">
                             <li class="hvr-underline-from-center" ng-switch-when="true"><a
-                                    href="#/personal"> <i class="fa fa-user"></i>{{name}}
-                                {{lastName}}
+                                    href="#/personal"> <i class="fa fa-user"></i>{{globals.currentUser.fname}}
+                                {{globals.currentUser.lname}}
                             </a></li>
                             <li id="logout" ng-click="logout()"
                                 class="hvr-underline-from-center" ng-switch-when="true"><a
@@ -182,7 +182,7 @@
                                              class="menuContent">
 
 
-                                <span ng-switch="role">
+                                <span ng-switch="globals.currentUser.role">
                                 <span ng-switch-when="developer">
                                     <md-menu-item>
                                         <md-menu-item>
@@ -247,7 +247,7 @@
                                  </md-menu-item>
 
                                     <md-menu-item>
-                                        <md-button type="submit" ng-href="/#/public/developer/devname/{{id}}">
+                                        <md-button type="submit" ng-href="/#/public/developer/devname/{{globals.currentUser.id}}">
                                             {{"index.menu-public-page" | translate}}
                                         </md-button>
                                     </md-menu-item>
@@ -255,7 +255,7 @@
                                 </span>
                                  <span ng-switch-when="customer">
                                     <md-menu-item>
-                                        <md-button ng-href="/#/public/customer/custname/{{id}}">
+                                        <md-button ng-href="/#/public/customer/custname/{{globals.currentUser.id}}">
                                             {{"index.menu-public-page" | translate}}
                                         </md-button>
                                     </md-menu-item>

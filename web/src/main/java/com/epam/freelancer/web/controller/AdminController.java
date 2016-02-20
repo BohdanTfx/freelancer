@@ -1,34 +1,58 @@
 package com.epam.freelancer.web.controller;
 
-import com.epam.freelancer.business.context.ApplicationContext;
-import com.epam.freelancer.business.manager.UserManager;
-import com.epam.freelancer.business.service.*;
-import com.epam.freelancer.business.util.SendMessageToEmail;
-import com.epam.freelancer.business.util.SmsSender;
-import com.epam.freelancer.database.model.Admin;
-import com.epam.freelancer.database.model.*;
-import com.epam.freelancer.web.json.model.JsonPaginator;
-import com.epam.freelancer.web.util.Paginator;
-import com.epam.freelancer.database.model.AdminCandidate;
-import com.epam.freelancer.database.model.OrderCounter;
-import org.apache.log4j.Logger;
-import org.codehaus.jackson.JsonParser;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
+import java.io.IOException;
+import java.security.SecureRandom;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.UUID;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-import java.security.SecureRandom;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+
+import org.apache.log4j.Logger;
+import org.codehaus.jackson.JsonParser;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
+
+import com.epam.freelancer.business.context.ApplicationContext;
+import com.epam.freelancer.business.manager.UserManager;
+import com.epam.freelancer.business.service.AdminCandidateService;
+import com.epam.freelancer.business.service.AdminService;
+import com.epam.freelancer.business.service.AnswerService;
+import com.epam.freelancer.business.service.ComplaintService;
+import com.epam.freelancer.business.service.CustomerService;
+import com.epam.freelancer.business.service.DeveloperService;
+import com.epam.freelancer.business.service.OrderCounterService;
+import com.epam.freelancer.business.service.OrderingService;
+import com.epam.freelancer.business.service.QuestionService;
+import com.epam.freelancer.business.service.TechnologyService;
+import com.epam.freelancer.business.service.TestService;
+import com.epam.freelancer.business.util.SendMessageToEmail;
+import com.epam.freelancer.database.model.Admin;
+import com.epam.freelancer.database.model.AdminCandidate;
+import com.epam.freelancer.database.model.Answer;
+import com.epam.freelancer.database.model.Customer;
+import com.epam.freelancer.database.model.OrderCounter;
+import com.epam.freelancer.database.model.Ordering;
+import com.epam.freelancer.database.model.Question;
+import com.epam.freelancer.database.model.Technology;
+import com.epam.freelancer.database.model.Test;
+import com.epam.freelancer.database.model.UserEntity;
+import com.epam.freelancer.web.json.model.JsonPaginator;
+import com.epam.freelancer.web.util.Paginator;
 
 /**
  * Created by Rynik on 04.02.2016.
