@@ -41,6 +41,7 @@ angular.module('FreelancerApp')
                     $scope.img = 'images/profile/no-image.png';
                 } else {
                     $scope.img = $scope.user.imgUrl + 'md.jpg?id=' + random;
+                    $rootScope.globals.currentUser.img = $scope.user.imgUrl + 'sm.jpg?id=' + random;
                 }
                 devTemp = clone($scope.user);
                 techsTemp = clone($scope.techs);
@@ -77,6 +78,7 @@ angular.module('FreelancerApp')
                 }
                 else {
                     $scope.img = $scope.user.imgUrl + 'md.jpg?id=' + random;
+                    $rootScope.globals.currentUser.img = $scope.user.imgUrl + 'sm.jpg?id=' + random;
                 }
                 custTemp = clone($scope.user);
                 contTemp = clone($scope.contact);
@@ -107,6 +109,7 @@ angular.module('FreelancerApp')
                 }
                 else {
                     $scope.img = $scope.user.imgUrl + 'md.jpg?id=' + random;
+                    $rootScope.globals.currentUser.img = $scope.user.imgUrl + 'sm.jpg?id=' + random;
                 }
                 adminTemp = clone($scope.user);
             });
@@ -348,7 +351,7 @@ angular.module('FreelancerApp')
                     });
                 });
             }
-        }
+        };
         $scope.changeSendingEmail = function () {
             $scope.confirmCode = '';
             if ($rootScope.globals.currentUser.role == 'developer') {
@@ -425,7 +428,7 @@ angular.module('FreelancerApp')
                     });
                 });
             }
-        }
+        };
 
         $scope.changePswdOrEmailForUser = function (data) {
             $scope.result = data;
