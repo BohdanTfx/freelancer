@@ -4,7 +4,7 @@
 	<form name="loginForm" ng-submit="loginForm.$valid && login()"
 		novalidate>
 		<div class="col-xs-12 social-buttons">
-			<div class="col-sm-6" style="padding-top: 3px;" onclick="hello('google').login()">
+			<div class="col-sm-6" style="padding-top: 3px;" ng-click="signinGoogle('google')">
 				<a class="btn btn-block btn-social btn-google-plus"> <i
 					class="fa fa-google-plus"></i> {{"auth.signin-google-button" |
 					translate}}

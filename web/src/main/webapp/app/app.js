@@ -210,6 +210,9 @@
 								$rootScope.logout = function() {
 									AuthenticationService.ClearCredentials();
 									$state.go('home');
+									hello('google').logout().then(function () {
+									}, function (e) {
+									});
 								};
 
 								getSavedStateData();
