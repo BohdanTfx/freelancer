@@ -32,7 +32,8 @@ angular
 										id : user.id,
 										fname : user.fname,
 										lname : user.lname,
-										role : user.role
+										role: user.role,
+										img: user.imgUrl + 'sm.jpg'
 									}
 								};
 							};

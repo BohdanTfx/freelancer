@@ -130,8 +130,12 @@
                             </a></li>
                         </ul>
                         <ul class="navigation " ng-switch on="logged">
-                            <li class="hvr-underline-from-center" ng-switch-when="true"><a
-                                    href="#/personal"> <i class="fa fa-user"></i>{{globals.currentUser.fname}}
+                            <li class="home-head-img-pr box-none" id="imgHeadHome"
+                                style="background-image: url('{{globals.currentUser.img}}')" ng-switch="true"></li>
+                            <li class="hvr-underline-from-center" ng-switch-when="true">
+                                <a
+                                        href="#/personal"> <!--<i class="fa fa-user"></i>-->
+                                    {{globals.currentUser.fname}}
                                 {{globals.currentUser.lname}}
                             </a></li>
                             <li id="logout" ng-click="logout()"
