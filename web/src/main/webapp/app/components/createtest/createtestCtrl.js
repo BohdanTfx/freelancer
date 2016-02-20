@@ -9,11 +9,10 @@ angular
 
 					$scope.openPage = function(page) {
 						if (page == 'last')
-							$scope.itemListStartLast = 'last';
-						else {
-							$scope.itemListStartLast = undefined;
+							$scope.itemListStart = $scope.createTestMaxPage - 1;
+						else 
 							$scope.itemListStart = page;
-						}
+						
 						$scope.getQuestionsByTechId($scope.chosenTechID);
 					};
 
@@ -27,7 +26,7 @@ angular
 									$scope.showFirst = true;
 								else
 									$scope.showFirst = false;
-								if (item.second + 4 >= $scope.maxPage)
+								if (item.second + 4 >= $scope.createTestMaxPage)
 									$scope.showLast = false;
 								else
 									$scope.showLast = true;
@@ -42,11 +41,11 @@ angular
 						}
 						$scope.chosenTechID = id;
 						createtestAPI
-								.getQuestionsByTechId($scope.itemListStart, id,
-										$scope.itemListStartLast)
+								.getQuestionsByTechId($scope.itemListStart, id)
 								.success(
 										function(data) {
 											$scope.questions = data.items;
+											$scope.createTestMaxPage = data.maxPage;
 											$scope.availableQuestions = $scope.questions;
 											$scope.availableQuestions.size = $scope.availableQuestions.length;
 
