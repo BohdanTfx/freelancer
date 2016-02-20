@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface GenericDao<T, ID> {
+	String NOT_DELETED = "is_deleted IS NOT TRUE";
 
 	T save(T entity);
 

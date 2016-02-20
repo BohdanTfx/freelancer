@@ -96,7 +96,8 @@ public abstract class GenericJdbcDao<T extends BaseEntity<ID>, ID> implements
 	@Override
 	public List<T> getAll() {
 		List<T> entities = new ArrayList<>();
-		String query = "SELECT * FROM " + table + " WHERE is_deleted IS NOT TRUE";
+		String query = "SELECT * FROM " + table + " WHERE "
+				+ GenericDao.NOT_DELETED;
 		try (Connection connection = connectionPool.getConnection();
 				PreparedStatement statement = connection
 						.prepareStatement(query);
@@ -116,9 +117,9 @@ public abstract class GenericJdbcDao<T extends BaseEntity<ID>, ID> implements
 		List<T> entities = new ArrayList<>();
 		String query = "SELECT * FROM " + table;
 		try (Connection connection = connectionPool.getConnection();
-			 PreparedStatement statement = connection
-					 .prepareStatement(query);
-			 ResultSet set = statement.executeQuery()) {
+				PreparedStatement statement = connection
+						.prepareStatement(query);
+				ResultSet set = statement.executeQuery()) {
 			while (set.next()) {
 				T entity = transformer.getObject(set);
 				entities.add(entity);
@@ -136,7 +137,8 @@ public abstract class GenericJdbcDao<T extends BaseEntity<ID>, ID> implements
 		List<T> entities = new ArrayList<>();
 		String query = null;
 		if (parameters == null || parameters.isEmpty())
-			query = "SELECT * FROM " + table + " Limit " + start + ", " + step;
+			query = "SELECT * FROM " + table + " WHERE "
+					+ GenericDao.NOT_DELETED + " Limit " + start + ", " + step;
 		else
 			query = fillFilterQuery(parameters, "SELECT * FROM " + table,
 					start, step);
@@ -203,6 +205,12 @@ public abstract class GenericJdbcDao<T extends BaseEntity<ID>, ID> implements
 			hasFilter = true;
 		}
 
+		if (parameters.size() > 0)
+			builder.append(" AND ");
+		else
+			builder.append(" WHERE ");
+		builder.append(GenericDao.NOT_DELETED);
+
 		if (start != null && step != null) {
 			builder.append(" LIMIT ");
 			builder.append(start);
@@ -211,13 +219,15 @@ public abstract class GenericJdbcDao<T extends BaseEntity<ID>, ID> implements
 		}
 
 		return builder.toString();
-}
+	}
 
 	@Override
 	public Integer getFilteredObjectNumber(Map<String, Object> parameters) {
 		String query = "SELECT DISTINCT count(*) FROM " + table;
 		if (parameters != null && !parameters.isEmpty())
 			query = fillFilterQuery(parameters, query, null, null);
+		else
+			query += " WHERE " + GenericDao.NOT_DELETED;
 
 		try (Connection connection = connectionPool.getConnection();
 				PreparedStatement statement = connection
@@ -233,7 +243,8 @@ public abstract class GenericJdbcDao<T extends BaseEntity<ID>, ID> implements
 
 	@Override
 	public Integer getObjectNumber() {
-		String query = "SELECT count(*) FROM " + table;
+		String query = "SELECT count(*) FROM " + table + " " + " WHERE "
+				+ GenericDao.NOT_DELETED;
 		try (Connection connection = connectionPool.getConnection();
 				PreparedStatement statement = connection
 						.prepareStatement(query);

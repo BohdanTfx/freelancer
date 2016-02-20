@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.epam.freelancer.database.dao.GenericDao;
+
 public class StatementManager {
 
 	public void fillSave(PreparedStatement statement,
@@ -54,7 +56,7 @@ public class StatementManager {
 				builder.append(item.getColumnName());
 			}
 		}
-		
+
 		builder.append(" ) values( ");
 		for (int i = 0; i < customIds.size() + columnItems.size(); i++) {
 			if (i + 1 < customIds.size() + columnItems.size()) {
@@ -175,6 +177,8 @@ public class StatementManager {
 				builder.append(" = ?");
 			}
 		}
+
+		builder.append(" and " + GenericDao.NOT_DELETED);
 
 		return builder.toString();
 	}
