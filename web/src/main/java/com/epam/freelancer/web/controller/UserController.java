@@ -275,8 +275,10 @@ public class UserController extends HttpServlet implements Responsable {
 						+ "developer" + File.separator + ue.getId();
 				saveImage(uploadFilePath, encodeImage, response);
 				Developer developer = developerService.findById(ue.getId());
+
 				developer.setImgUrl("uploads/developer/" + ue.getId() + "/");
 				developerService.updateDeveloper(developer);
+				ue.setImgUrl("uploads/developer/" + ue.getId() + "/");
 			}
 			if ("customer".equals(ue.getRole())) {
 				uploadFilePath = applicationPath + "uploads" + File.separator
@@ -285,6 +287,7 @@ public class UserController extends HttpServlet implements Responsable {
 				Customer customer = customerService.findById(ue.getId());
 				customer.setImgUrl("uploads/customer/" + ue.getId() + "/");
 				customerService.modify(customer);
+				ue.setImgUrl("uploads/customer/" + ue.getId() + "/");
 			}
 			if ("admin".equals(ue.getRole())) {
 				uploadFilePath = applicationPath + "uploads" + File.separator
@@ -293,6 +296,7 @@ public class UserController extends HttpServlet implements Responsable {
 				Admin admin =  adminService.findById(ue.getId());;
 				admin.setImgUrl("uploads/admin/" + ue.getId() + "/");
 				adminService.modify(admin);
+				ue.setImgUrl("uploads/admin/" + ue.getId() + "/");
 			}
 
 		} catch (Exception e) {

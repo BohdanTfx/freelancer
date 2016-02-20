@@ -21,7 +21,7 @@ angular.module('FreelancerApp')
                 }
                 //check send e-mail
                 $scope.email = $scope.user.sendEmail == undefined ? $scope.user.email : $scope.user.sendEmail;
-                if (typeof data.techs != 'undefined' && data.techs.length > 0) {
+                if (typeof data.techs != 'undefined') {
                     $scope.techs = data.techs;
                 }
                 if (typeof data.contacts != 'undefined') {
