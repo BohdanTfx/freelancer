@@ -1,9 +1,9 @@
 angular.module('FreelancerApp')
-    .controller('jobinfoCtrl', function ($scope, orderAPI, $stateParams, $rootScope, $log, $http, Notification, $translate) {
+    .controller('jobinfoCtrl', function ($scope, orderAPI, $stateParams, $rootScope, $log, $http, Notification, $translate, $state) {
 
         $scope.user = {};
-        $scope.user.id = $rootScope.id;
-        $scope.user.role = $rootScope.role;
+        $scope.user.id = $rootScope.globals.currentUser.id;
+        $scope.user.role = $rootScope.globals.currentUser.role;
 
         $scope.user.subscribed = false;
 
@@ -263,5 +263,22 @@ angular.module('FreelancerApp')
                     });
             })
         }
+
+        $scope.banOrder = function () {
+            orderAPI.banOrder($scope.order.id).success(function () {
+                Notification
+                    .success({
+                        title: $translate.instant('notification.success'),
+                        message: $translate.instant('banservice.ban-success')
+                    });
+                $state.go('banservice');
+            }).error(function () {
+                Notification
+                    .error({
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('notification.smth-wrong')
+                    });
+            });
+        };
 
     });

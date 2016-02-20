@@ -1,87 +1,82 @@
 <div class="row">
 	<md-content class="animated fadeInLeft md-padding">
-	<h3 class="box-none">Create new order</h3>
+	<h3 class="box-none">{{"createorder.title" | translate}}</h3>
 	<form name="newOrderForm" novalidate
 		ng-submit="newOrderForm.$valid && createOrder()">
 		<md-input-container class="col-xs-12"
 			md-is-error="newOrderForm.title.$invalid && (newOrderForm.$submitted || newOrderForm.title.$dirty)">
-		<label>Title</label> <md-icon md-font-icon="fa-pencil-square-o"
+		<label>{{"createorder.label-title" | translate}}</label> <md-icon md-font-icon="fa-pencil-square-o"
 			class="fa"></md-icon> <input ng-required="true" type="title"
 			name="title" ng-model="order.title" ng-minlength="10"
 			md-maxlength="120">
 		<div ng-messages="newOrderForm.title.$error"
 			ng-if="newOrderForm.$submitted || newOrderForm.title.$touched">
-			<div ng-message="required">This is required.</div>
-			<div ng-message="md-maxlength">The name has to be less than 120
-				characters long.</div>
-			<div ng-message="minlength">The name has to be more than 10
-				characters long.</div>
+			<div ng-message="required">{{"createorder.msg-required" | translate}}</div>
+			<div ng-message="md-maxlength">{{"createorder.msg-title-maxlength" | translate}}</div>
+			<div ng-message="minlength">{{"createorder.msg-title-minlength" | translate}}</div>
 		</div>
 		</md-input-container>
 		<md-input-container class="col-xs-12"
 			md-is-error="newOrderForm.descr.$invalid && (newOrderForm.$submitted || newOrderForm.descr.$dirty)">
-		<label>Description</label> <md-icon md-font-icon="fa-file-text-o"
+		<label>{{"createorder.label-descr" | translate}}</label> <md-icon md-font-icon="fa-file-text-o"
 			class="fa"></md-icon> <textarea md-maxlength="3000" ng-minlength="50"
 			name="descr" type="descr" ng-required="true" ng-model="order.descr"></textarea>
 		<div ng-messages="newOrderForm.descr.$error"
 			ng-if="newOrderForm.$submitted || newOrderForm.descr.$touched">
-			<div ng-message="required">This is required.</div>
-			<div ng-message="md-maxlength">The name has to be less than
-				3000 characters long.</div>
-			<div ng-message="minlength">The name has to be more than 50
-				characters long.</div>
+			<div ng-message="required">{{"createorder.msg-required" | translate}}</div>
+			<div ng-message="md-maxlength">{{"createorder.msg-descr-maxlength" | translate}}</div>
+			<div ng-message="minlength">{{"createorder.msg-descr-minlength" | translate}}</div>
 		</div>
 		</md-input-container>
 
 		<fieldset class="payment-fieldset">
-			<legend>Payment </legend>
+			<legend>{{"createorder.label-payment" | translate}} </legend>
 			<div class="col-xs-12">
 				<md-input-container class="col-xs-12"> <md-radio-group
 					ng-model="order.pay_type" name="payType" ng-required="true">
 				<div class="col-xs-6">
 					<div class="inline-block">
 						<md-radio-button value="hourly" class="md-primary box-none">
-						Hourly <md-tooltip md-direction="right"> Payment type
+							{{"createorder.label-payment-hourly" | translate}}
+							<md-tooltip md-direction="right"> {{"createorder.label-payment-type" | translate}}
 						</md-tooltip> </md-radio-button>
 					</div>
 				</div>
 				<div class="col-xs-6">
 					<div class="inline-block">
 						<md-radio-button value="fixed" class="md-primary box-none">
-						Fixed <md-tooltip md-direction="left"> Payment type </md-tooltip></md-radio-button>
+							{{"createorder.label-payment-fixed" | translate}}
+							<md-tooltip md-direction="left"> {{"createorder.label-payment-type" | translate}} </md-tooltip></md-radio-button>
 					</div>
 				</div>
 				</md-radio-group>
 				<div ng-messages="newOrderForm.payType.$error"
 					ng-if="newOrderForm.$submitted || newOrderForm.payType.$touched">
-					<div ng-message="required">This is required.</div>
+					<div ng-message="required">{{"createorder.msg-required" | translate}}</div>
 				</div>
 				</md-input-container>
 
 				<md-input-container class="col-xs-12 box-none"
 					md-is-error="newOrderForm.payment.$invalid && (newOrderForm.$submitted || newOrderForm.payment.$dirty)">
-				<label>Payment</label> <md-icon md-font-icon="fa-dollar" class="fa"></md-icon>
+				<label>{{"createorder.label-payment" | translate}}</label> <md-icon md-font-icon="fa-dollar" class="fa"></md-icon>
 				<input ng-required="true" name="payment" data-max-length="100"
 					ng-model="order.payment" ng-only-number data-max-decimal-points="1">
 				<div ng-messages="newOrderForm.payment.$error"
 					ng-if="newOrderForm.$submitted || newOrderForm.payment.$touched">
-					<div ng-message="required">This is required.</div>
-					<div ng-message="md-maxlength">The name has to be less than
-						120 characters long.</div>
-					<div ng-message="minlength">The name has to be more than 10
-						characters long.</div>
+					<div ng-message="required">{{"createorder.msg-required" | translate}}</div>
 				</div>
 				</md-input-container>
 			</div>
 		</fieldset>
 
-		<md-input-container class="col-xs-12"> <label>Time
-			zone</label> <md-icon md-font-icon="fa-calendar" class="fa"></md-icon> <md-select
+		<md-input-container class="col-xs-12"> <label>{{"createorder.label-time-zone"
+			| translate}}</label> <md-icon md-font-icon="fa-calendar" class="fa"></md-icon> <md-select
 			ng-init="order.zone = getCurrentZone()" ng-model="order.zone">
 		<md-option ng-repeat="zone in timeZones" value="{{zone.zone}}">
 		{{zone.title}} </md-option> </md-select> </md-input-container>
 
-		<md-input-container class="col-xs-12"> <label>Technologies</label>
+		<md-input-container class="col-xs-12"> <label>{{"createorder.label-technologies"
+			| translate}}</label>
 		<md-icon md-font-icon="fa-gears" class="fa"></md-icon> <input
 			name="fakeTechnologies" class="fake-technology-input"
 			ng-model="order.fakeTechnologies" empty-technology>
@@ -93,27 +88,34 @@
 			button-label="name" item-label="name" tick-property="ticked"></div>
 		<div ng-messages="newOrderForm.fakeTechnologies.$error"
 			ng-if="newOrderForm.$submitted || newOrderForm.fakeTechnologies.$touched">
-			<div ng-message="emptyTechnologies">Please, select at least one
-				technology.</div>
+			<div ng-message="emptyTechnologies">{{"createorder.msg-empty-technology"
+				| translate}}</div>
 		</div>
 		</md-input-container>
 
 		<md-input-container class="col-xs-12 order-private-icon">
 		<label></label> <md-icon md-font-icon="fa-lock" class="fa"></md-icon>
 		<md-checkbox md-no-ink ng-model="order.private" class="md-primary">
-		<md-tooltip md-direction="top">{{order.private ? 'Private
-		order' : 'Public order'}}</md-tooltip> When order will be finished it will be
-		hidden in developer history </md-checkbox> </md-input-container>
+		<md-tooltip md-direction="top">
+			<span ng-show = "order.private">{{"createorder.tooltip-private-order"
+			| translate}}</span>
+			<span ng-hide = "order.private">{{"createorder.tooltip-public-order"
+			| translate}}</span>
+		</md-tooltip> {{"createorder.tooltip-hidden-order"
+			| translate}}
+		</md-checkbox> </md-input-container>
 
 		<div class="col-xs-12">
 			<div class="col-xs-6">
 				<md-button class="md-raised md-primary full-width" type="submit"
-					id="createOrderBtn"> <strong>Create new order</strong>
+					id="createOrderBtn"> <strong>{{"createorder.btn-create-order"
+					| translate}}</strong>
 				</md-button>
 			</div>
 			<div class="col-xs-6">
 				<md-button class="md-raised md-warn full-width"
-					ng-click="resetInputs()"> Reset </md-button>
+					ng-click="resetInputs()"> {{"createorder.btn-reset"
+					| translate}} </md-button>
 			</div>
 		</div>
 	</form>

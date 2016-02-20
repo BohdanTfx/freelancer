@@ -4,7 +4,7 @@
 angular.module('FreelancerApp')
     .controller('myworksCtrl', function ($scope, myworksAPI, $log, $mdDialog, $mdMedia, Notification, $rootScope,$translate) {
 
-        if ($rootScope.role == 'developer') {
+        if ($rootScope.globals.currentUser.role == 'developer') {
             myworksAPI.getAllDeveloperWorks().success(function (data) {
                 $scope.firstWorks = data.subscribedWorks;
                 $scope.secondWorks = data.processedWorks;
@@ -41,7 +41,7 @@ angular.module('FreelancerApp')
 
 
         $scope.showTabDialog = function (ev, projectInfo) {
-            if ($rootScope.role == 'developer') {
+            if ($rootScope.globals.currentUser.role == 'developer') {
                 myworksAPI.getCustomerById(projectInfo.customerId).success(
                     function (data) {
                         $scope.customer = data.cust;
@@ -80,8 +80,8 @@ angular.module('FreelancerApp')
                     });
             }else{
                 $scope.customer = {};
-                $scope.customer.fname = $rootScope.name;
-                $scope.customer.lname = $rootScope.lastName;
+                $scope.customer.fname = $rootScope.globals.currentUser.fname;
+                $scope.customer.lname = $rootScope.globals.currentUser.lastName;
 
              myworksAPI.getCustWorkersByIdOrder(projectInfo.id).success(
                     function (dataWorkers) {
@@ -190,7 +190,7 @@ function DialogController($scope, $mdDialog, project, customer, workers, workerI
     $scope.customer = customer;
     $scope.workers = workers;
     $scope.workerInfo = workerInfo;
-    $scope.role = $rootScope.role;
+    $scope.role = $rootScope.globals.currentUser.role;
 
 
     if($scope.workerInfo == undefined){

@@ -5,3 +5,19 @@
 .ban-service .complainItem .row {
     margin: 0;
 }
+
+.ban-service .order-link {
+    text-decoration-line: unset !important;
+}
+
+.ban-service .order-link .fa-link {
+    color: transparent;
+}
+
+.ban-service .order-link:hover .fa-link {
+    color: #ddd6d8;
+}
+
+.ban-service .order-link:hover{
+    color: #ddd6d8;
+}

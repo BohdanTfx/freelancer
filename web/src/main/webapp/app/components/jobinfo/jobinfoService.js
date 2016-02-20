@@ -71,6 +71,9 @@ angular.module('FreelancerApp')
             return $http.get('/cust/dev/isWorker?follower=' + follower);
         };
 
+        dataFactory.banOrder = function (orderId) {
+            return $http.post('/admin/order/ban?orderId=' + orderId);
+        };
 
         return dataFactory;
     });
