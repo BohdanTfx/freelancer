@@ -21,6 +21,7 @@
   "index.menu-create-admin":"Invite admin",
   "index.menu-custworks":"My Works",
   "index.menu-ban-service":"Ban service",
+  "index.menu-technologies":"Technologies controller",
 
   "admin.statistics":"Statistics",
   "admin.statistics-dev-cust":"Relation between Customer and Developer",
@@ -510,6 +511,15 @@
   "forgot.wrong-email":"Wrong email. Try again!",
   "forgot.wrong-confirm-code":"Wrong confirm code. Try again!",
   "forgot.problem":"Some problem. Try again!",
-  "forgot.pass-changed":"The password changed"
+  "forgot.pass-changed":"The password changed",
+
+
+  "technologies.success":"Success",
+  "technologies.success-descr-add":"New technology added successfully",
+  "technologies.success-descr-rem":"The technology removed successfully",
+  "technologies.title":"Technologies",
+  "technologies.total":"Total",
+  "technologies.add-input":"New technology",
+  "technologies.add-btn":"Add technology"
 
 }

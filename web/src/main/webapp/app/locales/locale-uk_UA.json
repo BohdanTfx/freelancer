@@ -22,6 +22,8 @@
   "index.menu-create-admin":"Запросити адміна",
   "index.menu-custworks":"Мої проекти",
   "index.menu-ban-service":"Блокування замовлень",
+  "index.menu-technologies":"Керування технологіями",
+
 
 
   "admin.statistics":"Статистика",
@@ -57,7 +59,6 @@
   "admin.statistics-tab-3":"Тести",
 
   "createadmin.invitation":"Запрошення адміна",
-  "createadmin.descr":" Enter email address of person you want to invite to become a user with permission 'Admin'.  This person will receive the letter with instructions. You can send this invitation to the same email  address only once.",
   "createadmin.descr":" Вкажіть електронну пошту особи, яку ви хочете запросити стати Адміністратором. Увага, Ця особа буде мати змогу зареєструватись як Адміністратор тільки 1 годину. На цю електронну пошту буде відіслано подальші інструкції.Пам'ятайте, ви можете надіслати запрошення на пошту тільки один раз.",
   "createadmin.input-placeholder":"Електронна скринька",
   "createadmin.input-error-email":"Некорректна електронна пошта",
@@ -510,6 +511,14 @@
   "forgot.wrong-email":"Невірна електронна адреса. Спробуйте ще раз!",
   "forgot.wrong-confirm-code":"Невірний код підтвердження. Спробуйте ще раз!",
   "forgot.problem":"Деякі проблеми. Спробуйте ще раз!",
-  "forgot.pass-changed":"The password changed"
+  "forgot.pass-changed":"The password changed",
+
+  "technologies.success":"Успішно",
+  "technologies.success-descr-add":"Нову технологію добавлено успішно",
+  "technologies.success-descr-rem":"Технологію видалено успішно",
+  "technologies.title":"Технології",
+  "technologies.total":"Всього",
+  "technologies.add-input":"Нова технологія",
+  "technologies.add-btn":"Додати технологію"
 
 }

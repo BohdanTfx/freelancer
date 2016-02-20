@@ -81,6 +81,7 @@
     <link rel="stylesheet" href="app/components/forgotpass/forgot.css">
     <link rel="stylesheet" href="app/components/ban/ban.css">
     <link rel="stylesheet" href="app/components/footer/footer.css">
+    <link rel="stylesheet" href="app/components/technologies/technologies.css">
 
 </head>
 
@@ -214,6 +215,11 @@
                                          </md-menu-item>
                                           <md-menu-item>
                                               <md-button ng-href="/#/admin/new/admin">{{"index.menu-create-admin" |
+                                                  translate}}
+                                              </md-button>
+                                          </md-menu-item>
+                                          <md-menu-item>
+                                              <md-button ng-href="/#/technologies">{{"index.menu-technologies" |
                                                   translate}}
                                               </md-button>
                                           </md-menu-item>
@@ -390,6 +396,9 @@
 
 <script src="app/components/forgotpass/forgotCtrl.js"></script>
 <script src="app/components/forgotpass/forgotService.js"></script>
+
+<script src="app/components/technologies/technologiesCtrl.js"></script>
+<script src="app/components/technologies/technologiesService.js"></script>
 
 <script src="app/filters.js"></script>
 <!-- endinject -->

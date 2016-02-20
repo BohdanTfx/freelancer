@@ -41,8 +41,8 @@ public class TechnologyService extends GenericService<Technology, Integer> {
 			Map<String, String[]> data)
 	{
 		Map<ValidationParametersBuilder.Parameters, String> map = new HashMap<>();
-		map.put(ValidationParametersBuilder.createParameters(true)
-				.isInteger(true).min(0.00).max(5.00),
+		map.put(ValidationParametersBuilder.createParameters(false)
+						.minLength(1).maxLength(50),
 				data.get("name") == null ? null : data.get("name")[0]);
 		return map;
 	}

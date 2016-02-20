@@ -124,6 +124,13 @@
 					controller : 'createtestCtrl'
 				})
 				.state(
+				'technologies',
+				{
+					url : '/technologies',
+					templateUrl : 'app/components/technologies/technologies.html',
+					controller : 'technologiesCtrl'
+				})
+				.state(
 				'statistics',
 				{
 					url : '/admin/statistics',

@@ -169,6 +169,12 @@ public class AdminController extends HttpServlet implements Responsable {
                 case "admin/orders/bans":
                     getBanOrders(request, response);
                     break;
+                case "admin/add/technology":
+                    addTechnology(request, response);
+                    break;
+                case "admin/delete/technology":
+                    deleteTechnology(request, response);
+                    break;
                 default:
 
             }
@@ -613,6 +619,20 @@ public class AdminController extends HttpServlet implements Responsable {
     }
 
     private void getAdminAmount(HttpServletRequest request,HttpServletResponse response){
-        sendResponse(response,adminService.findAll().size(),mapper);
+        sendResponse(response, adminService.findAll().size(), mapper);
+    }
+
+    private void addTechnology(HttpServletRequest request, HttpServletResponse response){
+        String name = request.getParameter("name");
+        Map<String,String[]> map = new HashMap<>();
+        map.put("name", new String[]{name});
+        technologyService.create(map);
+    }
+
+    private void deleteTechnology(HttpServletRequest request,HttpServletResponse response){
+        Integer id = Integer.valueOf(request.getParameter("id"));
+        Technology tech = technologyService.findById(id);
+        tech.setDeleted(true);
+        technologyService.modify(tech);
     }
 }
