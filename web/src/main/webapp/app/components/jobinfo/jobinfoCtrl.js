@@ -2,8 +2,8 @@ angular.module('FreelancerApp')
     .controller('jobinfoCtrl', function ($scope, orderAPI, $stateParams, $rootScope, $log, $http, Notification, $translate, $state) {
 
         $scope.user = {};
-        $scope.user.id = $rootScope.id;
-        $scope.user.role = $rootScope.role;
+        $scope.user.id = $rootScope.globals.currentUser.id;
+        $scope.user.role = $rootScope.globals.currentUser.role;
 
         $scope.user.subscribed = false;
 

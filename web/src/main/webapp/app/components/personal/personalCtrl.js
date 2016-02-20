@@ -1,7 +1,7 @@
 angular.module('FreelancerApp')
     .controller('personalCtrl', ['$scope', '$http', 'personalAPI', '$log', '$rootScope', '$mdDialog', 'Notification', '$translate', function ($scope, $http, personalAPI, $log, $rootScope, $mdDialog, Notification, $translate) {
         var devTemp, techsTemp, contTemp, custTemp, adminTemp;
-
+                
         $scope.newPassword = '';
         $scope.confirmPassword = '';
         $scope.password = '';
@@ -48,7 +48,7 @@ angular.module('FreelancerApp')
             });
         };
 
-        if ($rootScope.role == 'developer') {
+        if ($rootScope.globals.currentUser.role == 'developer') {
             $scope.getDevPersonal();
         }
 
@@ -83,7 +83,7 @@ angular.module('FreelancerApp')
             });
         };
 
-        if ($rootScope.role == 'customer') {
+        if ($rootScope.globals.currentUser.role == 'customer') {
             $scope.getCustPersonal();
         }
 
@@ -112,7 +112,7 @@ angular.module('FreelancerApp')
             });
         };
 
-        if ($rootScope.role == 'admin') {
+        if ($rootScope.globals.currentUser.role == 'admin') {
             $scope.getAdminPersonal();
         }
 
@@ -120,7 +120,7 @@ angular.module('FreelancerApp')
             var devJson, techsJson, contactJson;
             $scope.editClass = 'editClass';
             $scope.hide = false;
-            if ($rootScope.role == 'developer') {
+            if ($rootScope.globals.currentUser.role == 'developer') {
                 var selectedTechs = []; //techs ids for sending on backend
                 $scope.techs = []; //dev techs
                 for (var i = 0; i < $scope.allTechs.length; i++) {
@@ -155,7 +155,7 @@ angular.module('FreelancerApp')
                     });
                 });
             }
-            if ($rootScope.role == 'customer') {
+            if ($rootScope.globals.currentUser.role == 'customer') {
                 var custJson;
                 custJson = angular.toJson($scope.user);
                 contactJson = angular.toJson($scope.contact);
@@ -176,7 +176,7 @@ angular.module('FreelancerApp')
                     });
                 });
             }
-            if ($rootScope.role == 'admin') {
+            if ($rootScope.globals.currentUser.role == 'admin') {
                 var adminJson;
                 adminJson = angular.toJson($scope.user);
                 adminTemp = clone($scope.user);
@@ -204,32 +204,32 @@ angular.module('FreelancerApp')
             $scope.editClass = '';
             $scope.hide = true;
 
-            if ($rootScope.role === 'developer') {
+            if ($rootScope.globals.currentUser.role === 'developer') {
                 devTemp = clone($scope.user);
                 techsTemp = clone($scope.techs);
                 contTemp = clone($scope.contact);
             }
-            if ($rootScope.role === 'customer') {
+            if ($rootScope.globals.currentUser.role === 'customer') {
                 custTemp = clone($scope.user);
                 contTemp = clone($scope.contact);
             }
-            if ($rootScope.role === 'admin') {
+            if ($rootScope.globals.currentUser.role === 'admin') {
                 adminTemp = clone($scope.user);
             }
         };
 
         $scope.disableEditor = function () {
             $scope.hide = false;
-            if ($rootScope.role == 'developer') {
+            if ($rootScope.globals.currentUser.role == 'developer') {
                 $scope.user = devTemp;
                 $scope.techs = techsTemp;
                 $scope.contact = contTemp;
             }
-            if ($rootScope.role == 'customer') {
+            if ($rootScope.globals.currentUser.role == 'customer') {
                 $scope.user = custTemp;
                 $scope.contact = contTemp;
             }
-            if ($rootScope.role == 'admin') {
+            if ($rootScope.globals.currentUser.role == 'admin') {
                 $scope.user = adminTemp;
             }
             $scope.editClass = 'editClass';
@@ -261,7 +261,7 @@ angular.module('FreelancerApp')
 
         $scope.changePassword = function () {
             $scope.confirmCode = '';
-            if ($rootScope.role == 'developer') {
+            if ($rootScope.globals.currentUser.role == 'developer') {
                 personalAPI.changeDevPassword($scope.password).success(function (data) {
                     $scope.result = data;
                     $scope.confirmPasswordFlag = true;
@@ -274,7 +274,7 @@ angular.module('FreelancerApp')
                     });
                 });
             }
-            if ($rootScope.role == 'customer') {
+            if ($rootScope.globals.currentUser.role == 'customer') {
                 personalAPI.changeCustPassword($scope.password).success(function (data) {
                     $scope.result = data;
                     $scope.confirmPasswordFlag = true;
@@ -287,7 +287,7 @@ angular.module('FreelancerApp')
                     });
                 });
             }
-            if ($rootScope.role == 'admin') {
+            if ($rootScope.globals.currentUser.role == 'admin') {
                 personalAPI.changeAdminPassword($scope.password).success(function (data) {
                     $scope.result = data;
                     $scope.confirmPasswordFlag = true;
@@ -304,7 +304,7 @@ angular.module('FreelancerApp')
         };
 
         $scope.changePasswordAfterConfirm = function () {
-            if ($rootScope.role == 'developer') {
+            if ($rootScope.globals.currentUser.role == 'developer') {
                 personalAPI.confirmCodeAndChangeDevPasswordOrEmail($scope.confirmPasswordTemp, null, $scope.confirmCode).success(function (data) {
                     $scope.result = data;
                     $scope.flagConfirmPhoneCode = true;
@@ -320,7 +320,7 @@ angular.module('FreelancerApp')
                     });
                 });
             }
-            if ($rootScope.role == 'customer') {
+            if ($rootScope.globals.currentUser.role == 'customer') {
                 personalAPI.confirmCodeAndChangeCustPasswordOrEmail($scope.confirmPasswordTemp, null, $scope.confirmCode).success(function (data) {
                     $scope.result = data;
                     $scope.flagConfirmPhoneCode = true;
@@ -336,7 +336,7 @@ angular.module('FreelancerApp')
                     });
                 });
             }
-            if ($rootScope.role == 'admin') {
+            if ($rootScope.globals.currentUser.role == 'admin') {
                 personalAPI.confirmCodeAndChangeAdminPasswordOrEmail($scope.confirmPasswordTemp, null, $scope.confirmCode).success(function (data) {
                     $scope.result = data;
                     $scope.flagConfirmPhoneCode = true;
@@ -351,7 +351,7 @@ angular.module('FreelancerApp')
         }
         $scope.changeSendingEmail = function () {
             $scope.confirmCode = '';
-            if ($rootScope.role == 'developer') {
+            if ($rootScope.globals.currentUser.role == 'developer') {
                 personalAPI.changeDevSendingEmail($scope.newEmail).success(function (data) {
                     $scope.confirmEmailFlag = true;
                     $scope.newEmailTemp = clone($scope.newEmail);
@@ -363,7 +363,7 @@ angular.module('FreelancerApp')
                     });
                 });
             }
-            if ($rootScope.role == 'customer') {
+            if ($rootScope.globals.currentUser.role == 'customer') {
                 personalAPI.changeCustSendingEmail($scope.newEmail).success(function (data) {
                     $scope.confirmEmailFlag = true;
                     $scope.newEmailTemp = clone($scope.newEmail);
@@ -375,7 +375,7 @@ angular.module('FreelancerApp')
                     });
                 });
             }
-            if ($rootScope.role == 'admin') {
+            if ($rootScope.globals.currentUser.role == 'admin') {
                 personalAPI.changeAdminSendingEmail($scope.newEmail).success(function (data) {
                     $scope.result = data;
                     $scope.confirmEmailFlag = true;
@@ -393,7 +393,7 @@ angular.module('FreelancerApp')
 
         $scope.changeSendingEmailAfterConfirm = function () {
             console.log("method changeSendingEmailAfterConfirm()");
-            if ($rootScope.role == 'developer') {
+            if ($rootScope.globals.currentUser.role == 'developer') {
                 personalAPI.confirmCodeAndChangeDevPasswordOrEmail(null, $scope.newEmailTemp, $scope.confirmCode).success(function (data) {
                     $scope.changePswdOrEmailForUser(data);
                 }).error(function (response) {
@@ -403,7 +403,7 @@ angular.module('FreelancerApp')
                     });
                 });
             }
-            if ($rootScope.role == 'customer') {
+            if ($rootScope.globals.currentUser.role == 'customer') {
                 personalAPI.confirmCodeAndChangeCustPasswordOrEmail(null, $scope.newEmailTemp, $scope.confirmCode).success(function (data) {
                     $scope.changePswdOrEmailForUser(data);
                 }).error(function (response) {
@@ -413,7 +413,7 @@ angular.module('FreelancerApp')
                     });
                 });
             }
-            if ($rootScope.role == 'admin') {
+            if ($rootScope.globals.currentUser.role == 'admin') {
                 personalAPI.confirmCodeAndChangeAdminPasswordOrEmail(null, $scope.newEmailTemp, $scope.confirmCode).success(function (data) {
                     $scope.result = data;
                     $scope.flagConfirmPhoneCode = true;
@@ -543,7 +543,7 @@ angular.module('FreelancerApp')
                     var dataURL = canvas.toDataURL("image/jpg");
                     var base = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
 
-                    if ($rootScope.role == 'developer') {
+                    if ($rootScope.globals.currentUser.role == 'developer') {
                         personalAPI.sendDevImage(base).success(function (data) {
                             $scope.result = data;
                             $scope.getDevPersonal();
@@ -558,7 +558,7 @@ angular.module('FreelancerApp')
                             });
                         });
                     }
-                    if ($rootScope.role == 'customer') {
+                    if ($rootScope.globals.currentUser.role == 'customer') {
                         personalAPI.sendCustImage(base).success(function (data) {
                             $scope.result = data;
                             $scope.getCustPersonal();
@@ -573,7 +573,7 @@ angular.module('FreelancerApp')
                             });
                         });
                     }
-                    if ($rootScope.role == 'admin') {
+                    if ($rootScope.globals.currentUser.role == 'admin') {
                         personalAPI.sendAdminImage(base).success(function (data) {
                             $scope.result = data;
                             $scope.getAdminPersonal();

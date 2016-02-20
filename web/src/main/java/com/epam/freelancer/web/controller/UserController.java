@@ -274,7 +274,7 @@ public class UserController extends HttpServlet implements Responsable {
 				uploadFilePath = applicationPath + "uploads" + File.separator
 						+ "developer" + File.separator + ue.getId();
 				saveImage(uploadFilePath, encodeImage, response);
-				Developer developer = (Developer) ue;
+				Developer developer = developerService.findById(ue.getId());
 				developer.setImgUrl("uploads/developer/" + ue.getId() + "/");
 				developerService.updateDeveloper(developer);
 			}
@@ -282,7 +282,7 @@ public class UserController extends HttpServlet implements Responsable {
 				uploadFilePath = applicationPath + "uploads" + File.separator
 						+ "customer" + File.separator + ue.getId();
 				saveImage(uploadFilePath, encodeImage, response);
-				Customer customer = (Customer) ue;
+				Customer customer = customerService.findById(ue.getId());
 				customer.setImgUrl("uploads/customer/" + ue.getId() + "/");
 				customerService.modify(customer);
 			}
@@ -290,7 +290,7 @@ public class UserController extends HttpServlet implements Responsable {
 				uploadFilePath = applicationPath + "uploads" + File.separator
 						+ "admin" + File.separator + ue.getId();
 				saveImage(uploadFilePath, encodeImage, response);
-				Admin admin = (Admin) ue;
+				Admin admin =  adminService.findById(ue.getId());;
 				admin.setImgUrl("uploads/admin/" + ue.getId() + "/");
 				adminService.modify(admin);
 			}
