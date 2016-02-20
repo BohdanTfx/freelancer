@@ -79,7 +79,7 @@ public class OrderingService extends GenericService<Ordering, Integer> {
 				data.get("customer_id") == null ? null : data
 						.get("customer_id")[0]);
 		map.put(ValidationParametersBuilder.createParameters(true)
-				.isInteger(true).min(0.00), data.get("payment") == null ? null
+				.isInteger(false).min(0.00), data.get("payment") == null ? null
 				: data.get("payment")[0]);
 		map.put(ValidationParametersBuilder.createParameters(true)
 						.isInteger(true).min(-12.0).max(13.0),

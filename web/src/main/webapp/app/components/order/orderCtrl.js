@@ -2,7 +2,7 @@ angular
 		.module('FreelancerApp')
 		.controller(
 				'orderCtrl',
-				function($scope, orderService, $log, $http, Notification) {
+				function($scope, orderService, $log, $http, Notification, $translate) {
 					$scope.order = {};
 					$scope.order['private'] = false;
 
@@ -24,20 +24,20 @@ angular
 								.success(
 										function(data, status, headers, config) {
 											Notification
-													.success({
-														title : 'Order created!',
-														message : 'Order "'
-																+ $scope.order.title
-																+ '" successfully added!'
+												.success({
+													title: $translate.instant('notification.success'),
+														message : $translate.instant('createorder.success-create-msg-order') + ' "'
+																+ $scope.order.title + '"'
+																+ $translate.instant('createorder.success-create-msg-added')
 													});
 											self.resetInputs();
 										})
 								.error(
 										function(data, status, headers, config) {
 											Notification
-													.error({
-														title : 'Error!',
-														message : 'Some errors occurred while creating order. Please reload page and try again.'
+												.error({
+													title: $translate.instant('notification.error'),
+														message : $translate.instant('createorder.error-create-msg')
 													});
 										});
 					};

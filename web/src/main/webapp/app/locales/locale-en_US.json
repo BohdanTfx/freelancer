@@ -14,7 +14,7 @@
   "index.menu-create-order":"Create new order",
   "index.menu-statistics":"Statistics",
   "index.menu-create-test":"Create Test",
-  "index.menu-test-controlling":"Test controller",
+  "index.menu-test-controlling":"Tests management",
   "index.menu-personal":"Profile",
   "index.menu-tests":"Tests",
   "index.menu-public-page":"My public page",
@@ -105,7 +105,7 @@
   "myworks.available-days":"days",
 
 
-  "createtest.title":"Tests creating",
+  "createtest.title":"Tests management",
   "createtest.tab-tests":"Tests",
   "createtest.search-by-test-name":"Search by test name",
   "createtest.search-by-technology":"Search by technology",
@@ -459,6 +459,7 @@
   "banservice.unban":"Unban",
   "banservice.no-complains":"No complained orders",
   "banservice.no-bans":"No banned orders",
+  "banservice.are-you-sure":"Are you sure ?",
 
   "notification.error": "Error",
   "notification.success": "Success",
@@ -482,6 +483,29 @@
   "forgot.wrong-email":"Wrong email. Try again!",
   "forgot.wrong-confirm-code":"Wrong confirm code. Try again!",
   "forgot.problem":"Some problem. Try again!",
-  "forgot.pass-changed":"The password changed"
+  "forgot.pass-changed":"The password changed",
 
+  "createorder.title":"Create new order",
+  "createorder.label-title":"Title",
+  "createorder.msg-required":"This is required.",
+  "createorder.msg-title-maxlength":"The name has to be less than 120 characters long.",
+  "createorder.msg-title-minlength":"The name has to be more than 10 characters long.",
+  "createorder.label-descr":"Description",
+  "createorder.msg-descr-maxlength":"The name has to be less than 3000 characters long.",
+  "createorder.msg-descr-minlength":"The name has to be more than 50 characters long.",
+  "createorder.label-payment":"Payment",
+  "createorder.label-payment-hourly":"Hourly",
+  "createorder.label-payment-fixed":"Fixed",
+  "createorder.label-payment-type":"Payment type",
+  "createorder.label-time-zone":"Time zone",
+  "createorder.label-technologies":"Technologies",
+  "createorder.msg-empty-technology":"Please, select at least one technology.",
+  "createorder.tooltip-private-order":"Private order",
+  "createorder.tooltip-public-order":"Public order",
+  "createorder.tooltip-hidden-order":"When order will be finished it will be hidden in developer history",
+  "createorder.btn-create-order":"Create new order",
+  "createorder.btn-reset":"Reset",
+  "createorder.success-create-msg-order":"Order",
+  "createorder.success-create-msg-added":" successfully added!",
+  "createorder.error-create-msg":"Some errors occurred while creating order. Please reload page and try again."
 }
