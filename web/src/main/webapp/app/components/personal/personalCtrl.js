@@ -37,7 +37,7 @@ angular.module('FreelancerApp')
                     }
                 }
                 //check for empty image
-                if (typeof $scope.user.imgUrl == 'undefined') {
+                if ($scope.user.imgUrl == null) {
                     $scope.img = 'images/profile/no-image.png';
                 } else {
                     $scope.img = $scope.user.imgUrl + 'md.jpg?id=' + random;
@@ -73,10 +73,9 @@ angular.module('FreelancerApp')
                     $scope.contact = data.contacts;
                 }
                 //check for empty image
-                if (typeof $scope.user.imgUrl == 'undefined') {
+                if ($scope.user.imgUrl == null) {
                     $scope.img = 'images/profile/no-image.png';
-                }
-                else {
+                } else {
                     $scope.img = $scope.user.imgUrl + 'md.jpg?id=' + random;
                     $rootScope.globals.currentUser.img = $scope.user.imgUrl + 'sm.jpg?id=' + random;
                 }
@@ -104,10 +103,10 @@ angular.module('FreelancerApp')
                 //check send e-mail
                 $scope.email = $scope.user.sendEmail == undefined ? $scope.user.email : $scope.user.sendEmail;
                 //check for empty image
-                if (typeof $scope.user.imgUrl == 'undefined') {
+
+                if ($scope.user.imgUrl == null) {
                     $scope.img = 'images/profile/no-image.png';
-                }
-                else {
+                } else {
                     $scope.img = $scope.user.imgUrl + 'md.jpg?id=' + random;
                     $rootScope.globals.currentUser.img = $scope.user.imgUrl + 'sm.jpg?id=' + random;
                 }
