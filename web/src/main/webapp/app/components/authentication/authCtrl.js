@@ -38,8 +38,8 @@ angular
 							};
 
 
-							$scope.signinGoogle = function (auth, $scope) {
-								AuthenticationService.signinGoogle(auth);
+							$scope.signinGoogle = function (auth) {
+								AuthenticationService.signinGoogle(auth, $scope);
 
 							};
 

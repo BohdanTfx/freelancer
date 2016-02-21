@@ -139,7 +139,7 @@ angular
 												});
 							};
 
-							service.signinGoogle = function (auth) {
+							service.signinGoogle = function (auth, $scope) {
 								hello(auth).login();
 
 								hello.on('auth.login', function (auth) {
@@ -158,10 +158,14 @@ angular
 										}).error(function (data, status,
 														   headers, config) {
 											if (status == 400) {
+												$scope.showError = true;
+												$scope.errorTitle = 'Error!';
+												$scope.errorDescription = 'Invalid credentials';
+											} else {
 												Notification
 													.error({
 														title: 'Error!',
-														message: 'An error occurred while signing in. Please try again.'
+														message: 'An error occurred while registering. Please try again.'
 													});
 											}
 										});
