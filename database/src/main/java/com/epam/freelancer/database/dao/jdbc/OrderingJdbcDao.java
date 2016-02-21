@@ -295,6 +295,15 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 			builder.append("%'");
 		}
 
+		Boolean banned = (Boolean) parameters.get("ban");
+		if (banned != null) {
+			builder.append(lastNull ? "" : " AND");
+			if (banned)
+				builder.append(" ban IS TRUE");
+			else
+				builder.append(" ban IS FALSE OR ban IS NOT NULL");
+		}
+
 		if (parameters.size() > 0)
 			builder.append(" AND ");
 		else

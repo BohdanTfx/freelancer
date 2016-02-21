@@ -192,17 +192,14 @@ public class AdminController extends HttpServlet implements Responsable {
 			case "admin/changeEmail":
 				changeEmail(request, response);
 				break;
-			case "admin/orders/complained":
-				getComplainedOrders(request, response);
+			case "admin/orders":
+				getOrders(request, response);
 				break;
 			case "admin/order/ban":
 				banOrder(request, response);
 				break;
 			case "admin/order/unban":
 				unbanOrder(request, response);
-				break;
-			case "admin/orders/bans":
-				getBanOrders(request, response);
 				break;
 			default:
 
@@ -697,16 +694,21 @@ public class AdminController extends HttpServlet implements Responsable {
 		sendResponse(response, map, mapper);
 	}
 
-	private void getComplainedOrders(HttpServletRequest request,
+	private void getOrders(HttpServletRequest request,
 			HttpServletResponse response)
 	{
-		sendResponse(response, orderingService.getComplainedOrders(), mapper);
-	}
+		try {
+			JsonPaginator result = mapper.readValue(request.getReader()
+					.readLine(), JsonPaginator.class);
+			List<Ordering> orderings = orderingService.filterElements(result
+					.getContent(), result.getPage().getStart()
+					* result.getPage().getStep(), result.getPage().getStep());
 
-	private void getBanOrders(HttpServletRequest request,
-			HttpServletResponse response)
-	{
-		sendResponse(response, orderingService.getBanOrders(), mapper);
+			paginator.next(result.getPage(), response, orderingService
+					.getFilteredObjectNumber(result.getContent()), orderings);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void banOrder(HttpServletRequest request,
