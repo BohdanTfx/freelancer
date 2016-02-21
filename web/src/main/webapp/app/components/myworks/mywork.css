@@ -89,3 +89,20 @@
     float: left;
     margin: 1.5em;
 }
+
+.mywork .accepted-title{
+    color: green;
+    font-size: 14pt;
+}
+.mywork .accepted-descr{
+    font-size: 10pt;
+}
+
+@media (max-width: 750px) {
+    .mywork .accepted-title{
+        font-size: 10pt;
+    }
+    .mywork .accepted-descr{
+        font-size: 8pt;
+    }
+}
