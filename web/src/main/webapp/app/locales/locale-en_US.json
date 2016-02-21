@@ -429,6 +429,7 @@
   "pubdev.passed": "Passed",
   "pubdev.not-passed": "Not passed",
   "pubdev.there-is-not-test": "There is no test",
+  "pubdev.timezone": "Timezone",
 
   "personal.upload": "Upload",
   "personal.name": "Name",

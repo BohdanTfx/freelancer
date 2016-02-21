@@ -27,6 +27,10 @@ angular
 							};
 
 							service.SetCredentials = function(user) {
+								$rootScope.showProfile = false;
+								if (!user.imgUrl)
+									$rootScope.showProfile = true;
+
 								$rootScope.globals = {
 									currentUser : {
 										id : user.id,

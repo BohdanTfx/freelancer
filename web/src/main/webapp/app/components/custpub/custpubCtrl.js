@@ -189,6 +189,7 @@ angular.module('FreelancerApp')
                     $scope.fname = data.fname;
                     $scope.lname = data.lname;
                     $scope.regDate = data.regDate;
+                    $scope.zone = data.zone;
                     if (typeof data.overview != 'undefined' && data.overview != null) {
                         $scope.overview = data.overview;
                         $scope.overHead = $translate.instant('custpub.overview');
