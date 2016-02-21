@@ -9,7 +9,16 @@ angular
 						else
 							$scope.unbannedItemListStart = page;
 
-						$scope.getComplainedOrders($scope.chosenTechID);
+						$scope.getComplainedOrders();
+					};
+					
+					$scope.showBannedFrom = function(page) {
+						if (page == 'last')
+							$scope.bannedItemListStart = $scope.bannedMaxPage - 1;
+						else
+							$scope.bannedItemListStart = page;
+
+						$scope.getBanOrders();
 					};
 
 					$scope.fillPagination = function(data, firstLabel,
@@ -33,7 +42,7 @@ angular
 
 					$scope.getComplainedOrders = function() {
 						banAPI
-								.getOrders($scope.unbannedItemListStart, true)
+								.getOrders($scope.unbannedItemListStart, false)
 								.success(
 										function(data) {
 											$scope.complainedOrders = data.items;
@@ -60,7 +69,7 @@ angular
 
 					$scope.getBanOrders = function() {
 						banAPI
-								.getOrders($scope.bannedItemListStart, false)
+								.getOrders($scope.bannedItemListStart, true)
 								.success(function(data) {
 									$scope.banOrders = data.items;
 									$scope.bannedMaxPage = data.maxPage;

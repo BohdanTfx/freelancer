@@ -117,21 +117,15 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 	public Integer getFilteredObjectNumber(Map<String, Object> parameters) {
 		String query = null;
 		if (parameters == null || parameters.isEmpty()) {
-			query = "SELECT DISTINCT * FROM " + table + " WHERE "
+			query = "SELECT count(*) FROM " + table + " WHERE "
 					+ GenericDao.NOT_DELETED;
-			query = query.replace("SELECT DISTINCT *",
-					"SELECT DISTINCT count(*)");
 		} else {
 			query = createFilterQuery(parameters, null, null);
 			if (query.contains("SELECT DISTINCT " + table + ".*"))
 				query = query.replace("SELECT DISTINCT " + table + ".*",
-						"SELECT DISTINCT count(*), " + table + ".id");
+						"SELECT count(*)");
 			else
-				query = query.replace("SELECT DISTINCT *",
-						"SELECT DISTINCT count(*), " + table + ".id");
-
-			query = query + " GROUP BY " + table + ".id";
-
+				query = query.replace("SELECT DISTINCT *", "SELECT count(*)");
 		}
 
 		try (Connection connection = connectionPool.getConnection();
@@ -304,57 +298,28 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 				builder.append(" ban IS FALSE OR ban IS NOT NULL");
 		}
 
-		if (parameters.size() > 0)
+		if ((parameters.size() > 0 && parameters.get("sortOrderField") == null)
+				|| (parameters.size() > 1 && parameters.get("sortOrderField") != null))
 			builder.append(" AND ");
 		else
-			builder.append(" WHERE ");
+			builder.append(" ");
 		builder.append(GenericDao.NOT_DELETED);
 
+		String sortOrderField = (String) parameters.get("sortOrderField");
+
 		if (start != null && step != null) {
-			builder.append(" ORDER BY date DESC LIMIT ");
+			if (sortOrderField != null && !sortOrderField.isEmpty()) {
+				builder.append(" ORDER BY ");
+				builder.append(sortOrderField);
+				builder.append(" DESC LIMIT ");
+			} else
+				builder.append(" LIMIT ");
+
 			builder.append(start);
 			builder.append(",");
 			builder.append(step);
 		}
 
 		return builder.toString();
-	}
-
-	@Override
-	public List<Ordering> getComplainedOrders() {
-		List<Ordering> orders = new ArrayList<>();
-		String query = "SELECT * FROM ordering WHERE (complains > 0) AND (ban IS NOT TRUE) AND "
-				+ GenericDao.NOT_DELETED + " ORDER BY complains DESC";
-		try (Connection connection = connectionPool.getConnection();
-				PreparedStatement statement = connection
-						.prepareStatement(query);
-				ResultSet set = statement.executeQuery()) {
-			while (set.next()) {
-				Ordering order = transformer.getObject(set);
-				orders.add(order);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return orders;
-	}
-
-	@Override
-	public List<Ordering> getBanOrders() {
-		List<Ordering> orders = new ArrayList<>();
-		String query = "SELECT * FROM ordering WHERE ban IS TRUE AND "
-				+ GenericDao.NOT_DELETED + " ORDER BY complains DESC";
-		try (Connection connection = connectionPool.getConnection();
-				PreparedStatement statement = connection
-						.prepareStatement(query);
-				ResultSet set = statement.executeQuery()) {
-			while (set.next()) {
-				Ordering order = transformer.getObject(set);
-				orders.add(order);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return orders;
 	}
 }

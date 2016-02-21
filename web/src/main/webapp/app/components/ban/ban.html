@@ -12,7 +12,7 @@
 					<span>First</span>
 				</button>
 				<div data-pagination="yes" class="inline-block">
-					<button type="button" ng-repeat="page in unbannedOrders"
+					<button type="button" ng-repeat="page in unbannedPages"
 						ng-click="page.first == 'current' ? '' : showUnbannedFrom(page.second)"
 						ng-class="page.first == 'current' ? 'page dark active' : 'page dark gradient'">
 						{{page.second + 1}}</button>
@@ -63,6 +63,26 @@
 		</div>
 		</md-content> </md-tab> <md-tab label="{{'banservice.banned-orders-tab-label' | translate}}">
 		<md-content class="md-padding">
+		<div class="pagination dark animated fadeIn">
+			<div class="col-xs-6">
+				<button type="button" ng-click="showBannedFrom(0)"
+					class="page dark gradient" ng-if="showBannedFirst">
+					<i class="fa fa-caret-left"></i>
+					<span>First</span>
+				</button>
+				<div data-pagination="yes" class="inline-block">
+					<button type="button" ng-repeat="page in bannedPages"
+						ng-click="page.first == 'current' ? '' : showBannedFrom(page.second)"
+						ng-class="page.first == 'current' ? 'page dark active' : 'page dark gradient'">
+						{{page.second + 1}}</button>
+				</div>
+				<button type="button" class="page dark gradient"
+					ng-click="showBannedFrom('last')" ng-if="showBannedLast">
+					<span>{{bannedMaxPage}} </span>
+					<i class="fa fa-caret-right"></i>
+				</button>
+			</div>
+		</div>
 		<div ng-show="banOrders.length == 0">
 			<h5>No bans.</h5>
 		</div>

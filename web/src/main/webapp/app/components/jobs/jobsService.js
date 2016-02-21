@@ -45,6 +45,7 @@ angular
 								|| title.length == 0 ? undefined : title;
 						content.zone = [];
 						content.technology = [];
+						content.sortOrderField = 'date';
 						var zone = [];
 						angular.forEach(filter.selectedZones, function(value,
 								key) {
