@@ -44,7 +44,6 @@ import com.epam.freelancer.business.util.SendMessageToEmail;
 import com.epam.freelancer.database.model.Admin;
 import com.epam.freelancer.database.model.AdminCandidate;
 import com.epam.freelancer.database.model.Answer;
-import com.epam.freelancer.database.model.Customer;
 import com.epam.freelancer.database.model.OrderCounter;
 import com.epam.freelancer.database.model.Ordering;
 import com.epam.freelancer.database.model.Question;
@@ -137,6 +136,12 @@ public class AdminController extends HttpServlet implements Responsable {
 			case "admin/technologies":
 				getTechnologies(request, response);
 				break;
+			case "admin/amount":
+				getAdminAmount(request, response);
+				break;
+			case "admin/statistics/orders/banned":
+				sendBannedOrderStatistic(request, response);
+				break;
 			default:
 
 			}
@@ -200,6 +205,12 @@ public class AdminController extends HttpServlet implements Responsable {
 				break;
 			case "admin/order/unban":
 				unbanOrder(request, response);
+				break;
+			case "admin/add/technology":
+				addTechnology(request, response);
+				break;
+			case "admin/delete/technology":
+				deleteTechnology(request, response);
 				break;
 			default:
 
@@ -295,7 +306,7 @@ public class AdminController extends HttpServlet implements Responsable {
 			HttpServletResponse response) throws IOException
 	{
 		Map<String, Integer> map = new HashMap<>();
-		map.put("devAmount", developerService.getAllWorkers().size());
+		map.put("devAmount", developerService.findAll().size());
 		map.put("custAmount", customerService.findAll().size());
 		sendResponse(response, map, mapper);
 	}
@@ -674,14 +685,18 @@ public class AdminController extends HttpServlet implements Responsable {
 		Integer finishedCount = 0;
 		Integer inProgressCount = 0;
 		Integer availableCount = 0;
-		for (Ordering ordering : allOrders) {
-			if (ordering.getStarted() && ordering.getEnded()) {
-				finishedCount++;
-			} else {
-				if (ordering.getStarted()) {
-					inProgressCount++;
+		if (allOrders != null) {
+			for (Ordering ordering : allOrders) {
+				if (ordering.getStarted() != null && ordering.getStarted()
+						&& ordering.getEnded() != null && ordering.getEnded())
+				{
+					finishedCount++;
 				} else {
-					availableCount++;
+					if (ordering.getStarted()) {
+						inProgressCount++;
+					} else {
+						availableCount++;
+					}
 				}
 			}
 		}
@@ -724,19 +739,6 @@ public class AdminController extends HttpServlet implements Responsable {
 		Ordering order = orderingService.findById(id);
 		order.setBan(true);
 		orderingService.modify(order);
-		sendEmail(order.getCustomerId(), order);
-	}
-
-	private void sendEmail(Integer customerId, Ordering order)
-			throws IOException
-	{
-		Customer customer = customerService.findById(customerId);
-		String email = customer.getEmail();
-		String from = "maksym.rudevych.kn.2013@lpnu.ua";
-		String pass = "12.04.1996";
-		String[] to = new String[] { email };
-		SendMessageToEmail.sendFromGMail(from, pass, to, "Order ban",
-				order.getTitle() + " has many complains so we banned it.");
 	}
 
 	private void unbanOrder(HttpServletRequest request,
@@ -752,5 +754,49 @@ public class AdminController extends HttpServlet implements Responsable {
 		Ordering order = orderingService.findById(id);
 		order.setBan(false);
 		orderingService.modify(order);
+	}
+
+	private void getAdminAmount(HttpServletRequest request,
+			HttpServletResponse response)
+	{
+		sendResponse(response, adminService.findAll().size(), mapper);
+	}
+
+	private void addTechnology(HttpServletRequest request,
+			HttpServletResponse response)
+	{
+		String name = request.getParameter("name");
+		Map<String, String[]> map = new HashMap<>();
+		map.put("name", new String[] { name });
+		technologyService.create(map);
+	}
+
+	private void deleteTechnology(HttpServletRequest request,
+			HttpServletResponse response)
+	{
+		Integer id = Integer.valueOf(request.getParameter("id"));
+		Technology tech = technologyService.findById(id);
+		tech.setDeleted(true);
+		technologyService.modify(tech);
+	}
+
+	private void sendBannedOrderStatistic(HttpServletRequest request,
+			HttpServletResponse response)
+	{
+		List<Ordering> bannedOrders = new ArrayList<>();
+		List<Ordering> complainedOrders = new ArrayList<>();
+		orderingService.findAll().forEach(ordering -> {
+			if (ordering.getComplains() != null && ordering.getComplains() > 0)
+			{
+				complainedOrders.add(ordering);
+			}
+			if (ordering.getBan() != null && ordering.getBan()) {
+				bannedOrders.add(ordering);
+			}
+		});
+		Map<String, Integer> map = new HashMap<>();
+		map.put("complainedAmount", complainedOrders.size());
+		map.put("bannedAmount", bannedOrders.size());
+		sendResponse(response, map, mapper);
 	}
 }

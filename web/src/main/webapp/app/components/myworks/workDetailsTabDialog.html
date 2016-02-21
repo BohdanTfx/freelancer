@@ -125,7 +125,7 @@
 
         <md-dialog-actions>
 
-            <div ng-if=" role='customer'&& project.started == true && project.ended == false">
+            <div ng-if=" role=='customer'&& project.started == true && project.ended == false">
                 <md-button class="md-warn" ng-click="finishOrdering(project.id)" md-autofocus>
                     {{'myworks.dialog-finish-project' | translate}}
                 </md-button>

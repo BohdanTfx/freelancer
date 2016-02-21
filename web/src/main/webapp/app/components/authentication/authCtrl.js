@@ -38,10 +38,17 @@ angular
 							};
 
 
-							$scope.signinGoogle = function (auth, $scope) {
-								AuthenticationService.signinGoogle(auth);
+							$scope.signinGoogle = function (auth) {
+								AuthenticationService.signinGoogle(auth, $scope);
 
 							};
+
+							hello.init({
+								google: '344510194886-fcto0du17jj39h2oil732hu2cmuq7p67.apps.googleusercontent.com'
+							}, {
+								redirect_uri: 'http://localhost:8081/index.html',
+								scope: 'email'
+							});
 
 							$scope.login = function() {
 								AuthenticationService

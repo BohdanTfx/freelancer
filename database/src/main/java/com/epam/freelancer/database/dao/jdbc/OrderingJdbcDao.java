@@ -93,8 +93,10 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 	@Override
 	public int getAllAcceptedOrderByDevIdAndCustId(Integer custId, Integer devId)
 	{
-		String query = "SELECT * FROM ordering JOIN worker ON ordering.id = worker.order_id"
-				+ " WHERE customer_id = ? AND dev_id = ? AND worker.accepted IS true AND "
+		String query = "SELECT * FROM ordering JOIN worker "
+				+ "ON ordering.id = worker.order_id"
+				+ " WHERE customer_id = ? AND dev_id = ? "
+				+ "AND worker.accepted IS true AND ordering."
 				+ GenericDao.NOT_DELETED;
 		int count = 0;
 

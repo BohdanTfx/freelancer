@@ -124,6 +124,13 @@
 											controller : 'createtestCtrl'
 										})
 								.state(
+										'technologies',
+										{
+											url : '/technologies',
+											templateUrl : 'app/components/technologies/technologies.html',
+											controller : 'technologiesCtrl'
+										})
+								.state(
 										'statistics',
 										{
 											url : '/admin/statistics',
@@ -216,8 +223,8 @@
 								$rootScope.logout = function() {
 									AuthenticationService.ClearCredentials();
 									$state.go('home');
-									hello('google').logout().then(function () {
-									}, function (e) {
+									hello('google').logout().then(function() {
+									}, function(e) {
 									});
 								};
 

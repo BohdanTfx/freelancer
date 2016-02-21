@@ -86,7 +86,6 @@ angular.module('FreelancerApp')
              myworksAPI.getCustWorkersByIdOrder(projectInfo.id).success(
                     function (dataWorkers) {
                         $scope.workers = dataWorkers.workers;
-
                         $mdDialog.show({
                             controller: DialogController,
                             templateUrl: 'app/components/myworks/workDetailsTabDialog.html',
@@ -97,6 +96,24 @@ angular.module('FreelancerApp')
                                 workerInfo: $scope.workerInfo
                             },
                             clickOutsideToClose: true
+                        }).then(function(){
+                            //when ok this section execute
+                        },function(pressedFinishedBtn) {
+                        //when cancel this section execute
+                            if(pressedFinishedBtn == true) {
+                                myworksAPI.getAllCustomerWorks().success(function (data) {
+                                    $scope.firstWorks = data.availableWorks;
+                                    $scope.secondWorks = data.inProgressWorks;
+                                    $scope.thirdWorks = data.finishedWorks;
+                                }).error(function () {
+                                    Notification
+                                        .error({
+                                            title: $translate.instant("myworks.msg-error-title"),
+                                            message: $translate.instant("myworks.msg-error-descr")
+                                        });
+                                });
+                            }
+
                         });
                     }
                 ).error(function () {
@@ -201,8 +218,8 @@ function DialogController($scope, $mdDialog, project, customer, workers, workerI
         $scope.project.endedDate =  $translate.instant("myworks.not-finished-yet");
     }
 
-    $scope.cancel = function () {
-        $mdDialog.cancel();
+    $scope.cancel = function (pressedFinishedBtn) {
+        $mdDialog.cancel(pressedFinishedBtn);
     };
 
     $scope.finishOrdering = function(order_id){
@@ -212,26 +229,7 @@ function DialogController($scope, $mdDialog, project, customer, workers, workerI
                     title: $translate.instant("myworks.msg-success-title"),
                     message: $translate.instant("myworks.msg-success-descr-finished-order")
                 });
-
-            $scope.cancel();
-             myworksAPI.getAllCustomerWorks().success(function (data) {
-                $scope.firstWorks = data.availableWorks;
-                $scope.secondWorks = data.inProgressWorks;
-                $scope.thirdWorks = data.finishedWorks;
-
-
-
-
-            }).error(function () {
-                Notification
-                    .error({
-                        title: $translate.instant("myworks.msg-error-title"),
-                        message: $translate.instant("myworks.msg-error-descr")
-                    });
-            });
-
-
-
+            $scope.cancel(true);
         }).error(function(){
             Notification
                 .error({
