@@ -205,12 +205,26 @@ public class UserController extends HttpServlet implements Responsable {
 				case "user/getAllAcceptedOrderByDevIdAndCustId":
 					getAllAcceptedOrderByDevIdAndCustId(request, response);
 					break;
+				case "user/setIsFirstFalse":
+					setIsFirstFalse(request, response);
 			default:
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			LOG.fatal(getClass().getSimpleName() + " - " + "doPost");
 		}
+	}
+
+	private void setIsFirstFalse(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		HttpSession session = request.getSession();
+		if (session != null) {
+			UserEntity user = (UserEntity) session.getAttribute("user");
+			if (user != null) {
+				userManager.setIsFirstFalseAndModify(user);
+			} else
+				response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+		} else
+			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
 	}
 
 	private void getAllAcceptedOrderByDevIdAndCustId(HttpServletRequest request, HttpServletResponse response) throws IOException {

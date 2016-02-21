@@ -1,7 +1,5 @@
 package com.epam.freelancer.business.manager;
 
-import java.util.Map;
-
 import com.epam.freelancer.business.encode.Encryption;
 import com.epam.freelancer.business.encode.SHA256Util;
 import com.epam.freelancer.business.service.AdminService;
@@ -11,6 +9,8 @@ import com.epam.freelancer.database.model.Admin;
 import com.epam.freelancer.database.model.Customer;
 import com.epam.freelancer.database.model.Developer;
 import com.epam.freelancer.database.model.UserEntity;
+
+import java.util.Map;
 
 public class UserManager {
 	private DeveloperService developerService;
@@ -27,6 +27,21 @@ public class UserManager {
 		if (userEntity instanceof Admin) {
 			return adminService.modify((Admin) userEntity);
 		}
+		return null;
+	}
+
+	public UserEntity setIsFirstFalseAndModify(UserEntity userEntity) {
+		if (userEntity instanceof Developer) {
+			Developer developer = developerService.findById(userEntity.getId());
+			developer.setIsFirst(false);
+			return developerService.modify(developer);
+		}
+		if (userEntity instanceof Customer) {
+			Customer customer = customerService.findById(userEntity.getId());
+			customer.setIsFirst(false);
+			return customerService.modify(customer);
+		}
+
 		return null;
 	}
 
