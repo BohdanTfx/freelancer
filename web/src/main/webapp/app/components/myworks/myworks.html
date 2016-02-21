@@ -2,8 +2,7 @@
     <div class="mywork">
         <md-content>
             <md-tabs md-dynamic-height md-border-bottom>
-
-                <div ng-if="role === 'developer'">
+                <div ng-if="globals.currentUser.role == 'developer'">
                     <!--Start Tab Proposed projects-->
                     <md-tab label="{{'myworks.tab-accepted' | translate}}">
                         <md-content class="md-padding" style="min-height: 450px;">
