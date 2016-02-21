@@ -289,7 +289,18 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 			builder.append(" title LIKE '%");
 			builder.append(string);
 			builder.append("%'");
-			
+
+			lastNull = false;
+		}
+
+		Integer complains = (Integer) parameters.get("complains");
+
+		if (complains != null && complains >= 0) {
+			builder.append(lastNull ? "" : " AND");
+
+			builder.append(" complains > ");
+			builder.append(complains);
+
 			lastNull = false;
 		}
 
@@ -299,8 +310,8 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 			if (banned)
 				builder.append(" ban IS TRUE");
 			else
-				builder.append(" ban IS FALSE OR ban IS NOT NULL");
-			
+				builder.append(" ban IS NOT TRUE");
+
 			lastNull = false;
 		}
 
