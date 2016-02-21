@@ -10,6 +10,7 @@ angular.module('FreelancerApp')
                 $scope.secondWorks = data.processedWorks;
                 $scope.thirdWorks = data.finishedWorks;
                 $scope.notAcceptedWorks = data.notAcceptedWorks;
+                $scope.acceptedWorks = data.acceptedWorks;
                 $scope.expireDays = data.expireDays;
 
                 for(var i in $scope.notAcceptedWorks){
@@ -127,6 +128,65 @@ angular.module('FreelancerApp')
 
         };
 
+        $scope.startOrdering = function(ev,order_id){
+
+            myworksAPI.getWorkersByIdOrder(order_id).success(function(data){
+            console.log(data);
+            $scope.orderWorkers = data.workers;
+                if(data.length == $scope.orderWorkers.length){
+                    Notification
+                        .error({
+                            title: $translate.instant("myworks.msg-error-title"),
+                            message: 'Not workers'
+                        });
+                }else{
+                    myworksAPI.startOrdering(order_id).success(function(){
+                        myworksAPI.getAllCustomerWorks().success(function (data) {
+                            $scope.firstWorks = data.availableWorks;
+                            $scope.secondWorks = data.inProgressWorks;
+                            $scope.thirdWorks = data.finishedWorks;
+                        }).error(function () {
+                            Notification
+                                .error({
+                                    title: $translate.instant("myworks.msg-error-title"),
+                                    message: $translate.instant("myworks.msg-error-descr")
+                                });
+                        });
+
+                        Notification
+                            .success({
+                                title: "Success",
+                                message: "Ordering started"
+                            });
+                        $scope.cancel(true);
+                    }).error(function(response,status){
+                        alert(status);
+                        Notification
+                            .error({
+                                title: $translate.instant("myworks.msg-error-title"),
+                                message: $translate.instant("myworks.msg-error-descr")
+                            });
+                    });
+
+                }
+
+
+
+
+            });
+
+
+
+
+
+
+
+
+
+
+
+        }
+
         $scope.showAcceptConfirm = function(ev,project) {
             // Appending dialog to document.body to cover sidenav in docs app
             var confirm = $mdDialog.confirm()
@@ -142,6 +202,7 @@ angular.module('FreelancerApp')
                         $scope.secondWorks = data.processedWorks;
                         $scope.thirdWorks = data.finishedWorks;
                         $scope.notAcceptedWorks = data.notAcceptedWorks;
+                        $scope.acceptedWorks = data.acceptedWorks;
 
                     }).error(function () {
                         Notification
@@ -178,6 +239,8 @@ angular.module('FreelancerApp')
                         $scope.secondWorks = data.processedWorks;
                         $scope.thirdWorks = data.finishedWorks;
                         $scope.notAcceptedWorks = data.notAcceptedWorks;
+                        $scope.acceptedWorks = data.acceptedWorks;
+
 
                     }).error(function () {
                         Notification

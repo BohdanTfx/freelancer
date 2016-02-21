@@ -39,6 +39,14 @@ angular.module('FreelancerApp')
             return $http.post("/cust/allWorks");
         };
 
+        dataFactory.startOrdering = function (order_id) {
+            return $http.post("/cust/startOrdering?order_id="+order_id);
+        };
+
+        dataFactory.getWorkersByIdOrder = function (order_id){
+            return $http.get('/cust/workersByIdOrder?order_id='+order_id);
+        };
+
 
 
         return dataFactory;

@@ -139,6 +139,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
         List<Ordering> finishedWorks = new ArrayList<>();
         List<Ordering> worksInProgress = new ArrayList<>();
         List<Ordering> notAcceptedWorks = new ArrayList<>();
+        List<Ordering> acceptedWorks = new ArrayList<>();
         List<Long> expireDays = new ArrayList<>();
         List<Worker> workersToDelete = new ArrayList<>();
 
@@ -149,7 +150,11 @@ public class DeveloperController extends HttpServlet implements Responsable {
                 if (order.getStarted() && order.getEnded()) {
                     finishedWorks.add(order);
                 } else {
-                    worksInProgress.add(order);
+                    if(!order.getStarted()){
+                        acceptedWorks.add(order);
+                    }else{
+                        worksInProgress.add(order);
+                    }
                 }
             } else {
                 LocalDate differExpireDate = LocalDate.ofEpochDay(
@@ -179,6 +184,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
         resultMap.put("subscribedWorks", subscribedWorks);
         resultMap.put("processedWorks", worksInProgress);
         resultMap.put("notAcceptedWorks", notAcceptedWorks);
+        resultMap.put("acceptedWorks", acceptedWorks);
         resultMap.put("expireDays", expireDays);
         sendResponse(response, resultMap, mapper);
     }
@@ -523,29 +529,8 @@ public class DeveloperController extends HttpServlet implements Responsable {
         worker.setNewHourly(dev.getHourly());
         developerService.updateWorker(worker);
 
-        //set started to ordering
-        Ordering ordering = orderingService.findById(orderId);
-        ordering.setStarted(true);
-        ordering.setStartedDate(new Timestamp(new java.util.Date().getTime()));
-        orderingService.modify(ordering);
-
-        //get followers email and delete followers
-        List<String> followersEmailsList = new ArrayList<>();
-        orderingService.findOrderFollowers(orderId).forEach(follower -> {
-            String email = developerService.findById(follower.getDevId()).getEmail();
-             if(!email.equals(dev.getEmail())){followersEmailsList.add(email);}
-            orderingService.deleteFollower(follower);
-        });
-
-        //send email to followers
-        String arrayEmail[] = followersEmailsList.toArray(new String[followersEmailsList.size()]);
-        SendMessageToEmail.sendFromGMail("onlineshopjava@gmail.com", "ForTestOnly",
-                arrayEmail, "OpenTask - Notification about order", getAcceptedOrderMessageForFollowers(dev.getFname(),ordering.getTitle()));
     }
-    private String getAcceptedOrderMessageForFollowers(String devName,String orderingName){
-        return "Hello " +devName+"\n\n"+
-                "Unfortunately you have not been chosen for ordering '"+orderingName+"'.";
-    }
+
 
     private void rejectOrdering(HttpServletRequest request, HttpServletResponse response){
         HttpSession session = request.getSession();
