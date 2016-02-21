@@ -136,7 +136,7 @@ angular.module('FreelancerApp')
                     Notification
                         .error({
                             title: $translate.instant("myworks.msg-error-title"),
-                            message: 'Not workers'
+                            message: $translate.instant("myworks.error-not-workers")
                         });
                 }else{
                     myworksAPI.startOrdering(order_id).success(function(){
@@ -154,12 +154,10 @@ angular.module('FreelancerApp')
 
                         Notification
                             .success({
-                                title: "Success",
-                                message: "Ordering started"
+                                title: $translate.instant("myworks.msg-success-title"),
+                                message: $translate.instant("myworks.msg-success-start")
                             });
-                        $scope.cancel(true);
-                    }).error(function(response,status){
-                        alert(status);
+                    }).error(function(){
                         Notification
                             .error({
                                 title: $translate.instant("myworks.msg-error-title"),
