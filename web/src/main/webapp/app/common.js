@@ -271,6 +271,12 @@ function getPermissions() {
 			administrator : false,
 			developer : false,
 			customer : false
+		},
+		banservice : {
+			unknown : false,
+			administrator : true,
+			developer : false,
+			customer : false
 		}
 	};
 }

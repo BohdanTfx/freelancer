@@ -1,33 +1,29 @@
 'use strict';
 
-angular.module('FreelancerApp')
-    .factory('banAPI', function ($http, config) {
-        var dataFactory = {};
+angular.module('FreelancerApp').factory('banAPI', function($http, config) {
+	var dataFactory = {};
 
-        dataFactory.getComplainedOrders = function (itemListStart, id) {
-            /*var pagination = {};
-            pagination.start = itemListStart | 0;
-            //pagination.last = last;
-            pagination.step = 5;
+	dataFactory.getOrders = function(itemListStart, banned) {
+		var pagination = {};
+		pagination.start = itemListStart | 0;
+		pagination.step = 10;
 
-            var data = {};
-            data.content = {};
-            data.content.tech_id = id;
-            data.page = pagination;
-            return $http.post('/admin/orders/complained', data, {'Content-Type': 'application/x-www-form-urlencoded'});*/
-            return $http.post('/admin/orders/complained');
-        };
+		var data = {};
+		data.page = pagination;
+		data.content = {};
+		data.content.ban = banned;
+		data.content.sortOrderField = 'complains';
+		return $http.post('/admin/orders', data, {
+			'Content-Type' : 'application/x-www-form-urlencoded'
+		});
+	};
 
-        dataFactory.getBanOrders = function () {
-            return $http.post('/admin/orders/bans');
-        };
+	dataFactory.banOrder = function(orderId) {
+		return $http.post('/admin/order/ban?orderId=' + orderId);
+	};
 
-        dataFactory.banOrder = function (orderId) {
-            return $http.post('/admin/order/ban?orderId=' + orderId);
-        };
-
-        dataFactory.unbanOrder = function (orderId) {
-            return $http.post('/admin/order/unban?orderId=' + orderId);
-        };
-        return dataFactory;
-    });
+	dataFactory.unbanOrder = function(orderId) {
+		return $http.post('/admin/order/unban?orderId=' + orderId);
+	};
+	return dataFactory;
+});

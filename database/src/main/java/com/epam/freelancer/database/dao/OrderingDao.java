@@ -18,8 +18,4 @@ public interface OrderingDao extends GenericDao<Ordering, Integer> {
     List<Ordering> getAllCustOrders(Integer custId);
 
     int getAllAcceptedOrderByDevIdAndCustId(Integer custId, Integer devId);
-
-    List<Ordering> getComplainedOrders();
-
-    List<Ordering> getBanOrders();
 }

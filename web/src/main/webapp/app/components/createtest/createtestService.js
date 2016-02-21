@@ -17,7 +17,6 @@ angular.module('FreelancerApp')
         dataFactory.getQuestionsByTechId = function (itemListStart, id) {
             var pagination = {};
             pagination.start = itemListStart | 0;
-            //pagination.last = last;
             pagination.step = 5;
 
             var data = {};

@@ -18,8 +18,12 @@ public interface Service<T extends BaseEntity<ID>, ID> {
 
 	List<T> findAll();
 
+	public Integer getObjectAmount();
+
 	List<T> filterElements(Map<String, Object> parameters, Integer start,
 			Integer step);
+
+	Integer getFilteredObjectNumber(Map<String, Object> parameters);
 
 	void encodePassword(UserEntity userEntity);
 
