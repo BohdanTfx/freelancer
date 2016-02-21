@@ -277,6 +277,12 @@ function getPermissions() {
 			administrator : true,
 			developer : false,
 			customer : false
+		},
+		technologies : {
+			unknown : false,
+			administrator : true,
+			developer : false,
+			customer : false
 		}
 	};
 }

@@ -23,145 +23,148 @@
 							positionY : 'top'
 						});
 
-			// routes
-			$stateProvider
-				.state(
-				'orders',
-				{
-					url : '/orders',
-					templateUrl : 'app/components/jobs/jobs.html',
-					controller : 'jobsCtrl'
-				})
-				.state(
-				'developers',
-				{
-					url : '/developers',
-					templateUrl : 'app/components/developers/developers.html',
-					controller : 'developersCtrl'
-				})
-				.state(
-				'createOrder',
-				{
-					url : '/order/create',
-					templateUrl : 'app/components/order/order.html',
-					controller : 'orderCtrl'
-				})
-				.state(
-				'order',
-				{
-					url : '/orders/:orderId',
-					templateUrl : 'app/components/jobinfo/jobinfo.html',
-					controller : 'jobinfoCtrl'
-				})
-				.state(
-				'signup',
-				{
-					url : '/signup',
-					templateUrl : 'app/components/signup/signup.html',
-					controller : 'signupCtrl'
-				})
-				.state(
-				'personal',
-				{
-					url : '/personal',
-					templateUrl : 'app/components/personal/personal.html',
-					controller : 'personalCtrl'
-				})
-				.state(
-				'tests',
-				{
-					url : '/tests',
-					templateUrl : 'app/components/tests/tests.html',
-					controller : 'testsCtrl'
-				})
-				.state(
-				'myworks',
-				{
-					url : '/myworks',
-					templateUrl : 'app/components/myworks/myworks.html',
-					controller : 'myworksCtrl'
-				})
-				.state(
-				'test',
-				{
-					url : '/tests/:testId',
-					templateUrl : 'app/components/test/test.html',
-					controller : 'testCtrl'
-				})
-				.state(
-				'home',
-				{
-					url : '/home',
-					templateUrl : 'app/components/home/home.html',
-					controller : 'homeCtrl'
-				})
-				.state(
-				'auth',
-				{
-					url : '/auth',
-					templateUrl : 'app/components/authentication/auth.html',
-					controller : 'authCtrl'
-				})
-				.state(
-				'pubdev',
-				{
-					url : '/public/developer/:devName/:devId',
-					templateUrl : 'app/components/pubdev/pubdev.html',
-					controller : 'pubdevCtrl'
-				})
-				.state(
-				'custpub',
-				{
-					url : '/public/customer/:custName/:custId',
-					templateUrl : 'app/components/custpub/custpub.html',
-					controller : 'custpubCtrl'
-				})
-				.state(
-				'createtest',
-				{
-					url : '/tests/creating',
-					templateUrl : 'app/components/createtest/createtest.html',
-					controller : 'createtestCtrl'
-				})
-				.state(
-				'technologies',
-				{
-					url : '/technologies',
-					templateUrl : 'app/components/technologies/technologies.html',
-					controller : 'technologiesCtrl'
-				})
-				.state(
-				'statistics',
-				{
-					url : '/admin/statistics',
-					templateUrl : 'app/components/statistics/statistics.html',
-					controller : 'statisticsCtrl'
-				})
-				.state(
-				'createAdmin',
-				{
-					url : '/admin/new/admin',
-					templateUrl : 'app/components/createadmin/createadmin.html',
-					controller : 'createadminCtrl'
-				})
-				.state(
-				'signupadmin',
-				{
-					url : '/signup/:uuid',
-					templateUrl : 'app/components/signup/signup.html',
-					controller : 'signupCtrl'
-				})
-				.state(
-				'forgot',
-				{
-					url : '/forgot',
-					templateUrl : 'app/components/forgotpass/forgot.html',
-					controller : 'forgotCtrl'
-				}).state('banservice', {
-					url : '/admin/banservice',
-					templateUrl : 'app/components/ban/ban.html',
-					controller : 'banCtrl'
-				});
+						// routes
+						$stateProvider
+								.state(
+										'orders',
+										{
+											url : '/orders',
+											templateUrl : 'app/components/jobs/jobs.html',
+											controller : 'jobsCtrl'
+										})
+								.state(
+										'developers',
+										{
+											url : '/developers',
+											templateUrl : 'app/components/developers/developers.html',
+											controller : 'developersCtrl'
+										})
+								.state(
+										'createOrder',
+										{
+											url : '/order/create',
+											templateUrl : 'app/components/order/order.html',
+											controller : 'orderCtrl'
+										})
+								.state(
+										'order',
+										{
+											url : '/orders/:orderId',
+											templateUrl : 'app/components/jobinfo/jobinfo.html',
+											controller : 'jobinfoCtrl'
+										})
+								.state(
+										'signup',
+										{
+											url : '/signup',
+											templateUrl : 'app/components/signup/signup.html',
+											controller : 'signupCtrl'
+										})
+								.state(
+										'personal',
+										{
+											url : '/personal',
+											templateUrl : 'app/components/personal/personal.html',
+											controller : 'personalCtrl'
+										})
+								.state(
+										'tests',
+										{
+											url : '/tests',
+											templateUrl : 'app/components/tests/tests.html',
+											controller : 'testsCtrl'
+										})
+								.state(
+										'myworks',
+										{
+											url : '/myworks',
+											templateUrl : 'app/components/myworks/myworks.html',
+											controller : 'myworksCtrl'
+										})
+								.state(
+										'test',
+										{
+											url : '/tests/:testId',
+											templateUrl : 'app/components/test/test.html',
+											controller : 'testCtrl'
+										})
+								.state(
+										'home',
+										{
+											url : '/home',
+											templateUrl : 'app/components/home/home.html',
+											controller : 'homeCtrl'
+										})
+								.state(
+										'auth',
+										{
+											url : '/auth',
+											templateUrl : 'app/components/authentication/auth.html',
+											controller : 'authCtrl'
+										})
+								.state(
+										'pubdev',
+										{
+											url : '/public/developer/:devName/:devId',
+											templateUrl : 'app/components/pubdev/pubdev.html',
+											controller : 'pubdevCtrl'
+										})
+								.state(
+										'custpub',
+										{
+											url : '/public/customer/:custName/:custId',
+											templateUrl : 'app/components/custpub/custpub.html',
+											controller : 'custpubCtrl'
+										})
+								.state(
+										'createtest',
+										{
+											url : '/tests/creating',
+											templateUrl : 'app/components/createtest/createtest.html',
+											controller : 'createtestCtrl'
+										})
+								.state(
+										'technologies',
+										{
+											url : '/technologies',
+											templateUrl : 'app/components/technologies/technologies.html',
+											controller : 'technologiesCtrl'
+										})
+								.state(
+										'statistics',
+										{
+											url : '/admin/statistics',
+											templateUrl : 'app/components/statistics/statistics.html',
+											controller : 'statisticsCtrl'
+										})
+								.state(
+										'createAdmin',
+										{
+											url : '/admin/new/admin',
+											templateUrl : 'app/components/createadmin/createadmin.html',
+											controller : 'createadminCtrl'
+										})
+								.state(
+										'signupadmin',
+										{
+											url : '/signup/:uuid',
+											templateUrl : 'app/components/signup/signup.html',
+											controller : 'signupCtrl'
+										})
+								.state(
+										'forgot',
+										{
+											url : '/forgot',
+											templateUrl : 'app/components/forgotpass/forgot.html',
+											controller : 'forgotCtrl'
+										})
+								.state(
+										'banservice',
+										{
+											url : '/admin/banservice',
+											templateUrl : 'app/components/ban/ban.html',
+											controller : 'banCtrl'
+										});
 
 						$locationProvider.html5Mode(false);
 					})
@@ -214,8 +217,8 @@
 								$rootScope.logout = function() {
 									AuthenticationService.ClearCredentials();
 									$state.go('home');
-									hello('google').logout().then(function () {
-									}, function (e) {
+									hello('google').logout().then(function() {
+									}, function(e) {
 									});
 								};
 

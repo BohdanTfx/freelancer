@@ -248,6 +248,7 @@ public class UnregisteredController extends HttpServlet implements Responsable {
 			} catch (OAuthException e) {
 				e.printStackTrace();
 				response.sendError(HttpServletResponse.SC_CONFLICT);
+				return;
 			}
 			break;
 		case GOOGLE:
