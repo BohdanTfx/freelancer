@@ -257,6 +257,11 @@
 												function(event, toState,
 														toParams, fromState,
 														fromParams) {
+													$rootScope.showProfile = false;
+													if ($rootScope.globals.currentUser) {
+														if (!$rootScope.globals.currentUser.imgUrl)
+															$rootScope.showProfile = true;
+													}
 													if (!fromState['abstract']
 															&& !checkAccess(
 																	toState.name,
