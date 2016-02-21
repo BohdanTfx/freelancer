@@ -289,6 +289,8 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 			builder.append(" title LIKE '%");
 			builder.append(string);
 			builder.append("%'");
+			
+			lastNull = false;
 		}
 
 		Boolean banned = (Boolean) parameters.get("ban");
@@ -298,6 +300,8 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 				builder.append(" ban IS TRUE");
 			else
 				builder.append(" ban IS FALSE OR ban IS NOT NULL");
+			
+			lastNull = false;
 		}
 
 		if ((parameters.size() > 0 && parameters.get("sortOrderField") == null)

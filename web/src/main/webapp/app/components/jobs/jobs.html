@@ -27,7 +27,8 @@
 							{{"orders.search-title" | translate}}</label>
 						<div class="col-sm-8">
 							<input class="form-control" id="order_title" name="order_title"
-								placeholder="Enter title" ng-model="filter.title">
+								ng-model="filter.title"
+								placeholder="{{'orders.search-title.placeholder' | translate}}">
 						</div>
 					</div>
 					<div class="form-group">
@@ -132,9 +133,11 @@
 							<div class="btn btm-sm btn-danger pull-right"
 								ng-disabled="order.isComplaint || isComp" data-toggle="modal"
 								data-target=".bs-example-modal-sm"
-								ng-click="setOrderID(order.id)" style="padding: 3px"><i class="fa fa-exclamation-triangle"></i>
-								<span class="hidden-xs">
-								{{"orders.complain" | translate}}</span></div>
+								ng-click="setOrderID(order.id)" style="padding: 3px">
+								<i class="fa fa-exclamation-triangle"></i>
+								<span class="hidden-xs"> {{"orders.complain" |
+									translate}}</span>
+							</div>
 						</div>
 					</div>
 				</div>

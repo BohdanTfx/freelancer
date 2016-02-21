@@ -315,7 +315,8 @@
 	
 	"list.empty":"List is empty",
 	
-	"orders.search-title":"Search titCule",
+	"orders.search-title":"Search title",
+	"orders.search-title.placeholder":"Enter title",
 	"orders.order-type":"Order pay type",
 	"orders.payment.hourly":"Hourly",
 	"orders.payment.fixed":"Fixed",
