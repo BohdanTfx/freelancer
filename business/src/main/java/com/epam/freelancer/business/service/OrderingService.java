@@ -149,12 +149,4 @@ public class OrderingService extends GenericService<Ordering, Integer> {
 	public int getAllAcceptedOrderByDevIdAndCustId(Integer custId, Integer devId) {
 		return ((OrderingDao) genericDao).getAllAcceptedOrderByDevIdAndCustId(custId, devId);
 	}
-
-	public List<Ordering> getComplainedOrders() {
-		return ((OrderingDao)genericDao).getComplainedOrders();
-	}
-
-	public List<Ordering> getBanOrders() {
-		return ((OrderingDao)genericDao).getBanOrders();
-	}
 }

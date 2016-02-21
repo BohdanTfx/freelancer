@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.epam.freelancer.database.dao.DeveloperDao;
+import com.epam.freelancer.database.dao.GenericDao;
 import com.epam.freelancer.database.model.Developer;
 
 /**
@@ -27,7 +28,8 @@ public class DeveloperJdbcDao extends UserJdbcDao<Developer, Integer> implements
 				|| (!limitType.equalsIgnoreCase("max") && !limitType
 						.equalsIgnoreCase("min")))
 			throw new RuntimeException("Incorrect type");
-		String query = "SELECT " + limitType + "(hourly) FROM " + table;
+		String query = "SELECT " + limitType + "(hourly) FROM " + table
+				+ " WHERE " + GenericDao.NOT_DELETED;
 		try (Connection connection = connectionPool.getConnection();
 				PreparedStatement statement = connection
 						.prepareStatement(query);
@@ -44,7 +46,8 @@ public class DeveloperJdbcDao extends UserJdbcDao<Developer, Integer> implements
 	public Integer getFilteredObjectNumber(Map<String, Object> parameters) {
 		String query = null;
 		if (parameters == null || parameters.isEmpty()) {
-			query = "SELECT DISTINCT * FROM " + table;
+			query = "SELECT DISTINCT * FROM " + table + " WHERE "
+					+ GenericDao.NOT_DELETED;
 			query = query.replace("SELECT DISTINCT *",
 					"SELECT DISTINCT count(*)");
 		} else {
@@ -76,7 +79,8 @@ public class DeveloperJdbcDao extends UserJdbcDao<Developer, Integer> implements
 		List<Developer> entities = new ArrayList<>();
 		String query = null;
 		if (parameters == null || parameters.isEmpty())
-			query = "SELECT * FROM " + table + " Limit " + start + ", " + step;
+			query = "SELECT * FROM " + table + " WHERE "
+					+ GenericDao.NOT_DELETED + " Limit " + start + ", " + step;
 		else {
 			query = createFilterQuery(parameters, start, step);
 		}
@@ -183,6 +187,12 @@ public class DeveloperJdbcDao extends UserJdbcDao<Developer, Integer> implements
 			builder.append(lastname);
 			builder.append("%'");
 		}
+
+		if (parameters.size() > 0)
+			builder.append(" AND ");
+		else
+			builder.append(" WHERE ");
+		builder.append(GenericDao.NOT_DELETED);
 
 		if (start != null && step != null) {
 			builder.append(" LIMIT ");

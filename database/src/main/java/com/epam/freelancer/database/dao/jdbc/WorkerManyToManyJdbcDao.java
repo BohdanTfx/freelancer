@@ -1,16 +1,16 @@
 package com.epam.freelancer.database.dao.jdbc;
 
-import com.epam.freelancer.database.dao.WorkerManyToManyDao;
-import com.epam.freelancer.database.model.Developer;
-import com.epam.freelancer.database.model.Ordering;
-import com.epam.freelancer.database.model.Worker;
-import com.epam.freelancer.database.transformer.DataTransformer;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.epam.freelancer.database.dao.WorkerManyToManyDao;
+import com.epam.freelancer.database.model.Developer;
+import com.epam.freelancer.database.model.Ordering;
+import com.epam.freelancer.database.model.Worker;
+import com.epam.freelancer.database.transformer.DataTransformer;
 
 /**
  * Created by Максим on 18.01.2016.
@@ -37,7 +37,7 @@ public class WorkerManyToManyJdbcDao extends
 						.prepareStatement(query)) {
 			statement.setObject(1, devId);
 			statement.setObject(2, false);
-				try (ResultSet set = statement.executeQuery()) {
+			try (ResultSet set = statement.executeQuery()) {
 				while (set.next()) {
 					entities.add(secondTransformer.getObject(set));
 				}
@@ -47,10 +47,6 @@ public class WorkerManyToManyJdbcDao extends
 		}
 		return entities;
 	}
-
-
-
-
 
 	@Override
 	public List<Ordering> getOrdersByDevId(Integer devId) {
