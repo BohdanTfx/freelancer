@@ -80,7 +80,7 @@
                                         <div class="cust-image-block" style="height: 64px;width: 64px;">
                                             <img class="user-image"
                                             class="unit-cust-image"
-                                            src="{{customer.imgUrl==null? '/images/profile/no-image.png' : customer.imgUrl}}"
+                                            ng-src="{{customer.imgUrl==null? '/images/profile/no-image.png' : customer.imgUrl}}"
                                                  alt=""/>
                                          </div>
                                         <div class="cust-name-block">
@@ -93,6 +93,7 @@
 
 
                             <hr/>
+                            <!--ng-src="{{devWorker.imgUrl==null? '/images/profile/no-image.png' : devWorker.imgUrl}}"-->
 
                             <div class="panel panel-info panel-unit">
                                 <div class="panel-heading">{{'myworks.dialog-developers' | translate}}</div>
@@ -101,10 +102,13 @@
                                         <a href="/#/public/developer/devname/{{devWorker.id}}">
                                             <div class="members-unit-dev">
                                                 <div class="unit-foto">
+                                                    <!--<div class="devpub-user" style="background-image: url('{{img}}')"></div>-->
                                                     <img class="user-image"
-                                                         src="{{devWorker.imgUrl==null? '/images/profile/no-image.png' : devWorker.imgUrl}}"
+                                                         class="unit-cust-image"
+                                                         ng-src="{{devWorker.imgUrl==null? '/images/profile/no-image.png' : devWorker.imgUrl}}"
                                                          alt=""/>
                                                 </div>
+
 
                                                     <div class="unit-name-dev">
                                                         {{devWorker.fname}}

@@ -8,6 +8,8 @@
 
   "footer.rights":"Всі права захищено",
   "footer.phone":"Телефон",
+  "footer.about":"Про нас",
+
 
   "index.menu-orders":"Замовлення",
   "index.menu-developers":"Фрілансери",
@@ -67,7 +69,7 @@
   "createadmin.error-invitation-already-sended":"Запрошення вже було відправлено на цю пошту раніше.",
   "createadmin.error-already-user":"Особа з цією поштою вже є зареєстрована в системі під іншими правами.",
   "createadmin.error-general":"Щось пішло не так. Будь ласка, спробуйте ще раз.",
-  "createadmin.succes-title":"Успіх",
+  "createadmin.succes-title":"Успішно",
   "createadmin.succes-sended":"Запрошення було надіслано.",
 
   "auth.title":"Авторизація",
@@ -94,7 +96,7 @@
   "myworks.tab-3":"Завершені",
   "myworks.msg-error-title":"Помилка!",
   "myworks.msg-error-descr":"Щось пішло не так. Спробуйте, будь ласка, ще раз.",
-  "myworks.msg-success-title":"Успіх!",
+  "myworks.msg-success-title":"Успішно!",
   "myworks.msg-success-descr-accepted-order":"Ви успішно підтвердили замовлення.",
   "myworks.msg-success-descr-rejected-order":"Ви успішно відхилили замовлення.",
   "myworks.msg-success-descr-finished-order":"Замовлення завершено успішно.",
@@ -133,7 +135,11 @@
   "myworks.type-hourly":"погодинна",
   "myworks.available-title":"Доступне ще",
   "myworks.available-days":"дн.",
-
+  "myworks.accepted-title":"Підтверджено",
+  "myworks.accepted-descr":"Коли замовник розпочне цей проект, ви зможете виконувати його. Це замовлення з'явиться у вкладці 'В ПРОЦЕСІ'.",
+  "myworks.error-not-workers":"Повиннен мінімум один девелопер підтвердити участь у  цьому замовленні.",
+  "myworks.msg-success-start":"Замовлення почато.",
+  "myworks.start-btn":"Старт",
 
 
 
@@ -335,7 +341,7 @@
   "home.slider-image-4": "Працюй натхненно та отримуй задоволення",
 
 	"message.error":"Помилка!",
-	"message.success":"Успіх!",
+	"message.success":"Успішно!",
   "custpub.notfound-customer": "Замовника не знайдено",
   "custpub.follow-me": "Підписуйся",
   "custpub.onsite-sinse": "На сайті з",

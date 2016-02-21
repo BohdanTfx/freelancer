@@ -150,50 +150,55 @@ public class DeveloperController extends HttpServlet implements Responsable {
         UserEntity user = (UserEntity) session.getAttribute("user");
 
         List<Worker> allWorks = developerService.getAllWorkersByDevId(user.getId());
-        List<Ordering> subscribedWorks = developerService.getDeveloperSubscribedProjects(user.getId());
+        List<Ordering> subscribedWorks = new ArrayList<>();
         List<Ordering> finishedWorks = new ArrayList<>();
         List<Ordering> worksInProgress = new ArrayList<>();
         List<Ordering> notAcceptedWorks = new ArrayList<>();
+        List<Ordering> acceptedWorks = new ArrayList<>();
         List<Long> expireDays = new ArrayList<>();
         List<Worker> workersToDelete = new ArrayList<>();
 
         allWorks.forEach(worker -> {
             Ordering order = orderingService.findById(worker.getOrderId());
             order.setTechnologies(technologyService.findTechnolodyByOrderingId(order.getId()));
-            if (worker.getAccepted()!=null && worker.getAccepted()) {
+            if (worker.getAccepted() != null && worker.getAccepted()) {
                 if (order.getStarted() && order.getEnded()) {
                     finishedWorks.add(order);
                 } else {
-                    worksInProgress.add(order);
+                    if (!order.getStarted()) {
+                        acceptedWorks.add(order);
+                    } else {
+                        worksInProgress.add(order);
+                    }
                 }
             } else {
                 LocalDate differExpireDate = LocalDate.ofEpochDay(
-                    worker.getAcceptDate().toLocalDate().plusDays(5).toEpochDay() - LocalDate.now().toEpochDay());
-                if(differExpireDate.toEpochDay()>=0){
+                        worker.getAcceptDate().toLocalDate().plusDays(5).toEpochDay() - LocalDate.now().toEpochDay());
+                if (differExpireDate.toEpochDay() >= 0) {
                     notAcceptedWorks.add(order);
                     expireDays.add(differExpireDate.toEpochDay());
-                }else{
+                } else {
                     workersToDelete.add(worker);
                 }
             }
         });
 
         //Delete workers with date expired
-        for(int i=0;i<workersToDelete.size();i++){
+        for (int i = 0; i < workersToDelete.size(); i++) {
             developerService.deleteWorker(workersToDelete.get(i));
         }
 
-        subscribedWorks.forEach(order ->{
-            order.setTechnologies(technologyService.findTechnolodyByOrderingId(order.getId()));
+        developerService.getDeveloperSubscribedProjects(user.getId()).forEach(subscribedOrder -> {
+            subscribedOrder.setTechnologies(technologyService.findTechnolodyByOrderingId(subscribedOrder.getId()));
+            subscribedWorks.add(subscribedOrder);
         });
-
-
 
         Map<String, List> resultMap = new HashMap<>();
         resultMap.put("finishedWorks", finishedWorks);
         resultMap.put("subscribedWorks", subscribedWorks);
         resultMap.put("processedWorks", worksInProgress);
         resultMap.put("notAcceptedWorks", notAcceptedWorks);
+        resultMap.put("acceptedWorks", acceptedWorks);
         resultMap.put("expireDays", expireDays);
         sendResponse(response, resultMap, mapper);
     }
@@ -230,7 +235,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
                 .getInstance().getBean("testService");
         Test test = testService.findById(testId);
         test.setQuestions(testService.findQuestionsByTestId(testId));
-        sendResponse(response,test,mapper);
+        sendResponse(response, test, mapper);
     }
 
     private void sendCustomerById(HttpServletRequest request,
@@ -434,7 +439,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
         Developer developer = (Developer) session.getAttribute("user");
         if (userManager.validCredentials(developer.getEmail(), password, developerService.findById(developer.getId()))) {
             String[] userEmail = new String[1];
-            if(developer.getSendEmail() != null){
+            if (developer.getSendEmail() != null) {
                 userEmail[0] = developer.getSendEmail();
             } else {
                 userEmail[0] = developer.getEmail();
@@ -488,7 +493,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
                 developer.setConfirmCode(confirmPhoneCode.toString());
                 String[] userEmail = {email};
                 SendMessageToEmail.sendHtmlFromGMail("onlineshopjava@gmail.com", "ForTestOnly", userEmail,
-                        "OpenTask -  Confirmation code ", getConfirmCodeEmailMessage(confirmPhoneCode.toString(),developer.getFname()));
+                        "OpenTask -  Confirmation code ", getConfirmCodeEmailMessage(confirmPhoneCode.toString(), developer.getFname()));
             } else {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid email");
                 return;
@@ -518,7 +523,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
     }
 
     private Boolean checkConfirmCode(Developer developer, String confirmCode, HttpServletResponse response) throws IOException {
-        if (!developer.getConfirmCode().equals(confirmCode)){
+        if (!developer.getConfirmCode().equals(confirmCode)) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST,
                     "Invalid code");
             response.flushBuffer();
@@ -527,56 +532,47 @@ public class DeveloperController extends HttpServlet implements Responsable {
         return true;
     }
 
-    private void acceptOrdering(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    private void acceptOrdering(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession();
         Developer dev = (Developer) session.getAttribute("user");
         Integer orderId = Integer.parseInt(request.getParameter("order_id"));
 
         //creating new worker
-        Worker worker = developerService.getWorkerByDevIdAndOrderId(dev.getId(),orderId);
+        Worker worker = developerService.getWorkerByDevIdAndOrderId(dev.getId(), orderId);
         worker.setAccepted(true);
         worker.setNewHourly(dev.getHourly());
         developerService.updateWorker(worker);
 
-        //set started to ordering
-        Ordering ordering = orderingService.findById(orderId);
-        ordering.setStarted(true);
-        ordering.setStartedDate(new Timestamp(new java.util.Date().getTime()));
-        orderingService.modify(ordering);
-
-        //get followers email and delete followers
-        List<String> followersEmailsList = new ArrayList<>();
-        orderingService.findOrderFollowers(orderId).forEach(follower -> {
-            String email = developerService.findById(follower.getDevId()).getEmail();
-             if(!email.equals(dev.getEmail())){followersEmailsList.add(email);}
-            orderingService.deleteFollower(follower);
+        //deleting follower
+        List<Follower> followers = developerService.findDeveloperFollowings(dev.getId());
+        followers.forEach(follower -> {
+            if (follower.getOrderId() == orderId) {
+                developerService.deleteFollower(follower);
+            }
         });
 
-        //send email to followers
-        String arrayEmail[] = followersEmailsList.toArray(new String[followersEmailsList.size()]);
-        SendMessageToEmail.sendFromGMail("onlineshopjava@gmail.com", "ForTestOnly",
-                arrayEmail, "OpenTask - Notification about order", getAcceptedOrderMessageForFollowers(dev.getFname(),ordering.getTitle()));
-    }
-    private String getAcceptedOrderMessageForFollowers(String devName,String orderingName){
-        return "Hello " +devName+"\n\n"+
-                "Unfortunately you have not been chosen for ordering '"+orderingName+"'.";
+
     }
 
-    private void rejectOrdering(HttpServletRequest request, HttpServletResponse response){
+
+    private void rejectOrdering(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         Developer dev = (Developer) session.getAttribute("user");
         Integer orderId = Integer.parseInt(request.getParameter("order_id"));
 
-        orderingService.findOrderFollowers(orderId).forEach(follower ->{
-            if(follower.getDevId()==dev.getId()){
-            orderingService.deleteFollower(follower);}
+        orderingService.findOrderFollowers(orderId).forEach(follower -> {
+            if (follower.getDevId() == dev.getId()) {
+                orderingService.deleteFollower(follower);
+            }
         });
 
-        Worker worker = developerService.getWorkerByDevIdAndOrderId(dev.getId(),orderId);
+        Worker worker = developerService.getWorkerByDevIdAndOrderId(dev.getId(), orderId);
         developerService.deleteWorker(worker);
     }
 
-    private String getConfirmCodeEmailMessage(String confirmCode,String userName){
+    private String getConfirmCodeEmailMessage(String confirmCode, String userName) {
+
+
         return "<div style=\"background-color:#dfdfdf;padding:0;margin:0 auto;width:100%\"> " +
                 "<span style=\"display:none!important;font-size:1px;color:transparent;min-height:0;width:0\">Info about confirm code</span>" +
                 " <table style=\"font-family:Helvetica,Arial,sans-serif;border-collapse:collapse;width:100%!important;font-family:Helvetica,Arial,sans-serif;margin:0;padding:0" +
@@ -603,7 +599,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
                 " </table> </td><td style=\"color:#333333;font-family:Helvetica,Arial,sans-serif;font-size:15px;line-height:18px\" align=\"left\"> " +
                 "<table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"1\"> <tbody> <tr> <td> <div style=\"min-height:20px;font-size:20px;line-height:20px\">" +
                 " &nbsp; </div></td></tr></tbody> </table> <table style=\"font-family:Helvetica,Arial,sans-serif\" bgcolor=\"#FFFFFF\" border=\"0\" cellpadding=\"0\"" +
-                " cellspacing=\"0\" width=\"100%\"> <tbody> <tr> <td>Hi "+userName+",</td></tr><tr> <td> <table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"1\"> " +
+                " cellspacing=\"0\" width=\"100%\"> <tbody> <tr> <td>Hi " + userName + ",</td></tr><tr> <td> <table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"1\"> " +
                 "<tbody> <tr> <td> <div style=\"min-height:20px;font-size:20px;line-height:20px\"> &nbsp; </div></td></tr></tbody> </table> </td></tr><tr>" +
                 " <td>Confirm code: <span style=\"text-decoration:none;color:#0077b5\">" + confirmCode + "</span>" +
                 " </td></tr><tr> <td> <table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"1\">" +

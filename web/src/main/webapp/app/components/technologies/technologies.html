@@ -11,11 +11,11 @@
             <div ng-repeat="tech in technologies">
 
                 <div class="">
-                    <div class="col-sm-10">
+                    <div class="col-sm-10 col-xs-9">
                         {{tech.name}}
                     </div>
 
-                    <div class="col-sm-2">
+                    <div class="col-sm-2 col-xs-3">
                         <md-button class="md-icon-button md-accent" ng-click="deleteTechnology($event,tech.id)">
                             <i class="fa fa-times" style="color: red;font-size: 15pt;"></i>
                         </md-button>
