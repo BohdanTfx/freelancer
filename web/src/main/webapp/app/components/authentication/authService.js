@@ -195,9 +195,7 @@ angular
 								if (response.isFirst) {
 									$state.go('personal');
 									$http.post('/user/setIsFirstFalse').success(function (response) {
-										console.log('suc');
 									}).error(function (response) {
-										console.log('suc');
 									});
 
 								} else {
