@@ -191,7 +191,16 @@ angular.module('FreelancerApp')
             var data = 'phone=' + $scope.phone + '&order_id=' + $scope.hireord +
                 '&dev_id=' + $scope.query + "&message=" + $scope.hiremes + '&cust_id=' + $rootScope.globals.currentUser.id + '&author=customer';
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+            if ($scope.hireord == '' || typeof $scope.hireord == 'undefined' || $scope.hiremes == '' || typeof $scope.hiremes == 'undefined') {
+                Notification
+                    .error({
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('pubdev.empty-fields')
+                    });
 
+                $scope.dataLoading = false;
+                return;
+            }
             $http.post('/user/sms', data).success(function () {
                 Notification
                     .success({
