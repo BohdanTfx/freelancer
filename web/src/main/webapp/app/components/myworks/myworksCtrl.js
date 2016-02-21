@@ -131,9 +131,8 @@ angular.module('FreelancerApp')
         $scope.startOrdering = function(ev,order_id){
 
             myworksAPI.getWorkersByIdOrder(order_id).success(function(data){
-            console.log(data);
             $scope.orderWorkers = data.workers;
-                if(data.length == $scope.orderWorkers.length){
+                if($scope.orderWorkers.length < 1){
                     Notification
                         .error({
                             title: $translate.instant("myworks.msg-error-title"),

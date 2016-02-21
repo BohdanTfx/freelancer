@@ -148,6 +148,10 @@ public class DeveloperService extends UserService<Developer> {
         workerDao.delete(worker);
     }
 
+    public void deleteFollower(Follower follower) {
+        followerDao.delete(follower);
+    }
+
     public Worker updateWorker(Worker worker) {
         return workerDao.update(worker);
     }
