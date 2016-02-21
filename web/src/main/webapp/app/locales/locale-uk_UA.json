@@ -319,7 +319,7 @@
   "custpub.follow-customer": "Підписатись на замовника",
   "custpub.follow": "Підписатись",
   "custpub.history": "Історія",
-  "custpub.feedbacks": "Зворотній зв'язок",
+  "custpub.feedbacks": "Відгуки",
   "custpub.there-is-no-feed": "Немає відгуків",
   "custpub.nothing-to-show": "Немає опису",
   "custpub.overview": "Опис",
@@ -332,7 +332,7 @@
   "custpub.an-error-occured-while-sending-to": "Помилка при надсиланні до ",
   "custpub.try-again": ". Будь ласка, спробуйте ще.",
   "custpub.rating-cant-be": "Рейтинг не може бути 0.",
-  "custpub.feed-was-succ-added": "Коментар був успішно доданий.",
+  "custpub.feed-was-succ-added": "Відгук був успішно доданий.",
   "custpub.please-inp-mess-and-try": "Будь ласка, введіть повідомлення і спробуйте ще раз.",
   "custpub.error-while-send-feed": "Помилка, при надсиланні коментаря.",
 
@@ -390,6 +390,7 @@
   "pubdev.passed": "Пройшов",
   "pubdev.not-passed": "Не пройшов",
   "pubdev.there-is-not-test": "Немає зданих тестів",
+  "pubdev.timezone": "Часовий пояс",
 
   "personal.upload": "Завантажити",
   "personal.name": "Ім'я",
