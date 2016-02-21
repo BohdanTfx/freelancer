@@ -209,6 +209,12 @@ function DialogController($scope, $mdDialog, project, customer, workers, workerI
     $scope.workerInfo = workerInfo;
     $scope.role = $rootScope.role;
 
+    if($scope.customer.imgUrl != undefined || $scope.customer.imgUrl != null ){$scope.customer.imgUrl = $scope.customer.imgUrl + 'md.jpg';}
+   for(i = 0;i< $scope.workers.length; i++){
+       if($scope.workers[i].imgUrl != undefined || $scope.workers[i].imgUrl != null){
+           $scope.workers[i].imgUrl = $scope.workers[i].imgUrl + 'md.jpg';
+       }
+   }
 
     if($scope.workerInfo == undefined){
         $scope.workerInfo = 'undefined';

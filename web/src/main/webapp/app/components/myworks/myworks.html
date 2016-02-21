@@ -18,10 +18,11 @@
 
 
                                             <div class="project-block panel-body">
-                                                <a ng-href="/#/orders/{{project.id}}">
                                                     <div class="col-xs-12 col-sm-8">
-                                                        <span class="project-block-title"><strong>{{project.title}}</strong></span><br>
-
+                                                        <a href="/#/orders/{{project.id}}" class="panel-title developer-link">
+                                                        <span class="project-block-title">
+                                                           <strong>{{project.title}}</strong></span> <i class="fa fa-link"></i> <br>
+                                                        </a>
                                                         <div class="project-block-descr">
                                                             {{project.descr}}
                                                         </div>
@@ -68,7 +69,6 @@
                                                              </div>
                                                         </div>
                                                     </div>
-                                                </a>
 
                                                 <div class="col-sm-2 ">
                                                     <md-button class=" md-raised md-primary full-width"
@@ -112,11 +112,13 @@
                                     <div ng-repeat="project in firstWorks">
                                         <div class="panel panel-default">
 
-                                            <a ng-href="/#/orders/{{project.id}}">
                                                 <div class="row project-block panel-body">
 
                                                     <div class="col-xs-7 col-sm-10">
-                                                        <span class="project-block-title"><strong>{{project.title}}</strong></span><br>
+                                                        <a href="/#/orders/{{project.id}}" class="panel-title developer-link">
+                                                        <span class="project-block-title">
+                                                           <strong>{{project.title}}</strong></span> <i class="fa fa-link"></i> <br>
+                                                        </a>
 
                                                         <div class="project-block-descr">
                                                             {{project.descr}}
@@ -157,7 +159,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </a>
                                         </div>
                                     </div>
                                 </div>

@@ -1,5 +1,5 @@
 angular.module('FreelancerApp')
-    .controller('homeCtrl', function ($scope,$translate, $location, $timeout) {
+    .controller('homeCtrl', function ($scope,$translate, $location, $timeout,$rootScope) {
         $scope.myInterval = 4000;
         $scope.noWrapSlides = false;
         var slides = $scope.slides = [];
@@ -34,5 +34,14 @@ angular.module('FreelancerApp')
         };
 
         $scope.addSlide();
+
+        $rootScope.$on('$translateChangeSuccess', function() {
+            $scope.slider.image1 = $translate.instant("home.slider-image-1");
+            $scope.slider.image2 = $translate.instant("home.slider-image-2");
+            $scope.slider.image3 = $translate.instant("home.slider-image-3");
+            $scope.slider.image4 = $translate.instant("home.slider-image-4");
+        });
+
+
 
     });
