@@ -1,0 +1,7 @@
+.presentation-page .player{
+    position: absolute;
+    left: 50px;
+    top: 70px;
+    width: calc(100vw - 70px);
+    height: calc(100vh - 70px);
+}

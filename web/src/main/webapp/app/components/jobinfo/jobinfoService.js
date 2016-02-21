@@ -64,7 +64,7 @@ angular.module('FreelancerApp')
         dataFactory.acceptFollower = function (devId, jobId, jobName, customer, acceptDate) {
             return $http.post('/cust/dev/accept?' + 'devId=' + devId +
                 '&jobId=' + jobId + '&jobName=' + jobName +
-                '&customer=' + customer) + '&acceptDate=' + acceptDate;
+                '&customer=' + customer + '&acceptDate=' + acceptDate);
         };
 
         dataFactory.isWorker = function (follower) {

@@ -157,6 +157,12 @@
 											url : '/admin/banservice',
 											templateUrl : 'app/components/ban/ban.html',
 											controller : 'banCtrl'
+										})
+								.state(
+										'presentation',
+										{
+											url : '/presentation',
+											templateUrl : 'app/components/presentation/presentation.html',
 										});
 
 						$locationProvider.html5Mode(false);

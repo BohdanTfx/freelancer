@@ -11,6 +11,10 @@ angular.module('FreelancerApp')
             });
         };
 
+        dataFactory.setTestStart = function () {
+            return $http.post('/dev/startTest');
+        };
+
         var urlResult = '/dev/results';
         dataFactory.sendAnswers = function (questions, results, testId, expireDate) {
 

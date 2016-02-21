@@ -514,6 +514,7 @@ public class CustomerController extends HttpServlet implements Responsable {
         }
         addInWorker(dev, jobId, acceptDate);
         sendDevAcceptSms(jobName, customer, dev);
+        response.getWriter().write("success");
     }
 
     private void addInWorker(Developer dev, Integer orderId, java.sql.Date acceptDate) {
