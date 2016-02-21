@@ -554,6 +554,7 @@ angular.module('FreelancerApp')
                                 title: $translate.instant('notification.success'),
                                 message: $translate.instant('personal.suc-upload-img')
                             });
+                            $rootScope.showProfile = false;
                         }).error(function () {
                             Notification.error({
                                 title: $translate.instant('notification.error'),
@@ -569,6 +570,7 @@ angular.module('FreelancerApp')
                                 title: $translate.instant('notification.success'),
                                 message: $translate.instant('personal.suc-upload-img')
                             });
+                            $rootScope.showProfile = false;
                         }).error(function () {
                             Notification.error({
                                 title: $translate.instant('notification.error'),
@@ -584,6 +586,7 @@ angular.module('FreelancerApp')
                                 title: $translate.instant('notification.success'),
                                 message: $translate.instant('personal.suc-upload-img')
                             });
+                            $rootScope.showProfile = false;
                         }).error(function () {
                             Notification.error({
                                 title: $translate.instant('notification.error'),
