@@ -1,0 +1,15 @@
+.technologies .create-panel-body{
+    width: 50%;
+    margin: 0 auto;
+    padding: 15px;
+}
+
+.technologies .tech-title{
+    font-size: 25pt;
+    padding-left: 10px;
+}
+
+.technologies .tech-amount{
+    padding-right: 20px;
+    padding-top: 20px;
+ }
