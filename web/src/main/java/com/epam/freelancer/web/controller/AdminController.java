@@ -104,6 +104,9 @@ public class AdminController extends HttpServlet implements Responsable {
                 case "admin/amount":
                     getAdminAmount(request, response);
                     break;
+                case "admin/statistics/orders/banned":
+                    sendBannedOrderStatistic(request, response);
+                    break;
                 default:
 
             }
@@ -157,18 +160,18 @@ public class AdminController extends HttpServlet implements Responsable {
                 case "admin/changeEmail":
                     changeEmail(request, response);
                     break;
-                case "admin/orders/complained":
-                    getComplainedOrders(request, response);
-                    break;
+//                case "admin/orders/complained":
+//                    getComplainedOrders(request, response);
+//                    break;
                 case "admin/order/ban":
                     banOrder(request, response);
                     break;
                 case "admin/order/unban":
                     unbanOrder(request, response);
                     break;
-                case "admin/orders/bans":
-                    getBanOrders(request, response);
-                    break;
+//                case "admin/orders/bans":
+//                    getBanOrders(request, response);
+//                    break;
                 case "admin/add/technology":
                     addTechnology(request, response);
                     break;
@@ -586,13 +589,13 @@ public class AdminController extends HttpServlet implements Responsable {
        sendResponse(response,map,mapper);
     }
 
-    private void getComplainedOrders(HttpServletRequest request,HttpServletResponse response){
-        sendResponse(response, orderingService.getComplainedOrders(),mapper);
-    }
-
-    private void getBanOrders(HttpServletRequest request,HttpServletResponse response){
-        sendResponse(response, orderingService.getBanOrders(),mapper);
-    }
+//    private void getComplainedOrders(HttpServletRequest request,HttpServletResponse response){
+//        sendResponse(response, orderingService.getComplainedOrders(),mapper);
+//    }
+//
+//    private void getBanOrders(HttpServletRequest request,HttpServletResponse response){
+//        sendResponse(response, orderingService.getBanOrders(),mapper);
+//    }
 
     private void banOrder(HttpServletRequest request,HttpServletResponse response) throws IOException {
         String paramId = request.getParameter("orderId");
@@ -634,5 +637,21 @@ public class AdminController extends HttpServlet implements Responsable {
         Technology tech = technologyService.findById(id);
         tech.setDeleted(true);
         technologyService.modify(tech);
+    }
+    private void sendBannedOrderStatistic(HttpServletRequest request, HttpServletResponse response){
+            List<Ordering> bannedOrders = new ArrayList<>();
+            List<Ordering> complainedOrders = new ArrayList<>();
+            orderingService.findAll().forEach(ordering -> {
+                if (ordering.getComplains() != null && ordering.getComplains() > 0) {
+                    complainedOrders.add(ordering);
+                }
+                if (ordering.getBan() != null  && ordering.getBan()) {
+                    bannedOrders.add(ordering);
+                }
+            });
+            Map<String,Integer> map = new HashMap<>();
+            map.put("complainedAmount",complainedOrders.size());
+            map.put("bannedAmount",bannedOrders.size());
+        sendResponse(response,map,mapper);
     }
 }

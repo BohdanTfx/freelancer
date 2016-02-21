@@ -205,11 +205,9 @@ angular.module('FreelancerApp')
             };
         }
 
-        banAPI.getComplainedOrders().success(function(data){
-            $scope.complainedAmount = data.length;
-        });
-        banAPI.getBanOrders().success(function(data){
-            $scope.bannedAmount = data.length;
+        statisticsAPI.getStatisticBannedOrders().success(function(data){
+            $scope.complainedAmount = data.complainedAmount;
+            $scope.bannedAmount = data.bannedAmount;
         });
 
 

@@ -535,7 +535,7 @@
   "createorder.btn-reset":"Очистити поля",
   "createorder.success-create-msg-order":"Замовлення",
   "createorder.success-create-msg-added":" успішно створене!",
-  "createorder.error-create-msg":"Під час створення замовлення виникли помилки. Будь ласка, оновіть сторінку та спробуйте ще раз."
+  "createorder.error-create-msg":"Під час створення замовлення виникли помилки. Будь ласка, оновіть сторінку та спробуйте ще раз.",
   "forgot.pass-changed":"The password changed",
 
   "technologies.success":"Успішно",

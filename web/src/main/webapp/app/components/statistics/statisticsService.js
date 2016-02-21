@@ -29,6 +29,10 @@ angular.module('FreelancerApp')
             return $http.get("/admin/amount");
         };
 
+        dataFactory.getStatisticBannedOrders = function () {
+            return $http.get("/admin/statistics/orders/banned");
+        };
+
         return dataFactory;
     });
 

@@ -11,7 +11,7 @@ angular
 
 						$scope.getComplainedOrders();
 					};
-					
+
 					$scope.showBannedFrom = function(page) {
 						if (page == 'last')
 							$scope.bannedItemListStart = $scope.bannedMaxPage - 1;

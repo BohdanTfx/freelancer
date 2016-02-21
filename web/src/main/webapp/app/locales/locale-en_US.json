@@ -521,7 +521,7 @@
   "technologies.title":"Technologies",
   "technologies.total":"Total",
   "technologies.add-input":"New technology",
-  "technologies.add-btn":"Add technology"
+  "technologies.add-btn":"Add technology",
 
   "createorder.title":"Create new order",
   "createorder.label-title":"Title",
