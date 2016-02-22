@@ -313,6 +313,7 @@
 
 
 	"filter.do-filter":"Відфільтрувати",
+	"filter.reset-filter":"Очистити",
 	"filter.close":"Закрити фільтр",
 	"filter.open":"Відкрити фільтр",
 
@@ -324,6 +325,7 @@
 	"list.empty":"Список порожній",
 
 	"orders.search-title":"Пошук по заголовку",
+	"orders.search-title.placeholder":"Введіть заголовок",
 	"orders.order-type":"Тип оплати замовлення",
 	"orders.payment.hourly":"Погодинний",
 	"orders.payment.fixed":"Фіксований",

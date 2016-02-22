@@ -218,7 +218,6 @@
 									$state, $timeout, $interval) {
 								$rootScope.globals = {};
 								$rootScope.logged = false;
-								$rootScope.firstNonAbstractStateCalled = false;
 
 								$rootScope.logout = function() {
 									AuthenticationService.ClearCredentials();
@@ -228,13 +227,11 @@
 									});
 								};
 
-								getSavedStateData();
-
-								$rootScope.authenticationInterval = $interval(
+								var nonAbstractInterval = $interval(
 										function() {
-											if ($rootScope.firstNonAbstractStateCalled) {
+											if (!$state.current['abstract']) {
 												$interval
-														.cancel($rootScope.authenticationInterval);
+														.cancel(nonAbstractInterval);
 
 												AuthenticationService
 														.autoAuthenticate()
@@ -244,17 +241,19 @@
 																			&& data !== null
 																			&& (typeof data === 'object')) {
 																		AuthenticationService
-																				.proceedSuccessAuthentication(data);
-																		return;
+																				.SetCredentials(data);
+																		$rootScope.logged = true;
 																	}
-																	if ($state.current['abstract'])
-																		checkAccess(
-																				$state.current.name,
-																				'home');
-																	$rootScope.logged = false;
+																	if (!hasAccess($state.current.name))
+																		$state
+																				.go('home');
+
+																	registerStateChangeListener();
 																})
 														.error(
 																function() {
+																	registerStateChangeListener();
+
 																	Notification
 																			.error({
 																				title : 'Error!',
@@ -262,39 +261,45 @@
 																			});
 																});
 											}
-										}, 100);
+										}, 25);
 
-								$rootScope
-										.$on(
-												'$stateChangeStart',
-												function(event, toState,
-														toParams, fromState,
-														fromParams) {
-													if (!fromState['abstract']
-															&& !checkAccess(
-																	toState.name,
-																	$state.current.name)) {
-														event.preventDefault();
-													}
-													$rootScope.firstNonAbstractStateCalled = true;
-												});
+								getSavedStateData();
 
-								function checkAccess(state, callback) {
+								function registerStateChangeListener() {
+									$rootScope
+											.$on(
+													'$stateChangeStart',
+													function(event, toState,
+															toParams,
+															fromState,
+															fromParams) {
+														if (!hasAccess(toState.name)) {
+															if (!fromState['abstract'])
+																$state
+																		.go($state.current.name);
+															else
+																$state
+																		.go('auth');
+															event
+																	.preventDefault();
+														}
+													});
+								}
+
+								function hasAccess(state) {
 									var nextStatePermission = getPermissions()[state];
 									if ($rootScope.globals.currentUser === undefined) {
 										if (nextStatePermission === undefined
-												|| nextStatePermission["unknown"] == false) {
-											$state.go(callback);
+												|| nextStatePermission["unknown"] == false)
 											return false;
-										}
+
 										return true;
 									}
 									var role = $rootScope.globals.currentUser.role;
 									if (nextStatePermission === undefined
-											|| nextStatePermission[role] == false) {
-										$state.go(callback);
+											|| nextStatePermission[role] == false)
 										return false;
-									}
+
 									return true;
 								}
 							} ]);

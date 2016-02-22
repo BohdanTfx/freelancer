@@ -3,7 +3,7 @@ angular
 		.controller(
 				'jobsCtrl',
 				function($scope, jobsAPI, $log, $http, Notification,
-						$translate, $rootScope) {
+						$translate, $rootScope, $location) {
 					var filterOpen = false;
 					var resourceLoadingCounter = 0;
 					$scope.filter = {};
@@ -39,22 +39,26 @@ angular
 					};
 
 					$scope.complain = function() {
-						jobsAPI.toComplain($scope.compOrderID).success(function () {
-							$scope.isComp = true;
-							Notification
-								.success({
-									title : 'Success!',
-									message : 'Succesfully complained. Thank you.'
-								});
-						}).error(function () {
-							Notification
-								.error({
-									title : 'Error!',
-									message : 'Error while complaining order. Please try again.'
-								});
-						});
+						jobsAPI
+								.toComplain($scope.compOrderID)
+								.success(
+										function() {
+											$scope.isComp = true;
+											Notification
+													.success({
+														title : 'Success!',
+														message : 'Succesfully complained. Thank you.'
+													});
+										})
+								.error(
+										function() {
+											Notification
+													.error({
+														title : 'Error!',
+														message : 'Error while complaining order. Please try again.'
+													});
+										});
 					};
-					
 
 					$scope.itemsPerPage = [ {
 						number : 5,
@@ -91,6 +95,8 @@ angular
 					$scope.timeZones = getTimeZones();
 
 					$scope.doFilter = function() {
+						configUrlParamters();
+
 						jobsAPI
 								.loadOrders($scope)
 								.success(
@@ -115,6 +121,25 @@ angular
 										});
 					};
 
+					$scope.resetFilter = function() {
+						$scope.filter.title = "";
+						angular.forEach($scope.tech, function(value) {
+							value.ticked = false;
+						});
+						angular.forEach($scope.timeZones, function(value) {
+							value.ticked = false;
+						});
+						$scope.filter.payment.hourly.options.disabled = true;
+						$scope.filter.payment.fixed.options.disabled = true;
+
+						$scope.filter.payment.hourly.first = $scope.filter.payment.hourly.options.floor;
+						$scope.filter.payment.hourly.second = $scope.filter.payment.hourly.options.ceil;
+						$scope.filter.payment.fixed.first = $scope.filter.payment.fixed.options.floor;
+						$scope.filter.payment.fixed.second = $scope.filter.payment.fixed.options.ceil;
+
+						initSelectTranslation($translate);
+					};
+
 					$scope.changeStep = function() {
 						localStorage.setItem("freelancerOrdersStep",
 								$scope.itesStep.number);
@@ -134,30 +159,29 @@ angular
 
 					jobsAPI
 							.loadLimits()
-							.success(
-									function(data, status, headers, config) {
-										$scope.filter.payment = data;
-										$scope.filter.payment.hourly.options = {
-											floor : $scope.filter.payment.hourly.first,
-											ceil : $scope.filter.payment.hourly.second,
-											disabled : true,
-											translate : function(value) {
-												return '$' + value;
-											}
-										};
-										
-										$scope.filter.payment.fixed.options = {
-											floor : $scope.filter.payment.fixed.first,
-											ceil : $scope.filter.payment.fixed.second,
-											disabled : true,
-											translate : function(value) {
-												return '$' + value;
-											}
-										};
+							.success(function(data, status, headers, config) {
+								$scope.filter.payment = data;
+								$scope.filter.payment.hourly.options = {
+									floor : $scope.filter.payment.hourly.first,
+									ceil : $scope.filter.payment.hourly.second,
+									disabled : true,
+									translate : function(value) {
+										return '$' + value;
+									}
+								};
 
-										resourceLoadingCounter++;
-										checkAndRestoreFilterData();
-									})
+								$scope.filter.payment.fixed.options = {
+									floor : $scope.filter.payment.fixed.first,
+									ceil : $scope.filter.payment.fixed.second,
+									disabled : true,
+									translate : function(value) {
+										return '$' + value;
+									}
+								};
+
+								resourceLoadingCounter++;
+								checkAndRestoreFilterData();
+							})
 							.error(
 									function(data, status, headers, config) {
 										Notification
@@ -249,6 +273,12 @@ angular
 
 					function checkAndRestoreFilterData() {
 						if (resourceLoadingCounter == 2) {
+							if (parseUrlParameters()) {
+								initSelectTranslation($translate);
+								$scope.doFilter();
+								return;
+							}
+
 							var data = getSavedStateData();
 							if (data !== undefined) {
 								$scope.filter.title = data.title;
@@ -303,4 +333,73 @@ angular
 						localStorage.setItem("openTaskStateReloadedData", JSON
 								.stringify(state));
 					};
+
+					function parseUrlParameters() {
+						var vars = getUrlVars();
+						if (vars.length < 1)
+							return false;
+
+						var parameter = $location.search()['title'];
+						if (parameter != null)
+							$scope.filter.title = parameter;
+						parameter = $location.search()['zone'];
+						if (parameter != null) {
+							var zoneParam = parameter.split(",");
+							for (var zoneId = 0; zoneId < $scope.timeZones.length; zoneId++)
+								for (var paramZoneId = 0; paramZoneId < zoneParam.length; paramZoneId++)
+									if ($scope.timeZones[zoneId].zone == zoneParam[paramZoneId]) {
+										$scope.timeZones[zoneId].ticked = true;
+										break;
+									}
+						}
+						parameter = $location.search()['technology'];
+						if (parameter != null) {
+							var techParam = parameter.split(",");
+							for (var techId = 0; techId < $scope.tech.length; techId++)
+								for (var paramTechId = 0; paramTechId < techParam.length; paramTechId++) {
+									if ($scope.tech[techId].id == techParam[paramTechId]) {
+										$scope.tech[techId].ticked = true;
+										break;
+									}
+								}
+						}
+
+						parameter = $location.search()['hmin'];
+						if (parameter != null) {
+							$scope.filter.payment.hourly.first = parameter;
+							$scope.filter.payment.hourly.options.disabled = false;
+						}
+						parameter = $location.search()['hmax'];
+						if (parameter != null)
+							$scope.filter.payment.hourly.second = parameter;
+						parameter = $location.search()['fmin'];
+						if (parameter != null) {
+							$scope.filter.payment.fixed.options.disabled = false;
+							$scope.filter.payment.fixed.first = parameter;
+						}
+						parameter = $location.search()['fmax'];
+						if (parameter != null)
+							$scope.filter.payment.fixed.second = parameter;
+
+						return true;
+					}
+
+					function configUrlParamters() {
+						var filterData = jobsAPI
+								.getFilterContent($scope.filter);
+						delete filterData.ban;
+						delete filterData.sortOrderField;
+						delete filterData.hourly;
+						delete filterData.fixed;
+
+						for ( var param in filterData)
+							if (filterData.hasOwnProperty(param)
+									&& filterData[param] !== undefined) {
+								if (param == 'technology' || param == 'zone') {
+									$location.search(param, filterData[param]
+											.join());
+								} else
+									$location.search(param, filterData[param]);
+							}
+					}
 				});
