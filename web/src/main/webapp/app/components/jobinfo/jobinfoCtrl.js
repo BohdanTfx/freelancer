@@ -244,7 +244,7 @@ angular.module('FreelancerApp')
 
         $scope.acceptFollower = function (devId) {
             var today = new Date();
-            var acceptDate = new Date(new Date(today).setDay(today.getDay()));
+            var acceptDate = new Date(new Date(today));
             acceptDate = new Date(acceptDate).getTime();
 
             var customerJSON = JSON.stringify($scope.customer);
