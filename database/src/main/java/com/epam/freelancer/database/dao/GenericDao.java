@@ -16,6 +16,8 @@ public interface GenericDao<T, ID> {
 
 	T getById(ID id);
 
+	T getByIdEvenDeleted(ID id);
+
 	List<T> getAll();
 
 	List<T> getAllWithDeleted();

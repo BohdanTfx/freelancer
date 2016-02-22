@@ -41,6 +41,11 @@ public abstract class GenericService<T extends BaseEntity<ID>, ID> implements
 	}
 
 	@Override
+	public T findByIdEvenDeleted(ID id) {
+		return genericDao.getByIdEvenDeleted(id);
+	}
+
+	@Override
 	public List<T> findAll() {
 		return genericDao.getAll();
 	}

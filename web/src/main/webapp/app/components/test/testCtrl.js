@@ -1,5 +1,5 @@
 angular.module('FreelancerApp')
-    .controller('testCtrl', function ($scope, testAPI, $stateParams, $log, $interval, Notification, $translate) {
+    .controller('testCtrl', function ($scope, testAPI, $stateParams, $log, $interval, Notification, $translate, $state) {
 
         $scope.startTest = function(){
             var today = new Date();
@@ -61,7 +61,7 @@ angular.module('FreelancerApp')
 
 
         $scope.redirect = function () {
-            window.location = "http://localhost:8080/#/tests";
+            $state.go('tests');
         };
 
         $scope.submitAnswers = function () {

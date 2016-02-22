@@ -215,7 +215,8 @@ public class DeveloperController extends HttpServlet implements Responsable {
                 technology));
         tests.forEach(test -> test.setTechnology(technologyMap.get(test.getTechId())));
         for (DeveloperQA developerQA : devQAs) {
-            Test devQATest = testService.findById(developerQA.getTestId());
+//            Test devQATest = testService.findById(developerQA.getTestId());
+            Test devQATest = testService.findByIdEvenDeleted(developerQA.getTestId());
             devQATest.setTechnology(technologyMap.get(devQATest.getTechId()));
             developerQA.setTest(devQATest);
         }

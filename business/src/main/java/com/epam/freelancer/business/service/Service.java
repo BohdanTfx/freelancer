@@ -16,6 +16,8 @@ public interface Service<T extends BaseEntity<ID>, ID> {
 
 	T findById(ID id);
 
+	T findByIdEvenDeleted(ID id);
+
 	List<T> findAll();
 
 	public Integer getObjectAmount();
