@@ -2,6 +2,7 @@ package com.epam.freelancer.business.service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import com.epam.freelancer.business.util.ValidationParametersBuilder;
 import com.epam.freelancer.database.dao.AdminDao;
@@ -37,6 +38,9 @@ public class AdminService extends UserService<Admin> {
         entity.setUuid(value != null ? value[0] : null);
         value = data.get("password");
         entity.setPassword(value != null ? value[0] : null);
+
+        entity.setRegUrl(UUID.randomUUID().toString());
+        entity.setUuid(UUID.randomUUID().toString());
 
         encodePassword(entity);
 

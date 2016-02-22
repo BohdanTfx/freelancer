@@ -52,7 +52,7 @@ angular
 							};
 
 							service.confirmEmail = function(confirmCode,uuid){
-								return $http.post("/user/confirm/email?confirmCode="+confirmCode+"&uuid="+uuid);
+								return $http.post("/unreg/confirm/email?confirmCode="+confirmCode+"&uuid="+uuid);
 							};
 
 							service.initSocial = function($scope) {
