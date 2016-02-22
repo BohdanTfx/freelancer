@@ -305,6 +305,7 @@
 	"developers.loading.error.payment.limits":"Some errors occurred while loading payment limits! Please, try again.",
 
 	"filter.do-filter":"Do filter",
+	"filter.reset-filter":"Clear",
 	"filter.close":"Close filter",
 	"filter.open":"Open filter",
 	

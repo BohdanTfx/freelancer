@@ -39,22 +39,26 @@ angular
 					};
 
 					$scope.complain = function() {
-						jobsAPI.toComplain($scope.compOrderID).success(function () {
-							$scope.isComp = true;
-							Notification
-								.success({
-									title : 'Success!',
-									message : 'Succesfully complained. Thank you.'
-								});
-						}).error(function () {
-							Notification
-								.error({
-									title : 'Error!',
-									message : 'Error while complaining order. Please try again.'
-								});
-						});
+						jobsAPI
+								.toComplain($scope.compOrderID)
+								.success(
+										function() {
+											$scope.isComp = true;
+											Notification
+													.success({
+														title : 'Success!',
+														message : 'Succesfully complained. Thank you.'
+													});
+										})
+								.error(
+										function() {
+											Notification
+													.error({
+														title : 'Error!',
+														message : 'Error while complaining order. Please try again.'
+													});
+										});
 					};
-					
 
 					$scope.itemsPerPage = [ {
 						number : 5,
@@ -115,6 +119,25 @@ angular
 										});
 					};
 
+					$scope.resetFilter = function() {
+						$scope.filter.title = "";
+						angular.forEach($scope.tech, function(value) {
+							value.ticked = false;
+						});
+						angular.forEach($scope.timeZones, function(value) {
+							value.ticked = false;
+						});
+						$scope.filter.payment.hourly.options.disabled = true;
+						$scope.filter.payment.fixed.options.disabled = true;
+
+						$scope.filter.payment.hourly.first = $scope.filter.payment.hourly.options.floor;
+						$scope.filter.payment.hourly.second = $scope.filter.payment.hourly.options.ceil;
+						$scope.filter.payment.fixed.first = $scope.filter.payment.fixed.options.floor;
+						$scope.filter.payment.fixed.second = $scope.filter.payment.fixed.options.ceil;
+
+						initSelectTranslation($translate);
+					};
+
 					$scope.changeStep = function() {
 						localStorage.setItem("freelancerOrdersStep",
 								$scope.itesStep.number);
@@ -134,30 +157,29 @@ angular
 
 					jobsAPI
 							.loadLimits()
-							.success(
-									function(data, status, headers, config) {
-										$scope.filter.payment = data;
-										$scope.filter.payment.hourly.options = {
-											floor : $scope.filter.payment.hourly.first,
-											ceil : $scope.filter.payment.hourly.second,
-											disabled : true,
-											translate : function(value) {
-												return '$' + value;
-											}
-										};
-										
-										$scope.filter.payment.fixed.options = {
-											floor : $scope.filter.payment.fixed.first,
-											ceil : $scope.filter.payment.fixed.second,
-											disabled : true,
-											translate : function(value) {
-												return '$' + value;
-											}
-										};
+							.success(function(data, status, headers, config) {
+								$scope.filter.payment = data;
+								$scope.filter.payment.hourly.options = {
+									floor : $scope.filter.payment.hourly.first,
+									ceil : $scope.filter.payment.hourly.second,
+									disabled : true,
+									translate : function(value) {
+										return '$' + value;
+									}
+								};
 
-										resourceLoadingCounter++;
-										checkAndRestoreFilterData();
-									})
+								$scope.filter.payment.fixed.options = {
+									floor : $scope.filter.payment.fixed.first,
+									ceil : $scope.filter.payment.fixed.second,
+									disabled : true,
+									translate : function(value) {
+										return '$' + value;
+									}
+								};
+
+								resourceLoadingCounter++;
+								checkAndRestoreFilterData();
+							})
 							.error(
 									function(data, status, headers, config) {
 										Notification
