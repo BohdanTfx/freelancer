@@ -39,7 +39,7 @@ angular
 								$scope.user.email = r.email;
 								$scope.user.first_name = r.first_name;
 								$scope.user.last_name = r.last_name;
-								$scope.user.img_url = r.thumbnail;
+								//$scope.user.img_url = r.thumbnail;
 								$scope.signup = true;
 								$scope.role = $scope.roles[localStorage
 									.getItem("openTaskSignUpRole")].value;

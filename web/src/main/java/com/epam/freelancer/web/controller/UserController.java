@@ -541,6 +541,7 @@ public class UserController extends HttpServlet implements Responsable {
 	{
 		String phone = request.getParameter("phone");
 		String author = request.getParameter("author");
+		String message = request.getParameter("message");
 		HttpSession session = request.getSession();
 		UserEntity ue = (UserEntity) session.getAttribute("user");
 
@@ -552,11 +553,11 @@ public class UserController extends HttpServlet implements Responsable {
 
 		if ("dev".equals(author)) {
 			sms = "This freelancer, " + ue.getFname() + " " + ue.getLname()
-					+ ", followed you. See details in your cabinet.";
+					+ ", followed you: '" + message + "'. See details in your cabinet.";
 
 		} else
 			sms = "This customer, " + ue.getFname() + " " + ue.getLname()
-					+ ", would like to hire you. See details in your cabinet.";
+					+ ", would like to hire you: '" + message + "'. See details in your cabinet.";
 
 		String[] str = new SmsSender().sendSms(phone, sms, ue.getFname());
 
