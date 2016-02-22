@@ -27,7 +27,8 @@
 							{{"orders.search-title" | translate}}</label>
 						<div class="col-sm-8">
 							<input class="form-control" id="order_title" name="order_title"
-								placeholder="Enter title" ng-model="filter.title">
+								ng-model="filter.title"
+								placeholder="{{'orders.search-title.placeholder' | translate}}">
 						</div>
 					</div>
 					<div class="form-group">
@@ -78,9 +79,18 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<div class="col-xs-offset-8 col-xs-2">
+						<div class="col-xs-offset-6 col-xs-2">
 							<button class="btn btn-info full-width" ng-click="doFilter()">
-								<i class="fa fa-search"></i> {{"filter.do-filter" | translate}}
+								<i class="fa fa-search"></i>
+								<span class="hidden-sm">{{"filter.do-filter" |
+									translate}}</span>
+							</button>
+						</div>
+						<div class="col-xs-2">
+							<button class="btn btn-warning full-width" ng-click="resetFilter()">
+								<i class="fa fa-times"></i>
+								<span class="hidden-sm">{{"filter.reset-filter" |
+									translate}}</span>
 							</button>
 						</div>
 					</div>
@@ -132,9 +142,11 @@
 							<div ng-if="globals.currentUser.role == 'developer'" class="btn btm-sm btn-danger pull-right"
 								ng-disabled="order.isComplaint || isComp" data-toggle="modal"
 								data-target=".bs-example-modal-sm"
-								ng-click="setOrderID(order.id)" style="padding: 3px"><i class="fa fa-exclamation-triangle"></i>
-								<span class="hidden-xs">
-								{{"orders.complain" | translate}}</span></div>
+								ng-click="setOrderID(order.id)" style="padding: 3px">
+								<i class="fa fa-exclamation-triangle"></i>
+								<span class="hidden-xs"> {{"orders.complain" |
+									translate}}</span>
+							</div>
 						</div>
 					</div>
 				</div>

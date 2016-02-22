@@ -21,7 +21,6 @@ angular
 						var pagination = {};
 						pagination.start = itemListStart | 0;
 						pagination.last = last;
-						// pagination.step = 2;
 						pagination.step = self.getStep(itesStep);
 
 						var data = {};

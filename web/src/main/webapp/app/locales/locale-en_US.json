@@ -311,6 +311,7 @@
 	"developers.loading.error.payment.limits":"Some errors occurred while loading payment limits! Please, try again.",
 
 	"filter.do-filter":"Do filter",
+	"filter.reset-filter":"Clear",
 	"filter.close":"Close filter",
 	"filter.open":"Open filter",
 	
@@ -321,7 +322,8 @@
 	
 	"list.empty":"List is empty",
 	
-	"orders.search-title":"Search titCule",
+	"orders.search-title":"Search title",
+	"orders.search-title.placeholder":"Enter title",
 	"orders.order-type":"Order pay type",
 	"orders.payment.hourly":"Hourly",
 	"orders.payment.fixed":"Fixed",

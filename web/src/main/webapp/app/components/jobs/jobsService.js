@@ -44,6 +44,7 @@ angular
 						content.title = title === undefined
 								|| title.length == 0 ? undefined : title;
 						content.zone = [];
+						content.ban = false;
 						content.technology = [];
 						content.sortOrderField = 'date';
 						var zone = [];
@@ -83,8 +84,8 @@ angular
 					};
 
 					this.toComplain = function(orderID) {
-						return $http
-								.post("/user/orders/complain?orderID=" + orderID)
+						return $http.post("/user/orders/complain?orderID="
+								+ orderID)
 
 					};
 

@@ -142,9 +142,21 @@ angular
 							service.signinGoogle = function (auth, $scope) {
 								hello(auth).login();
 
-								hello.on('auth.login', function (auth) {
-									hello(auth.network).api('/me').then(function (r) {
-										$http.post('/unreg/signin/google?email=' + r.email).success(function (response) {
+								hello
+										.on(
+												'auth.login',
+												function(auth) {
+													hello(auth.network)
+															.api('/me')
+															.then(
+																	function(r) {
+																		$http
+																				.post(
+																						'/unreg/signin/google?email='
+																								+ r.email)
+																				.success(
+																						function(
+																								response) {
 											Notification
 												.success({
 													title: 'Welcome!',
@@ -154,9 +166,15 @@ angular
 													+ response.lname
 													+ '</b>'
 												});
-											service.proceedSuccessAuthentication(response);
-										}).error(function (data, status,
-														   headers, config) {
+																							service
+																									.proceedSuccessAuthentication(response);
+																						})
+																				.error(
+																						function(
+																								data,
+																								status,
+																								headers,
+																								config) {
 											if (status == 400) {
 												$scope.showError = true;
 												$scope.errorTitle = 'Error!';
@@ -172,10 +190,14 @@ angular
 									});
 								});
 
-								hello.init({
+								hello
+										.init(
+												{
 									google: '344510194886-fcto0du17jj39h2oil732hu2cmuq7p67.apps.googleusercontent.com'
 								}, {
-									redirect_uri: 'http://localhost:8081/index.html',
+													redirect_uri : 'http://'
+															+ location.host
+															+ '/index.html',
 									scope: 'email'
 								});
 							};
@@ -192,9 +214,11 @@ angular
 									$state.go('statistics');
 									return;
 								}
-								if (response.isFirst) {
+								if (response.isFirst
+										|| response.isFirst == null) {
 									$state.go('personal');
-									$http.post('/user/setIsFirstFalse').success(function (response) {
+									$http.post('/user/setIsFirstFalse')
+											.success(function(response) {
 									}).error(function (response) {
 									});
 

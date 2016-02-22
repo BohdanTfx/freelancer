@@ -12,6 +12,7 @@ angular.module('FreelancerApp').factory('banAPI', function($http, config) {
 		data.page = pagination;
 		data.content = {};
 		data.content.ban = banned;
+		data.content.complains = 0;
 		data.content.sortOrderField = 'complains';
 		return $http.post('/admin/orders', data, {
 			'Content-Type' : 'application/x-www-form-urlencoded'
