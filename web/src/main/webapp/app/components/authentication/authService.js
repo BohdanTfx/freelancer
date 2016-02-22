@@ -216,7 +216,8 @@ angular
 									$state.go('statistics');
 									return;
 								}
-								if (response.isFirst) {
+								if (response.isFirst
+										|| response.isFirst == null) {
 									$state.go('personal');
 									$http.post('/user/setIsFirstFalse')
 											.success(function(response) {
