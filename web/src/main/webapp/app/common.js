@@ -166,121 +166,121 @@ function getPermissions() {
 	return {
 		orders : {
 			unknown : false,
-			administrator : true,
+			admin : true,
 			developer : true,
 			customer : true
 		},
 		developers : {
 			unknown : false,
-			administrator : true,
+			admin : true,
 			developer : true,
 			customer : true
 		},
 		createOrder : {
 			unknown : false,
-			administrator : false,
+			admin : false,
 			developer : false,
 			customer : true
 		},
 		order : {
 			unknown : false,
-			administrator : true,
+			admin : true,
 			developer : true,
 			customer : true
 		},
 		signup : {
 			unknown : true,
-			administrator : false,
+			admin : false,
 			developer : false,
 			customer : false
 		},
 		personal : {
 			unknown : false,
-			administrator : true,
+			admin : true,
 			developer : true,
 			customer : true
 		},
 		tests : {
 			unknown : false,
-			administrator : false,
+			admin : false,
 			developer : true,
 			customer : false
 		},
 		myworks : {
 			unknown : false,
-			administrator : false,
+			admin : false,
 			developer : true,
 			customer : true
 		},
 		test : {
 			unknown : false,
-			administrator : false,
+			admin : false,
 			developer : true,
 			customer : false
 		},
 		home : {
 			unknown : true,
-			administrator : true,
+			admin : true,
 			developer : true,
 			customer : true
 		},
 		auth : {
 			unknown : true,
-			administrator : false,
+			admin : false,
 			developer : false,
 			customer : false
 		},
 		pubdev : {
 			unknown : false,
-			administrator : true,
+			admin : true,
 			developer : true,
 			customer : true
 		},
 		custpub : {
 			unknown : false,
-			administrator : true,
+			admin : true,
 			developer : true,
 			customer : true
 		},
 		createtest : {
 			unknown : false,
-			administrator : true,
+			admin : true,
 			developer : false,
 			customer : false
 		},
 		statistics : {
 			unknown : false,
-			administrator : true,
+			admin : true,
 			developer : false,
 			customer : false
 		},
 		createAdmin : {
 			unknown : false,
-			administrator : true,
+			admin : true,
 			developer : false,
 			customer : false
 		},
 		signupadmin : {
 			unknown : true,
-			administrator : false,
+			admin : false,
 			developer : false,
 			customer : false
 		},
 		forgot : {
 			unknown : true,
-			administrator : false,
+			admin : false,
 			developer : false,
 			customer : false
 		},
 		banservice : {
 			unknown : false,
-			administrator : true,
+			admin : true,
 			developer : false,
 			customer : false
 		},
 		technologies : {
 			unknown : false,
-			administrator : true,
+			admin : true,
 			developer : false,
 			customer : false
 		}

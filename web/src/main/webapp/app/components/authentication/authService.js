@@ -36,8 +36,8 @@ angular
 										id : user.id,
 										fname : user.fname,
 										lname : user.lname,
-										role: user.role,
-										img: user.imgUrl + 'sm.jpg'
+										role : user.role,
+										img : user.imgUrl + 'sm.jpg'
 									}
 								};
 							};
@@ -51,8 +51,10 @@ angular
 								$rootScope.logged = false;
 							};
 
-							service.confirmEmail = function(confirmCode,uuid){
-								return $http.post("/user/confirm/email?confirmCode="+confirmCode+"&uuid="+uuid);
+							service.confirmEmail = function(confirmCode, uuid) {
+								return $http
+										.post("/user/confirm/email?confirmCode="
+												+ confirmCode + "&uuid=" + uuid);
 							};
 
 							service.initSocial = function($scope) {
@@ -139,45 +141,67 @@ angular
 												});
 							};
 
-							service.signinGoogle = function (auth, $scope) {
+							service.signinGoogle = function(auth, $scope) {
 								hello(auth).login();
 
-								hello.on('auth.login', function (auth) {
-									hello(auth.network).api('/me').then(function (r) {
-										$http.post('/unreg/signin/google?email=' + r.email).success(function (response) {
-											Notification
-												.success({
-													title: 'Welcome!',
-													message: 'Welcome to our system <b>'
-													+ response.fname
-													+ ' '
-													+ response.lname
-													+ '</b>'
+								hello
+										.on(
+												'auth.login',
+												function(auth) {
+													hello(auth.network)
+															.api('/me')
+															.then(
+																	function(r) {
+																		$http
+																				.post(
+																						'/unreg/signin/google?email='
+																								+ r.email)
+																				.success(
+																						function(
+																								response) {
+																							Notification
+																									.success({
+																										title : 'Welcome!',
+																										message : 'Welcome to our system <b>'
+																												+ response.fname
+																												+ ' '
+																												+ response.lname
+																												+ '</b>'
+																									});
+																							service
+																									.proceedSuccessAuthentication(response);
+																						})
+																				.error(
+																						function(
+																								data,
+																								status,
+																								headers,
+																								config) {
+																							if (status == 400) {
+																								$scope.showError = true;
+																								$scope.errorTitle = 'Error!';
+																								$scope.errorDescription = 'Invalid credentials';
+																							} else {
+																								Notification
+																										.error({
+																											title : 'Error!',
+																											message : 'An error occurred while registering. Please try again.'
+																										});
+																							}
+																						});
+																	});
 												});
-											service.proceedSuccessAuthentication(response);
-										}).error(function (data, status,
-														   headers, config) {
-											if (status == 400) {
-												$scope.showError = true;
-												$scope.errorTitle = 'Error!';
-												$scope.errorDescription = 'Invalid credentials';
-											} else {
-												Notification
-													.error({
-														title: 'Error!',
-														message: 'An error occurred while registering. Please try again.'
-													});
-											}
-										});
-									});
-								});
 
-								hello.init({
-									google: '344510194886-fcto0du17jj39h2oil732hu2cmuq7p67.apps.googleusercontent.com'
-								}, {
-									redirect_uri: 'http://localhost:8081/index.html',
-									scope: 'email'
-								});
+								hello
+										.init(
+												{
+													google : '344510194886-fcto0du17jj39h2oil732hu2cmuq7p67.apps.googleusercontent.com'
+												}, {
+													redirect_uri : 'http://'
+															+ location.host
+															+ '/index.html',
+													scope : 'email'
+												});
 							};
 
 							service.autoAuthenticate = function() {
@@ -194,9 +218,10 @@ angular
 								}
 								if (response.isFirst) {
 									$state.go('personal');
-									$http.post('/user/setIsFirstFalse').success(function (response) {
-									}).error(function (response) {
-									});
+									$http.post('/user/setIsFirstFalse')
+											.success(function(response) {
+											}).error(function(response) {
+											});
 
 								} else {
 									if (response.role == 'developer')
