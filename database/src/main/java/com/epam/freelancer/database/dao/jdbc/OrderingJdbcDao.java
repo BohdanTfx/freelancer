@@ -239,10 +239,10 @@ public class OrderingJdbcDao extends GenericJdbcDao<Ordering, Integer>
 
 		boolean hourly = parameters.get("hourly") != null;
 		boolean fixed = parameters.get("fixed") != null;
-		Number hMax = (Number) parameters.get("hmax");
-		Number hMin = (Number) parameters.get("hmin");
-		Number fMax = (Number) parameters.get("fmax");
-		Number fMin = (Number) parameters.get("fmin");
+		Object hMax = parameters.get("hmax");
+		Object hMin = parameters.get("hmin");
+		Object fMax = parameters.get("fmax");
+		Object fMin = parameters.get("fmin");
 
 		if (fixed && hourly) {
 			builder.append(lastNull ? "" : " AND");

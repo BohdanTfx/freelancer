@@ -3,7 +3,7 @@ angular
 		.controller(
 				'jobsCtrl',
 				function($scope, jobsAPI, $log, $http, Notification,
-						$translate, $rootScope) {
+						$translate, $rootScope, $location) {
 					var filterOpen = false;
 					var resourceLoadingCounter = 0;
 					$scope.filter = {};
@@ -95,6 +95,8 @@ angular
 					$scope.timeZones = getTimeZones();
 
 					$scope.doFilter = function() {
+						configUrlParamters();
+
 						jobsAPI
 								.loadOrders($scope)
 								.success(
@@ -271,6 +273,12 @@ angular
 
 					function checkAndRestoreFilterData() {
 						if (resourceLoadingCounter == 2) {
+							if (parseUrlParameters()) {
+								initSelectTranslation($translate);
+								$scope.doFilter();
+								return;
+							}
+
 							var data = getSavedStateData();
 							if (data !== undefined) {
 								$scope.filter.title = data.title;
@@ -325,4 +333,73 @@ angular
 						localStorage.setItem("openTaskStateReloadedData", JSON
 								.stringify(state));
 					};
+
+					function parseUrlParameters() {
+						var vars = getUrlVars();
+						if (vars.length < 1)
+							return false;
+
+						var parameter = $location.search()['title'];
+						if (parameter != null)
+							$scope.filter.title = parameter;
+						parameter = $location.search()['zone'];
+						if (parameter != null) {
+							var zoneParam = parameter.split(",");
+							for (var zoneId = 0; zoneId < $scope.timeZones.length; zoneId++)
+								for (var paramZoneId = 0; paramZoneId < zoneParam.length; paramZoneId++)
+									if ($scope.timeZones[zoneId].zone == zoneParam[paramZoneId]) {
+										$scope.timeZones[zoneId].ticked = true;
+										break;
+									}
+						}
+						parameter = $location.search()['technology'];
+						if (parameter != null) {
+							var techParam = parameter.split(",");
+							for (var techId = 0; techId < $scope.tech.length; techId++)
+								for (var paramTechId = 0; paramTechId < techParam.length; paramTechId++) {
+									if ($scope.tech[techId].id == techParam[paramTechId]) {
+										$scope.tech[techId].ticked = true;
+										break;
+									}
+								}
+						}
+
+						parameter = $location.search()['hmin'];
+						if (parameter != null) {
+							$scope.filter.payment.hourly.first = parameter;
+							$scope.filter.payment.hourly.options.disabled = false;
+						}
+						parameter = $location.search()['hmax'];
+						if (parameter != null)
+							$scope.filter.payment.hourly.second = parameter;
+						parameter = $location.search()['fmin'];
+						if (parameter != null) {
+							$scope.filter.payment.fixed.options.disabled = false;
+							$scope.filter.payment.fixed.first = parameter;
+						}
+						parameter = $location.search()['fmax'];
+						if (parameter != null)
+							$scope.filter.payment.fixed.second = parameter;
+
+						return true;
+					}
+
+					function configUrlParamters() {
+						var filterData = jobsAPI
+								.getFilterContent($scope.filter);
+						delete filterData.ban;
+						delete filterData.sortOrderField;
+						delete filterData.hourly;
+						delete filterData.fixed;
+
+						for ( var param in filterData)
+							if (filterData.hasOwnProperty(param)
+									&& filterData[param] !== undefined) {
+								if (param == 'technology' || param == 'zone') {
+									$location.search(param, filterData[param]
+											.join());
+								} else
+									$location.search(param, filterData[param]);
+							}
+					}
 				});

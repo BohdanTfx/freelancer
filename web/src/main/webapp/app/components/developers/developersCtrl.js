@@ -325,8 +325,8 @@ angular
 							var zoneParam = parameter.split(",");
 							for (var zoneId = 0; zoneId < $scope.timeZones.length; zoneId++)
 								for (var paramZoneId = 0; paramZoneId < zoneParam.length; paramZoneId++)
-									if ($scope.timeZones[zoneId] == zoneParam[paramZoneId]) {
-										$scope.timeZones.ticked = true;
+									if ($scope.timeZones[zoneId].zone == zoneParam[paramZoneId]) {
+										$scope.timeZones[zoneId].ticked = true;
 										break;
 									}
 						}
@@ -335,8 +335,8 @@ angular
 							var techParam = parameter.split(",");
 							for (var techId = 0; techId < $scope.technologies.length; techId++)
 								for (var paramTechId = 0; paramTechId < techParam.length; paramTechId++)
-									if ($scope.technologies[techId] == techParam[paramTechId]) {
-										$scope.technologies.ticked = true;
+									if ($scope.technologies[techId].id == techParam[paramTechId]) {
+										$scope.technologies[techId].ticked = true;
 										break;
 									}
 						}
