@@ -76,7 +76,7 @@
                                     </span>
                                 </li>
                                 <li>
-                                    <div ng-if="user.role != 'admin' && isJobOwner == false"
+                                    <div ng-if="user.role == 'developer'"
                                          class="btn btm-sm btn-danger" ng-disabled="disCompBut" data-toggle="modal"
                                          data-target=".bs-example-modal-sm" style="padding: 3px">{{"jobinfo.complain" |
                                         translate}}

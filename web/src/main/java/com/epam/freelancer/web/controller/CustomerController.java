@@ -601,8 +601,24 @@ public class CustomerController extends HttpServlet implements Responsable {
 
         //send email to followers
         String arrayEmail[] = followersEmailsList.toArray(new String[followersEmailsList.size()]);
-        SendMessageToEmail.sendFromGMail("onlineshopjava@gmail.com", "ForTestOnly",
-                arrayEmail, "OpenTask - Notification about order", getRejectingOrderMessageForFollowers(ordering.getTitle()));
+        new Thread(new Runnable() {
+            @Override
+            public void run(){
+                try {
+                    SendMessageToEmail.sendFromGMail("onlineshopjava@gmail.com", "ForTestOnly",
+                            arrayEmail, "OpenTask - Notification about order", getRejectingOrderMessageForFollowers(ordering.getTitle()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    try {
+                        response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+
+                }
+            }
+        }).start();
+
     }
 
     private String getRejectingOrderMessageForFollowers(String orderingName){

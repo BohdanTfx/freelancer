@@ -417,11 +417,19 @@ public class UserController extends HttpServlet implements Responsable {
                     try {
                         Complaint complaint = new Complaint();
                         complaint.setOrderId(Integer.parseInt(param));
-                        complaint.setDevId(ue.getId());
+                        if("developer".equals(ue.getRole())){
+							complaint.setDevId(ue.getId());
+						}
+                        if("customer".equals(ue.getRole())){
+							complaint.setCustId(ue.getId());
+						}
                         complaintService.save(complaint);
                         Ordering order = orderingService.findById(Integer.parseInt(param));
-                        order.setComplains(order.getComplains()+1);
-                        orderingService.modify(order);
+						Integer complains = order.getComplains();
+						if(complains != null){
+							order.setComplains(complains+1);
+							orderingService.modify(order);
+						}
                     } catch (Exception e) {
                         response.sendError(HttpServletResponse.SC_BAD_REQUEST);
                     }

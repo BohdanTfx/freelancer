@@ -129,7 +129,7 @@
 								href="/#/orders/{{order.id}}"><i class="fa fa-link"></i>
 								{{order.title}}</a>
 
-							<div class="btn btm-sm btn-danger pull-right"
+							<div ng-if="globals.currentUser.role == 'developer'" class="btn btm-sm btn-danger pull-right"
 								ng-disabled="order.isComplaint || isComp" data-toggle="modal"
 								data-target=".bs-example-modal-sm"
 								ng-click="setOrderID(order.id)" style="padding: 3px"><i class="fa fa-exclamation-triangle"></i>

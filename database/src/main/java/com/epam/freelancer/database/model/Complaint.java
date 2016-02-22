@@ -13,6 +13,8 @@ public class Complaint implements BaseEntity<Integer> {
     private Integer orderId;
     @Column(name = "dev_id")
     private Integer devId;
+    @Column(name = "cust_id")
+    private Integer custId;
     private Boolean isDeleted;
     private Integer version;
 
@@ -78,5 +80,13 @@ public class Complaint implements BaseEntity<Integer> {
 
     public void setDevId(Integer dev_id) {
         this.devId = dev_id;
+    }
+
+    public Integer getCustId() {
+        return custId;
+    }
+
+    public void setCustId(Integer custId) {
+        this.custId = custId;
     }
 }

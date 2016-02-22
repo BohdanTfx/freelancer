@@ -224,7 +224,22 @@ public class UnregisteredController extends HttpServlet implements Responsable {
 													e -> new String[] { e
 															.getValue() })),
 							role);
-			sendConfirmationToEmail(request,response,userManager.findUserByEmail(data.get("email")));
+			new Thread(new Runnable() {
+				@Override
+				public void run(){
+					try {
+						sendConfirmationToEmail(request,response,userManager.findUserByEmail(data.get("email")));
+					} catch (IOException e) {
+						e.printStackTrace();
+						try {
+							response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+
+					}
+				}
+			}).start();
 		} catch (Exception e) {
 			e.printStackTrace();
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST);
@@ -235,7 +250,7 @@ public class UnregisteredController extends HttpServlet implements Responsable {
 
 	private void sendConfirmationToEmail(HttpServletRequest request, HttpServletResponse response,UserEntity entity) throws IOException{
 		String arrEmail[] = {entity.getEmail()};
-		String confirmLink = "http://"+request.getLocalAddr()+":" + request.getLocalPort() + "/#/auth?confirmCode=" + entity.getRegUrl()+"&uuid="+entity.getUuid();
+		String confirmLink = "http://localhost:8081/#/auth?confirmCode=" + entity.getRegUrl()+"&uuid="+entity.getUuid();
 		SendMessageToEmail.sendHtmlFromGMail("onlineshopjava@gmail.com", "ForTestOnly", arrEmail, "OpenTask -  E-mail Confirmation ",
 				getConfirmationEmailMessage(confirmLink, entity.getFname()));
 	}
@@ -390,7 +405,7 @@ public class UnregisteredController extends HttpServlet implements Responsable {
 				" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> <tbody> <tr> <td> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"1\"> <tbody> <tr>" +
 				" <td> <div style=\"min-height:10px;font-size:10px;line-height:10px\"> &nbsp; </div></td></tr></tbody> </table> </td></tr><tr> <td align=\"center\">" +
 				" <table style=\"color:#999999;font-size:11px;font-family:Helvetica,Arial,sans-serif\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> " +
-				"<tbody> <tr> <td dir=\"ltr\" align=\"center\">© 2016 www.opentask.com | All rights reserved.</td></tr><tr> <td> <table border=\"0\" cellpadding=\"0\"" +
+				"<tbody> <tr> <td dir=\"ltr\" align=\"center\">ï¿½ 2016 www.opentask.com | All rights reserved.</td></tr><tr> <td> <table border=\"0\" cellpadding=\"0\"" +
 				" cellspacing=\"0\" width=\"1\"> <tbody> <tr> <td> <div style=\"min-height:10px;font-size:10px;line-height:10px\"> &nbsp; </div></td></tr></tbody> </table>" +
 				" </td></tr><tr> <td align=\"center\"></td></tr><tr> <td align=\"center\"></td></tr><tr> <td> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"1\">" +
 				" <tbody> <tr> <td> <div style=\"min-height:10px;font-size:10px;line-height:10px\"> &nbsp; </div></td></tr></tbody> </table> <table border=\"0\"" +
