@@ -7,6 +7,7 @@
 
   "footer.rights":"All Rights reserved",
   "footer.phone":"Phone",
+  "footer.about":"About us",
 
   "index.menu-orders":"Orders",
   "index.menu-developers":"Developers",
@@ -133,6 +134,11 @@
   "myworks.type-hourly":"hourly",
   "myworks.available-title":"Available yet",
   "myworks.available-days":"days",
+  "myworks.accepted-title":"Already accepted",
+  "myworks.accepted-descr":"When Customer will start this ordering, you will be able to begin to work. This ordering will apear in tab 'In process'.",
+  "myworks.error-not-workers":"Must be at least one worker on this ordering",
+  "myworks.msg-success-start":"The ordering has been started",
+  "myworks.start-btn":"Start",
 
 
   "createtest.title":"Tests management",

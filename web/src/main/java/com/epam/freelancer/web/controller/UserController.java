@@ -23,10 +23,7 @@ import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.security.SecureRandom;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class UserController extends HttpServlet implements Responsable {
 	public static final Logger LOG = Logger.getLogger(UserController.class);
@@ -192,6 +189,9 @@ public class UserController extends HttpServlet implements Responsable {
 				break;
 			case "user/changePassword":
 				changePassword(request, response);
+				break;
+			case "dev/workersByIdOrder":
+				sendWorkersByIdOrder(request, response);
 				break;
 			case "user/deleteFeed":
 				deleteFeed(request, response);
@@ -1239,6 +1239,30 @@ public class UserController extends HttpServlet implements Responsable {
 				sendResponse(response,false,mapper);
 			}
 		}
+	}
+
+	private void sendWorkersByIdOrder(HttpServletRequest request,
+									  HttpServletResponse response) throws IOException {
+		HttpSession session = request.getSession();
+		UserEntity user = (UserEntity) session.getAttribute("user");
+		Integer orderId = Integer.parseInt(request.getParameter("order_id"));
+
+		Map<String, Object> resultMap = new HashMap<>();
+
+		List<Worker> allWorkersOfOrder = developerService.getAllWorkersByOrderId(orderId);
+		List<Developer> acceptedDevelopers = new ArrayList<>();
+
+		allWorkersOfOrder.forEach(worker -> {
+			if (worker.getAccepted()) {
+				acceptedDevelopers.add(developerService.findById(worker.getDevId()));
+			}
+		});
+		Worker worker = developerService.getWorkerByDevIdAndOrderId(
+				user.getId(), orderId);
+		resultMap.put("workerInfo", worker);
+		resultMap.put("workers", acceptedDevelopers);
+
+		sendResponse(response, resultMap, mapper);
 	}
 
 	private String getConfirmationEmailMessage(String link,String userName){

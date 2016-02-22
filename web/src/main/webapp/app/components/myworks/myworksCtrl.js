@@ -10,6 +10,7 @@ angular.module('FreelancerApp')
                 $scope.secondWorks = data.processedWorks;
                 $scope.thirdWorks = data.finishedWorks;
                 $scope.notAcceptedWorks = data.notAcceptedWorks;
+                $scope.acceptedWorks = data.acceptedWorks;
                 $scope.expireDays = data.expireDays;
 
                 for(var i in $scope.notAcceptedWorks){
@@ -24,19 +25,22 @@ angular.module('FreelancerApp')
                     });
             });
         } else {
-            myworksAPI.getAllCustomerWorks().success(function (data) {
-                $scope.firstWorks = data.availableWorks;
-                $scope.secondWorks = data.inProgressWorks;
-                $scope.thirdWorks = data.finishedWorks;
-            }).error(function () {
-                Notification
-                    .error({
-                        title: $translate.instant("myworks.msg-error-title"),
-                        message: $translate.instant("myworks.msg-error-descr")
-                    });
-            });
+            if ($rootScope.globals.currentUser.role == 'customer') {
+                myworksAPI.getAllCustomerWorks().success(function (data) {
+                    console.log(data.availableWorks);
 
+                    $scope.firstWorks = data.availableWorks;
+                    $scope.secondWorks = data.inProgressWorks;
+                    $scope.thirdWorks = data.finishedWorks;
+                }).error(function () {
+                    Notification
+                        .error({
+                            title: $translate.instant("myworks.msg-error-title"),
+                            message: $translate.instant("myworks.msg-error-descr")
+                        });
+                });
 
+            }
         }
 
 
@@ -127,6 +131,62 @@ angular.module('FreelancerApp')
 
         };
 
+        $scope.startOrdering = function(ev,order_id){
+
+            myworksAPI.getWorkersByIdOrder(order_id).success(function(data){
+            $scope.orderWorkers = data.workers;
+                if($scope.orderWorkers.length < 1){
+                    Notification
+                        .error({
+                            title: $translate.instant("myworks.msg-error-title"),
+                            message: $translate.instant("myworks.error-not-workers")
+                        });
+                }else{
+                    myworksAPI.startOrdering(order_id).success(function(){
+                        myworksAPI.getAllCustomerWorks().success(function (data) {
+                            $scope.firstWorks = data.availableWorks;
+                            $scope.secondWorks = data.inProgressWorks;
+                            $scope.thirdWorks = data.finishedWorks;
+                        }).error(function () {
+                            Notification
+                                .error({
+                                    title: $translate.instant("myworks.msg-error-title"),
+                                    message: $translate.instant("myworks.msg-error-descr")
+                                });
+                        });
+
+                        Notification
+                            .success({
+                                title: $translate.instant("myworks.msg-success-title"),
+                                message: $translate.instant("myworks.msg-success-start")
+                            });
+                    }).error(function(){
+                        Notification
+                            .error({
+                                title: $translate.instant("myworks.msg-error-title"),
+                                message: $translate.instant("myworks.msg-error-descr")
+                            });
+                    });
+
+                }
+
+
+
+
+            });
+
+
+
+
+
+
+
+
+
+
+
+        }
+
         $scope.showAcceptConfirm = function(ev,project) {
             // Appending dialog to document.body to cover sidenav in docs app
             var confirm = $mdDialog.confirm()
@@ -142,6 +202,7 @@ angular.module('FreelancerApp')
                         $scope.secondWorks = data.processedWorks;
                         $scope.thirdWorks = data.finishedWorks;
                         $scope.notAcceptedWorks = data.notAcceptedWorks;
+                        $scope.acceptedWorks = data.acceptedWorks;
 
                     }).error(function () {
                         Notification
@@ -178,6 +239,8 @@ angular.module('FreelancerApp')
                         $scope.secondWorks = data.processedWorks;
                         $scope.thirdWorks = data.finishedWorks;
                         $scope.notAcceptedWorks = data.notAcceptedWorks;
+                        $scope.acceptedWorks = data.acceptedWorks;
+
 
                     }).error(function () {
                         Notification
@@ -209,6 +272,12 @@ function DialogController($scope, $mdDialog, project, customer, workers, workerI
     $scope.workerInfo = workerInfo;
     $scope.role = $rootScope.globals.currentUser.role;
 
+    if($scope.customer.imgUrl != undefined || $scope.customer.imgUrl != null ){$scope.customer.imgUrl = $scope.customer.imgUrl + 'md.jpg';}
+   for(i = 0;i< $scope.workers.length; i++){
+       if($scope.workers[i].imgUrl != undefined || $scope.workers[i].imgUrl != null){
+           $scope.workers[i].imgUrl = $scope.workers[i].imgUrl + 'md.jpg';
+       }
+   }
 
     if($scope.workerInfo == undefined){
         $scope.workerInfo = 'undefined';

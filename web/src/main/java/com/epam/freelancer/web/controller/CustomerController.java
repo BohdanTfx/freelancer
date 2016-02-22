@@ -185,6 +185,9 @@ public class CustomerController extends HttpServlet implements Responsable {
                 case "cust/finishOrdering":
                     finishOrdering(request, response);
                     break;
+                case "cust/startOrdering":
+                    startOrdering(request, response);
+                    break;
                 default:
             }
         } catch (Exception e) {
@@ -459,8 +462,6 @@ public class CustomerController extends HttpServlet implements Responsable {
 
     private void sendWorkersByIdOrder(HttpServletRequest request,
                                       HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession();
-        UserEntity user = (UserEntity) session.getAttribute("user");
         Integer orderId = Integer.parseInt(request.getParameter("order_id"));
 
         Map<String, Object> resultMap = new HashMap<>();
@@ -469,7 +470,7 @@ public class CustomerController extends HttpServlet implements Responsable {
         List<Developer> acceptedDevelopers = new ArrayList<>();
 
         allWorkersOfOrder.forEach(worker -> {
-            if (worker.getAccepted()) {
+            if (worker.getAccepted()!=null && worker.getAccepted()) {
                 acceptedDevelopers.add(developerService.findById(worker.getDevId()));
             }
         });
@@ -569,6 +570,44 @@ public class CustomerController extends HttpServlet implements Responsable {
         ordering.setEndedDate(new Timestamp(new java.util.Date().getTime()));
         orderingService.modify(ordering);
 
+    }
+
+    private void startOrdering(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        Integer orderId = Integer.parseInt(request.getParameter("order_id"));
+        Ordering ordering = orderingService.findById(orderId);
+
+//        List<Worker> orderWorkers = developerService.getAllWorkersByOrderId(orderId);
+//        if(orderWorkers != null && orderWorkers.size() > 0){
+//            orderWorkers.forEach(worker ->{
+//                if(worker.getAccepted()){return;}
+//            });
+//            response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
+//        }else{
+//            response.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE);
+//        }
+
+        //set started to ordering
+        ordering.setStarted(true);
+        ordering.setStartedDate(new Timestamp(new java.util.Date().getTime()));
+        orderingService.modify(ordering);
+
+        //get followers email and delete followers
+        List<String> followersEmailsList = new ArrayList<>();
+        orderingService.findOrderFollowers(orderId).forEach(follower -> {
+            String email = developerService.findById(follower.getDevId()).getEmail();
+            followersEmailsList.add(email);
+            orderingService.deleteFollower(follower);
+        });
+
+        //send email to followers
+        String arrayEmail[] = followersEmailsList.toArray(new String[followersEmailsList.size()]);
+        SendMessageToEmail.sendFromGMail("onlineshopjava@gmail.com", "ForTestOnly",
+                arrayEmail, "OpenTask - Notification about order", getRejectingOrderMessageForFollowers(ordering.getTitle()));
+    }
+
+    private String getRejectingOrderMessageForFollowers(String orderingName){
+        return "Hello \n\n"+
+                "Unfortunately you have not been chosen for ordering '"+orderingName+"'.";
     }
 
     private String generatePhoneCode(Customer customer) {
