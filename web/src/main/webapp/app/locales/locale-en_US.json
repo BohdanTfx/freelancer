@@ -491,6 +491,8 @@
   "banservice.no-complains":"No complained orders",
   "banservice.no-bans":"No banned orders",
   "banservice.are-you-sure":"Are you sure ?",
+  "banservice.description":"After order banning, it will not be available in searching.",
+  "banservice.close":"Close",
 
   "notification.error": "Error",
   "notification.success": "Success",
