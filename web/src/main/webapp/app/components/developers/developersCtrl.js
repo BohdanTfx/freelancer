@@ -108,6 +108,24 @@ angular
 										});
 					};
 
+					$scope.resetFilter = function() {
+						$scope.filter.firstName = "";
+						$scope.filter.lastName = "";
+						$scope.filter.position = "";
+						angular.forEach($scope.technologies, function(value) {
+							value.ticked = false;
+						});
+						angular.forEach($scope.timeZones, function(value) {
+							value.ticked = false;
+						});
+						$scope.filter.payment.options.disabled = true;
+
+						$scope.filter.payment.min = $scope.filter.payment.options.floor;
+						$scope.filter.payment.max = $scope.filter.payment.options.ceil;
+
+						initSelectTranslation($translate);
+					};
+
 					$scope.changeStep = function() {
 						localStorage.setItem("freelancerDevelopersStep",
 								$scope.itesStep.number);
