@@ -25,19 +25,22 @@ angular.module('FreelancerApp')
                     });
             });
         } else {
-            myworksAPI.getAllCustomerWorks().success(function (data) {
-                $scope.firstWorks = data.availableWorks;
-                $scope.secondWorks = data.inProgressWorks;
-                $scope.thirdWorks = data.finishedWorks;
-            }).error(function () {
-                Notification
-                    .error({
-                        title: $translate.instant("myworks.msg-error-title"),
-                        message: $translate.instant("myworks.msg-error-descr")
-                    });
-            });
+            if ($rootScope.globals.currentUser.role == 'customer') {
+                myworksAPI.getAllCustomerWorks().success(function (data) {
+                    console.log(data.availableWorks);
 
+                    $scope.firstWorks = data.availableWorks;
+                    $scope.secondWorks = data.inProgressWorks;
+                    $scope.thirdWorks = data.finishedWorks;
+                }).error(function () {
+                    Notification
+                        .error({
+                            title: $translate.instant("myworks.msg-error-title"),
+                            message: $translate.instant("myworks.msg-error-descr")
+                        });
+                });
 
+            }
         }
 
 

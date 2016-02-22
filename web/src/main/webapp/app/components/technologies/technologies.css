@@ -8,11 +8,20 @@
     font-size: 25pt;
     padding-left: 10px;
 }
+.technologies .tech-list{
+    height: 280px;
+    overflow: auto
+}
 
 .technologies .tech-amount{
     padding-right: 20px;
     padding-top: 20px;
  }
+
+.technologies .tech-panel-body{
+    background-color: #ffffff;
+    height: 500px
+}
 
 @media (max-width: 970px) {
     .technologies .create-panel-body{
@@ -28,4 +37,10 @@
         margin: 0 auto;
         padding: 15px;
     }
+
+    .technologies .tech-panel-body{
+        height: 540px
+    }
+
+
 }

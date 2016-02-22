@@ -112,7 +112,7 @@
 
 
 
-                                                <div class="col-sm-2 col-xs-9 ">
+                                                <div class="col-sm-2 col-xs-8 ">
                                                     <div class="">
                                                         <div class="col-xs-5 col-sm-12">
                                                             <div class="form-group">
@@ -146,7 +146,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-2 col-xs-3 ">
+                                                <div class="col-sm-2 col-xs-4 ">
                                                     <span class="accepted-title">{{"myworks.accepted-title" | translate}}</span>
                                                     <p class="accepted-descr hidden-xs hidden-sm">
                                                         {{"myworks.accepted-descr" | translate}}
@@ -179,7 +179,7 @@
                                 </div>
                                 <div ng-switch-default>
 
-                                    <div ng-if="role == 'developer'">
+                                    <div ng-if="globals.currentUser.role == 'developer'">
                                         <div ng-repeat="project in firstWorks">
                                             <div class="panel panel-default">
                                                     <div class="row project-block panel-body">
@@ -230,7 +230,7 @@
                                         </div>
                                     </div>
 
-                                    <div ng-if="role == 'customer'">
+                                    <div ng-if="globals.currentUser.role == 'customer'">
                                         <div ng-repeat="project in firstWorks">
                                             <div class="panel panel-default">
                                                 <div class="row project-block panel-body">
