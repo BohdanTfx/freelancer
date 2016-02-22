@@ -3,7 +3,7 @@ angular
 		.controller(
 				'developersCtrl',
 				function($scope, developersService, $log, $http, Notification,
-						$translate, $rootScope) {
+						$translate, $rootScope, $location) {
 					var filterOpen = false;
 					var resourceLoadingCounter = 0;
 					$scope.filter = {};
@@ -68,17 +68,7 @@ angular
 					$scope.timeZones = getTimeZones();
 
 					$scope.doFilter = function() {
-						// var filterData = developersService.getFilterContent(
-						// $scope.filter, $scope.filter.payment.min,
-						// $scope.filter.payment.max);
-						// var queryParams = transformToUrlQuery(filterData);
-						// var newUrl = getURLWithoutParameters();
-						// if (queryParams.length > 0) {
-						// newUrl += '?' + queryParams;
-						// if (window.location.href != newUrl)
-						// window.history.pushState('data', 'title',
-						// newUrl);
-						// }
+						configUrlParamters();
 
 						developersService
 								.loadDevelopers($scope.filter, $scope.last,
@@ -190,6 +180,22 @@ angular
 												});
 									});
 
+					function configUrlParamters() {
+						var filterData = developersService.getFilterContent(
+								$scope.filter, $scope.filter.payment.min,
+								$scope.filter.payment.max);
+
+						for ( var param in filterData)
+							if (filterData.hasOwnProperty(param)
+									&& filterData[param] !== undefined) {
+								if (param == 'technology' || param == 'zone') {
+									$location.search(param, filterData[param]
+											.join());
+								} else
+									$location.search(param, filterData[param]);
+							}
+					}
+
 					function initSelectTranslation($translate) {
 						$('#timeZonesSelect button[ng-if="helperStatus.all"]')
 								.html(
@@ -252,6 +258,12 @@ angular
 
 					function checkAndRestoreFilterData() {
 						if (resourceLoadingCounter == 2) {
+							if (parseUrlParameters()) {
+								initSelectTranslation($translate);
+								$scope.doFilter();
+								return;
+							}
+
 							var data = getSavedStateData();
 							if (data !== undefined) {
 								$scope.filter.firstName = data.firstName;
@@ -293,4 +305,49 @@ angular
 						localStorage.setItem("openTaskStateReloadedData", JSON
 								.stringify(state));
 					};
+
+					function parseUrlParameters() {
+						var vars = getUrlVars();
+						if (vars.length < 1)
+							return false;
+
+						var parameter = $location.search()['name'];
+						if (parameter != null)
+							$scope.filter.firstName = parameter;
+						parameter = $location.search()['last_name'];
+						if (parameter != null)
+							$scope.filter.lastName = parameter;
+						parameter = $location.search()['position'];
+						if (parameter != null)
+							$scope.filter.position = parameter;
+						parameter = $location.search()['zone'];
+						if (parameter != null) {
+							var zoneParam = parameter.split(",");
+							for (var zoneId = 0; zoneId < $scope.timeZones.length; zoneId++)
+								for (var paramZoneId = 0; paramZoneId < zoneParam.length; paramZoneId++)
+									if ($scope.timeZones[zoneId] == zoneParam[paramZoneId]) {
+										$scope.timeZones.ticked = true;
+										break;
+									}
+						}
+						parameter = $location.search()['technology'];
+						if (parameter != null) {
+							var techParam = parameter.split(",");
+							for (var techId = 0; techId < $scope.technologies.length; techId++)
+								for (var paramTechId = 0; paramTechId < techParam.length; paramTechId++)
+									if ($scope.technologies[techId] == techParam[paramTechId]) {
+										$scope.technologies.ticked = true;
+										break;
+									}
+						}
+
+						parameter = $location.search()['paymentMin'];
+						if (parameter != null)
+							$scope.filter.payment.min = parameter;
+						parameter = $location.search()['paymentMax'];
+						if (parameter != null)
+							$scope.filter.payment.max = parameter;
+
+						return true;
+					}
 				});

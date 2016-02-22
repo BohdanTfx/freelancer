@@ -145,8 +145,8 @@ public class DeveloperJdbcDao extends UserJdbcDao<Developer, Integer> implements
 			lastNull = false;
 		}
 
-		Number max = (Number) parameters.get("paymentMax");
-		Number min = (Number) parameters.get("paymentMin");
+		Object max =  parameters.get("paymentMax");
+		Object min =  parameters.get("paymentMin");
 
 		if (max != null && min != null) {
 			builder.append(lastNull ? "" : " AND");
