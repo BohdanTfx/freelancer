@@ -361,60 +361,8 @@ public class UnregisteredController extends HttpServlet implements Responsable {
 	}
 
 	private String getConfirmationEmailMessage(String link,String userName){
-		return "<div style=\"background-color:#dfdfdf;padding:0;margin:0 auto;width:100%\"> " +
-				"<span style=\"display:none!important;font-size:1px;color:transparent;min-height:0;width:0\">Info about changing your password</span>" +
-				" <table style=\"font-family:Helvetica,Arial,sans-serif;border-collapse:collapse;width:100%!important;font-family:Helvetica,Arial,sans-serif;margin:0;padding:0" +
-				"\" bgcolor=\"#F5F5F5\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> <tbody> <tr> <td colspan=\"3\">" +
-				" <table style=\"font-family:Helvetica,Arial,sans-serif\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"1\"> " +
-				"<tbody> <tr> <td> <div style=\"min-height:5px;font-size:5px;line-height:5px\"> &nbsp; </div></td></tr></tbody> </table>" +
-				" </td></tr><tr> <td> <table style=\"table-layout:fixed\" align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> " +
-				"<tbody> <tr> <td align=\"center\"> <table style=\"font-family:Helvetica,Arial,sans-serif;min-width:290px\" border=\"0\" " +
-				"cellpadding=\"0\" cellspacing=\"0\" width=\"540\"> <tbody> <tr> <td style=\"font-family:Helvetica,Arial,sans-serif\">" +
-				" <table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"1\"> <tbody> <tr> <td> <div style=\"min-height:8px;font-size:8px;line-height:8px\">" +
-				" &nbsp; </div></td></tr></tbody> </table> <table style=\"font-family:Helvetica,Arial,sans-serif\" bgcolor=\"#DDDDDD\" border=\"0\" cellpadding=\"0\"" +
-				" cellspacing=\"0\" width=\"100%\"> <tbody> <tr> <td align=\"left\" height=\"21\" valign=\"middle\" width=\"95\"> <a style=\"text-decoration:none;font-size:" +
-				" 24pt;font-weight:bold;color:#273039;\" href=\"https://google.com\" target=\"_blank\">OpenTask</a> </td></tr></tbody> </table> <table border=\"0\"" +
-				" cellpadding=\"1\" cellspacing=\"0\" width=\"1\"> <tbody> <tr> <td> <div style=\"min-height:8px;font-size:8px;line-height:8px\"> &nbsp; </div>" +
-				"</td></tr></tbody> </table> <table style=\"font-family:Helvetica,Arial,sans-serif\" bgcolor=\"#333333\" border=\"0\" cellpadding=\"0\"" +
-				" cellspacing=\"0\" width=\"100%\"> <tbody> <tr> <td width=\"20\"> <table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"20\"> " +
-				"<tbody> <tr> <td> <div style=\"min-height:0px;font-size:0px;line-height:0px\"> &nbsp; </div></td></tr></tbody> </table> </td><td width=\"100%\"> " +
-				"<table style=\"table-layout:fixed\" border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"500\"> <tbody> <tr> <td width=\"500\"> " +
-				"<div style=\"min-height:12px;font-size:12px;line-height:12px;width:500px\"> &nbsp; </div></td></tr></tbody> </table> </td><td width=\"20\">" +
-				" <table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"20\"> <tbody> <tr> <td> <div style=\"min-height:0px;font-size:0px;line-height:0px\">" +
-				" &nbsp; </div></td></tr></tbody> </table> </td></tr></tbody> </table> <table style=\"font-family:Helvetica,Arial,sans-serif\" bgcolor=\"#FFFFFF\"" +
-				" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> <tbody> <tr> <td width=\"20\"> <table border=\"0\" cellpadding=\"1\"" +
-				" cellspacing=\"0\" width=\"20px\"> <tbody> <tr> <td> <div style=\"min-height:0px;font-size:0px;line-height:0px\"> &nbsp; </div></td></tr></tbody>" +
-				" </table> </td><td style=\"color:#333333;font-family:Helvetica,Arial,sans-serif;font-size:15px;line-height:18px\" align=\"left\"> " +
-				"<table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"1\"> <tbody> <tr> <td> <div style=\"min-height:20px;font-size:20px;line-height:20px\">" +
-				" &nbsp; </div></td></tr></tbody> </table> <table style=\"font-family:Helvetica,Arial,sans-serif\" bgcolor=\"#FFFFFF\" border=\"0\" cellpadding=\"0\"" +
-				" cellspacing=\"0\" width=\"100%\"> <tbody> <tr> <td>Hi "+userName+",</td></tr><tr> <td> <table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"1\"> " +
-				"<tbody> <tr> <td> <div style=\"min-height:20px;font-size:20px;line-height:20px\"> &nbsp; </div></td></tr></tbody> </table> </td></tr><tr>" +
-				" <td>To confirm your email, click <a style=\"text-decoration:none;color:#0077b5\" href=\""+link+"\" target=\"_blank\">here</a>" +
-				" or paste the following link into your browser: <a style=\"text-decoration:none;color:#0077b5\" href=\""+link+"\" target=\"_blank\">" +
-				" "+link+" </a> </td></tr><tr> <td> <table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"1\">" +
-				" <tbody> <tr> <td> <div style=\"min-height:20px;font-size:20px;line-height:20px\"> &nbsp; </div></td></tr></tbody> </table> </td></tr><tr> " +
-				"<td>The link will expire <span tabindex=\"0\" class=\"aBn\" data-term=\"goog_1735888483\"><span class=\"aQJ\">in 24 hours</span></span>," +
-				" so be sure to use it right away.</td></tr><tr> <td> <table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"1\"> <tbody> <tr> " +
-				"<td> <div style=\"min-height:20px;font-size:20px;line-height:20px\"> &nbsp; </div></td></tr></tbody> </table> </td></tr><tr> <td>" +
-				"The OpenTask Team</td></tr><tr> <td> <table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"1\"> <tbody> <tr> <td> " +
-				"<div style=\"min-height:20px;font-size:20px;line-height:20px\"> &nbsp; </div></td></tr></tbody> </table> </td></tr></tbody> </table> </td><td width=\"20\">" +
-				" <table border=\"0\" cellpadding=\"1\" cellspacing=\"0\" width=\"20px\"> <tbody> <tr> <td> <div style=\"min-height:0px;font-size:0px;line-height:0px\">" +
-				" &nbsp; </div></td></tr></tbody> </table> </td></tr></tbody> </table> </td></tr></tbody> </table> <table style=\"font-family:Helvetica,Arial,sans-serif\"" +
-				" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"540\"> <tbody> <tr></tr></tbody> </table> <table style=\"font-family:Helvetica,Arial,sans-serif\"" +
-				" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"540\"> <tbody> <tr> <td> <table style=\"font-family:Helvetica,Arial,sans-serif\" border=\"0\"" +
-				" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> <tbody> <tr> <td> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"1\"> <tbody> <tr>" +
-				" <td> <div style=\"min-height:10px;font-size:10px;line-height:10px\"> &nbsp; </div></td></tr></tbody> </table> </td></tr><tr> <td align=\"center\">" +
-				" <table style=\"color:#999999;font-size:11px;font-family:Helvetica,Arial,sans-serif\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\"> " +
-				"<tbody> <tr> <td dir=\"ltr\" align=\"center\">� 2016 www.opentask.com | All rights reserved.</td></tr><tr> <td> <table border=\"0\" cellpadding=\"0\"" +
-				" cellspacing=\"0\" width=\"1\"> <tbody> <tr> <td> <div style=\"min-height:10px;font-size:10px;line-height:10px\"> &nbsp; </div></td></tr></tbody> </table>" +
-				" </td></tr><tr> <td align=\"center\"></td></tr><tr> <td align=\"center\"></td></tr><tr> <td> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"1\">" +
-				" <tbody> <tr> <td> <div style=\"min-height:10px;font-size:10px;line-height:10px\"> &nbsp; </div></td></tr></tbody> </table> <table border=\"0\"" +
-				" cellpadding=\"0\" cellspacing=\"0\" width=\"1\"> <tbody> <tr> <td> <div style=\"min-height:10px;font-size:10px;line-height:10px\"> &nbsp; </div>" +
-				"</td></tr></tbody> </table> </td></tr><tr> <td align=\"center\"></td></tr><tr> <td> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"1\">" +
-				" <tbody> <tr> <td> <div style=\"min-height:10px;font-size:10px;line-height:10px\"> &nbsp; </div></td></tr></tbody> </table> </td></tr></tbody> </table>" +
-				" </td></tr><tr> <td> <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"1\"> <tbody> <tr> <td> <div style=\"min-height:20px;font-size:20px;" +
-				"line-height:20px\"> &nbsp; </div></td></tr></tbody> </table> </td></tr></tbody> </table> </td></tr></tbody> </table> </td></tr></tbody> </table> </td>" +
-				"</tr></tbody> </table></div>";
+		return "Hello " +userName+"\n"+
+				"You have to confirm your email. Please check this url "+link;
 	}
 
 }

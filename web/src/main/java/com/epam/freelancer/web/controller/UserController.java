@@ -1083,9 +1083,11 @@ public class UserController extends HttpServlet implements Responsable {
 					.getBean("testService");
 			DeveloperQAService dQAs = (DeveloperQAService) ApplicationContext
 					.getInstance().getBean("developerQAService");
-			List<DeveloperQA> developerQAs = dQAs.findAllByDevId(devId);
+			List<DeveloperQA> developerQAs = new ArrayList<>();
+			List<DeveloperQA> temp = dQAs.findAllByDevId(devId);
+
 			for (DeveloperQA developerQA : developerQAs) {
-				developerQA.setTest(ts.findById(developerQA.getTestId()));
+				developerQA.setTest(ts.findByIdEvenDeleted(developerQA.getTestId()));
 				if (developerQA.getTest().getPassScore() >= developerQA
 						.getRate())
 				{
