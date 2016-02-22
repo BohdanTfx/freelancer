@@ -155,6 +155,7 @@ angular.module('FreelancerApp')
                     "isStacked": "true",
                     "fill": 20,
                     "displayExactValues": true,
+                    'legend': {'position': 'none'},
                     "vAxis": {
                         "title": $translate.instant("admin.statistics-orders-diagr-unit"),
                         "gridlines": {
@@ -200,8 +201,10 @@ angular.module('FreelancerApp')
                 ]
             };
 
+
             $scope.chartTests.options = {
-                'title': $translate.instant("admin.statistics-tests-diagr-title")
+                'title': $translate.instant("admin.statistics-tests-diagr-title"),
+                'legend': {'position': 'none'}
             };
         }
 
