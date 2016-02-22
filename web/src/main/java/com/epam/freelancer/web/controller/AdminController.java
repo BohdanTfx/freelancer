@@ -22,6 +22,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.epam.freelancer.business.util.SmsSender;
+import com.epam.freelancer.database.model.*;
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.JsonParser;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -41,15 +43,6 @@ import com.epam.freelancer.business.service.QuestionService;
 import com.epam.freelancer.business.service.TechnologyService;
 import com.epam.freelancer.business.service.TestService;
 import com.epam.freelancer.business.util.SendMessageToEmail;
-import com.epam.freelancer.database.model.Admin;
-import com.epam.freelancer.database.model.AdminCandidate;
-import com.epam.freelancer.database.model.Answer;
-import com.epam.freelancer.database.model.OrderCounter;
-import com.epam.freelancer.database.model.Ordering;
-import com.epam.freelancer.database.model.Question;
-import com.epam.freelancer.database.model.Technology;
-import com.epam.freelancer.database.model.Test;
-import com.epam.freelancer.database.model.UserEntity;
 import com.epam.freelancer.web.json.model.JsonPaginator;
 import com.epam.freelancer.web.util.Paginator;
 
@@ -341,8 +334,8 @@ public class AdminController extends HttpServlet implements Responsable {
 
 		paginator
 				.next(jsonPaginator.getPage(), response, questionService
-						.getFilteredObjectNumber(jsonPaginator.getContent()),
-						questions);
+                                .getFilteredObjectNumber(jsonPaginator.getContent()),
+                        questions);
 	}
 
 	private void getTechnologies(HttpServletRequest request,
@@ -421,7 +414,7 @@ public class AdminController extends HttpServlet implements Responsable {
 		questionMap.put("tech_id",
 				new String[] { String.valueOf(question.getTechId()) });
 		questionMap
-				.put("admin_id", new String[] { String.valueOf(ue.getId()) });
+				.put("admin_id", new String[]{String.valueOf(ue.getId())});
 		questionMap.put("multiple",
 				new String[] { String.valueOf(question.getMultiple()) });
 		return questionService.create(questionMap);
@@ -652,11 +645,8 @@ public class AdminController extends HttpServlet implements Responsable {
 		}
 		admin.setConfirmCode(confirmCode.toString());
 		try {
-			String email = admin.getEmail();
-			String from = "maksym.rudevych.kn.2013@lpnu.ua";
-			String pass = "12.04.1996";
-			String[] to = new String[] { email };
-			SendMessageToEmail.sendFromGMail(from, pass, to, "Confirm Code",
+			String[] to = new String[] { admin.getEmail() };
+			SendMessageToEmail.sendFromGMail("onlineshopjava@gmail.com", "ForTestOnly", to, "Confirm Code",
 					confirmCode.toString());
 		} catch (NullPointerException e) {
 			LOG.warn("The phone number is empty");
@@ -739,6 +729,20 @@ public class AdminController extends HttpServlet implements Responsable {
 		Ordering order = orderingService.findById(id);
 		order.setBan(true);
 		orderingService.modify(order);
+        Contact contact = customerService.getContactByCustomerId(order.getCustomerId());
+        String phoneNumber = null;
+        if(contact!=null){
+            phoneNumber = contact.getPhone();
+        }
+        String message = "Hello! Your order " + order.getTitle() + " has been banned, because it had many complains.";
+        if(phoneNumber != null){
+            SmsSender smsSender = new SmsSender();
+            smsSender.sendSms(phoneNumber, message, "e-freelance");
+        }else{
+            String[] to = new String[] {customerService.findById(order.getCustomerId()).getEmail()};
+            SendMessageToEmail.sendFromGMail("onlineshopjava@gmail.com", "ForTestOnly", to, "Order banning",
+                    message);
+        }
 	}
 
 	private void unbanOrder(HttpServletRequest request,

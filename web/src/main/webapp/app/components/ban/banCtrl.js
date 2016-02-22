@@ -3,6 +3,7 @@ angular
 		.controller(
 				'banCtrl',
 				function($scope, banAPI, Notification, $log, $translate) {
+					$scope.isFirstLoading = true;
 					$scope.showUnbannedFrom = function(page) {
 						if (page == 'last')
 							$scope.unbannedItemListStart = $scope.unbannedMaxPage - 1;
@@ -52,6 +53,11 @@ angular
 													"showUnbannedLast",
 													"unbannedMaxPage",
 													"unbannedPages");
+
+											if($scope.isFirstLoading){
+												$scope.getBanOrders();
+												$scope.isFirstLoading=false;
+											}
 										})
 								.error(
 										function() {
@@ -91,10 +97,13 @@ angular
 										});
 					};
 
-					$scope.getBanOrders();
+					$scope.setBanningOrder = function(id) {
+						$scope.banningOrder = id;
+					}
 
-					$scope.banOrder = function(id) {
-						banAPI
+					$scope.banOrder = function() {
+                        var id = $scope.banningOrder;
+                        banAPI
 								.banOrder(id)
 								.success(
 										function() {

@@ -135,6 +135,9 @@ public class DeveloperController extends HttpServlet implements Responsable {
                 case "dev/rejectOrdering":
                     rejectOrdering(request, response);
                     break;
+                case "dev/startTest":
+                    startTest(request, response);
+                    break;
                 default:
             }
 
@@ -275,6 +278,13 @@ public class DeveloperController extends HttpServlet implements Responsable {
         sendResponse(response, resultMap, mapper);
     }
 
+
+
+    private void startTest(HttpServletRequest request, HttpServletResponse response){
+        Map<String, String[]> map = createMapForDevQA(request, 0);
+        developerQAService.create(map);
+    }
+
     private void sendResults(HttpServletRequest request,
                              HttpServletResponse response) {
         try {
@@ -328,8 +338,7 @@ public class DeveloperController extends HttpServlet implements Responsable {
         }
     }
 
-    private Map<String, String[]> createMapForDevQA(HttpServletRequest request,
-                                                    double rate) {
+    private Map<String, String[]> createMapForDevQA(HttpServletRequest request, double rate) {
         Map<String, String[]> map = new HashMap<>();
         UserEntity user = (UserEntity) request.getSession()
                 .getAttribute("user");

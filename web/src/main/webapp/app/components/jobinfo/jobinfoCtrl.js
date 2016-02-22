@@ -142,8 +142,6 @@ angular.module('FreelancerApp')
         $scope.setIsWorkerInFollower = function (i) {
             orderAPI.isWorker(JSON.stringify($scope.followers[i])).success(function (data) {
                 $scope.followers[i].worker = data;
-                console.log("data = " + data);
-                console.log("is worker = " + $scope.followers[i].worker);
             });
         };
 
@@ -249,7 +247,8 @@ angular.module('FreelancerApp')
             var acceptDate = new Date(new Date(today).setMonth(today.getDay()+5));
             acceptDate = new Date(acceptDate).getTime();
 
-            orderAPI.acceptFollower(devId, $scope.order.id, $scope.order.title, JSON.stringify($scope.customer), acceptDate).success(function () {
+            var customerJSON = JSON.stringify($scope.customer);
+            orderAPI.acceptFollower(devId, $scope.order.id, $scope.order.title, customerJSON, acceptDate).then(function(){
                 for (var i = 0; i < $scope.followers.length; i++) {
                     if ($scope.followers[i].devId == devId) {
                         $scope.followers[i].worker = true;
@@ -261,8 +260,14 @@ angular.module('FreelancerApp')
                         title: $translate.instant('notification.success'),
                         message: $translate.instant('jobinfo.follower-accept-success')
                     });
-            })
-        }
+            },function() {
+                Notification
+                    .error({
+                        title: $translate.instant('notification.error'),
+                        message: $translate.instant('notification.smth-wrong')
+                    });
+            });
+        };
 
         $scope.banOrder = function () {
             orderAPI.banOrder($scope.order.id).success(function () {

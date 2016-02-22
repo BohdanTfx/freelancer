@@ -283,6 +283,12 @@ function getPermissions() {
 			administrator : true,
 			developer : false,
 			customer : false
+		},
+		presentation : {
+			unknown : true,
+			administrator : true,
+			developer : true,
+			customer : true
 		}
 	};
 }
