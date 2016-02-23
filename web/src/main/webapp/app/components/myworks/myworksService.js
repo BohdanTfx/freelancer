@@ -47,7 +47,5 @@ angular.module('FreelancerApp')
             return $http.get('/cust/workersByIdOrder?order_id='+order_id);
         };
 
-
-
         return dataFactory;
     });
